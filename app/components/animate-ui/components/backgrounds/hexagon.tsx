@@ -8,13 +8,11 @@ const DEFAULT_MARGIN = 3;
 export function HexagonBackground({
   hexagonSize = DEFAULT_SIZE,
   hexagonMargin = DEFAULT_MARGIN,
-  hexagonProps,
   className,
   ...props
 }: ComponentProps<"div"> & {
   hexagonSize?: number;
   hexagonMargin?: number;
-  hexagonProps?: ComponentProps<"div">;
 }) {
   const h = Math.sqrt(3) * (hexagonSize / 2);
   const cols = 20;
@@ -50,7 +48,6 @@ export function HexagonBackground({
                   key={`${row}-${col}`}
                   points={points}
                   transform={`translate(${x}, ${y})`}
-                  {...hexagonProps}
                 />
               );
             })
