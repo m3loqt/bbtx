@@ -1,26 +1,24 @@
-import Image from "next/image";
-
 const STEPS = [
   {
-    step: 1,
+    num: "1",
     title: "Assess",
     description:
       "We evaluate your current capabilities, workflows, risks, and opportunities to identify where AI can create real business value.",
   },
   {
-    step: 2,
+    num: "2",
     title: "Align",
     description:
       "We prioritize use cases, define success metrics, and align leadership so every initiative supports clear business objectives.",
   },
   {
-    step: 3,
+    num: "3",
     title: "Implement",
     description:
       "We deploy and integrate AI solutions into existing workflows with governance, change support, and performance tracking built in.",
   },
   {
-    step: 4,
+    num: "4",
     title: "Measure & Scale",
     description:
       "We monitor outcomes, refine performance, and scale successful initiatives across the organization with confidence.",
@@ -29,64 +27,80 @@ const STEPS = [
 
 export function Process() {
   return (
-    <section className="relative z-[1] border-b border-black/[0.06] bg-[#f7f7f7]">
+    <section className="relative z-[1] w-full overflow-hidden bg-[#ca3726]">
+      {/* Subtle dot texture */}
       <div
-        className="pointer-events-none absolute inset-0 z-0 opacity-60"
+        className="pointer-events-none absolute inset-0 z-0 opacity-[0.10]"
         style={{
-          backgroundImage: `
-            linear-gradient(to right, rgba(0,0,0,0.04) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(0,0,0,0.04) 1px, transparent 1px)
-          `,
-          backgroundSize: "48px 48px",
+          backgroundImage: `radial-gradient(circle, rgba(255,255,255,0.4) 1px, transparent 1px)`,
+          backgroundSize: "24px 24px",
         }}
         aria-hidden
       />
-      <div className="relative z-[1] px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
-        <div className="grid gap-10 lg:grid-cols-[1fr_1.2fr] lg:items-start lg:gap-16">
-          {/* Left: header + description */}
-          <div>
-            <p className="mb-4 flex items-center gap-2 text-base font-normal text-[#555555] sm:text-lg">
-              <Image
-                src="/node.png"
-                alt=""
-                width={24}
-                height={24}
-                className="h-6 w-6 object-contain"
-              />
-              Process
-            </p>
-            <h2 className="text-4xl font-medium leading-tight tracking-tighter text-[#222222] sm:text-5xl lg:text-5xl xl:text-6xl 2xl:text-[4rem]">
-              Our AI Implementation{" "}
-              <span
-                className="font-normal italic"
-                style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}
-              >
-                Framework
-              </span>
-            </h2>
-            <p className="mt-6 text-xl leading-relaxed tracking-tight text-[#222222] sm:text-2xl">
-              A structured approach that moves your organization from exploration
-              to measurable business impact with clarity and accountability.
-            </p>
-          </div>
+      <div className="relative z-[1] px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
+        {/* Eyebrow */}
+        <p className="mb-6 flex items-center gap-2 text-base font-normal text-white/70 sm:text-lg">
+          <img
+            src="/node.png"
+            alt=""
+            width={24}
+            height={24}
+            className="h-6 w-6 object-contain brightness-0 invert"
+          />
+          Process
+        </p>
 
-          {/* Right: step cards — align first card with header (not eyebrow) */}
-          <div className="flex flex-col gap-1.5 pt-10">
-            {STEPS.map((step) => (
-              <article
-                key={step.step}
-                className="rounded-xl border border-black/[0.06] bg-white p-5 shadow-[0_2px_12px_rgba(0,0,0,0.01)] sm:p-6 lg:p-6"
+        {/* Headline */}
+        <h2 className="w-full text-4xl font-medium leading-tight tracking-tighter text-white sm:text-5xl lg:text-5xl xl:text-6xl 2xl:text-[4rem]">
+          Our AI Implementation{" "}
+          <span
+            className="font-normal italic"
+            style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}
+          >
+            Framework
+          </span>
+        </h2>
+
+        {/* Step cards with connecting arrow line behind */}
+        <div className="relative mt-14 lg:mt-20">
+          {/* Arrow line sits behind the cards */}
+          <div className="pointer-events-none absolute inset-x-0 top-1/2 z-0 hidden -translate-y-1/2 items-center lg:flex">
+            <div className="mx-10 flex flex-1 items-center">
+              <div className="h-px flex-1 bg-white/25" />
+              <svg
+                className="h-3 w-3 shrink-0 text-white/25"
+                viewBox="0 0 12 12"
+                fill="currentColor"
+                aria-hidden
               >
-                <p className="text-xs font-semibold uppercase tracking-wider text-[#ca3726] sm:text-[11px]">
-                  Step {step.step}
-                </p>
-                <h3 className="mt-2 text-lg font-semibold tracking-tight text-[#222222] sm:text-xl">
+                <path d="M1 6h9M7 3l3 3-3 3" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </div>
+          </div>
+          <div className="relative z-[1] grid gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:gap-5">
+            {STEPS.map((step) => (
+              <div
+                key={step.num}
+                className="relative overflow-hidden rounded-2xl border border-white/15 bg-white/[0.07] p-6 backdrop-blur-sm sm:p-8"
+              >
+                <span
+                  className="block text-[5rem] font-bold leading-none tracking-tighter sm:text-[6rem]"
+                  style={{
+                    background: "linear-gradient(to bottom, rgba(255,255,255,0.25), rgba(255,255,255,0))",
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                    backgroundClip: "text",
+                  }}
+                >
+                  {step.num}
+                </span>
+                <h3 className="mt-2 text-lg font-semibold tracking-tight text-white sm:text-xl">
                   {step.title}
                 </h3>
-                <p className="mt-3 text-base leading-relaxed text-[#555555] sm:text-lg">
+                <p className="mt-3 text-base leading-relaxed text-white/70 sm:text-[17px]">
                   {step.description}
                 </p>
-              </article>
+              </div>
             ))}
           </div>
         </div>

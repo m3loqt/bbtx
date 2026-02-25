@@ -4,7 +4,7 @@ import { Benefits } from "@/app/sections/Benefits";
 import { CTA } from "@/app/sections/CTA";
 import { FAQ } from "@/app/sections/FAQ";
 import { Hero } from "@/app/sections/Hero";
-import { Pricing } from "@/app/sections/Pricing";
+// import { Pricing } from "@/app/sections/Pricing";
 import { Differentiation } from "@/app/sections/Differentiation";
 import { Process } from "@/app/sections/Process";
 import { Results } from "@/app/sections/Results";
@@ -23,7 +23,7 @@ export default function Home() {
       <Benefits />
       <Process />
       <Differentiation />
-      <Pricing />
+      {/* <Pricing /> */}
       <Testimonials />
       <CTA />
       <FAQ />

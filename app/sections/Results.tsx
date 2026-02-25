@@ -66,7 +66,7 @@ export function Results() {
         </div>
 
         {/* Header and description below carousel */}
-        <div className="mt-12 grid gap-8 lg:mt-16 lg:grid-cols-[3fr_2fr] lg:items-end lg:gap-12">
+        <div className="mt-16 grid gap-8 lg:mt-24 lg:grid-cols-[3fr_2fr] lg:items-end lg:gap-12">
           <h2 className="text-4xl font-medium leading-tight tracking-tighter text-[#222222] sm:text-5xl lg:text-5xl xl:text-6xl 2xl:text-[4rem]">
             100+ organizations trusted us to{" "}
             <span
@@ -84,7 +84,7 @@ export function Results() {
         </div>
 
         {/* 4 metric cards: same spacing as Services, full width */}
-        <div className="mt-10 grid w-full grid-cols-1 gap-1 sm:grid-cols-2 lg:mt-14 lg:grid-cols-4 lg:gap-1.5">
+        <div className="mt-14 grid w-full grid-cols-1 gap-1 sm:grid-cols-2 lg:mt-20 lg:grid-cols-4 lg:gap-1.5">
           {METRICS.map((metric) => (
             <div
               key={metric.label}

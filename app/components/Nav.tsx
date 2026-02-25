@@ -3,12 +3,12 @@ import { ArrowUpRight } from "./ArrowIcon";
 import { ChevronDown } from "./ArrowIcon";
 
 const navLinks = [
-  { label: "Services", hasDropdown: true },
-  { label: "Expertise", hasDropdown: true },
-  { label: "Cases", hasDropdown: false },
-  { label: "Resources", hasDropdown: true },
-  { label: "About", hasDropdown: false },
-  { label: "Community", hasDropdown: false },
+  { label: "Services", hasDropdown: true, href: "#" },
+  { label: "Expertise", hasDropdown: true, href: "#" },
+  { label: "Cases", hasDropdown: false, href: "#" },
+  { label: "Resources", hasDropdown: true, href: "#" },
+  { label: "About", hasDropdown: false, href: "/about" },
+  { label: "Community", hasDropdown: false, href: "#" },
 ];
 
 export function Nav() {
@@ -29,10 +29,10 @@ export function Nav() {
         </a>
 
         <div className="hidden items-center gap-4 lg:flex lg:gap-5">
-          {navLinks.map(({ label, hasDropdown }) => (
+          {navLinks.map(({ label, hasDropdown, href }) => (
             <a
               key={label}
-              href="#"
+              href={href}
               className="flex items-center gap-1 text-[15px] font-normal text-[#222222] transition-colors hover:text-[#555]"
             >
               {label}

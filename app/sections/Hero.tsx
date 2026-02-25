@@ -71,7 +71,7 @@ export function Hero() {
         </div>
       </div>
 
-      {/* Case study card – part of hero, bottom-right */}
+      {/* Case study card, part of hero, bottom-right */}
       <article className="absolute bottom-10 right-6 z-10 flex h-[200px] w-[min(480px,calc(100vw-5rem))] overflow-hidden rounded-lg border border-black/[0.06] bg-white shadow-[0_2px_12px_rgba(0,0,0,0.01)] sm:right-8 lg:right-10">
         <div className="flex w-[48%] min-w-0 flex-col justify-between p-5 pr-3">
           <p className="text-base font-bold leading-tight text-[#222222] sm:text-lg">

@@ -16,7 +16,7 @@ const FAQ_ITEMS = [
   {
     question: "How long does implementation typically take?",
     answer:
-      "Pilots often run 8–12 weeks; full strategy and multi-team rollout can be 3–6 months. We propose a timeline during Discovery.",
+      "Pilots often run 8 to 12 weeks; full strategy and multi-team rollout can be 3 to 6 months. We propose a timeline during Discovery.",
   },
   {
     question: "Do you work with our existing tools and data?",
@@ -111,7 +111,7 @@ export function FAQ() {
             ))}
           </ul>
 
-          {/* Still have questions? section box — spacing aligned with FAQ card grid */}
+          {/* Still have questions? section box, spacing aligned with FAQ card grid */}
           <div className="mt-1.5 flex w-full flex-col items-start gap-4 rounded-xl border border-black/[0.08] bg-white p-4 shadow-[0_2px_12px_rgba(0,0,0,0.02)] sm:flex-row sm:items-center sm:justify-between sm:gap-6 lg:mt-1.5 lg:p-5">
             <div className="flex min-w-0 flex-1 items-center gap-3">
               <span

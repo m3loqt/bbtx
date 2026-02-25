@@ -72,8 +72,8 @@ export function Testimonials() {
           Testimonials
         </p>
         {/* Headline left | description + button (stacked) right */}
-        <div className="grid gap-6 lg:grid-cols-[3fr_5fr] lg:items-start lg:gap-12">
-          <h2 className="lg:pr-16 text-4xl font-medium leading-tight tracking-tighter text-[#222222] sm:text-5xl lg:text-5xl xl:text-6xl 2xl:text-[4rem]">
+        <div className="grid gap-6 lg:grid-cols-[5fr_4fr] lg:items-start lg:gap-12">
+          <h2 className="text-5xl font-medium leading-tight tracking-tighter text-[#222222] sm:text-6xl lg:text-6xl xl:text-7xl 2xl:text-[5rem]">
             Driven by a{" "}
             <span
               className="font-normal italic"
@@ -82,7 +82,7 @@ export function Testimonials() {
               performance mindset
             </span>
           </h2>
-          <div className="flex min-w-0 flex-col lg:ml-40">
+          <div className="flex min-w-0 flex-col">
             <p className="max-w-3xl text-xl leading-relaxed tracking-tight text-[#222222] sm:text-2xl">
               You don&apos;t just hire experts you hire people with a drive to
               deliver results. The BBTx team thrives on impact. When you work with
