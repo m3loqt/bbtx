@@ -67,15 +67,9 @@ export function TestimonialSlider({
             className="flex min-h-[360px] w-[460px] min-w-[460px] flex-shrink-0 flex-col rounded-lg border border-black/[0.06] bg-white p-6 shadow-[0_2px_12px_rgba(0,0,0,0.01)] sm:min-h-[400px] sm:w-[560px] sm:min-w-[560px] lg:p-8"
           >
             <div className="flex min-h-0 flex-1 flex-col">
-              <div className="flex w-full gap-4">
-                <div
-                  className="h-full w-0.5 shrink-0 self-stretch bg-[#222222]"
-                  aria-hidden
-                />
-                <blockquote className="text-2xl font-normal leading-snug tracking-tight text-[#222222] sm:text-3xl">
-                  &ldquo;{t.quote}&rdquo;
-                </blockquote>
-              </div>
+              <blockquote className="text-2xl font-normal leading-snug tracking-tight text-[#222222] sm:text-3xl">
+                &ldquo;{t.quote}&rdquo;
+              </blockquote>
               <div className="mt-auto flex items-end justify-between pt-6">
                 <div className="flex items-center gap-4">
                   <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#222222] text-sm font-semibold text-white sm:h-14 sm:w-14">
