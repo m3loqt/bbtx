@@ -16,25 +16,17 @@ export function CTA() {
       />
       <div className="relative z-[1] w-full px-4 py-8 sm:px-6 lg:px-8 lg:py-10">
         {/* Full-width card with gradient + visual elements */}
-        <div className="relative w-full overflow-hidden rounded-xl border border-white/20 bg-[#ca3726] shadow-[0_4px_24px_rgba(202,55,38,0.25)] sm:rounded-2xl">
-          {/* Layered visual step-up: soft radial glows + subtle dot texture */}
+        <div
+          className="relative w-full overflow-hidden rounded-xl border border-white/20 bg-[#ca3726] shadow-[0_4px_24px_rgba(202,55,38,0.25)] sm:rounded-2xl"
+          style={{
+            backgroundImage: "url(/cta.png)",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
+        >
+          {/* Overlay for text readability */}
           <div
-            className="pointer-events-none absolute inset-0 z-0 opacity-90"
-            style={{
-              backgroundImage: `
-                radial-gradient(ellipse 80% 50% at 20% 40%, rgba(255,255,255,0.12) 0%, transparent 50%),
-                radial-gradient(ellipse 60% 80% at 80% 60%, rgba(255,255,255,0.08) 0%, transparent 45%),
-                radial-gradient(circle at 50% 50%, rgba(255,255,255,0.03) 0%, transparent 40%)
-              `,
-            }}
-            aria-hidden
-          />
-          <div
-            className="pointer-events-none absolute inset-0 z-0 opacity-[0.15]"
-            style={{
-              backgroundImage: `radial-gradient(circle at 50% 50%, rgba(255,255,255,0.4) 1px, transparent 1px)`,
-              backgroundSize: "24px 24px",
-            }}
+            className="pointer-events-none absolute inset-0 z-0 bg-[#ca3726]/40"
             aria-hidden
           />
           <div className="relative z-[1] w-full px-6 py-16 text-center sm:px-10 sm:py-20 lg:px-16 lg:py-24">

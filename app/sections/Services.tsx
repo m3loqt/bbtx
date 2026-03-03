@@ -2,19 +2,19 @@ import Image from "next/image";
 
 const SERVICE_CARDS = [
   {
-    title: "Strategy & Roadmap",
+    title: "Transformational Strategy & Implementation Plan",
     description:
-      "We work with you to define a clear AI vision, prioritize use cases, and build a phased roadmap that aligns with your business goals and technical constraints. From assessing readiness and identifying quick wins to setting success metrics and governance, we ensure your strategy is actionable, scalable, and grounded in your organization’s reality.",
+      "We develop a focused AI transformation strategy with prioritized initiatives, defined ownership, and a sequenced rollout plan. We include a concrete 90-day action plan and clear success metrics so your leadership team has practical direction it can execute with confidence.",
   },
   {
-    title: "Implementation & Integration",
+    title: "Organizational AI Assessment",
     description:
-      "We help you deploy and integrate AI solutions into your existing systems and workflows, with playbooks and support for change management.",
+      "We analyze workflows, leadership alignment, and existing initiatives to pinpoint where AI can create impact. You get clear visibility into readiness, constraints, and highest-value opportunities.",
   },
   {
-    title: "Data & Measurement",
+    title: "AI Organizational Model",
     description:
-      "We design data pipelines, metrics, and reporting so you can track AI performance and impact with confidence.",
+      "We define where AI fits across your organization, how responsibilities are assigned, and how initiatives align with priorities. You get a coherent framework instead of scattered experimentation.",
   },
 ];
 

@@ -27,9 +27,9 @@ export function Hero() {
         }}
         aria-hidden
       />
-      <div className="relative z-[1] flex min-h-0 flex-1 flex-col justify-start pb-10 pt-4 sm:pt-6 lg:pt-8">
+      <div className="relative z-[1] flex min-h-0 flex-1 flex-col justify-start pb-10 pt-2 sm:pt-3 lg:pt-4">
         {/* Header + description start higher; Discover more stays at bottom via flex-1 spacer */}
-        <div className="mt-4 flex w-[90%] flex-1 flex-col sm:mt-6 lg:mt-8">
+        <div className="mt-2 flex w-full flex-1 flex-col sm:mt-3 lg:mt-4">
           <div>
             <p className="mb-10 flex items-center gap-2 text-base font-normal text-[#555555] sm:mb-12 sm:text-lg md:text-xl">
               <Image
@@ -42,21 +42,19 @@ export function Hero() {
               AI-Powered Business Consulting
             </p>
             <h1 className="text-[3.6rem] font-semibold leading-[1.02] tracking-tighter text-[#222222] sm:text-[4.5rem] md:text-[5.4rem] lg:text-[7.2rem] xl:text-[6.6rem] 2xl:text-[7.2rem] xl:leading-[0.98]">
-              We help organizations
+              Helping leaders and professionals
               <br />
+              transform their work and organizations{" "}
               <span
                 className="font-normal italic tracking-tight"
                 style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}
               >
-                integrate AI
-              </span>{" "}
-              for measurable
-              <br />
-              business value
+                with AI
+              </span>
             </h1>
           </div>
           <p className="mt-16 max-w-lg text-xl leading-relaxed tracking-tight text-[#222222] sm:mt-20 sm:text-2xl lg:mt-24">
-          We work with leaders to design and implement AI initiatives that improve operations, decision-making, and long-term business value.
+          We work with leaders to plan and implement AI initiatives that improve operations, decision-making, and long-term business value.
           </p>
           <div className="min-h-0 flex-1" />
           <a

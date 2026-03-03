@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ArrowUpRight } from "./ArrowIcon";
 import { ChevronDown } from "./ArrowIcon";
 
@@ -19,19 +19,22 @@ const DROPDOWNS: Record<
 > = {
   Services: [
     {
-      title: "Strategy & Roadmap",
-      description: "Clarify how AI supports growth, efficiency, and risk reduction.",
+      title: "Transformational Strategy & Implementation Plan",
+      description:
+        "Focused AI transformation strategy with prioritized initiatives, ownership, and a sequenced rollout.",
       href: "/services/strategy-roadmap",
     },
     {
-      title: "Implementation & Integration",
-      description: "Design and deploy AI into existing workflows with governance.",
-      href: "/services/implementation-integration",
+      title: "Organizational AI Assessment",
+      description:
+        "Assess workflows, leadership alignment, and initiatives to surface where AI can create real impact.",
+      href: "/services/organizational-ai-assessment",
     },
     {
-      title: "Data & Measurement",
-      description: "Define metrics, instrumentation, and reporting for real impact.",
-      href: "/services/data-measurement",
+      title: "AI Organizational Model",
+      description:
+        "Define where AI fits, how responsibilities are assigned, and how initiatives align with priorities.",
+      href: "/services/ai-organizational-model",
     },
   ],
   Resources: [
@@ -47,27 +50,53 @@ const DROPDOWNS: Record<
   ],
 };
 
+const DROPDOWN_TRANSITION_MS = 200;
+
 export function Nav() {
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const [panelVisible, setPanelVisible] = useState(false);
+  const closeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const handleEnter = (label: string, hasDropdown: boolean) => {
     if (!hasDropdown) return;
+    if (closeTimeoutRef.current) {
+      clearTimeout(closeTimeoutRef.current);
+      closeTimeoutRef.current = null;
+    }
     setActiveDropdown(label);
+    setPanelVisible(false);
   };
 
   const handleLeave = () => {
-    setActiveDropdown(null);
+    setPanelVisible(false);
+    closeTimeoutRef.current = setTimeout(() => {
+      setActiveDropdown(null);
+      closeTimeoutRef.current = null;
+    }, DROPDOWN_TRANSITION_MS);
   };
+
+  useEffect(() => {
+    if (!activeDropdown) return;
+    const id = requestAnimationFrame(() => setPanelVisible(true));
+    return () => cancelAnimationFrame(id);
+  }, [activeDropdown]);
+
+  useEffect(() => {
+    return () => {
+      if (closeTimeoutRef.current) clearTimeout(closeTimeoutRef.current);
+    };
+  }, []);
 
   const dropdownItems = activeDropdown ? DROPDOWNS[activeDropdown] : null;
 
   return (
-    <div className="fixed left-0 right-0 top-0 z-50 w-full px-4 pt-4 sm:px-6 lg:px-8">
+    <div className="fixed left-0 right-0 top-0 z-50 w-full px-4 pt-2 sm:px-6 lg:px-8">
       <div
-        className="relative mx-auto max-w-[960px]"
+        className={`relative mx-auto max-w-[960px] ${dropdownItems ? "pb-[420px]" : ""}`}
         onMouseLeave={handleLeave}
       >
-        <header className="flex items-center justify-between gap-6 rounded-lg border border-black/[0.06] bg-white px-3 py-3.5 shadow-[0_2px_16px_rgba(0,0,0,0.04)] sm:px-4 lg:gap-8 lg:px-5">
+        <div className="relative">
+          <header className="flex items-center justify-between gap-6 rounded-lg border border-black/[0.06] bg-white px-3 py-3.5 shadow-[0_2px_16px_rgba(0,0,0,0.04)] sm:px-4 lg:gap-8 lg:px-5">
           <a href="/" className="flex shrink-0 items-center gap-2">
             <Image
               src="/node.png"
@@ -122,7 +151,13 @@ export function Nav() {
 
         {dropdownItems && (
           <div className="pointer-events-auto">
-            <div className="absolute left-0 right-0 top-[calc(100%+0.5rem)] overflow-hidden rounded-lg border border-black/[0.06] bg-[#f7f7f7] shadow-[0_12px_30px_rgba(0,0,0,0.08)] transition-all duration-200 ease-out">
+            <div
+              className={`absolute left-0 right-0 top-[calc(100%+0.5rem)] overflow-hidden rounded-lg border border-black/[0.06] bg-[#f7f7f7] shadow-[0_12px_30px_rgba(0,0,0,0.08)] transition-all duration-200 ease-out ${
+                panelVisible
+                  ? "translate-y-0 opacity-100"
+                  : "translate-y-[-8px] opacity-0"
+              }`}
+            >
               <div
                 className={`grid gap-2 p-3 sm:gap-3 sm:p-4 ${dropdownItems?.length === 2 ? "sm:grid-cols-2" : "sm:grid-cols-3"}`}
               >
@@ -151,6 +186,7 @@ export function Nav() {
             </div>
           </div>
         )}
+        </div>
       </div>
     </div>
   );

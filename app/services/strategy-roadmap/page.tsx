@@ -38,9 +38,9 @@ export default function StrategyRoadmapPage() {
         <div className="pointer-events-none absolute inset-0 z-0 opacity-60" style={gridBg} aria-hidden />
         <div className="relative z-[1] flex flex-1 flex-col justify-end px-4 pb-10 sm:px-6 lg:px-8 lg:pb-14">
           <h1 className="max-w-[70%] text-[2.4rem] font-medium leading-[1.08] tracking-tighter text-[#222222] sm:text-[3rem] md:text-[3.6rem] lg:text-[4.5rem] xl:text-[5.4rem]">
-            We help you build an AI strategy{" "}
+            A focused AI transformation strategy{" "}
             <span className="font-normal italic" style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}>
-              that actually gets executed
+              your leadership can execute with confidence
             </span>
           </h1>
         </div>
@@ -92,9 +92,9 @@ export default function StrategyRoadmapPage() {
             </p>
             <div className="pr-0 lg:pr-[10%]">
               <h2 className="text-4xl font-medium leading-tight tracking-tighter text-[#222222] sm:text-5xl lg:text-5xl xl:text-6xl 2xl:text-[4rem]">
-                Three conversations.{" "}
+                Prioritized initiatives, defined ownership,{" "}
                 <span className="font-normal italic" style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}>
-                  One direction.
+                  sequenced rollout.
                 </span>
               </h2>
               {/* Cards on the right: 1 full-width, then 2 side by side */}
@@ -103,27 +103,150 @@ export default function StrategyRoadmapPage() {
                   <span className="text-[4rem] font-bold leading-none tracking-tighter text-[#222222]/10 sm:text-[5rem]">01</span>
                   <h3 className="mt-2 text-xl font-semibold tracking-tight text-[#222222] sm:text-2xl lg:text-3xl">The context</h3>
                   <div className="mt-6 space-y-4 text-base leading-relaxed text-[#555555] sm:text-lg">
-                    <p>What decision are you trying to make? Who needs to be in the room? What's already working, and what's blocking you? We map constraints: budget, timeline, talent, risk appetite.</p>
-                    <p>A roadmap that ignores your reality is a fantasy. We start with what's true.</p>
+                    <p>What decision are you trying to make? Who needs to be in the room? We map constraints: budget, timeline, talent, and risk appetite so the transformation strategy is grounded in your reality.</p>
+                    <p>We start with what's true, then build a plan your leadership can own.</p>
                   </div>
                 </div>
                 <div className="rounded-2xl border border-black/[0.06] bg-white p-8 shadow-[0_2px_12px_rgba(0,0,0,0.02)] sm:p-10 lg:p-12">
                   <span className="text-[4rem] font-bold leading-none tracking-tighter text-[#222222]/10 sm:text-[5rem]">02</span>
-                  <h3 className="mt-2 text-xl font-semibold tracking-tight text-[#222222] sm:text-2xl">The prioritization</h3>
+                  <h3 className="mt-2 text-xl font-semibold tracking-tight text-[#222222] sm:text-2xl">Prioritized initiatives & ownership</h3>
                   <p className="mt-6 text-base leading-relaxed text-[#555555] sm:text-lg">
-                    We tie every initiative to revenue, cost, or risk, not vague "use cases." What's worth doing now? What can wait? Who needs to own it?
+                    We tie every initiative to revenue, cost, or risk and assign clear ownership. What's worth doing now? What can wait? Your plan has names and accountability, not vague "use cases."
                   </p>
                 </div>
                 <div className="rounded-2xl border border-black/[0.06] bg-white p-8 shadow-[0_2px_12px_rgba(0,0,0,0.02)] sm:p-10 lg:p-12">
                   <span className="text-[4rem] font-bold leading-none tracking-tighter text-[#222222]/10 sm:text-[5rem]">03</span>
-                  <h3 className="mt-2 text-xl font-semibold tracking-tight text-[#222222] sm:text-2xl">The sequence</h3>
+                  <h3 className="mt-2 text-xl font-semibold tracking-tight text-[#222222] sm:text-2xl">Sequence & 90-day plan</h3>
                   <p className="mt-6 text-base leading-relaxed text-[#555555] sm:text-lg">
-                    First this, then that. With names and dates. A living plan your leadership can own and your teams can execute.
+                    A sequenced rollout with a concrete 90-day action plan and clear success metrics. First this, then that, with dates. Practical direction your teams can execute.
                   </p>
                 </div>
               </div>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* 4. Testimonial — big card on the left, header on the right */}
+      <section className="relative z-[1] w-full border-t border-black/[0.06] bg-white">
+        <div className="relative z-[1] px-4 py-24 sm:px-6 lg:px-8 lg:py-32">
+          <div className="grid gap-10 lg:grid-cols-[6fr_5fr] lg:items-center lg:gap-16">
+            {/* Testimonial card */}
+            <article className="flex h-full flex-col justify-between rounded-2xl border border-black/[0.06] bg-[#f7f7f7] p-8 sm:p-10 lg:p-12">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#555555]/70">
+                  Client story
+                </p>
+                <p className="mt-6 text-xl font-normal leading-relaxed text-[#222222] sm:text-2xl lg:text-[1.6rem] lg:leading-snug">
+                  &ldquo;We had a dozen AI ideas and no way to prioritize them. We left with a focused transformation strategy, defined ownership, and a 90-day plan our leadership could execute with confidence.&rdquo;
+                </p>
+                <p className="mt-6 text-sm font-medium text-[#555555] sm:text-base">
+                  VP of Strategy, global B2B services company
+                </p>
+              </div>
+              <div className="mt-10 border-t border-black/[0.06] pt-6 sm:mt-12 sm:pt-8">
+                <dl className="grid grid-cols-3 gap-4 sm:gap-6">
+                  <div>
+                    <dd className="text-3xl font-semibold tracking-tight text-[#222222] sm:text-4xl lg:text-5xl">
+                      3 weeks
+                    </dd>
+                    <dt className="mt-2 text-[0.7rem] font-medium uppercase tracking-[0.18em] text-[#555555]/70 sm:text-xs">
+                      Time to roadmap
+                    </dt>
+                  </div>
+                  <div>
+                    <dd className="text-3xl font-semibold tracking-tight text-[#222222] sm:text-4xl lg:text-5xl">
+                      40%
+                    </dd>
+                    <dt className="mt-2 text-[0.7rem] font-medium uppercase tracking-[0.18em] text-[#555555]/70 sm:text-xs">
+                      Initiatives cut
+                    </dt>
+                  </div>
+                  <div>
+                    <dd className="text-3xl font-semibold tracking-tight text-[#ca3726] sm:text-4xl lg:text-5xl">
+                      100%
+                    </dd>
+                    <dt className="mt-2 text-[0.7rem] font-medium uppercase tracking-[0.18em] text-[#555555]/70 sm:text-xs">
+                      Exec alignment
+                    </dt>
+                  </div>
+                </dl>
+              </div>
+            </article>
+
+            {/* Section header on the right */}
+            <div className="lg:pl-4">
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#555555]/70">
+                Proof it works
+              </p>
+              <h2 className="mt-5 max-w-xl text-4xl font-medium leading-tight tracking-tighter text-[#222222] sm:text-5xl lg:text-5xl xl:text-6xl 2xl:text-[4rem]">
+                What happens when the strategy{" "}
+                <span className="font-normal italic" style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}>
+                  is no longer abstract.
+                </span>
+              </h2>
+              <p className="mt-6 max-w-xl text-base leading-relaxed text-[#555555] sm:text-lg">
+                We deliver a transformation strategy with prioritized initiatives, defined ownership, and a sequenced rollout. The 90-day action plan and success metrics give your leadership practical direction, not slides.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 5. FAQ — full-page centered */}
+      <section className="relative z-[1] flex min-h-screen w-full flex-col items-center justify-center border-t border-black/[0.06] bg-[#f7f7f7] px-4 py-24 sm:px-6 lg:px-8 lg:py-32">
+        <div className="mx-auto w-full max-w-4xl text-center">
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#555555]/70">
+            Frequently asked
+          </p>
+          <h2 className="mt-5 text-4xl font-medium leading-tight tracking-tighter text-[#222222] sm:text-5xl lg:text-5xl xl:text-6xl 2xl:text-[4rem]">
+            Frequently Asked{" "}
+            <span className="font-normal italic" style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}>
+              Questions
+            </span>
+          </h2>
+          <ul className="mt-16 flex flex-col gap-3 text-left sm:mt-20 sm:gap-4">
+            <li className="rounded-xl border border-black/[0.06] bg-white px-6 py-5 sm:px-8 sm:py-6">
+              <h3 className="text-lg font-semibold tracking-tight text-[#222222] sm:text-xl">
+                What exactly does the assessment evaluate?
+              </h3>
+              <p className="mt-3 text-base leading-relaxed text-[#555555] sm:text-lg">
+                We evaluate your workflows, decision structures, leadership alignment, current AI initiatives, and overall readiness to identify where AI can create measurable impact.
+              </p>
+            </li>
+            <li className="rounded-xl border border-black/[0.06] bg-white px-6 py-5 sm:px-8 sm:py-6">
+              <h3 className="text-lg font-semibold tracking-tight text-[#222222] sm:text-xl">
+                How is this different from a generic AI audit?
+              </h3>
+              <p className="mt-3 text-base leading-relaxed text-[#555555] sm:text-lg">
+                This is not a technical checklist. It's a strategic evaluation focused on business value, prioritization, and executive alignment.
+              </p>
+            </li>
+            <li className="rounded-xl border border-black/[0.06] bg-white px-6 py-5 sm:px-8 sm:py-6">
+              <h3 className="text-lg font-semibold tracking-tight text-[#222222] sm:text-xl">
+                Do we need to already be using AI?
+              </h3>
+              <p className="mt-3 text-base leading-relaxed text-[#555555] sm:text-lg">
+                No. The assessment works whether you're just exploring AI or already running initiatives that need structure and clarity.
+              </p>
+            </li>
+            <li className="rounded-xl border border-black/[0.06] bg-white px-6 py-5 sm:px-8 sm:py-6">
+              <h3 className="text-lg font-semibold tracking-tight text-[#222222] sm:text-xl">
+                Who needs to be involved?
+              </h3>
+              <p className="mt-3 text-base leading-relaxed text-[#555555] sm:text-lg">
+                Executive leadership and key operational stakeholders. The goal is alignment at the decision-making level, not just technical review.
+              </p>
+            </li>
+            <li className="rounded-xl border border-black/[0.06] bg-white px-6 py-5 sm:px-8 sm:py-6">
+              <h3 className="text-lg font-semibold tracking-tight text-[#222222] sm:text-xl">
+                What do we walk away with?
+              </h3>
+              <p className="mt-3 text-base leading-relaxed text-[#555555] sm:text-lg">
+                A clear understanding of your current position, priority opportunity areas, and where to focus next before committing resources.
+              </p>
+            </li>
+          </ul>
         </div>
       </section>
 
