@@ -179,7 +179,7 @@ export default function CommunityPage() {
         </div>
       </section>
 
-      {/* 4. The Pathway — light gray, horizontal 01–04 */}
+      {/* 4. The Pathway - light gray, horizontal 01-04 */}
       <section className="relative z-[1] min-h-screen w-full bg-[#f0f0f0]">
         <div className="relative z-[1] flex min-h-screen flex-col justify-center px-4 py-24 sm:px-6 lg:px-8 lg:py-32">
           <h2 className="mb-16 text-center text-4xl font-medium tracking-tighter text-[#222222] sm:text-5xl lg:mb-20 lg:text-6xl">

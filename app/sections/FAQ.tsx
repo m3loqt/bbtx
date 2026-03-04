@@ -48,19 +48,8 @@ function FaqItemIcon() {
 
 export function FAQ() {
   return (
-    <section className="relative z-[1] border-b border-black/[0.06] bg-[#f7f7f7]">
-      <div
-        className="pointer-events-none absolute inset-0 z-0 opacity-60"
-        style={{
-          backgroundImage: `
-            linear-gradient(to right, rgba(0,0,0,0.04) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(0,0,0,0.04) 1px, transparent 1px)
-          `,
-          backgroundSize: "48px 48px",
-        }}
-        aria-hidden
-      />
-      <div className="relative z-[1] w-full px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
+    <section className="relative z-[1] border-b border-black/[0.06] bg-white">
+      <div className="w-full px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
         <div className="w-full">
           <p className="mb-6 flex items-center gap-2 text-base font-normal text-[#555555] sm:text-lg">
             <Image
@@ -93,7 +82,7 @@ export function FAQ() {
           <ul className="mt-12 grid grid-cols-1 gap-1 sm:grid-cols-2 lg:mt-14 lg:gap-1.5">
             {FAQ_ITEMS.map((item, i) => (
               <li key={i}>
-                <article className="flex min-h-0 flex-col rounded-lg border border-black/[0.06] bg-white p-6 shadow-[0_2px_12px_rgba(0,0,0,0.01)] lg:p-8">
+                <article className="flex min-h-0 flex-col rounded-lg border border-black/[0.06] bg-[#fafafa] p-6 shadow-[0_2px_12px_rgba(0,0,0,0.01)] lg:p-8">
                   <div className="flex gap-4">
                     <FaqItemIcon />
                     <h3 className="min-w-0 flex-1 text-lg font-semibold tracking-tight text-[#222222] sm:text-xl">
@@ -112,7 +101,7 @@ export function FAQ() {
           </ul>
 
           {/* Still have questions? section box, spacing aligned with FAQ card grid */}
-          <div className="mt-1.5 flex w-full flex-col items-start gap-4 rounded-xl border border-black/[0.08] bg-white p-4 shadow-[0_2px_12px_rgba(0,0,0,0.02)] sm:flex-row sm:items-center sm:justify-between sm:gap-6 lg:mt-1.5 lg:p-5">
+          <div className="mt-1.5 flex w-full flex-col items-start gap-4 rounded-xl border border-black/[0.08] bg-[#fafafa] p-4 shadow-[0_2px_12px_rgba(0,0,0,0.02)] sm:flex-row sm:items-center sm:justify-between sm:gap-6 lg:mt-1.5 lg:p-5">
             <div className="flex min-w-0 flex-1 items-center gap-3">
               <span
                 className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#222222] text-xs font-semibold text-white sm:h-11 sm:w-11"

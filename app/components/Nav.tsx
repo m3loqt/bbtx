@@ -7,7 +7,6 @@ import { ChevronDown } from "./ArrowIcon";
 
 const navLinks = [
   { label: "Services", hasDropdown: true, href: "#" },
-  { label: "Cases", hasDropdown: false, href: "#" },
   { label: "Resources", hasDropdown: true, href: "#" },
   { label: "About", hasDropdown: false, href: "/about" },
   { label: "Community", hasDropdown: false, href: "/community" },
@@ -46,6 +45,7 @@ const DROPDOWNS: Record<
     {
       title: "Newsletter",
       description: "Structured updates and resources for leaders integrating AI.",
+      href: "/newsletter",
     },
   ],
 };
