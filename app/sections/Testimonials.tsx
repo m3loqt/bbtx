@@ -1,6 +1,7 @@
-import Image from "next/image";
-import { ArrowUpRight } from "@/app/components/ArrowIcon";
-import { TestimonialSlider } from "@/app/components/TestimonialSlider";
+"use client";
+
+import { useState } from "react";
+import { TestimonialGrid } from "@/app/components/TestimonialGrid";
 
 const TESTIMONIALS = [
   {
@@ -45,9 +46,32 @@ const TESTIMONIALS = [
   },
 ];
 
-export function Testimonials() {
+const CARDS_PER_PAGE = 3;
+
+function ChevronLeft({ className }: { className?: string }) {
   return (
-    <section className="relative z-[1] border-b border-black/[0.06] bg-[#f7f7f7]">
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" className={className} aria-hidden>
+      <path d="M12.5 15L7.5 10L12.5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+function ChevronRight({ className }: { className?: string }) {
+  return (
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" className={className} aria-hidden>
+      <path d="M7.5 5L12.5 10L7.5 15" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+export function Testimonials() {
+  const [page, setPage] = useState(0);
+  const totalPages = Math.ceil(TESTIMONIALS.length / CARDS_PER_PAGE);
+  const goPrev = () => setPage((p) => (p <= 0 ? totalPages - 1 : p - 1));
+  const goNext = () => setPage((p) => (p >= totalPages - 1 ? 0 : p + 1));
+
+  return (
+    <section className="relative z-[1] min-h-screen bg-[#f7f7f7]">
       <div
         className="pointer-events-none absolute inset-0 z-0 opacity-60"
         style={{
@@ -59,48 +83,49 @@ export function Testimonials() {
         }}
         aria-hidden
       />
-      <div className="relative z-[1] px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
-        {/* Eyebrow */}
-        <p className="mb-6 flex items-center gap-2 text-base font-normal text-[#555555] sm:text-lg">
-          <Image
-            src="/node.png"
-            alt=""
-            width={24}
-            height={24}
-            className="h-6 w-6 object-contain"
-          />
-          Testimonials
-        </p>
-        {/* Headline left | description + button (stacked) right */}
-        <div className="grid gap-6 lg:grid-cols-[5fr_4fr] lg:items-start lg:gap-12">
-          <h2 className="text-5xl font-medium leading-tight tracking-tighter text-[#222222] sm:text-6xl lg:text-6xl xl:text-7xl 2xl:text-[5rem]">
-            Driven by a{" "}
+      <div className="relative z-[1] flex min-h-screen flex-col justify-center px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
+        <div className="w-full">
+          <p className="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#555555]/60">
+            Testimonials
+          </p>
+          <h2 className="mt-6 text-4xl font-medium leading-tight tracking-tighter text-[#222222] sm:text-5xl lg:text-5xl xl:text-6xl 2xl:text-[4rem]">
+            Don&apos;t take{" "}
             <span
               className="font-normal italic"
               style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}
             >
-              performance mindset
-            </span>
+              our word
+            </span>{" "}
+            for it.
           </h2>
-          <div className="flex min-w-0 flex-col">
-            <p className="max-w-3xl text-xl leading-relaxed tracking-tight text-[#222222] sm:text-2xl">
-              You don&apos;t just hire experts you hire people with a drive to
-              deliver results. The BBTx team thrives on impact. When you work with
-              us, you&apos;ll work with a team as ambitious about growth as you
-              are.
+          {/* Description + buttons on same row */}
+          <div className="mt-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between sm:gap-6">
+            <p className="max-w-2xl text-xl leading-relaxed tracking-tight text-[#222222] sm:text-2xl">
+              Here&apos;s what leaders say after working with BBTx.
             </p>
-            <a
-              href="#"
-              className="mt-6 inline-flex w-fit items-center gap-2 rounded-lg bg-[#ca3726] px-4 py-2.5 text-[15px] font-medium text-white transition-opacity hover:opacity-95"
-            >
-              Explore our cases
-              <ArrowUpRight className="h-4 w-4" />
-            </a>
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={goPrev}
+                className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-black/[0.12] bg-white text-[#222222] transition-colors hover:bg-[#f0f0f0]"
+                aria-label="Previous testimonials"
+              >
+                <ChevronLeft className="h-5 w-5" />
+              </button>
+              <button
+                type="button"
+                onClick={goNext}
+                className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-black/[0.12] bg-white text-[#222222] transition-colors hover:bg-[#f0f0f0]"
+                aria-label="Next testimonials"
+              >
+                <ChevronRight className="h-5 w-5" />
+              </button>
+            </div>
+          </div>
+          <div className="mt-10 lg:mt-14">
+            <TestimonialGrid testimonials={TESTIMONIALS} page={page} />
           </div>
         </div>
-
-        {/* Testimonial cards: auto-scroll slider (slows on hover) */}
-        <TestimonialSlider testimonials={TESTIMONIALS} />
       </div>
     </section>
   );

@@ -149,7 +149,9 @@ export default function CommunityPage() {
       {/* 3. What Happens Inside — full page, 2x2 grid */}
       <section className="relative z-[1] min-h-screen w-full border-t border-black/[0.06] bg-white">
         <div className="relative z-[1] flex min-h-screen flex-col justify-center px-4 py-24 sm:px-6 lg:px-8 lg:py-32">
-          <p className="mb-4 text-xs font-semibold uppercase tracking-[0.2em] text-[#555555]">Inside the Community</p>
+          <p className="mb-4 text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#555555]/60">
+            Inside the Community
+          </p>
           <h2 className="mb-12 text-4xl font-medium tracking-tighter text-[#222222] sm:text-5xl lg:mb-16 lg:text-6xl">
             What happens{" "}
             <span className="font-normal italic" style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}>
@@ -204,9 +206,11 @@ export default function CommunityPage() {
       </section>
 
       {/* 5. Graduate Spotlight — white, 3-col */}
-      <section className="relative z-[1] min-h-screen w-full border-t border-black/[0.06] bg-white">
+      <section className="relative z-[1] min-h-screen w-full bg-white">
         <div className="relative z-[1] flex min-h-screen flex-col justify-center px-4 py-24 sm:px-6 lg:px-8 lg:py-32">
-          <p className="mb-4 text-xs font-semibold uppercase tracking-[0.2em] text-[#555555]">Graduate Spotlight</p>
+          <p className="mb-4 text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#555555]/60">
+            Graduate Spotlight
+          </p>
           <h2 className="mb-16 text-4xl font-medium tracking-tighter text-[#222222] sm:text-5xl lg:mb-20 lg:text-6xl">
             Outcome-driven.
           </h2>

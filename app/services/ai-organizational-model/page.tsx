@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { Nav } from "@/app/components/Nav";
 import { Footer } from "@/app/components/Footer";
 import { CTA } from "@/app/sections/CTA";
@@ -38,7 +37,9 @@ export default function AIOrganizationalModelPage() {
       {/* 2. The Strategic Blind Spot — centered editorial, 3 numbered blocks in a row */}
       <section className="relative z-[1] w-full bg-white">
         <div className="flex min-h-screen flex-col items-center justify-center px-4 py-28 text-center sm:px-6 lg:px-8 lg:py-36">
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#555555]/60">The strategic blind spot</p>
+          <p className="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#555555]/60">
+            The strategic blind spot
+          </p>
           <h2 className="mt-5 max-w-5xl text-[2.2rem] font-medium leading-[1.1] tracking-tighter text-[#222222] sm:text-[3rem] lg:text-[3.6rem] xl:text-[4.4rem]">
             Most leaders run organizations they{" "}
             <span className="font-normal italic" style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}>
@@ -78,8 +79,7 @@ export default function AIOrganizationalModelPage() {
         <div className="pointer-events-none absolute inset-0 z-0 opacity-60" style={gridBg} aria-hidden />
         <div className="relative z-[1] px-4 py-24 sm:px-6 lg:px-8 lg:py-32">
           <div className="grid gap-6 lg:grid-cols-[3fr_7fr] lg:items-start lg:gap-12">
-            <p className="flex items-center gap-2 text-base font-normal text-[#555555] sm:text-lg">
-              <Image src="/node.png" alt="" width={24} height={24} className="h-6 w-6 object-contain" />
+            <p className="text-base font-normal text-[#555555] sm:text-lg">
               What the model represents
             </p>
             <div className="pr-0 lg:pr-[10%]">
@@ -126,7 +126,9 @@ export default function AIOrganizationalModelPage() {
       {/* 4. How the Model is Built — single row cards with image placeholders */}
       <section className="relative z-[1] min-h-screen w-full bg-white">
         <div className="relative z-[1] flex min-h-screen flex-col justify-center px-4 py-24 sm:px-6 lg:px-8 lg:py-32">
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#555555]/60">The process</p>
+          <p className="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#555555]/60">
+            The process
+          </p>
           <h2 className="mt-5 max-w-3xl text-[2.2rem] font-medium leading-[1.1] tracking-tighter text-[#222222] sm:text-[3rem] lg:text-[3.6rem] xl:text-[4.4rem]">
             Building the{" "}
             <span className="font-normal italic" style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}>
@@ -189,7 +191,9 @@ export default function AIOrganizationalModelPage() {
         <div className="relative z-[1] flex min-h-screen flex-col justify-center px-4 py-24 sm:px-6 lg:px-8 lg:py-32">
           <div className="grid gap-10 lg:grid-cols-[5fr_6fr] lg:items-start lg:gap-16">
             <div className="lg:sticky lg:top-32">
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#555555]/70">Leadership utility</p>
+              <p className="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#555555]/60">
+                Leadership utility
+              </p>
               <h2 className="mt-5 max-w-xl text-[2.2rem] font-medium leading-[1.1] tracking-tighter text-[#222222] sm:text-[3rem] lg:text-[3.6rem] xl:text-[4.2rem]">
                 A new tool for{" "}
                 <span className="font-normal italic" style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}>
@@ -250,9 +254,7 @@ export default function AIOrganizationalModelPage() {
           <div className="relative flex flex-col justify-center bg-[#f0f0f0] px-6 py-20 sm:px-10 lg:basis-[32%] lg:min-h-screen lg:px-12 lg:py-32">
             <div className="pointer-events-none absolute inset-0 z-0 opacity-50" style={gridBg} aria-hidden />
             <div className="relative z-[1]">
-              <p className="mb-5 text-[0.65rem] font-semibold uppercase tracking-[0.22em] text-[#555555]/50">
-                Before
-              </p>
+              <p className="mb-5 text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#555555]/60">Before</p>
               <h3 className="text-[1.8rem] font-medium leading-tight tracking-tighter text-[#222222]/35 sm:text-[2.2rem]">
                 Fragmented views.
               </h3>

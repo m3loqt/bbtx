@@ -1,132 +1,138 @@
-import Image from "next/image";
-import { HiOutlineQuestionMarkCircle } from "react-icons/hi2";
+"use client";
+
+import { useState } from "react";
 import { ArrowUpRight } from "@/app/components/ArrowIcon";
 
 const FAQ_ITEMS = [
   {
-    question: "What does the Discovery workshop include?",
+    question: "Who is BBTx best suited for?",
     answer:
-      "AI readiness assessment, strategy overview, and prioritized recommendations. One-day workshop for up to 5 participants.",
+      "We work with small to mid-size organizations, C-suite leaders, and management teams who are serious about integrating AI into how they operate. If you're looking for a quick tool recommendation, we're probably not the right fit. If you're looking to build a real strategy and implement it with confidence, we are.",
   },
   {
-    question: "How is the Starter plan different from Enterprise?",
+    question: "Where do we start if we don't know what we need?",
     answer:
-      "Starter: one initiative per quarter, 5 seats, playbooks and office hours. Enterprise: custom scope, unlimited seats, dedicated support.",
+      "That's exactly what the Organizational AI Assessment is for. It gives us a clear picture of where your organization stands today and what the right next steps are. Most engagements begin there.",
   },
   {
-    question: "How long does implementation typically take?",
+    question: "How long does a typical engagement take?",
     answer:
-      "Pilots often run 8 to 12 weeks; full strategy and multi-team rollout can be 3 to 6 months. We propose a timeline during Discovery.",
+      "It depends on the scope. An assessment can be completed in a matter of weeks. A full strategy and implementation engagement typically runs three to six months. We'll give you a clear timeline before anything begins.",
   },
   {
-    question: "Do you work with our existing tools and data?",
+    question: "Do you work with organizations that have already started AI initiatives?",
     answer:
-      "Yes. We design around your systems and workflows and help you integrate AI into your current tooling and data practices.",
+      "Yes. We work with organizations at all stages — those just getting started and those who have already made investments but aren't seeing the results they expected.",
   },
   {
-    question: "Is there a free trial or discovery option?",
+    question: "What does working with BBTx actually look like?",
     answer:
-      "Yes. Discovery is free, one workshop for up to 5 people, with an assessment and recommendations. A good way to explore fit.",
+      "Hands-on and senior-led. You work directly with Grant and Mel throughout the engagement. No junior consultants, no handoffs. Every engagement is built around your specific context, not a generic framework.",
   },
   {
-    question: "How does support work?",
+    question: "How do we get started?",
     answer:
-      "Starter includes office hours. Enterprise includes a dedicated success partner and priority support. We focus on impact.",
+      "Start with the assessment. It takes less than five minutes and gives us the context we need to make your first conversation as focused and useful as possible.",
   },
 ];
 
-function FaqItemIcon() {
+function FaqMinusIcon({ className }: { className?: string }) {
   return (
     <span
-      className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-black/[0.12] bg-[#f0f0f0] text-[#222222]"
+      className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-[#222222] text-white sm:h-9 sm:w-9 ${className ?? ""}`}
       aria-hidden
     >
-      <HiOutlineQuestionMarkCircle className="h-5 w-5" />
+      <span className="block h-[2px] w-2.5 rounded-full bg-white" />
+    </span>
+  );
+}
+
+function FaqPlusIcon({ className }: { className?: string }) {
+  return (
+    <span
+      className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-[#ca3726] text-white sm:h-9 sm:w-9 ${className ?? ""}`}
+      aria-hidden
+    >
+      <span className="relative block h-[2px] w-2.5 rounded-full bg-white before:absolute before:left-1/2 before:top-1/2 before:h-2.5 before:w-[2px] before:-translate-x-1/2 before:-translate-y-1/2 before:rounded-full before:bg-white" />
     </span>
   );
 }
 
 export function FAQ() {
+  const [openIndex, setOpenIndex] = useState<number | null>(0);
+
   return (
-    <section className="relative z-[1] border-b border-black/[0.06] bg-white">
+    <section className="relative z-[1] bg-white">
       <div className="w-full px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
         <div className="w-full">
-          <p className="mb-6 flex items-center gap-2 text-base font-normal text-[#555555] sm:text-lg">
-            <Image
-              src="/node.png"
-              alt=""
-              width={24}
-              height={24}
-              className="h-6 w-6 object-contain"
-            />
-            FAQ
+          <p className="mb-6 text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#555555]/60">
+            What Leaders Ask Us
           </p>
-          <h2 className="text-4xl font-medium leading-tight tracking-tighter text-[#222222] sm:text-5xl lg:text-5xl xl:text-6xl 2xl:text-[4rem]">
-            Frequently asked{" "}
-            <span
-              className="font-normal italic"
-              style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}
-            >
-              questions
-            </span>
-          </h2>
-          <p className="mt-8 text-lg leading-relaxed text-[#555555] sm:text-xl">
-            Quick answers to questions you may have. Can&apos;t find what you&apos;re looking for?{" "}
-            <a href="#" className="font-medium text-[#222222] underline decoration-[#222222]/30 underline-offset-2 hover:decoration-[#222222]">
-              Chat to our friendly team
-            </a>
-            .
-          </p>
-
-          {/* Two-column grid of FAQ cards (Services-style card design) */}
-          <ul className="mt-12 grid grid-cols-1 gap-1 sm:grid-cols-2 lg:mt-14 lg:gap-1.5">
-            {FAQ_ITEMS.map((item, i) => (
-              <li key={i}>
-                <article className="flex min-h-0 flex-col rounded-lg border border-black/[0.06] bg-[#fafafa] p-6 shadow-[0_2px_12px_rgba(0,0,0,0.01)] lg:p-8">
-                  <div className="flex gap-4">
-                    <FaqItemIcon />
-                    <h3 className="min-w-0 flex-1 text-lg font-semibold tracking-tight text-[#222222] sm:text-xl">
-                      {item.question}
-                    </h3>
-                  </div>
-                  <div className="mt-auto flex gap-4 pt-4">
-                    <span className="h-10 w-10 shrink-0 sm:h-10 sm:w-10" aria-hidden />
-                    <p className="min-w-0 flex-1 text-sm leading-relaxed text-[#555555] sm:text-base">
-                      {item.answer}
-                    </p>
-                  </div>
-                </article>
-              </li>
-            ))}
-          </ul>
-
-          {/* Still have questions? section box, spacing aligned with FAQ card grid */}
-          <div className="mt-1.5 flex w-full flex-col items-start gap-4 rounded-xl border border-black/[0.08] bg-[#fafafa] p-4 shadow-[0_2px_12px_rgba(0,0,0,0.02)] sm:flex-row sm:items-center sm:justify-between sm:gap-6 lg:mt-1.5 lg:p-5">
-            <div className="flex min-w-0 flex-1 items-center gap-3">
+          <div className="grid gap-6 lg:grid-cols-[1fr_1fr] lg:items-end lg:gap-12">
+            <h2 className="text-4xl font-medium leading-tight tracking-tighter text-[#222222] sm:text-5xl lg:text-5xl xl:text-6xl 2xl:text-[4rem]">
+              Frequently asked{" "}
               <span
-                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#222222] text-xs font-semibold text-white sm:h-11 sm:w-11"
-                aria-hidden
+                className="font-normal italic"
+                style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}
               >
-                BB
+                questions
               </span>
+            </h2>
+            <p className="text-lg leading-relaxed text-[#555555] sm:text-xl">
+              Quick answers to questions you may have. If you still need clarity, you can always reach out directly.
+            </p>
+          </div>
+
+          {/* FAQ layout: list on the left, \"more questions\" card on the right */}
+          <div className="mt-10 grid gap-10 lg:mt-14 lg:grid-cols-[minmax(0,2fr)_minmax(0,0.85fr)] lg:gap-12">
+            {/* Left: stacked FAQ entries */}
+            <ul className="space-y-3">
+              {FAQ_ITEMS.map((item, index) => {
+                const isOpen = openIndex === index;
+                return (
+                  <li key={item.question}>
+                    <article className="rounded-xl border border-black/[0.08] bg-white px-5 py-3.5 shadow-[0_2px_10px_rgba(0,0,0,0.02)] sm:px-6 sm:py-4">
+                      <button
+                        type="button"
+                        onClick={() => setOpenIndex(isOpen ? null : index)}
+                        className="flex w-full items-center gap-4 text-left"
+                        aria-expanded={isOpen}
+                      >
+                        <h3 className="flex-1 text-[15px] font-semibold tracking-tight text-[#222222] sm:text-lg">
+                          {item.question}
+                        </h3>
+                        {isOpen ? <FaqMinusIcon /> : <FaqPlusIcon />}
+                      </button>
+                      {isOpen && (
+                        <p className="mt-3 text-sm leading-relaxed text-[#555555] sm:text-[15px]">
+                          {item.answer}
+                        </p>
+                      )}
+                    </article>
+                  </li>
+                );
+              })}
+            </ul>
+
+            {/* Right: More questions card */}
+            <aside className="flex h-[260px] flex-col justify-between rounded-2xl border border-black/[0.12] bg-[#222222] px-6 py-6 shadow-[0_4px_18px_rgba(0,0,0,0.3)] sm:h-[280px] sm:px-7 sm:py-7 lg:h-[300px] lg:px-8 lg:py-8">
               <div>
-                <p className="font-semibold text-[#222222] text-[15px] sm:text-base">Still have questions?</p>
-                <p className="mt-0.5 text-sm leading-snug text-[#555555]">
-                  Can&apos;t find the answer you&apos;re looking for?{" "}
-                  <a href="#" className="font-medium text-[#222222] underline decoration-[#222222]/30 underline-offset-2 hover:decoration-[#222222]">
-                    Please chat to our friendly team
-                  </a>
-                  .
+                <h3 className="text-lg font-semibold tracking-tight text-white sm:text-xl">
+                  Do you have more questions?
+                </h3>
+                <p className="mt-3 text-sm leading-relaxed text-white/70 sm:text-[15px]">
+                  Can&apos;t find the answer you&apos;re looking for? Our team can help you think through your specific
+                  situation and what to do next.
                 </p>
               </div>
-            </div>
-            <a
-              href="#"
-              className="inline-flex shrink-0 items-center gap-2 rounded-lg bg-[#222222] px-3.5 py-2 text-[14px] font-medium text-white transition-opacity hover:opacity-95"
-            >
-              Get in touch
-              <ArrowUpRight className="h-3.5 w-3.5" />
-            </a>
+              <button
+                type="button"
+                className="mt-6 inline-flex items-center justify-center rounded-lg bg-white px-4 py-2.5 text-[14px] font-medium text-[#222222] transition-opacity hover:opacity-95 sm:px-5 sm:py-3"
+              >
+                Talk to our team
+                <ArrowUpRight className="ml-1.5 h-3.5 w-3.5" />
+              </button>
+            </aside>
           </div>
         </div>
       </div>

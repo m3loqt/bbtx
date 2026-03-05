@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { Nav } from "@/app/components/Nav";
 import { Footer } from "@/app/components/Footer";
 import { CTA } from "@/app/sections/CTA";
@@ -40,7 +39,7 @@ export default function OrganizationalAIAssessmentPage() {
       <section className="relative z-[1] min-h-screen w-full bg-[#222222]">
         <div className="relative z-[1] flex min-h-screen flex-col items-center justify-center px-4 text-center sm:px-6 lg:px-8">
           <div className="w-full">
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-white/40">The reality</p>
+            <p className="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-white/40">The reality</p>
             <h2 className="mt-6 text-[2.2rem] font-medium leading-[1.1] tracking-tighter text-white sm:text-[3rem] lg:text-[3.6rem] xl:text-[4.4rem]">
               AI is being used.
               <br />
@@ -86,8 +85,7 @@ export default function OrganizationalAIAssessmentPage() {
         <div className="relative z-[1] px-4 py-24 sm:px-6 lg:px-8 lg:py-32">
           <div className="grid gap-6 lg:grid-cols-[3fr_7fr] lg:items-start lg:gap-12">
             {/* Left eyebrow */}
-            <p className="flex items-center gap-2 text-base font-normal text-[#555555] sm:text-lg">
-              <Image src="/node.png" alt="" width={24} height={24} className="h-6 w-6 object-contain" />
+            <p className="text-base font-normal text-[#555555] sm:text-lg">
               What we evaluate
             </p>
 
@@ -150,7 +148,7 @@ export default function OrganizationalAIAssessmentPage() {
         <div className="pointer-events-none absolute inset-0 z-0 opacity-40" style={gridBg} aria-hidden />
         <div className="relative z-[1] px-4 py-24 sm:px-6 lg:px-8 lg:py-32">
           <div className="w-full">
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#555555]">How it works</p>
+            <p className="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#555555]/60">How it works</p>
             <h2 className="mt-5 text-[2.2rem] font-medium leading-[1.1] tracking-tighter text-[#222222] sm:text-[3rem] lg:text-[3.6rem] xl:text-[4.4rem]">
               Disciplined. Methodical.{" "}
               <span className="font-normal italic" style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}>
@@ -200,7 +198,7 @@ export default function OrganizationalAIAssessmentPage() {
       <section className="relative z-[1] min-h-screen w-full bg-[#222222]">
         <div className="relative z-[1] flex min-h-screen flex-col justify-center px-4 py-24 sm:px-6 lg:px-8 lg:py-32">
           <div className="w-full">
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-white/40">Deliverables</p>
+            <p className="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-white/40">Deliverables</p>
             <h2 className="mt-5 text-[2.2rem] font-medium leading-[1.1] tracking-tighter text-white sm:text-[3rem] lg:text-[3.6rem] xl:text-[4.4rem]">
               What you walk away with.{" "}
               <span className="font-normal italic" style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}>
@@ -269,7 +267,9 @@ export default function OrganizationalAIAssessmentPage() {
           <div className="relative flex flex-1 flex-col justify-center bg-[#f0f0f0] px-6 py-20 sm:px-10 lg:min-h-screen lg:px-16 lg:py-32">
             <div className="pointer-events-none absolute inset-0 z-0 opacity-60" style={gridBg} aria-hidden />
             <div className="relative z-[1]">
-              <p className="text-[0.65rem] font-semibold uppercase tracking-[0.22em] text-[#555555]/60">Before the assessment</p>
+            <p className="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#555555]/60">
+              Before the assessment
+            </p>
               <h3 className="mt-4 text-[2rem] font-medium leading-tight tracking-tighter text-[#222222]/40 sm:text-[2.4rem] lg:text-[2.8rem]">
                 Operating in the dark.
               </h3>
@@ -290,7 +290,9 @@ export default function OrganizationalAIAssessmentPage() {
           </div>
           {/* After */}
           <div className="flex flex-1 flex-col justify-center bg-[#222222] px-6 py-20 sm:px-10 lg:min-h-screen lg:px-16 lg:py-32">
-            <p className="text-[0.65rem] font-semibold uppercase tracking-[0.22em] text-[#ca3726]">After the assessment</p>
+            <p className="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#ca3726]">
+              After the assessment
+            </p>
             <h3 className="mt-4 text-[2rem] font-medium leading-tight tracking-tighter text-white sm:text-[2.4rem] lg:text-[2.8rem]">
               Leadership with full visibility.
             </h3>

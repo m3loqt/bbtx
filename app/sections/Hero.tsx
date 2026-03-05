@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { ArrowDown, ArrowUpRight } from "@/app/components/ArrowIcon";
 
 function StoryteqLogo() {
@@ -31,14 +30,7 @@ export function Hero() {
         {/* Header + description start higher; Discover more stays at bottom via flex-1 spacer */}
         <div className="mt-2 flex w-full flex-1 flex-col sm:mt-3 lg:mt-4">
           <div>
-            <p className="mb-10 flex items-center gap-2 text-base font-normal text-[#555555] sm:mb-12 sm:text-lg md:text-xl">
-              <Image
-                src="/node.png"
-                alt=""
-                width={24}
-                height={24}
-                className="h-6 w-6 object-contain"
-              />
+            <p className="mb-10 text-base font-normal text-[#555555] sm:mb-12 sm:text-lg md:text-xl">
               AI-Powered Business Consulting
             </p>
             <h1 className="text-[3.6rem] font-semibold leading-[1.02] tracking-tighter text-[#222222] sm:text-[4.5rem] md:text-[5.4rem] lg:text-[7.2rem] xl:text-[6.6rem] 2xl:text-[7.2rem] xl:leading-[0.98]">

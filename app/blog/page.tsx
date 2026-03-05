@@ -67,9 +67,7 @@ export default function BlogPage() {
         <div className="pointer-events-none absolute inset-0 z-0 opacity-40" style={gridBg} aria-hidden />
         <div className="relative z-[1] w-full px-4 pb-20 pt-16 sm:px-6 lg:px-8 lg:pb-24 lg:pt-20">
           <div className="w-full">
-            <p className="mb-6 text-xs font-semibold uppercase tracking-[0.2em] text-white/50">
-              Blog
-            </p>
+            <p className="mb-6 text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-white/40">Blog</p>
             <h1 className="mb-3 w-full max-w-[60%] text-4xl font-medium leading-tight tracking-tighter text-white sm:text-5xl lg:mb-4 lg:text-5xl xl:text-6xl 2xl:text-[4rem]">
               The Journal:{" "}
               <span

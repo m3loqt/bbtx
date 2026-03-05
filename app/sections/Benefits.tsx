@@ -30,19 +30,7 @@ const BENEFIT_CARDS = [
 
 export function Benefits() {
   return (
-    <section className="relative z-[1] border-b border-black/[0.06] bg-[#f7f7f7]">
-      {/* Same grid overlay as other sections */}
-      <div
-        className="pointer-events-none absolute inset-0 z-0 opacity-60"
-        style={{
-          backgroundImage: `
-            linear-gradient(to right, rgba(0,0,0,0.04) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(0,0,0,0.04) 1px, transparent 1px)
-          `,
-          backgroundSize: "48px 48px",
-        }}
-        aria-hidden
-      />
+    <section className="relative z-[1] bg-white">
       <div className="relative z-[1] flex min-h-screen w-full flex-col items-center justify-center px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
         <div className="mx-auto w-full text-center">
           <h2 className="text-4xl font-medium leading-tight tracking-tighter text-[#222222] sm:text-5xl lg:text-5xl xl:text-6xl 2xl:text-[4rem]">

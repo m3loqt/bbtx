@@ -1,21 +1,19 @@
-import Image from "next/image";
-
 const TYPICAL_POINTS = [
-  "Focuses on tools before strategy",
+  "Focuses on tools before understanding your business",
+  "Delivers a report and walks away",
+  "Treats AI as a technology project",
   "Runs disconnected pilots with no enterprise alignment",
-  "Reports on activity instead of business impact",
-  "Leaves implementation to internal teams",
-  "Ignores governance until problems surface",
-  "Delivers recommendations, not accountability",
+  "Measures activity, not outcomes",
+  "Ignores the human side of change",
 ];
 
 const BBTX_POINTS = [
-  "Aligns AI initiatives to business strategy first",
-  "Prioritizes high impact use cases with executive sponsorship",
-  "Measures outcomes tied to revenue, efficiency, and risk reduction",
-  "Works alongside your team through deployment and adoption",
-  "Builds governance and oversight into every phase",
-  "Stays accountable for measurable results",
+  "Starts with your strategy, then identifies the right tools",
+  "Works alongside your team through implementation",
+  "Treats AI as a leadership and organizational challenge",
+  "Prioritizes high-impact use cases tied to business goals",
+  "Measures results tied to revenue, efficiency, and growth",
+  "Puts people, culture, and governance at the center",
 ];
 
 function MinusIcon({ className }: { className?: string }) {
@@ -42,7 +40,7 @@ function PlusIcon({ className }: { className?: string }) {
 
 export function Differentiation() {
   return (
-    <section className="relative z-[1] border-b border-black/[0.06] bg-[#f7f7f7]">
+    <section className="relative z-[1] bg-[#f7f7f7]">
       <div
         className="pointer-events-none absolute inset-0 z-0 opacity-60"
         style={{
@@ -59,14 +57,7 @@ export function Differentiation() {
         <div className="h-full w-full rounded-xl border border-black/[0.06] bg-white px-4 py-8 shadow-[0_2px_12px_rgba(0,0,0,0.01)] sm:px-6 lg:px-8 lg:py-10">
           {/* Header block, centered */}
           <div className="mx-auto max-w-4xl text-center">
-          <p className="mb-4 flex items-center justify-center gap-2 text-base font-normal text-[#555555] sm:text-lg">
-            <Image
-              src="/node.png"
-              alt=""
-              width={24}
-              height={24}
-              className="h-6 w-6 object-contain"
-            />
+          <p className="mb-4 text-center text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#555555]/60">
             Compare
           </p>
           <h2 className="text-4xl font-medium leading-tight tracking-tighter text-[#222222] sm:text-5xl lg:text-5xl xl:text-6xl 2xl:text-[4rem]">
@@ -90,7 +81,7 @@ export function Differentiation() {
             {/* Left: Typical AI Consulting */}
             <div>
               <h3 className="text-center text-lg font-semibold tracking-tight text-[#222222] sm:text-xl">
-                Typical AI Consulting
+                Traditional Consulting
               </h3>
               <div className="mt-5 space-y-3 sm:space-y-4">
                 {TYPICAL_POINTS.map((point) => (
@@ -108,7 +99,7 @@ export function Differentiation() {
             {/* Right: The BBTx AI Approach */}
             <div>
               <h3 className="text-center text-lg font-semibold tracking-tight text-[#222222] sm:text-xl">
-                The BBTx AI Approach
+                The BBTx Approach
               </h3>
               <div className="mt-5 space-y-3 sm:space-y-4">
                 {BBTX_POINTS.map((point) => (

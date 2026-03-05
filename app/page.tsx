@@ -1,6 +1,6 @@
+import { AnimateSection } from "@/app/components/AnimateSection";
 import { Footer } from "@/app/components/Footer";
 import { Nav } from "@/app/components/Nav";
-import { Benefits } from "@/app/sections/Benefits";
 import { CTA } from "@/app/sections/CTA";
 import { FAQ } from "@/app/sections/FAQ";
 import { Hero } from "@/app/sections/Hero";
@@ -10,6 +10,7 @@ import { Process } from "@/app/sections/Process";
 import { Results } from "@/app/sections/Results";
 import { Services } from "@/app/sections/Services";
 import { Testimonials } from "@/app/sections/Testimonials";
+import { Problem } from "@/app/sections/Problem";
 
 export default function Home() {
   return (
@@ -17,17 +18,36 @@ export default function Home() {
       <Nav />
       {/* Spacer so content starts below fixed nav */}
       <div className="h-20 shrink-0" aria-hidden />
-      <Hero />
-      <Results />
-      <Services />
-      <Benefits />
-      <Process />
-      <Differentiation />
-      {/* <Pricing /> */}
-      <Testimonials />
-      <CTA />
-      <FAQ />
-      <Footer />
+      <AnimateSection noAnimation>
+        <Hero />
+      </AnimateSection>
+      <AnimateSection>
+        <Results />
+      </AnimateSection>
+      <AnimateSection>
+        <Problem />
+      </AnimateSection>
+      <AnimateSection>
+        <Services />
+      </AnimateSection>
+      <AnimateSection>
+        <Process />
+      </AnimateSection>
+      <AnimateSection>
+        <Differentiation />
+      </AnimateSection>
+      <AnimateSection>
+        <Testimonials />
+      </AnimateSection>
+      <AnimateSection>
+        <FAQ />
+      </AnimateSection>
+      <AnimateSection>
+        <CTA />
+      </AnimateSection>
+      <AnimateSection>
+        <Footer />
+      </AnimateSection>
     </div>
   );
 }

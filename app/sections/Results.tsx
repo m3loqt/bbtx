@@ -1,13 +1,26 @@
-const LOGOS = [
-  { name: "Nexora", font: "var(--font-fraunces), serif" },
-  { name: "Ventura", font: "var(--font-mono), monospace" },
-  { name: "Axiom", font: "var(--font-playfair), Georgia, serif" },
-  { name: "Stride", font: "var(--font-dm-sans), sans-serif" },
-  { name: "Lumina", font: "var(--font-inter), sans-serif" },
-  { name: "Meridian", font: "var(--font-fraunces), serif" },
-  { name: "Catalyst", font: "var(--font-mono), monospace" },
-  { name: "Forge", font: "var(--font-dm-sans), sans-serif" },
-];
+import Image from "next/image";
+
+const COMPANY_LOGOS = [
+  "cha.png",
+  "alz.png",
+  "cvi.png",
+  "shri.png",
+  "rob.png",
+  "inb.png",
+  "flo.png",
+  "ber.png",
+  "con.png",
+  "chg.png",
+  "wes.png",
+  "bra.png",
+  "cho.png",
+  "lum.png",
+  "csp.png",
+  "dou.png",
+  "RIV.png",
+  "bri.png",
+  "bar.png",
+].map((file) => `/companies/${file}`);
 
 const METRICS = [
   { value: "100+", label: "Organizations trusted us" },
@@ -18,49 +31,42 @@ const METRICS = [
 
 export function Results() {
   return (
-    <section className="relative z-[1] border-y border-black/[0.06] bg-[#f7f7f7]">
-      <div
-        className="pointer-events-none absolute inset-0 z-0 opacity-60"
-        style={{
-          backgroundImage: `
-            linear-gradient(to right, rgba(0,0,0,0.04) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(0,0,0,0.04) 1px, transparent 1px)
-          `,
-          backgroundSize: "48px 48px",
-        }}
-        aria-hidden
-      />
+    <section className="relative z-[1] bg-white">
       <div className="relative z-[1] px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
         {/* Logo carousel first */}
-        <div className="relative w-full overflow-hidden">
+        <div className="relative -mt-20 -mb-40 w-full min-h-[320px] overflow-hidden sm:-mt-24 sm:-mb-44 sm:min-h-[400px] lg:-mt-28 lg:-mb-52 lg:min-h-[460px]">
           <div
-            className="pointer-events-none absolute left-0 top-0 z-10 h-full w-24 shrink-0 sm:w-32 lg:w-40"
+            className="pointer-events-none absolute left-0 top-1/2 z-10 h-[45%] w-24 -translate-y-1/2 shrink-0 sm:w-32 lg:w-40"
             style={{
-              background:
-                "linear-gradient(to right, var(--background) 0%, transparent 100%)",
+              background: "linear-gradient(to right, #ffffff 0%, transparent 100%)",
             }}
             aria-hidden
           />
           <div
-            className="pointer-events-none absolute right-0 top-0 z-10 h-full w-24 shrink-0 sm:w-32 lg:w-40"
+            className="pointer-events-none absolute right-0 top-1/2 z-10 h-[45%] w-24 -translate-y-1/2 shrink-0 sm:w-32 lg:w-40"
             style={{
-              background:
-                "linear-gradient(to left, var(--background) 0%, transparent 100%)",
+              background: "linear-gradient(to left, #ffffff 0%, transparent 100%)",
             }}
             aria-hidden
           />
           <div
-            className="flex"
+            className="flex items-center gap-6 sm:gap-8 lg:gap-10"
             style={{ animation: "logo-scroll 40s linear infinite" }}
           >
-            {[...LOGOS, ...LOGOS].map((logo, i) => (
-              <span
-                key={`${logo.name}-${i}`}
-                className="flex shrink-0 items-center justify-center px-8 text-2xl font-medium text-[#222222] opacity-80 sm:px-10 sm:text-3xl lg:px-12 lg:text-4xl"
-                style={{ fontFamily: logo.font }}
+            {[...COMPANY_LOGOS, ...COMPANY_LOGOS].map((src, i) => (
+              <div
+                key={`${src}-${i}`}
+                className="relative flex h-56 shrink-0 items-center justify-center px-3 sm:h-72 sm:px-4 lg:h-88 lg:px-5"
               >
-                {logo.name}
-              </span>
+                <Image
+                  src={src}
+                  alt=""
+                  width={960}
+                  height={384}
+                  className="h-40 w-auto max-w-[700px] object-contain opacity-80 sm:h-48 sm:max-w-[800px] lg:h-56 lg:max-w-[880px]"
+                  unoptimized
+                />
+              </div>
             ))}
           </div>
         </div>
@@ -88,7 +94,7 @@ export function Results() {
           {METRICS.map((metric) => (
             <div
               key={metric.label}
-              className="flex min-h-0 flex-col rounded-lg border border-black/[0.06] bg-white p-6 shadow-[0_2px_12px_rgba(0,0,0,0.01)] lg:p-8"
+              className="flex min-h-0 flex-col rounded-lg border border-black/[0.06] bg-[#fafafa] p-6 shadow-[0_2px_12px_rgba(0,0,0,0.01)] lg:p-8"
             >
               <div className="mt-auto pt-4">
                 <p className="text-3xl font-semibold tracking-tight text-[#222222] sm:text-4xl lg:text-5xl xl:text-6xl">

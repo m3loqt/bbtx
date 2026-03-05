@@ -2,7 +2,7 @@ import { ArrowUpRight } from "@/app/components/ArrowIcon";
 
 export function CTA() {
   return (
-    <section className="relative z-[1] border-b border-black/[0.06] bg-[#f7f7f7]">
+    <section className="relative z-[1] bg-[#f7f7f7]">
       <div
         className="pointer-events-none absolute inset-0 z-0 opacity-60"
         style={{

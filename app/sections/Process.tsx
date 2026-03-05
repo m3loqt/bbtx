@@ -3,25 +3,25 @@ const STEPS = [
     num: "1",
     title: "Assess",
     description:
-      "We evaluate your current capabilities, workflows, risks, and opportunities to identify where AI can create real business value.",
+      "We start by understanding your organization from the inside. Leadership alignment, current capabilities, cultural readiness, and where AI fits into your broader business goals.",
   },
   {
     num: "2",
-    title: "Align",
+    title: "Plan",
     description:
-      "We prioritize use cases, define success metrics, and align leadership so every initiative supports clear business objectives.",
+      "With a full picture in hand, we build your roadmap. Priorities, sequencing, resource requirements, and success metrics. A plan specific to your organization, not a template borrowed from someone else's.",
   },
   {
     num: "3",
     title: "Implement",
     description:
-      "We deploy and integrate AI solutions into existing workflows with governance, change support, and performance tracking built in.",
+      "We work alongside your team to bring the plan to life. Supporting decisions, navigating resistance, and keeping momentum when the complexity of real organizational change sets in.",
   },
   {
     num: "4",
     title: "Measure & Scale",
     description:
-      "We monitor outcomes, refine performance, and scale successful initiatives across the organization with confidence.",
+      "We don't disappear after launch. We help you track what matters, learn from what's working, and build the internal capability to keep growing your AI advantage over time.",
   },
 ];
 
@@ -39,25 +39,18 @@ export function Process() {
       />
       <div className="relative z-[1] px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
         {/* Eyebrow */}
-        <p className="mb-6 flex items-center gap-2 text-base font-normal text-white/70 sm:text-lg">
-          <img
-            src="/node.png"
-            alt=""
-            width={24}
-            height={24}
-            className="h-6 w-6 object-contain brightness-0 invert"
-          />
-          Process
+        <p className="mb-6 text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-white/40">
+          How We Work
         </p>
 
         {/* Headline */}
         <h2 className="w-full text-4xl font-medium leading-tight tracking-tighter text-white sm:text-5xl lg:text-5xl xl:text-6xl 2xl:text-[4rem]">
-          Our AI Implementation{" "}
+          A clear path from where you are{" "}
           <span
             className="font-normal italic"
             style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}
           >
-            Framework
+            to where you need to be.
           </span>
         </h2>
 

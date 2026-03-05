@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { Nav } from "@/app/components/Nav";
 import { Footer } from "@/app/components/Footer";
 import { CTA } from "@/app/sections/CTA";
@@ -53,7 +52,7 @@ export default function StrategyRoadmapPage() {
       <section className="relative z-[1] min-h-screen w-full bg-[#222222]">
         <div className="relative z-[1] flex min-h-screen flex-col items-center justify-center px-4 text-center sm:px-6 lg:px-8">
           <div className="w-full">
-            <p className="mb-16 text-xs font-semibold uppercase tracking-[0.2em] text-white/30 lg:mb-20">
+            <p className="mb-16 text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-white/40 lg:mb-20">
               Sound familiar?
             </p>
             <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-4 sm:gap-x-8 sm:gap-y-5 lg:gap-x-12 lg:gap-y-6">
@@ -86,8 +85,7 @@ export default function StrategyRoadmapPage() {
         <div className="pointer-events-none absolute inset-0 z-0 opacity-60" style={gridBg} aria-hidden />
         <div className="relative z-[1] px-4 py-24 sm:px-6 lg:px-8 lg:py-32">
           <div className="grid gap-6 lg:grid-cols-[3fr_7fr] lg:items-start lg:gap-12">
-            <p className="flex items-center gap-2 text-base font-normal text-[#555555] sm:text-lg">
-              <Image src="/node.png" alt="" width={24} height={24} className="h-6 w-6 object-contain" />
+            <p className="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#555555]/60">
               How we work
             </p>
             <div className="pr-0 lg:pr-[10%]">
@@ -134,9 +132,7 @@ export default function StrategyRoadmapPage() {
             {/* Testimonial card */}
             <article className="flex h-full flex-col justify-between rounded-2xl border border-black/[0.06] bg-[#f7f7f7] p-8 sm:p-10 lg:p-12">
               <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#555555]/70">
-                  Client story
-                </p>
+                <p className="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#555555]/60">Client story</p>
                 <p className="mt-6 text-xl font-normal leading-relaxed text-[#222222] sm:text-2xl lg:text-[1.6rem] lg:leading-snug">
                   &ldquo;We had a dozen AI ideas and no way to prioritize them. We left with a focused transformation strategy, defined ownership, and a 90-day plan our leadership could execute with confidence.&rdquo;
                 </p>
@@ -176,9 +172,7 @@ export default function StrategyRoadmapPage() {
 
             {/* Section header on the right */}
             <div className="lg:pl-4">
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#555555]/70">
-                Proof it works
-              </p>
+              <p className="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#555555]/60">Proof it works</p>
               <h2 className="mt-5 max-w-xl text-4xl font-medium leading-tight tracking-tighter text-[#222222] sm:text-5xl lg:text-5xl xl:text-6xl 2xl:text-[4rem]">
                 What happens when the strategy{" "}
                 <span className="font-normal italic" style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}>
@@ -196,9 +190,7 @@ export default function StrategyRoadmapPage() {
       {/* 5. FAQ — full-page centered */}
       <section className="relative z-[1] flex min-h-screen w-full flex-col items-center justify-center border-t border-black/[0.06] bg-[#f7f7f7] px-4 py-24 sm:px-6 lg:px-8 lg:py-32">
         <div className="mx-auto w-full max-w-4xl text-center">
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#555555]/70">
-            Frequently asked
-          </p>
+          <p className="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#555555]/60">Frequently asked</p>
           <h2 className="mt-5 text-4xl font-medium leading-tight tracking-tighter text-[#222222] sm:text-5xl lg:text-5xl xl:text-6xl 2xl:text-[4rem]">
             Frequently Asked{" "}
             <span className="font-normal italic" style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}>

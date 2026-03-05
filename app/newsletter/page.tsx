@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { Nav } from "@/app/components/Nav";
 import { Footer } from "@/app/components/Footer";
 import { CTA } from "@/app/sections/CTA";
@@ -31,8 +30,7 @@ export default function NewsletterPage() {
         <div className="grid min-h-[calc(100vh-5rem)] w-full grid-cols-1 lg:grid-cols-2">
           {/* Left: benefits — light grey, content with standard padding */}
           <div className="flex flex-col justify-center bg-[#f7f7f7] px-6 py-16 sm:px-8 sm:py-20 lg:px-10 lg:py-24 xl:px-12 xl:py-28">
-            <p className="mb-6 flex items-center gap-2 text-lg font-normal text-[#555555] sm:text-xl">
-              <Image src="/node.png" alt="" width={28} height={28} className="h-7 w-7 object-contain" />
+            <p className="mb-6 text-lg font-normal text-[#555555] sm:text-xl">
               Newsletter
             </p>
             <h1 className="text-[2.75rem] font-medium leading-[1.1] tracking-tighter text-[#222222] sm:text-[3.75rem] md:text-[4.25rem] lg:text-[5rem] xl:text-[5.75rem]">
@@ -57,9 +55,7 @@ export default function NewsletterPage() {
 
           {/* Right: dark sign-up block — charcoal card with margin and corner radius */}
           <div className="flex flex-col justify-center rounded-2xl bg-[#1a1a1a] py-16 pl-8 pr-6 sm:py-20 sm:pl-10 sm:pr-8 lg:my-6 lg:mr-6 lg:rounded-3xl lg:py-24 lg:pl-12 lg:pr-10 xl:pl-14 xl:pr-12">
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-white/50">
-              Sign up for:
-            </p>
+            <p className="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-white/40">Sign up for:</p>
             <h2
               className="mt-2 text-[1.5rem] font-medium leading-tight tracking-tight text-white sm:text-[1.75rem] lg:text-[2rem] xl:text-[2.15rem]"
               style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}

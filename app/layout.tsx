@@ -42,7 +42,7 @@ const dmSans = DM_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Dapper | B2B Marketing Agency",
+  title: "BBTx Consulting",
   description:
     "We build, optimize, and scale marketing engines that generate pipeline and improve marketing ROI.",
 };

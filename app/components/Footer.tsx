@@ -5,21 +5,19 @@ import { ArrowUpRight } from "@/app/components/ArrowIcon";
 
 const FOOTER_NAV = [
   {
-    heading: "MAIN PAGES",
+    heading: "SERVICES",
     links: [
-      { label: "Strategy & Roadmap", href: "#" },
+      { label: "Strategy & Roadmap", href: "/services/strategy-roadmap" },
       { label: "Implementation & Integration", href: "#" },
       { label: "Data & Measurement", href: "#" },
-      { label: "Pricing", href: "#" },
-      { label: "Cases", href: "#" },
     ],
   },
   {
     heading: "COMPANY",
     links: [
-      { label: "Resources", href: "#" },
-      { label: "About", href: "#" },
-      { label: "Careers", href: "#" },
+      { label: "About", href: "/about" },
+      { label: "Blogs", href: "/blog" },
+      { label: "Newsletter", href: "/newsletter" },
     ],
   },
   {

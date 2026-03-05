@@ -33,28 +33,39 @@ const VALUES = [
 
 const STORY_ENTRIES = [
   {
-    year: "2022",
+    year: "1981",
+    title: "The Personal Computer Changes Everything",
     description:
-      "BBTx began with a focus on helping organizations cut through AI hype. We started with readiness assessments and strategy workshops, laying the groundwork for how we work today.",
+      "Grant managed the IBM PC's introduction into Europe and Canada, his first front-row seat to a world-changing technology. The lesson that stayed with him: transformative technology only matters when leaders know how to bring their organizations with them.",
     side: "right",
   },
   {
-    year: "2023",
+    year: "1993",
+    title: "Building Across Borders",
     description:
-      "We deepened our implementation practice and introduced structured frameworks for governance and measurement. Early clients saw measurable gains in efficiency and decision quality.",
+      "After IBM, Grant co-founded Bridgewater Innovation Group in the Netherlands, securing European Commission contracts and helping organizations navigate technology-driven change across the continent. The consulting practice that would become BBTx began to take shape here.",
+    side: "left",
+  },
+  {
+    year: "2000",
+    title: "A Practice Built on Real Organizations",
+    description:
+      "Back in the U.S., Grant founded his consulting practice focused on organizational development, strategy, and growth. Over two decades he worked with construction firms, high-tech companies, and government contractors across Virginia. People, strategy, and real organizational change.",
+    side: "right",
+  },
+  {
+    year: "2022",
+    title: "A New Technology, A Familiar Pattern",
+    description:
+      "When ChatGPT launched, Grant recognized the moment immediately. He had seen it before. He began helping leaders understand AI and co-founded Chaotic Confluence to bring practical AI thinking to professionals navigating the shift.",
     side: "left",
   },
   {
     year: "2024",
+    title: "BBTx.AI Is Born",
     description:
-      "We scaled our team and expanded into multi-phase engagements. Our approach to aligning AI with business outcomes became the core of how we deliver value for every client.",
+      "Grant launched BBTx.AI to help organizations navigate AI with strategy, clarity, and confidence. Not as a technology project. As a leadership imperative.",
     side: "right",
-  },
-  {
-    year: "2025",
-    description:
-      "Today we continue to help leaders turn AI ambition into impact, with clarity, accountability, and results that matter.",
-    side: "left",
   },
 ];
 
@@ -124,9 +135,7 @@ export default function AboutPage() {
           aria-hidden
         />
         <div className="relative z-[3] flex h-[calc(100vh-5rem)] flex-col justify-end px-4 pb-0 pt-16 sm:px-6 lg:px-8">
-          <p className="mb-8 text-xs font-semibold uppercase tracking-[0.2em] text-white/50">
-            Purpose
-          </p>
+          <p className="mb-8 text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-white/40">Purpose</p>
           <h2 className="max-w-[80%] text-[2.4rem] font-medium leading-[1.08] tracking-tighter text-white sm:text-[3rem] md:text-[3.6rem] lg:text-[4.5rem] xl:text-[5.4rem]">
             We exist to help organizations use AI with{" "}
             <span
@@ -196,7 +205,7 @@ export default function AboutPage() {
                     {entry.side === "left" && (
                       <>
                         <p className="text-2xl font-semibold tracking-tight text-[#222222] sm:text-3xl lg:text-4xl">
-                          {entry.year}
+                          {entry.year} — {entry.title}
                         </p>
                         <p className="mt-3 text-base leading-relaxed text-[#555555] sm:text-lg lg:text-xl">
                           {entry.description}
@@ -214,7 +223,7 @@ export default function AboutPage() {
                     {entry.side === "right" && (
                       <>
                         <p className="text-2xl font-semibold tracking-tight text-[#222222] sm:text-3xl lg:text-4xl">
-                          {entry.year}
+                          {entry.year} — {entry.title}
                         </p>
                         <p className="mt-3 text-base leading-relaxed text-[#555555] sm:text-lg lg:text-xl">
                           {entry.description}
@@ -235,9 +244,7 @@ export default function AboutPage() {
         <div className="px-4 py-24 sm:px-6 lg:px-8 lg:py-32">
           <div className="mb-16 flex items-end justify-between lg:mb-20">
             <div>
-              <p className="mb-4 text-xs font-semibold uppercase tracking-[0.2em] text-white/40">
-                Values
-              </p>
+              <p className="mb-4 text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-white/40">Values</p>
               <h2 className="text-4xl font-medium tracking-tighter text-white sm:text-5xl lg:text-6xl">
                 What{" "}
                 <span
@@ -328,9 +335,7 @@ export default function AboutPage() {
         />
         <div className="relative z-[1] px-4 py-24 sm:px-6 lg:px-8 lg:py-32">
           <div className="mb-16 text-center lg:mb-20">
-            <p className="mb-4 text-xs font-semibold uppercase tracking-[0.2em] text-[#555555]">
-              People
-            </p>
+            <p className="mb-4 text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#555555]/60">People</p>
             <h2 className="text-4xl font-medium tracking-tighter text-[#222222] sm:text-5xl lg:text-6xl">
               The team behind{" "}
               <span
