@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { ArrowUpRight } from "@/app/components/ArrowIcon";
 
 const FAQ_ITEMS = [
   {
@@ -62,79 +61,50 @@ export function FAQ() {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
-    <section className="relative z-[1] bg-white">
-      <div className="w-full px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
-        <div className="w-full">
-          <p className="mb-6 text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#555555]/60">
-            What Leaders Ask Us
-          </p>
-          <div className="grid gap-6 lg:grid-cols-[1fr_1fr] lg:items-end lg:gap-12">
-            <h2 className="text-4xl font-medium leading-tight tracking-tighter text-[#222222] sm:text-5xl lg:text-5xl xl:text-6xl 2xl:text-[4rem]">
-              Frequently asked{" "}
-              <span
-                className="font-normal italic"
-                style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}
-              >
-                questions
-              </span>
-            </h2>
-            <p className="text-lg leading-relaxed text-[#555555] sm:text-xl">
-              Quick answers to questions you may have. If you still need clarity, you can always reach out directly.
-            </p>
-          </div>
-
-          {/* FAQ layout: list on the left, \"more questions\" card on the right */}
-          <div className="mt-10 grid gap-10 lg:mt-14 lg:grid-cols-[minmax(0,2fr)_minmax(0,0.85fr)] lg:gap-12">
-            {/* Left: stacked FAQ entries */}
-            <ul className="space-y-3">
-              {FAQ_ITEMS.map((item, index) => {
-                const isOpen = openIndex === index;
-                return (
-                  <li key={item.question}>
-                    <article className="rounded-xl border border-black/[0.08] bg-white px-5 py-3.5 shadow-[0_2px_10px_rgba(0,0,0,0.02)] sm:px-6 sm:py-4">
-                      <button
-                        type="button"
-                        onClick={() => setOpenIndex(isOpen ? null : index)}
-                        className="flex w-full items-center gap-4 text-left"
-                        aria-expanded={isOpen}
-                      >
-                        <h3 className="flex-1 text-[15px] font-semibold tracking-tight text-[#222222] sm:text-lg">
-                          {item.question}
-                        </h3>
-                        {isOpen ? <FaqMinusIcon /> : <FaqPlusIcon />}
-                      </button>
-                      {isOpen && (
-                        <p className="mt-3 text-sm leading-relaxed text-[#555555] sm:text-[15px]">
-                          {item.answer}
-                        </p>
-                      )}
-                    </article>
-                  </li>
-                );
-              })}
-            </ul>
-
-            {/* Right: More questions card */}
-            <aside className="flex h-[260px] flex-col justify-between rounded-2xl border border-black/[0.12] bg-[#222222] px-6 py-6 shadow-[0_4px_18px_rgba(0,0,0,0.3)] sm:h-[280px] sm:px-7 sm:py-7 lg:h-[300px] lg:px-8 lg:py-8">
-              <div>
-                <h3 className="text-lg font-semibold tracking-tight text-white sm:text-xl">
-                  Do you have more questions?
-                </h3>
-                <p className="mt-3 text-sm leading-relaxed text-white/70 sm:text-[15px]">
-                  Can&apos;t find the answer you&apos;re looking for? Our team can help you think through your specific
-                  situation and what to do next.
-                </p>
-              </div>
-              <button
-                type="button"
-                className="mt-6 inline-flex items-center justify-center rounded-lg bg-white px-4 py-2.5 text-[14px] font-medium text-[#222222] transition-opacity hover:opacity-95 sm:px-5 sm:py-3"
-              >
-                Talk to our team
-                <ArrowUpRight className="ml-1.5 h-3.5 w-3.5" />
-              </button>
-            </aside>
-          </div>
-        </div>
+    <section className="relative z-[1] flex min-h-screen w-full flex-col items-center justify-center border-t border-black/[0.06] bg-white px-4 py-24 sm:px-6 lg:px-8 lg:py-32">
+      <div className="mx-auto w-full max-w-4xl text-center">
+        <p className="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#555555]/60">
+          What Leaders Ask Us
+        </p>
+        <h2 className="mt-5 text-4xl font-medium leading-tight tracking-tighter text-[#222222] sm:text-5xl lg:text-5xl xl:text-6xl 2xl:text-[4rem]">
+          Frequently Asked{" "}
+          <span className="font-normal italic" style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}>
+            Questions
+          </span>
+        </h2>
+        <ul className="mt-10 flex flex-col gap-3 text-left sm:mt-12 sm:gap-4">
+          {FAQ_ITEMS.map((item, index) => {
+            const isOpen = openIndex === index;
+            return (
+              <li key={item.question}>
+                <article className="overflow-hidden rounded-xl border border-black/[0.06] bg-[#f7f7f7] shadow-[0_2px_10px_rgba(0,0,0,0.02)]">
+                  <button
+                    type="button"
+                    onClick={() => setOpenIndex(isOpen ? null : index)}
+                    className="flex w-full items-center gap-4 px-6 py-5 text-left sm:px-8 sm:py-6"
+                    aria-expanded={isOpen}
+                  >
+                    <h3 className="flex-1 text-lg font-semibold tracking-tight text-[#222222] sm:text-xl">
+                      {item.question}
+                    </h3>
+                    {isOpen ? <FaqMinusIcon /> : <FaqPlusIcon />}
+                  </button>
+                  <div
+                    className={`grid transition-[grid-template-rows] duration-300 ease-out ${
+                      isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
+                    }`}
+                  >
+                    <div className="overflow-hidden">
+                      <p className="border-t border-black/[0.06] px-6 pb-5 pt-4 text-base leading-relaxed text-[#555555] sm:px-8 sm:pb-6 sm:pt-4 sm:text-lg">
+                        {item.answer}
+                      </p>
+                    </div>
+                  </div>
+                </article>
+              </li>
+            );
+          })}
+        </ul>
       </div>
     </section>
   );

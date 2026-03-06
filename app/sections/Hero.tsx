@@ -1,15 +1,5 @@
-import { ArrowDown, ArrowUpRight } from "@/app/components/ArrowIcon";
-
-function StoryteqLogo() {
-  return (
-    <span className="flex items-center gap-1.5 font-medium tracking-tight text-[#222222]">
-      <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded border border-current">
-        <span className="h-2.5 w-2.5 rounded-sm bg-current opacity-80" />
-      </span>
-      storyteq
-    </span>
-  );
-}
+import { ArrowDown } from "@/app/components/ArrowIcon";
+import { METRICS } from "@/app/sections/Results";
 
 export function Hero() {
   return (
@@ -61,33 +51,22 @@ export function Hero() {
         </div>
       </div>
 
-      {/* Case study card, part of hero, bottom-right */}
-      <article className="absolute bottom-10 right-6 z-10 flex h-[200px] w-[min(480px,calc(100vw-5rem))] overflow-hidden rounded-lg border border-black/[0.06] bg-white shadow-[0_2px_12px_rgba(0,0,0,0.01)] sm:right-8 lg:right-10">
-        <div className="flex w-[48%] min-w-0 flex-col justify-between p-5 pr-3">
-          <p className="text-base font-bold leading-tight text-[#222222] sm:text-lg">
-            54% increase in pipeline with Demand Generation strategy
-          </p>
-          <div className="mt-4 flex items-center justify-between">
-            <StoryteqLogo />
-            <a
-              href="#"
-              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-md bg-[#ca3726] text-white transition-opacity hover:opacity-90 sm:h-12 sm:w-12"
-              aria-label="View case study"
+      {/* Metrics card, part of hero, bottom-right */}
+      <article className="absolute bottom-10 right-6 z-10 flex min-h-[140px] w-max max-w-[min(100%-3rem,880px)] overflow-hidden rounded-lg border border-black/[0.06] bg-white shadow-[0_2px_12px_rgba(0,0,0,0.01)] sm:right-8 sm:min-h-[160px] lg:right-10 lg:min-h-[180px]">
+        <div className="flex flex-wrap items-stretch gap-x-6 gap-y-4 sm:flex-nowrap sm:gap-x-8">
+          {METRICS.map((metric) => (
+            <div
+              key={metric.label}
+              className="flex flex-none flex-col justify-center border-l border-black/[0.08] px-5 py-6 first:border-l-0 sm:py-8"
             >
-              <ArrowUpRight className="h-5 w-5 sm:h-6 sm:w-6" />
-            </a>
-          </div>
-        </div>
-        <div className="relative flex w-[52%] min-w-0 shrink-0 items-center justify-center overflow-hidden rounded-r-lg bg-white py-3 pr-3">
-          <div className="relative h-full w-full overflow-hidden rounded-md">
-            <img
-              src="/casestudy.webp"
-              alt="Case study"
-              className="absolute inset-0 h-full w-full object-cover"
-              width={500}
-              height={200}
-            />
-          </div>
+              <p className="text-3xl font-semibold tracking-tight text-[#222222] sm:text-4xl lg:text-5xl">
+                {metric.value}
+              </p>
+              <p className="mt-2 text-sm leading-snug text-[#555555] sm:text-base lg:text-lg">
+                {metric.label}
+              </p>
+            </div>
+          ))}
         </div>
       </article>
     </section>

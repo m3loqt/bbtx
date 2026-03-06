@@ -2,32 +2,32 @@
 
 import { Nav } from "@/app/components/Nav";
 import { Footer } from "@/app/components/Footer";
-import { ArrowUpRight } from "@/app/components/ArrowIcon";
+import { CTA } from "@/app/sections/CTA";
 
 const VALUES = [
   {
     num: "01",
-    title: "Clarity over noise",
+    title: "Leadership before technology",
     description:
-      "We translate complexity into clear choices so leaders can act with confidence.",
+      "The right tools mean nothing without the right leadership. We start with your people, your structure, and your goals before we ever talk about AI.",
   },
   {
     num: "02",
-    title: "Impact, not theatre",
+    title: "Clarity over complexity",
     description:
-      "We measure success by business outcomes, not decks, demos, or lab experiments.",
+      "AI is complicated enough. Our job is to cut through the noise and give you a clear, honest picture of where you stand and exactly what to do next.",
   },
   {
     num: "03",
-    title: "Partnership first",
+    title: "Honesty over comfort",
     description:
-      "We work alongside your teams, sharing context and accountability at every step.",
+      "We tell you what your organization needs to hear, not what sounds good in a meeting. That directness is not a risk to the engagement. It is the value of it.",
   },
   {
     num: "04",
-    title: "Responsible by design",
+    title: "Capacity over dependency",
     description:
-      "Governance, risk, and ethics are built into our work, not bolted on at the end.",
+      "We are not here to make ourselves indispensable. We are here to build your organization's ability to lead with AI long after our engagement ends.",
   },
 ];
 
@@ -136,8 +136,8 @@ export default function AboutPage() {
         />
         <div className="relative z-[3] flex h-[calc(100vh-5rem)] flex-col justify-end px-4 pb-0 pt-16 sm:px-6 lg:px-8">
           <p className="mb-8 text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-white/40">Purpose</p>
-          <h2 className="max-w-[80%] text-[2.4rem] font-medium leading-[1.08] tracking-tighter text-white sm:text-[3rem] md:text-[3.6rem] lg:text-[4.5rem] xl:text-[5.4rem]">
-            We exist to help organizations use AI with{" "}
+          <h2 className="max-w-[88%] text-[2.1rem] font-medium leading-[1.1] tracking-tighter text-white sm:text-[2.6rem] md:text-[3.1rem] lg:text-[3.8rem] xl:text-[4.4rem]">
+            We exist to help leaders and organizations use AI with{" "}
             <span
               className="font-normal italic"
               style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}
@@ -187,7 +187,7 @@ export default function AboutPage() {
             </span>
           </h2>
 
-          <div className="relative mx-auto max-w-6xl xl:max-w-7xl">
+          <div className="relative mx-auto max-w-7xl xl:max-w-[110rem]">
             {/* Vertical line */}
             <div
               className="absolute left-1/2 top-0 hidden min-h-full w-px -translate-x-1/2 bg-black/[0.08] lg:block"
@@ -201,7 +201,7 @@ export default function AboutPage() {
                   className="relative grid grid-cols-1 lg:grid-cols-[1fr_auto_1fr] lg:items-start lg:gap-12"
                 >
                   {/* Left column */}
-                  <div className={entry.side === "left" ? "order-2 pl-6 lg:order-1 lg:pl-0 lg:pr-12 lg:text-right" : "order-2 lg:order-1"}>
+                  <div className={entry.side === "left" ? "order-2 pl-6 lg:order-1 lg:pl-0 lg:pr-12" : "order-2 lg:order-1"}>
                     {entry.side === "left" && (
                       <>
                         <p className="text-2xl font-semibold tracking-tight text-[#222222] sm:text-3xl lg:text-4xl">
@@ -210,7 +210,7 @@ export default function AboutPage() {
                         <p className="mt-3 text-base leading-relaxed text-[#555555] sm:text-lg lg:text-xl">
                           {entry.description}
                         </p>
-                        <div className="mt-4 aspect-[16/10] w-full max-w-xl rounded-xl border border-black/[0.06] bg-black/[0.04] lg:ml-auto xl:max-w-2xl" aria-hidden />
+                        <div className="mt-4 aspect-[16/10] w-full max-w-2xl rounded-xl border border-black/[0.06] bg-black/[0.04] lg:ml-auto xl:max-w-[64rem]" aria-hidden />
                       </>
                     )}
                   </div>
@@ -228,13 +228,79 @@ export default function AboutPage() {
                         <p className="mt-3 text-base leading-relaxed text-[#555555] sm:text-lg lg:text-xl">
                           {entry.description}
                         </p>
-                        <div className="mt-4 aspect-[16/10] w-full max-w-xl rounded-xl border border-black/[0.06] bg-black/[0.04] xl:max-w-2xl" aria-hidden />
+                        <div className="mt-4 aspect-[16/10] w-full max-w-2xl rounded-xl border border-black/[0.06] bg-black/[0.04] xl:max-w-[64rem]" aria-hidden />
                       </>
                     )}
                   </div>
                 </div>
               ))}
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* By the numbers: four metric cards (half-page) */}
+      <section className="relative z-[1] w-full bg-white">
+        <div className="relative z-[1] flex min-h-[50vh] flex-col justify-center px-4 py-20 sm:px-6 lg:px-8 lg:py-24">
+          <div className="w-full">
+            <p className="mb-4 text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#555555]/60">
+              By the numbers
+            </p>
+            <h2 className="text-4xl font-medium leading-tight tracking-tighter text-[#222222] sm:text-5xl lg:text-6xl 2xl:text-[4rem]">
+              What{" "}
+              <span
+                className="font-normal italic"
+                style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}
+              >
+                our work
+              </span>{" "}
+              looks like in numbers.
+            </h2>
+          </div>
+          <div className="mt-10 grid w-full grid-cols-1 gap-4 sm:mt-12 sm:grid-cols-2 lg:mt-14 lg:grid-cols-4 lg:gap-5">
+            {[
+              {
+                stat: "100+",
+                label: "Organizations served",
+                context:
+                  "Across industries, from high-growth startups to enterprises navigating complex change.",
+              },
+              {
+                stat: "50+",
+                label: "Leaders coached",
+                context:
+                  "Through some of the most consequential decisions and transformations of their careers.",
+              },
+              {
+                stat: "200%",
+                label: "Average productivity impact",
+                context:
+                  "Reported by organizations that committed fully to the strategy and implementation process.",
+              },
+              {
+                stat: "12 weeks",
+                label: "Average time to results",
+                context:
+                  "From kickoff to measurable organizational change in how your team operates and performs.",
+              },
+            ].map((item) => (
+              <article
+                key={item.label}
+                className="flex min-h-[220px] flex-col rounded-2xl border border-black/[0.06] bg-[#fafafa] p-6 shadow-[0_2px_12px_rgba(0,0,0,0.02)] sm:min-h-[230px] lg:p-7"
+              >
+                <p className="text-3xl font-semibold tracking-tight text-[#222222] sm:text-4xl lg:text-5xl xl:text-6xl">
+                  {item.stat}
+                </p>
+                <div className="mt-auto pt-4">
+                  <p className="text-sm font-medium text-[#222222] sm:text-base">
+                    {item.label}
+                  </p>
+                  <p className="mt-2 text-sm leading-relaxed text-[#555555] sm:text-[15px]">
+                    {item.context}
+                  </p>
+                </div>
+              </article>
+            ))}
           </div>
         </div>
       </section>
@@ -261,7 +327,7 @@ export default function AboutPage() {
             {VALUES.map((v) => (
               <div
                 key={v.num}
-                className="grid gap-4 py-10 sm:py-12 lg:grid-cols-[280px_1fr_1fr] lg:items-center lg:gap-10"
+                className="grid gap-4 py-10 sm:py-12 lg:grid-cols-[260px_0.9fr_1.3fr] lg:items-center lg:gap-10"
               >
                 <span
                   className="block text-[5rem] font-bold leading-none tracking-tighter sm:text-[6rem]"
@@ -274,10 +340,10 @@ export default function AboutPage() {
                 >
                   {v.num}
                 </span>
-                <h3 className="pl-0 text-2xl font-semibold tracking-tight text-white sm:text-3xl lg:pl-16 lg:text-4xl">
+                <h3 className="pl-0 text-2xl font-semibold tracking-tight text-white sm:text-3xl lg:pl-8 lg:text-4xl">
                   {v.title}
                 </h3>
-                <p className="max-w-md text-base leading-relaxed text-white/60 sm:text-lg lg:text-xl">
+                <p className="text-base leading-relaxed text-white/60 sm:text-lg lg:text-xl">
                   {v.description}
                 </p>
               </div>
@@ -404,65 +470,8 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* CTA: same design as homepage */}
-      <section className="relative z-[1] border-b border-black/[0.06] bg-[#f7f7f7]">
-        <div
-          className="pointer-events-none absolute inset-0 z-0 opacity-60"
-          style={{
-            backgroundImage: `
-              linear-gradient(to right, rgba(0,0,0,0.04) 1px, transparent 1px),
-              linear-gradient(to bottom, rgba(0,0,0,0.04) 1px, transparent 1px)
-            `,
-            backgroundSize: "48px 48px",
-          }}
-          aria-hidden
-        />
-        <div className="relative z-[1] w-full px-4 py-8 sm:px-6 lg:px-8 lg:py-10">
-          <div className="relative w-full overflow-hidden rounded-xl border border-white/20 bg-[#ca3726] shadow-[0_4px_24px_rgba(202,55,38,0.25)] sm:rounded-2xl">
-            <div
-              className="pointer-events-none absolute inset-0 z-0 opacity-90"
-              style={{
-                backgroundImage: `
-                  radial-gradient(ellipse 80% 50% at 20% 40%, rgba(255,255,255,0.12) 0%, transparent 50%),
-                  radial-gradient(ellipse 60% 80% at 80% 60%, rgba(255,255,255,0.08) 0%, transparent 45%),
-                  radial-gradient(circle at 50% 50%, rgba(255,255,255,0.03) 0%, transparent 40%)
-                `,
-              }}
-              aria-hidden
-            />
-            <div
-              className="pointer-events-none absolute inset-0 z-0 opacity-[0.15]"
-              style={{
-                backgroundImage: `radial-gradient(circle at 50% 50%, rgba(255,255,255,0.4) 1px, transparent 1px)`,
-                backgroundSize: "24px 24px",
-              }}
-              aria-hidden
-            />
-            <div className="relative z-[1] w-full px-6 py-16 text-center sm:px-10 sm:py-20 lg:px-16 lg:py-24">
-              <h2 className="text-4xl font-medium leading-tight tracking-tighter text-white sm:text-5xl lg:text-5xl xl:text-6xl 2xl:text-[4rem]">
-                Ready to{" "}
-                <span
-                  className="font-normal italic"
-                  style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}
-                >
-                  integrate AI
-                </span>{" "}
-                with impact?
-              </h2>
-              <p className="mx-auto mt-8 max-w-2xl text-xl leading-relaxed tracking-tight text-white/95 sm:text-2xl lg:mt-10">
-                Talk to us about your goals. We&apos;ll help you assess readiness, choose the right path, and deliver measurable results.
-              </p>
-              <a
-                href="#"
-                className="mt-12 inline-flex items-center gap-2 rounded-lg bg-white px-5 py-3 text-[15px] font-medium text-[#222222] transition-opacity hover:opacity-95 lg:mt-14"
-              >
-                Talk to us
-                <ArrowUpRight className="h-4 w-4 sm:h-[18px] sm:w-[18px]" />
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* CTA: reuse homepage CTA for consistent background and layout */}
+      <CTA />
 
       <Footer />
     </div>

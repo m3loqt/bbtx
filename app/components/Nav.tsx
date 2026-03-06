@@ -2,8 +2,8 @@
 
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
-import { ArrowUpRight } from "./ArrowIcon";
-import { ChevronDown } from "./ArrowIcon";
+import { ArrowUpRight, ChevronDown } from "./ArrowIcon";
+import { ContactModal } from "./ContactModal";
 
 const navLinks = [
   { label: "Services", hasDropdown: true, href: "#" },
@@ -55,6 +55,7 @@ const DROPDOWN_TRANSITION_MS = 200;
 export function Nav() {
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [panelVisible, setPanelVisible] = useState(false);
+  const [contactOpen, setContactOpen] = useState(false);
   const closeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const handleEnter = (label: string, hasDropdown: boolean) => {
@@ -87,16 +88,24 @@ export function Nav() {
     };
   }, []);
 
+  useEffect(() => {
+    const openContact = () => setContactOpen(true);
+    window.addEventListener("openContact", openContact);
+    return () => window.removeEventListener("openContact", openContact);
+  }, []);
+
   const dropdownItems = activeDropdown ? DROPDOWNS[activeDropdown] : null;
 
   return (
-    <div className="fixed left-0 right-0 top-0 z-50 w-full px-4 pt-2 sm:px-6 lg:px-8">
+    <div className="fixed left-0 right-0 top-0 z-50 w-full px-4 pt-[18px] sm:px-6 lg:px-8">
       <div
         className={`relative mx-auto max-w-[960px] ${dropdownItems ? "pb-[420px]" : ""}`}
         onMouseLeave={handleLeave}
       >
         <div className="relative">
-          <header className="flex items-center justify-between gap-6 rounded-lg border border-black/[0.06] bg-white px-3 py-3.5 shadow-[0_2px_16px_rgba(0,0,0,0.04)] sm:px-4 lg:gap-8 lg:px-5">
+          <header
+            className={`flex items-center justify-between gap-6 rounded-lg border border-black/[0.06] bg-white px-3 py-3.5 shadow-[0_2px_16px_rgba(0,0,0,0.04)] sm:px-4 lg:gap-8 lg:px-5 ${contactOpen ? "relative z-[250]" : ""}`}
+          >
           <a href="/" className="flex shrink-0 items-center gap-2">
             <Image
               src="/node.png"
@@ -138,13 +147,20 @@ export function Nav() {
                 </a>
               )
             )}
+            <button
+              type="button"
+              onClick={() => setContactOpen(true)}
+              className="text-[15px] font-normal text-[#222222] transition-colors hover:text-[#555]"
+            >
+              Contact
+            </button>
           </div>
 
           <a
-            href="#"
+            href="/assessment"
             className="flex shrink-0 items-center gap-2 rounded-lg bg-[#ca3726] px-4 py-2.5 text-[15px] font-medium text-white transition-opacity hover:opacity-95"
           >
-            Talk to us
+            Start assessment
             <ArrowUpRight className="h-4 w-4 sm:h-[18px] sm:w-[18px]" />
           </a>
         </header>
@@ -188,6 +204,8 @@ export function Nav() {
         )}
         </div>
       </div>
+
+      <ContactModal open={contactOpen} onClose={() => setContactOpen(false)} />
     </div>
   );
 }

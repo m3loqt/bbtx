@@ -16,9 +16,10 @@
   --font-serif-italic: var(--font-playfair), ui-serif, Georgia, serif;
 }
 
-/* Smooth scrolling */
+/* Smooth scrolling (disabled globally to avoid scroll-lock feeling when reversing direction)
+   If you want smooth anchor jumps, prefer handling it per-link in JS instead of on html/body. */
 html {
-  scroll-behavior: smooth;
+  scroll-behavior: auto;
 }
 
 /* Subtle granular texture overlay */
@@ -49,10 +50,10 @@ body::before {
 
 @keyframes logo-scroll {
   0% {
-    transform: translateX(0);
+    transform: translate3d(0, 0, 0);
   }
   100% {
-    transform: translateX(-50%);
+    transform: translate3d(-50%, 0, 0);
   }
 }
 
