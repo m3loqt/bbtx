@@ -6,9 +6,10 @@ import { CTA } from "@/app/sections/CTA";
 import { ArrowUpRight } from "@/app/components/ArrowIcon";
 
 const BENEFITS = [
-  "One value-packed email every week, concise and actionable.",
-  "AI strategy and implementation insights for leaders.",
-  "No spam. Unsubscribe anytime. We respect your inbox.",
+  "One thoughtful email each week. Short and to the point.",
+  "Reflections on AI strategy, leadership decisions, and implementation.",
+  "Things we’re seeing inside organizations as they work through AI.",
+  "No spam. Unsubscribe anytime.",
 ];
 
 function CheckIcon() {
@@ -27,21 +28,23 @@ export default function NewsletterPage() {
       <Nav />
 
       <section className="relative z-[1] min-h-[calc(100vh-5rem)] w-full pt-20">
-        <div className="grid min-h-[calc(100vh-5rem)] w-full grid-cols-1 lg:grid-cols-2">
+        <div className="grid min-h-[calc(100vh-5rem)] w-full grid-cols-1 lg:grid-cols-[11fr_9fr]">
           {/* Left: benefits — light grey, content with standard padding */}
           <div className="flex flex-col justify-center bg-[#f7f7f7] px-6 py-16 sm:px-8 sm:py-20 lg:px-10 lg:py-24 xl:px-12 xl:py-28">
-            <p className="mb-6 text-lg font-normal text-[#555555] sm:text-xl">
-              Newsletter
+            <p className="mb-6 text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#555555]/60">
+              BBTx Insights Newsletter
             </p>
-            <h1 className="text-[2.75rem] font-medium leading-[1.1] tracking-tighter text-[#222222] sm:text-[3.75rem] md:text-[4.25rem] lg:text-[5rem] xl:text-[5.75rem]">
-              Sign up for our{" "}
-              <span className="font-normal italic" style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}>
-                weekly
-              </span>{" "}
-              briefing
+            <h1 className="max-w-[calc(100%-10px)] text-[2.75rem] font-medium leading-[1.1] tracking-tighter text-[#222222] sm:text-[3.1rem] md:text-[3.6rem] lg:text-[4.2rem] xl:text-[4.6rem]">
+              Our weekly briefing for leaders{" "}
+              <span
+                className="font-normal italic"
+                style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}
+              >
+                working through AI
+              </span>
             </h1>
-            <p className="mt-6 text-xl leading-relaxed text-[#555555] sm:text-2xl">
-              What you can expect from BBTx Insights.
+            <p className="mt-6 max-w-lg text-xl leading-relaxed text-[#555555] sm:max-w-xl sm:text-2xl">
+              Clear thinking and practical insights for leaders navigating AI in their organizations.
             </p>
             <ul className="mt-10 space-y-4">
               {BENEFITS.map((item) => (
@@ -57,12 +60,12 @@ export default function NewsletterPage() {
           <div className="flex flex-col justify-center rounded-2xl bg-[#1a1a1a] py-16 pl-8 pr-6 sm:py-20 sm:pl-10 sm:pr-8 lg:my-6 lg:mr-6 lg:rounded-3xl lg:py-24 lg:pl-12 lg:pr-10 xl:pl-14 xl:pr-12">
             <p className="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-white/40">Sign up for:</p>
             <h2
-              className="mt-2 text-[1.5rem] font-medium leading-tight tracking-tight text-white sm:text-[1.75rem] lg:text-[2rem] xl:text-[2.15rem]"
+              className="mt-3 text-[2.1rem] font-medium leading-tight tracking-tight text-white sm:text-[2.4rem] lg:text-[2.7rem] xl:text-[3rem]"
               style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}
             >
               BBTx Insights
             </h2>
-            <p className="mt-2.5 text-sm leading-relaxed text-white/55">
+            <p className="mt-3 text-base leading-relaxed text-white/75 sm:text-[1.05rem]">
               Structured updates and resources for leaders integrating AI.
             </p>
 

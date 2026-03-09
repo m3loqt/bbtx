@@ -48,6 +48,54 @@ body::before {
   z-index: 0;
 }
 
+/* Community hero animations and layout helpers */
+@keyframes cc-hero-fade-up {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes cc-hero-card-in {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.cc-hero-left {
+  opacity: 0;
+  animation: cc-hero-fade-up 0.6s ease-out 0.1s forwards;
+}
+
+.cc-hero-card-wrapper {
+  width: 100%;
+  max-width: 320px;
+  opacity: 0;
+  animation: cc-hero-card-in 0.7s ease-out 0.3s forwards;
+}
+
+@media (min-width: 768px) {
+  .cc-hero-card-wrapper {
+    transform: rotate(2deg);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, translate 0.3s ease;
+  }
+
+  .cc-hero-card-wrapper:hover {
+    transform: translateY(-6px) rotate(2deg);
+    box-shadow: 0 16px 56px rgba(0, 0, 0, 0.12);
+  }
+}
+
+
 @keyframes logo-scroll {
   0% {
     transform: translate3d(0, 0, 0);

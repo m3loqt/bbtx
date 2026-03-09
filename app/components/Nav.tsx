@@ -20,37 +20,37 @@ const DROPDOWNS: Record<
     {
       title: "Transformational Strategy & Implementation Plan",
       description:
-        "Focused AI transformation strategy with prioritized initiatives, ownership, and a sequenced rollout.",
+        "Turn AI ambition into a clear strategy your leadership can execute. Focused priorities, ownership, and a practical path forward.",
       href: "/services/strategy-roadmap",
     },
     {
       title: "Organizational AI Assessment",
       description:
-        "Assess workflows, leadership alignment, and initiatives to surface where AI can create real impact.",
+        "Understand where AI can actually create value in your organization. Identify gaps, risks, and the opportunities worth pursuing.",
       href: "/services/organizational-ai-assessment",
     },
     {
       title: "AI Organizational Model",
       description:
-        "Define where AI fits, how responsibilities are assigned, and how initiatives align with priorities.",
+        "Design how AI fits into your organization and decision making. Create alignment between teams, initiatives, and strategy.",
       href: "/services/ai-organizational-model",
     },
   ],
   Resources: [
     {
       title: "Blogs",
-      description: "AI strategy, implementation insights, and industry perspectives.",
+      description:
+        "Insights on AI strategy, implementation, and leadership decisions. Lessons drawn from real work with organizations.",
       href: "/blog",
     },
     {
       title: "Newsletter",
-      description: "Structured updates and resources for leaders integrating AI.",
+      description:
+        "A short weekly briefing from our work in the field. Ideas and observations for leaders navigating AI.",
       href: "/newsletter",
     },
   ],
 };
-
-const DROPDOWN_TRANSITION_MS = 200;
 
 export function Nav() {
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
@@ -70,10 +70,11 @@ export function Nav() {
 
   const handleLeave = () => {
     setPanelVisible(false);
-    closeTimeoutRef.current = setTimeout(() => {
-      setActiveDropdown(null);
+    setActiveDropdown(null);
+    if (closeTimeoutRef.current) {
+      clearTimeout(closeTimeoutRef.current);
       closeTimeoutRef.current = null;
-    }, DROPDOWN_TRANSITION_MS);
+    }
   };
 
   useEffect(() => {

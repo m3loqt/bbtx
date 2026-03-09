@@ -23,7 +23,8 @@ export function AnimateSection({ children, noAnimation }: AnimateSectionProps) {
       ([entry]) => {
         if (entry.isIntersecting) setVisible(true);
       },
-      { threshold: 0.08, rootMargin: "0px 0px -40px 0px" }
+      // Very low threshold so animation doesn't fight scrolling
+      { threshold: 0.01, rootMargin: "0px 0px -10px 0px" }
     );
     observer.observe(el);
     return () => observer.disconnect();
@@ -36,10 +37,8 @@ export function AnimateSection({ children, noAnimation }: AnimateSectionProps) {
   return (
     <div
       ref={ref}
-      className={`transition-all duration-[600ms] ease-out ${
-        visible
-          ? "translate-y-0 opacity-100"
-          : "translate-y-3 opacity-0"
+      className={`transition-opacity duration-400 ease-out ${
+        visible ? "opacity-100" : "opacity-0"
       }`}
     >
       {children}

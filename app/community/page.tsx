@@ -1,5 +1,6 @@
 "use client";
 
+import { useRef, type ReactElement } from "react";
 import { Nav } from "@/app/components/Nav";
 import { Footer } from "@/app/components/Footer";
 import { ArrowUpRight } from "@/app/components/ArrowIcon";
@@ -12,17 +13,95 @@ const gridBg = {
   backgroundSize: "48px 48px",
 };
 
+const WHO_FOR = [
+  {
+    title: "Executive leaders",
+    description:
+      "C‑suite and senior leaders responsible for AI direction, governance, and outcomes inside their organizations.",
+  },
+  {
+    title: "Operators and owners",
+    description:
+      "People accountable for workflows, teams, and initiatives who need AI to work in the real constraints of the business.",
+  },
+  {
+    title: "Advisors and practitioners",
+    description:
+      "Consultants, product leaders, and internal champions who translate AI strategy into implementation.",
+  },
+];
+
 const ACTIVITIES = [
-  { title: "Newsletter", description: "Structured updates, insights, and frameworks delivered regularly. No hype, no fluff." },
-  { title: "Live Sessions", description: "Webinars and interactive sessions on AI strategy, implementation, and leadership." },
-  { title: "Cohorts", description: "Structured programs for leaders moving from theory to practice together." },
-  { title: "Coaching", description: "One-on-one and small-group advisory for executives driving AI initiatives." },
-  { title: "Presentations", description: "Keynotes and workshops for organizations ready to align leadership on AI." },
+  {
+    title: "Articles & Resources",
+    description:
+      "Weekly writing on AI, leadership, and the human questions that matter most right now. Honest, considered, and written for people who want perspective not just information.",
+  },
+  {
+    title: "Podcast",
+    description:
+      "A regular conversation at the intersection of leadership wisdom and technical fluency. Real thinking, candid takes, and honest perspective on where AI is taking the world of work.",
+  },
+  {
+    title: "Courses & Certifications",
+    description:
+      "Structured learning designed for leaders and professionals who want more than surface-level AI fluency. Complete a course, earn a certification, and walk away with something you can actually use.",
+  },
+  {
+    title: "Live Sessions & Webinars",
+    description:
+      "Real-time conversations and workshops you can join from anywhere. Show up, ask questions, push back, and think out loud with people navigating the same terrain you are.",
+  },
+  {
+    title: "AI Resources",
+    description:
+      "Practical guides, workbooks, and curated tools built for leaders who want to move from thinking about AI to doing something meaningful with it.",
+  },
 ];
 
 const COURSES = [
-  { title: "AI Implementation for Business Value", description: "From pilot to production. Build internal capability and measure real impact." },
-  { title: "Executive AI Strategy", description: "Framework-driven sessions for C-suite and senior leaders defining AI direction." },
+  {
+    title: "Introduction to Generative AI",
+    description:
+      "A clear, hype-free foundation in how modern generative AI works — so you can make better decisions about when and where to use it.",
+    features: ["Core concepts", "Live walkthroughs", "Practical use cases"],
+    tone: "warm",
+  },
+  {
+    title: "Mastering Prompt Patterns",
+    description:
+      "A practical toolkit of reusable prompt patterns you can apply across tools, workflows, and roles — not just one-off tricks.",
+    features: ["Prompt libraries", "Live practice", "Templates you can reuse"],
+    tone: "cool",
+  },
+  {
+    title: "AI Implementation for Business Value",
+    description:
+      "From pilot to production. Learn how to move real initiatives forward, measure impact, and avoid the traps that stall most AI projects.",
+    features: ["Use case mapping", "ROI models", "Change management"],
+    tone: "bold",
+  },
+  {
+    title: "AI for Leadership and Organizational Transformation",
+    description:
+      "Frameworks for leaders who need to steer culture, governance, and strategy through the realities of an AI-shaped organization.",
+    features: ["Executive frameworks", "Governance models", "Org design"],
+    tone: "neutral",
+  },
+  {
+    title: "Building AI-Enhanced Organizational Models for Consultants",
+    description:
+      "For consultants and advisors building AI into their client work — from operating models to offers, pricing, and delivery.",
+    features: ["Client playbooks", "Operating models", "Case studies"],
+    tone: "accent",
+  },
+  {
+    title: "AI-Empowered Coaching & Consulting",
+    description:
+      "Practical ways to integrate AI into coaching, facilitation, and advisory work without losing the human depth that makes it valuable.",
+    features: ["Session workflows", "Coaching tools", "Conversation guides"],
+    tone: "soft",
+  },
 ];
 
 const UPCOMING_SESSIONS = [
@@ -38,333 +117,852 @@ const ASSOCIATES = [
 ];
 
 const RESEARCH_FEATURED = [
-  { title: "AI Governance for Mid-Size Organizations", summary: "A structured approach to policies, oversight, and accountability." },
-  { title: "From Pilots to Production", summary: "What it takes to move from experimentation to measurable business impact." },
+  {
+    title: "AI Governance for Mid-Size Organizations",
+    summary: "How real organizations are establishing policies, oversight, and accountability for AI.",
+  },
+  {
+    title: "From Pilots to Production",
+    summary: "Lessons from teams moving beyond experimentation into measurable business impact.",
+  },
+  {
+    title: "Leading Through the AI Shift",
+    summary: "What leaders need to know when steering their organizations through AI adoption — without the hype.",
+  },
 ];
 
 const CHANNELS = [
-  { name: "Substack", href: "#", description: "Newsletter and long-form content" },
-  { name: "Gumroad", href: "#", description: "Courses and resources" },
+  { name: "Substack", href: "#", description: "Newsletter, essays, and the full archive" },
+  { name: "Gumroad", href: "#", description: "Courses, cohorts, and products" },
+  { name: "Medium", href: "#", description: "Selected articles and references" },
+  { name: "Podcast", href: "#", description: "Conversations with leaders working through AI" },
 ];
 
 const TESTIMONIALS = [
-  { quote: "The community gave us clarity we couldn't find anywhere else. No noise, no theatre, just structured progress.", author: "COO, Professional Services" },
-  { quote: "Grant and Mel cut through the hype. Their frameworks are now the backbone of our AI strategy.", author: "VP Strategy, Healthcare" },
+  {
+    quote:
+      "Before the AI Integration Program, I had no idea what AI was. The training broke down what AI can do and how to use it in my workflow. Now, tasks that used to take 30 minutes take just 5, and my productivity has increased by about 50%. This program was powerful and extremely beneficial.",
+    author: "Jamie Wilson",
+    role: "Marketing Manager",
+  },
+  {
+    quote:
+      "The hands-on learning, expert insights, and practical tools gave me the confidence to start integrating AI into my coaching practice. What impressed me most was the emphasis on ethical, responsible implementation. Whether you're a professional or consultant, this program equips you to lead in the AI era.",
+    author: "Terry Barnhart",
+    role: "Executive Coach",
+  },
+  {
+    quote:
+      "I had the privilege of attending Grant Tate's AI Integration Workshop. The material was organized and easy to follow, and learning alongside professionals from diverse backgrounds showed me countless ways to use AI in the workplace. I use AI daily now, both professionally and personally. I strongly recommend these classes.",
+    author: "Nancy Soans",
+    role: "Executive Administrator",
+  },
+  {
+    quote:
+      "Since the class, I've redone all my staff's job requirements and accountabilities, developed marketing plans, and streamlined team reviews. I'm excited to keep learning and using AI to benefit my organization and community.",
+    author: "Todd Johnson",
+    role: "President & CEO",
+  },
+  {
+    quote:
+      "I've used AI before, but the sessions opened my eyes to using it for business planning and analysis. There are so many ways I can incorporate AI that I hadn't considered before.",
+    author: "Laura Beltran",
+    role: "Education Director",
+  },
+  {
+    quote:
+      "Before Chaotic Confluence, I only knew AI from a technical side. This community helped me understand how leadership and business work, and showed me how AI can make a real difference for people, not just in code. It's helped me grow a lot.",
+    author: "Mel Angelo Cortes",
+    role: "IT Specialist",
+  },
 ];
 
 export default function CommunityPage() {
+  const testimonialsScrollRef = useRef<HTMLDivElement>(null);
+
+  const scrollTestimonials = (dir: "left" | "right") => {
+    const el = testimonialsScrollRef.current;
+    if (!el) return;
+    const amount = Math.min(el.clientWidth * 0.9, el.scrollWidth - el.scrollLeft);
+    el.scrollBy({ left: dir === "left" ? -amount : amount, behavior: "smooth" });
+  };
+
   return (
     <div className="min-h-screen">
       <Nav />
 
-      {/* 1. Hero — What Chaotic Confluence is and who it's for. One headline, one CTA */}
-      <section className="relative min-h-screen w-full overflow-hidden pt-20">
-        <img src="/grant.jpg" alt="" className="absolute inset-0 h-full w-full object-cover" aria-hidden />
+      {/* 1. Hero — full-width hero, background image + left column */}
+      <section className="relative overflow-hidden bg-[#000000] pt-20">
+        {/* Background image */}
         <div
           className="absolute inset-0 z-0"
           style={{
-            background: "linear-gradient(to top, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0.2) 100%)",
+            backgroundImage: "url('/communityher.png')",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            filter: "blur(2px)",
+            transform: "scale(1.03)",
           }}
           aria-hidden
         />
-        <div className="relative z-[1] flex min-h-[calc(100vh-5rem)] flex-col justify-end px-4 pb-16 sm:px-6 lg:px-8 lg:pb-24">
-          <h1 className="max-w-3xl text-[2.5rem] font-medium leading-tight tracking-tighter text-white sm:text-[3.2rem] md:text-[4rem] lg:text-[4.5rem] xl:text-[5rem]">
-            Chaotic Confluence —{" "}
-            <span className="font-normal italic" style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}>
-              Where Leaders
-            </span>{" "}
-            Integrate AI with Intent
-          </h1>
-          <p className="mt-6 max-w-xl text-lg leading-relaxed text-white/85 sm:text-xl">
-            A community for executives and operators moving from AI curiosity to confident implementation.
-            Structured dialogue. Real decisions. No noise.
-          </p>
-          <a
-            href="#subscribe"
-            className="mt-10 inline-flex w-fit items-center gap-2 rounded-lg bg-[#ca3726] px-5 py-3 text-[15px] font-medium text-white transition-opacity hover:opacity-95"
-          >
-            Join the Community
-            <ArrowUpRight className="h-4 w-4" />
-          </a>
-        </div>
-      </section>
-
-      {/* 2. What We Do — Newsletter, live sessions, cohorts, coaching, presentations */}
-      <section className="relative z-[1] w-full bg-[#f7f7f7]">
-        <div className="pointer-events-none absolute inset-0 z-0 opacity-60" style={gridBg} aria-hidden />
-        <div className="relative z-[1] px-4 py-24 sm:px-6 lg:px-8 lg:py-32">
-          <p className="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#555555]/60">
-            What We Do
-          </p>
-          <h2 className="mt-4 max-w-2xl text-3xl font-medium tracking-tighter text-[#222222] sm:text-4xl lg:text-5xl">
-            One community.{" "}
-            <span className="font-normal italic" style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}>
-              Five ways
-            </span>{" "}
-            to engage.
-          </h2>
-          <p className="mt-6 max-w-2xl text-lg leading-relaxed text-[#555555]">
-            From weekly reads to live cohorts and one-on-one coaching — everything designed to move you from curiosity to confident implementation.
-          </p>
-          <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
-            {ACTIVITIES.map((item) => (
-              <div
-                key={item.title}
-                className="rounded-xl border border-black/[0.06] bg-white p-6 shadow-[0_2px_12px_rgba(0,0,0,0.02)] sm:p-8"
-              >
-                <h3 className="text-lg font-semibold tracking-tight text-[#222222] sm:text-xl">{item.title}</h3>
-                <p className="mt-3 text-base leading-relaxed text-[#555555]">{item.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* 3. Courses & Certifications */}
-      <section className="relative z-[1] w-full border-t border-black/[0.06] bg-white">
-        <div className="px-4 py-24 sm:px-6 lg:px-8 lg:py-32">
-          <p className="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#555555]/60">
-            Courses & Certifications
-          </p>
-          <h2 className="mt-4 text-3xl font-medium tracking-tighter text-[#222222] sm:text-4xl lg:text-5xl">
-            Structured pathways to{" "}
-            <span className="font-normal italic" style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}>
-              certified capability
-            </span>
-          </h2>
-          <p className="mt-6 max-w-2xl text-lg leading-relaxed text-[#555555]">
-            Complete our courses, demonstrate competence, and join the certification pathway — positioning yourself as a credible practitioner in AI implementation and strategy.
-          </p>
-          <div className="mt-12 space-y-6">
-            {COURSES.map((course) => (
-              <div
-                key={course.title}
-                className="rounded-xl border border-black/[0.08] bg-[#f7f7f7] p-6 sm:p-8"
-              >
-                <h3 className="text-xl font-semibold tracking-tight text-[#222222] sm:text-2xl">{course.title}</h3>
-                <p className="mt-3 text-base leading-relaxed text-[#555555]">{course.description}</p>
-              </div>
-            ))}
-          </div>
-          <a
-            href="#"
-            className="mt-10 inline-flex items-center gap-2 rounded-lg bg-[#ca3726] px-5 py-3 text-[15px] font-medium text-white transition-opacity hover:opacity-95"
-          >
-            Enroll or Learn More
-            <ArrowUpRight className="h-4 w-4" />
-          </a>
-        </div>
-      </section>
-
-      {/* 4. Upcoming Live Sessions */}
-      <section className="relative z-[1] w-full bg-[#f7f7f7]">
-        <div className="pointer-events-none absolute inset-0 z-0 opacity-60" style={gridBg} aria-hidden />
-        <div className="relative z-[1] px-4 py-24 sm:px-6 lg:px-8 lg:py-32">
-          <p className="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#555555]/60">
-            Upcoming Live Sessions
-          </p>
-          <h2 className="mt-4 text-3xl font-medium tracking-tighter text-[#222222] sm:text-4xl lg:text-5xl">
-            Webinars. Cohorts.{" "}
-            <span className="font-normal italic" style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}>
-              Presentations.
-            </span>
-          </h2>
-          <p className="mt-6 max-w-2xl text-lg leading-relaxed text-[#555555]">
-            Join upcoming sessions. Dates, topics, and how to register.
-          </p>
-          <div className="mt-12 space-y-4">
-            {UPCOMING_SESSIONS.map((s, i) => (
-              <div
-                key={i}
-                className="flex flex-col gap-2 rounded-xl border border-black/[0.06] bg-white p-6 sm:flex-row sm:items-center sm:justify-between sm:gap-6"
-              >
-                <div>
-                  <span className="text-xs font-semibold uppercase tracking-wider text-[#ca3726]">{s.type}</span>
-                  <h3 className="mt-1 text-lg font-semibold tracking-tight text-[#222222]">{s.topic}</h3>
-                </div>
-                <div className="flex items-center gap-4">
-                  <span className="text-sm text-[#555555]">{s.date}</span>
-                  <a href="#" className="text-sm font-medium text-[#ca3726] hover:underline">
-                    How to join →
-                  </a>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* 5. Our Associates — Grant, Mel, certified graduates */}
-      <section className="relative z-[1] w-full border-t border-black/[0.06] bg-white">
-        <div className="px-4 py-24 sm:px-6 lg:px-8 lg:py-32">
-          <p className="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#555555]/60">
-            Our Associates
-          </p>
-          <h2 className="mt-4 text-3xl font-medium tracking-tighter text-[#222222] sm:text-4xl lg:text-5xl">
-            Human. Specific.{" "}
-            <span className="font-normal italic" style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}>
-              Credible.
-            </span>
-          </h2>
-          <p className="mt-6 max-w-2xl text-lg leading-relaxed text-[#555555]">
-            Grant, Mel, and our certified graduates — the practitioners behind Chaotic Confluence.
-          </p>
-          <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8">
-            {ASSOCIATES.map((a) => (
-              <div key={a.name} className="rounded-xl border border-black/[0.06] bg-[#f7f7f7] p-6">
-                <div className="flex h-14 w-14 items-center justify-center rounded-full bg-[#222222] text-lg font-semibold text-white">
-                  {a.name[0]}
-                </div>
-                <h3 className="mt-4 text-lg font-semibold tracking-tight text-[#222222]">{a.name}</h3>
-                <p className="mt-1 text-sm text-[#555555]">{a.role}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* 6. Research & Reference Library */}
-      <section className="relative z-[1] w-full bg-[#f7f7f7]">
-        <div className="pointer-events-none absolute inset-0 z-0 opacity-60" style={gridBg} aria-hidden />
-        <div className="relative z-[1] px-4 py-24 sm:px-6 lg:px-8 lg:py-32">
-          <p className="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#555555]/60">
-            Research & Reference Library
-          </p>
-          <h2 className="mt-4 text-3xl font-medium tracking-tighter text-[#222222] sm:text-4xl lg:text-5xl">
-            Serious intellectual{" "}
-            <span className="font-normal italic" style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}>
-              resource
-            </span>
-          </h2>
-          <p className="mt-6 max-w-2xl text-lg leading-relaxed text-[#555555]">
-            Featured articles and research. Not a newsletter fluff — frameworks, case studies, and reference material.
-          </p>
-          <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:gap-8">
-            {RESEARCH_FEATURED.map((r) => (
-              <a
-                key={r.title}
-                href="#"
-                className="group rounded-xl border border-black/[0.06] bg-white p-6 shadow-[0_2px_12px_rgba(0,0,0,0.02)] transition-shadow hover:shadow-[0_4px_20px_rgba(0,0,0,0.06)] sm:p-8"
-              >
-                <h3 className="text-lg font-semibold tracking-tight text-[#222222] group-hover:text-[#ca3726] sm:text-xl">
-                  {r.title}
-                </h3>
-                <p className="mt-3 text-base leading-relaxed text-[#555555]">{r.summary}</p>
-                <span className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-[#ca3726]">
-                  Read more <ArrowUpRight className="h-4 w-4" />
-                </span>
-              </a>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* 7. Where to Find Us */}
-      <section className="relative z-[1] w-full border-t border-black/[0.06] bg-white">
-        <div className="px-4 py-24 sm:px-6 lg:px-8 lg:py-32">
-          <p className="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#555555]/60">
-            Where to Find Us
-          </p>
-          <h2 className="mt-4 text-3xl font-medium tracking-tighter text-[#222222] sm:text-4xl lg:text-5xl">
-            Substack. Gumroad.{" "}
-            <span className="font-normal italic" style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}>
-              More.
-            </span>
-          </h2>
-          <p className="mt-6 max-w-xl text-lg leading-relaxed text-[#555555]">
-            Newsletter, courses, and resources — all in one place.
-          </p>
-          <div className="mt-12 flex flex-wrap gap-4">
-            {CHANNELS.map((c) => (
-              <a
-                key={c.name}
-                href={c.href}
-                className="flex items-center gap-3 rounded-xl border border-black/[0.08] bg-[#f7f7f7] px-6 py-4 transition-colors hover:bg-[#efefef]"
-              >
-                <span className="font-semibold text-[#222222]">{c.name}</span>
-                <span className="text-sm text-[#555555]">— {c.description}</span>
-                <ArrowUpRight className="h-4 w-4 shrink-0 text-[#555555]" />
-              </a>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* 8. Testimonials */}
-      <section className="relative z-[1] w-full bg-[#ca3726]">
+        {/* Subtle dark overlay on top of blurred image */}
+        <div className="absolute inset-0 z-0 bg-black/35" aria-hidden />
+        {/* Grid + grain for subtle texture over image */}
         <div
-          className="pointer-events-none absolute inset-0 z-0 opacity-[0.12]"
-          style={{ backgroundImage: `radial-gradient(circle, rgba(255,255,255,0.4) 1px, transparent 1px)`, backgroundSize: "24px 24px" }}
+          className="pointer-events-none absolute inset-0 z-0 opacity-60"
+          style={gridBg}
           aria-hidden
         />
-        <div className="relative z-[1] px-4 py-24 sm:px-6 lg:px-8 lg:py-32">
-          <p className="text-center text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-white/60">
-            Testimonials
-          </p>
-          <h2 className="mt-4 text-center text-3xl font-medium tracking-tighter text-white sm:text-4xl lg:text-5xl">
-            What the community{" "}
-            <span className="font-normal italic" style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}>
-              says
-            </span>
-          </h2>
-          <div className="mx-auto mt-16 grid max-w-4xl gap-10 sm:grid-cols-2">
-            {TESTIMONIALS.map((t, i) => (
-              <blockquote key={i} className="rounded-xl border border-white/15 bg-white/5 p-6 backdrop-blur-sm sm:p-8">
-                <p className="text-lg leading-relaxed text-white/95 sm:text-xl">&ldquo;{t.quote}&rdquo;</p>
-                <footer className="mt-4 text-sm font-medium text-white/70">— {t.author}</footer>
-              </blockquote>
-            ))}
+        <div
+          className="pointer-events-none absolute inset-0 z-0 opacity-[0.08]"
+          style={{
+            backgroundImage:
+              "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E\")",
+          }}
+          aria-hidden
+        />
+        <div className="relative z-[1]">
+          <div className="flex min-h-[calc(100vh-5rem)] w-full flex-col items-stretch gap-10 px-4 pt-40 pb-24 sm:px-6 sm:pt-48 sm:pb-28 lg:px-8 lg:pt-56 lg:pb-32">
+            <div className="cc-hero-left max-w-7xl mt-10 sm:mt-14 lg:mt-20">
+              <p className="mb-6 text-[11px] font-medium tracking-[0.38em] text-white">
+                CHAOTIC CONFLUENCE
+              </p>
+              <h1 className="text-[3.6rem] font-normal leading-[1.02] tracking-tighter text-white sm:text-[4.4rem] md:text-[5.2rem] lg:text-[6.4rem] xl:text-[6rem] 2xl:text-[6.4rem]">
+                Where leaders come to think about AI, not just use it.
+              </h1>
+            </div>
+            <div className="mt-0 max-w-5xl text-lg leading-relaxed text-white/90 sm:mt-1 sm:text-xl md:text-2xl">
+              Chaotic Confluence is a weekly newsletter, a library of courses, and a live learning space for leaders and
+              professionals navigating the human side of the AI era.
+            </div>
+            <div className="mt-1 flex flex-col gap-3 sm:mt-2 sm:flex-row sm:items-center sm:gap-4">
+              <a
+                href="#subscribe"
+                className="inline-flex h-[50px] w-full items-center justify-center gap-2 rounded-lg bg-white px-7 text-[15px] font-medium text-[#111111] transition-opacity duration-200 ease-out hover:opacity-95 sm:w-auto"
+              >
+                Subscribe to the newsletter
+                <ArrowUpRight className="h-4 w-4" />
+              </a>
+              <a
+                href="#"
+                className="inline-flex h-[50px] w-full items-center justify-center rounded-lg border border-white/70 bg-transparent px-7 text-[15px] font-medium text-white transition-colors duration-200 ease-out hover:bg-white/10 sm:w-auto"
+              >
+                Join the next session
+                <ArrowUpRight className="h-4 w-4" />
+              </a>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* 9. Closing CTA */}
-      <section id="subscribe" className="relative z-[1] w-full bg-[#f7f7f7]">
+      {/* 2. Who It's For — headline + description */}
+      <section className="relative z-[1] w-full border-t border-black/[0.06] bg-white">
+        <div className="px-4 py-24 sm:px-6 sm:py-28 lg:px-8 lg:py-32">
+          <div className="grid gap-10 md:grid-cols-2 md:items-start md:gap-20">
+            <div>
+              <p className="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#555555]/60">
+                What Chaotic Confluence is
+              </p>
+              <h2 className="mt-4 max-w-3xl text-4xl font-medium leading-[1.05] tracking-tighter text-[#222222] sm:text-5xl lg:text-6xl xl:text-7xl 2xl:text-[4.25rem]">
+                A different kind of AI conversation
+              </h2>
+            </div>
+            <div className="mt-8 max-w-2xl text-xl leading-relaxed tracking-tight text-[#555555] sm:mt-10 sm:text-2xl lg:mt-12">
+              For senior leaders, mid-career professionals, and managers who believe that how you think about AI matters
+              just as much as how you use it
+            </div>
+          </div>
+
+          {/* Metrics row */}
+          <div className="mt-16 grid gap-10 text-[#111827] sm:grid-cols-2 lg:grid-cols-4 sm:gap-12">
+            <div>
+              <p className="text-5xl font-semibold tracking-tight sm:text-6xl">50+</p>
+              <p className="mt-4 text-sm leading-relaxed text-[#4b5563] sm:text-base">
+                Passionate members driving change.
+              </p>
+            </div>
+            <div>
+              <p className="text-5xl font-semibold tracking-tight sm:text-6xl">300+</p>
+              <p className="mt-4 text-sm leading-relaxed text-[#4b5563] sm:text-base">
+                Hours of shared learning and growth.
+              </p>
+            </div>
+            <div>
+              <p className="text-5xl font-semibold tracking-tight sm:text-6xl">20+</p>
+              <p className="mt-4 text-sm leading-relaxed text-[#4b5563] sm:text-base">
+                Cohorts, workshops, and live sessions run.
+              </p>
+            </div>
+            <div>
+              <p className="text-5xl font-semibold tracking-tight sm:text-6xl">Countless</p>
+              <p className="mt-4 text-sm leading-relaxed text-[#4b5563] sm:text-base">
+                Ideas sparked, challenged, and brought to life.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 3. What's Inside — newsletter, podcast, live sessions, Gumroad products */}
+      <section className="relative z-[1] w-full bg-[#f7f7f7]">
         <div className="pointer-events-none absolute inset-0 z-0 opacity-60" style={gridBg} aria-hidden />
         <div className="relative z-[1] px-4 py-24 sm:px-6 lg:px-8 lg:py-32">
-          <div className="relative mx-auto max-w-4xl overflow-hidden rounded-2xl border border-white/20 bg-[#ca3726] shadow-[0_4px_24px_rgba(202,55,38,0.2)]">
-            <div
-              className="pointer-events-none absolute inset-0 z-0 opacity-90"
-              style={{
-                backgroundImage: `
-                  radial-gradient(ellipse 80% 50% at 20% 40%, rgba(255,255,255,0.1) 0%, transparent 50%),
-                  radial-gradient(ellipse 60% 80% at 80% 60%, rgba(255,255,255,0.06) 0%, transparent 45%)
-                `,
-              }}
-              aria-hidden
-            />
-            <div className="relative z-[1] px-6 py-20 text-center sm:px-10 sm:py-24 lg:px-16 lg:py-28">
-              <h2 className="text-3xl font-medium tracking-tighter text-white sm:text-4xl lg:text-5xl">
-                Subscribe. Enroll.{" "}
-                <span className="font-normal italic" style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}>
-                  Book a session.
-                </span>
-              </h2>
-              <p className="mx-auto mt-6 max-w-xl text-lg leading-relaxed text-white/90 sm:text-xl">
-                Join the community. Take a course. Or book time with Grant and Mel directly.
+          <div className="mx-auto max-w-7xl text-center">
+            <p className="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#555555]/60">
+              What's Inside
+            </p>
+            <h2 className="mt-4 mx-auto max-w-5xl text-4xl font-medium leading-[1.05] tracking-tighter text-[#222222] sm:text-5xl lg:text-6xl xl:text-7xl 2xl:text-[4.25rem]">
+              Everything inside is built to meet you where you actually are.
+            </h2>
+            <p className="mx-auto mt-4 max-w-5xl text-xl leading-relaxed tracking-tight text-[#555555] sm:text-2xl">
+              Articles, podcast, live sessions, courses, and resources. The same depth of thinking expressed in different
+              formats so you can engage however learning works best for you.
+            </p>
+          </div>
+          <div className="mt-12 space-y-5">
+            {/* Top row: two wide feature cards */}
+            <div className="grid gap-4 sm:grid-cols-2">
+              {ACTIVITIES.slice(0, 2).map((item, idx) => (
+                <div
+                  key={item.title}
+                  className="flex min-h-[340px] flex-col justify-between rounded-2xl border border-black/[0.06] bg-white p-6 sm:p-7 lg:p-8"
+                >
+                  <div className="flex flex-1 flex-col gap-6">
+                    {/* Icon area */}
+                    <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#111111]/5">
+                      {idx === 0 ? (
+                        // Document icon for Articles & Resources
+                        <svg
+                          className="h-8 w-8 text-[#ca3726]"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M8 7h5M8 11h8M8 15h6M6 3h8.586L18 6.414V21H6V3Z"
+                            stroke="currentColor"
+                            strokeWidth="1.6"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
+                      ) : (
+                        // Microphone icon for Podcast
+                        <svg
+                          className="h-8 w-8 text-[#ca3726]"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M12 15a3 3 0 0 0 3-3V6a3 3 0 1 0-6 0v6a3 3 0 0 0 3 3Zm5-3a5 5 0 0 1-10 0M12 18v3M8 21h8"
+                            stroke="currentColor"
+                            strokeWidth="1.6"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
+                      )}
+                    </div>
+
+                    {/* Text block, placed toward bottom by parent flex */}
+                    <div className="mt-auto">
+                      <h3 className="text-xl font-semibold tracking-tight text-[#222222] sm:text-2xl">
+                        {item.title}
+                      </h3>
+                      <p className="mt-3 text-sm leading-relaxed text-[#555555] sm:text-base">
+                        {item.description}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Bottom row: three tighter cards */}
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.2fr)_minmax(0,0.9fr)]">
+              {ACTIVITIES.slice(2).map((item, idx) => (
+                <div
+                  key={item.title}
+                  className={`flex min-h-[300px] flex-col justify-between rounded-2xl border border-black/[0.08] p-6 sm:p-7 ${
+                    idx === 2 ? "bg-[#ca3726] text-white" : "bg-white text-[#222222]"
+                  }`}
+                >
+                  <div className="flex flex-1 flex-col gap-6">
+                    {/* Icon area */}
+                    <div
+                      className={`flex h-14 w-14 items-center justify-center rounded-full ${
+                        idx === 2 ? "bg-white/10" : "bg-[#111111]/5"
+                      }`}
+                    >
+                      {idx === 0 && (
+                        // Certificate icon for Courses & Certifications
+                        <svg
+                          className="h-7 w-7 text-[#ca3726]"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M7 4h10a2 2 0 0 1 2 2v6.5A5.5 5.5 0 0 0 12 21a5.5 5.5 0 0 0-7-5.5V6a2 2 0 0 1 2-2Z"
+                            stroke="currentColor"
+                            strokeWidth="1.6"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                          <path
+                            d="M12 9.5a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z"
+                            stroke="currentColor"
+                            strokeWidth="1.6"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
+                      )}
+                      {idx === 1 && (
+                        // Play icon for Live Sessions & Webinars
+                        <svg
+                          className="h-7 w-7 text-[#ca3726]"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M5 7a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v10l-3-2-3 2-3-2-3 2V7Z"
+                            stroke="currentColor"
+                            strokeWidth="1.6"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                          <path
+                            d="M11 10.5 14 12l-3 1.5v-3Z"
+                            stroke="currentColor"
+                            strokeWidth="1.4"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
+                      )}
+                      {idx === 2 && (
+                        // Toolbox / resources icon for AI Resources
+                        <svg
+                          className="h-7 w-7 text-white"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M7 7V6a3 3 0 0 1 3-3h4a3 3 0 0 1 3 3v1M5 7h14l1 3.5V19a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-8.5L5 7Z"
+                            stroke="currentColor"
+                            strokeWidth="1.6"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                          <path
+                            d="M9 13h6"
+                            stroke="currentColor"
+                            strokeWidth="1.6"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
+                      )}
+                    </div>
+
+                    {/* Text block */}
+                    <div className="mt-auto">
+                      <h3 className="text-lg font-semibold tracking-tight sm:text-xl">{item.title}</h3>
+                      <p
+                        className={`mt-3 text-sm leading-relaxed sm:text-base ${
+                          idx === 2 ? "text-white/90" : "text-[#555555]"
+                        }`}
+                      >
+                        {item.description}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 4. Courses & Certifications */}
+      <section className="relative z-[1] w-full border-t border-black/[0.06] bg-white">
+        <div className="px-4 py-24 sm:px-6 lg:px-8 lg:py-32">
+          <div className="grid gap-10 md:grid-cols-2 md:items-start md:gap-20">
+            <div>
+              <p className="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#555555]/60">
+                Courses & Certifications
               </p>
-              <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
-                <a
-                  href="#"
-                  className="inline-flex items-center gap-2 rounded-lg bg-white px-5 py-3 text-[15px] font-medium text-[#222222] transition-opacity hover:opacity-95"
+              <h2 className="mt-4 max-w-4xl text-4xl font-medium leading-[1.05] tracking-tighter text-[#222222] sm:text-5xl lg:text-6xl xl:text-7xl 2xl:text-[4.25rem]">
+                Real learning for leaders navigating a real shift
+              </h2>
+            </div>
+            <div className="mt-8 max-w-3xl text-xl leading-relaxed tracking-tight text-[#555555] sm:mt-10 sm:text-2xl lg:mt-12">
+              <p>
+                Structured courses built for leaders and professionals who want to go deeper on AI. Complete a course,
+                earn a certification, and walk away with knowledge you can put to work immediately.
+              </p>
+              <a
+                href="#"
+                className="mt-7 inline-flex items-center gap-2 rounded-full border border-[#ca3726]/80 px-4 py-2 text-sm font-semibold text-[#ca3726] sm:px-5 sm:py-2.5 sm:text-base"
+              >
+                Explore all courses
+                <ArrowUpRight className="h-4 w-4" />
+              </a>
+            </div>
+          </div>
+
+          <div className="mt-16 grid gap-8 sm:grid-cols-2 xl:grid-cols-3">
+            {COURSES.map((course) => {
+              return (
+                <article
+                  key={course.title}
+                  className="flex min-h-[420px] flex-col overflow-hidden rounded-2xl border border-black/[0.06] bg-white shadow-[0_12px_40px_rgba(15,23,42,0.04)]"
                 >
-                  Subscribe
-                  <ArrowUpRight className="h-4 w-4" />
+                  {/* Cover image area */}
+                  <div
+                    className="relative h-52 w-full bg-cover bg-center"
+                    style={{ backgroundImage: "url('/service.png')" }}
+                  >
+                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_0%_0%,rgba(255,255,255,0.45),transparent_55%),radial-gradient(circle_at_100%_100%,rgba(0,0,0,0.25),transparent_55%)]" />
+                  </div>
+
+                  {/* Content */}
+                  <div className="flex flex-1 flex-col p-6 sm:p-7">
+                    <h3 className="text-lg font-semibold tracking-tight text-[#111827] sm:text-xl">
+                      {course.title}
+                    </h3>
+
+                    {/* Feature pills */}
+                    {course.features && (
+                      <div className="mt-4 flex flex-wrap gap-2">
+                        {course.features.map((feature) => {
+                          const lower = feature.toLowerCase();
+
+                          let icon: ReactElement;
+                          if (lower.includes("concept") || lower.includes("framework") || lower.includes("model")) {
+                            // Book / content icon
+                            icon = (
+                              <svg
+                                className="h-3.5 w-3.5 text-[#ca3726]"
+                                viewBox="0 0 20 20"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  d="M4 4.75A2.25 2.25 0 0 1 6.25 2.5H15v11.75h-8.5A2.5 2.5 0 0 0 4 16.75V4.75Z"
+                                  stroke="currentColor"
+                                  strokeWidth="1.4"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                />
+                                <path
+                                  d="M7 5.75h5M7 8.25h3.5"
+                                  stroke="currentColor"
+                                  strokeWidth="1.4"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                />
+                              </svg>
+                            );
+                          } else if (lower.includes("live") || lower.includes("session") || lower.includes("workshop")) {
+                            // Play icon
+                            icon = (
+                              <svg
+                                className="h-3.5 w-3.5 text-[#ca3726]"
+                                viewBox="0 0 20 20"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  d="M5.75 4.75h8.5a1 1 0 0 1 1 1v8l-3-2-3 2-3-2-1.5 1V5.75a1 1 0 0 1 1-1Z"
+                                  stroke="currentColor"
+                                  strokeWidth="1.4"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                />
+                                <path
+                                  d="M9 8.75 11.5 10l-2.5 1.25v-2.5Z"
+                                  stroke="currentColor"
+                                  strokeWidth="1.2"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                />
+                              </svg>
+                            );
+                          } else if (lower.includes("template") || lower.includes("tool") || lower.includes("playbook")) {
+                            // Tool / settings icon
+                            icon = (
+                              <svg
+                                className="h-3.5 w-3.5 text-[#ca3726]"
+                                viewBox="0 0 20 20"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  d="M10 3.25 8.9 5.4l-2.1.3 1.52 1.6-.36 2.2L10 8.5l2.04 1-0.36-2.2 1.52-1.6-2.1-.3L10 3.25Z"
+                                  stroke="currentColor"
+                                  strokeWidth="1.4"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                />
+                                <path
+                                  d="M5 12.25h10M5 15.25h6"
+                                  stroke="currentColor"
+                                  strokeWidth="1.4"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                />
+                              </svg>
+                            );
+                          } else {
+                            // Default check icon
+                            icon = (
+                              <svg
+                                className="h-3.5 w-3.5 text-[#ca3726]"
+                                viewBox="0 0 20 20"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  d="M16.25 5.75 8.5 13.5 5 10"
+                                  stroke="currentColor"
+                                  strokeWidth="1.6"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                />
+                              </svg>
+                            );
+                          }
+
+                          return (
+                            <span
+                              key={feature}
+                              className="inline-flex items-center gap-1.5 rounded-full border border-black/[0.08] bg-[#f9fafb] px-3 py-1 text-xs font-medium text-[#4b5563]"
+                            >
+                              {icon}
+                              <span>{feature}</span>
+                            </span>
+                          );
+                        })}
+                      </div>
+                    )}
+
+                    <p className="mt-4 text-sm leading-relaxed text-[#4b5563] sm:text-base">
+                      {course.description}
+                    </p>
+
+                    <div className="mt-6">
+                      <a
+                        href="#"
+                        className="inline-flex items-center gap-2 rounded-full border border-[#111827]/15 px-4 py-2 text-xs font-semibold text-[#111827] hover:bg-[#f3f4f6] sm:px-5 sm:py-2.5 sm:text-sm"
+                      >
+                        Learn more
+                        <ArrowUpRight className="h-4 w-4" />
+                      </a>
+                    </div>
+                  </div>
+                </article>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* 5. Upcoming Live Sessions */}
+      <section className="relative z-[1] w-full bg-[#f7f7f7]">
+        <div className="pointer-events-none absolute inset-0 z-0 opacity-60" style={gridBg} aria-hidden />
+        <div className="relative z-[1] px-4 py-24 sm:px-6 lg:px-8 lg:py-32">
+          <div className="grid gap-12 md:grid-cols-[minmax(0,1.4fr)_minmax(0,1.2fr)] md:items-start">
+            {/* Left: header + description */}
+            <div>
+              <p className="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#555555]/60">
+                Upcoming Live Sessions
+              </p>
+              <h2 className="mt-4 max-w-3xl text-4xl font-medium leading-[1.05] tracking-tighter text-[#222222] sm:text-5xl lg:text-6xl xl:text-7xl 2xl:text-[4.25rem]">
+                Join the conversation while it's happening.
+              </h2>
+              <p className="mt-6 max-w-3xl text-xl leading-relaxed tracking-tight text-[#555555] sm:text-2xl">
+                Webinars, cohorts, and live sessions you can join from anywhere. Real time thinking on AI and leadership
+                with people navigating the same questions you are.
+              </p>
+            </div>
+
+            {/* Right: stacked cards */}
+            <div className="space-y-4">
+              {/* Card 1 — large */}
+              <article className="relative flex min-h-[320px] flex-col justify-between overflow-hidden rounded-2xl border border-black/[0.08] bg-[#111111] text-white sm:min-h-[360px]">
+                <div
+                  className="pointer-events-none absolute inset-0 z-0 bg-cover bg-center"
+                  style={{ backgroundImage: "url('/service.png')" }}
+                  aria-hidden
+                />
+                <div className="pointer-events-none absolute inset-0 z-0 bg-[linear-gradient(to_bottom,rgba(0,0,0,0.45),rgba(0,0,0,0.85))]" aria-hidden />
+                <div className="relative z-[1] flex flex-1 flex-col p-6 sm:p-7">
+                  <div className="flex items-center justify-between gap-4">
+                    <span className="text-xs font-semibold uppercase tracking-[0.22em] text-[#f97373]">
+                      Webinar
+                    </span>
+                    <span className="text-xs font-medium uppercase tracking-[0.16em] text-white/70">
+                      March 24, 2026 · 2:00 PM EST
+                    </span>
+                  </div>
+                  <div className="mt-auto pt-5">
+                    <h3 className="text-lg font-semibold tracking-tight text-white sm:text-xl">
+                      AI and Your Career: What to Protect, What to Delegate, and What to Master
+                    </h3>
+                    <p className="mt-2 text-sm leading-relaxed text-white/85 sm:text-base">
+                      A practical session on how professionals can position themselves in an AI-transformed workplace. Walk
+                      away with a clear framework for where to invest your energy right now.
+                    </p>
+                    <div className="mt-4 flex items-center justify-end">
+                      <a href="#" className="inline-flex items-center gap-2 text-sm font-medium text-[#fed7d7] hover:text-white sm:text-base">
+                        Reserve your spot
+                        <ArrowUpRight className="h-4 w-4" />
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </article>
+
+              {/* Card 2 — smaller */}
+              <article className="flex min-h-[180px] flex-col rounded-2xl border border-black/[0.08] bg-white p-6 sm:p-7">
+                <div className="flex items-center justify-between gap-4">
+                  <span className="text-xs font-semibold uppercase tracking-[0.22em] text-[#ca3726]">
+                    Cohort
+                  </span>
+                  <span className="text-xs font-medium uppercase tracking-[0.16em] text-[#6b7280]">
+                    April 7, 2026 · 11:00 AM EST
+                  </span>
+                </div>
+                <div className="mt-auto pt-4">
+                  <h3 className="text-base font-semibold tracking-tight text-[#111827] sm:text-lg">
+                    Leading AI Transformation: A Four-Week Cohort for Senior Leaders
+                  </h3>
+                  <p className="mt-1.5 text-xs leading-relaxed text-[#4b5563] sm:text-sm">
+                    A structured four-week program for leaders building an AI strategy their organization can actually
+                    execute. Limited seats.
+                  </p>
+                  <div className="mt-3 flex items-center justify-end">
+                    <a href="#" className="inline-flex items-center gap-1.5 text-xs font-medium text-[#ca3726] hover:underline sm:text-sm">
+                      Reserve your spot
+                      <ArrowUpRight className="h-3.5 w-3.5" />
+                    </a>
+                  </div>
+                </div>
+              </article>
+
+              {/* Card 3 — smaller */}
+              <article className="flex min-h-[180px] flex-col rounded-2xl border border-black/[0.08] bg-white p-6 sm:p-7">
+                <div className="flex items-center justify-between gap-4">
+                  <span className="text-xs font-semibold uppercase tracking-[0.22em] text-[#ca3726]">
+                    Live Session
+                  </span>
+                  <span className="text-xs font-medium uppercase tracking-[0.16em] text-[#6b7280]">
+                    April 21, 2026 · 3:00 PM EST
+                  </span>
+                </div>
+                <div className="mt-auto pt-4">
+                  <h3 className="text-base font-semibold tracking-tight text-[#111827] sm:text-lg">
+                    Ask Us Anything: AI, Leadership, and What Keeps You Up at Night
+                  </h3>
+                  <p className="mt-1.5 text-xs leading-relaxed text-[#4b5563] sm:text-sm">
+                    An open format session where you bring the questions and we bring the honest answers. No slides, no
+                    scripts, just a real conversation.
+                  </p>
+                  <div className="mt-3 flex items-center justify-end">
+                    <a href="#" className="inline-flex items-center gap-1.5 text-xs font-medium text-[#ca3726] hover:underline sm:text-sm">
+                      Reserve your spot
+                      <ArrowUpRight className="h-3.5 w-3.5" />
+                    </a>
+                  </div>
+                </div>
+              </article>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 6. From the Library — featured Substack articles */}
+      <section className="relative z-[1] w-full bg-white">
+        <div className="px-4 py-24 sm:px-6 lg:px-8 lg:py-32">
+          {/* Centered header — full width container */}
+          <div className="w-full text-center">
+            <p className="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#555555]/60">
+              From the Library
+            </p>
+            <h2 className="mt-4 text-4xl font-medium leading-[1.05] tracking-tighter text-[#111827] sm:text-5xl lg:text-6xl">
+              A taste of{" "}
+              <span className="font-normal italic" style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}>
+                the work
+              </span>
+            </h2>
+            <p className="mx-auto mt-6 max-w-3xl text-xl leading-relaxed tracking-tight text-[#4b5563] sm:text-2xl">
+              Featured pieces from Substack and our broader library. For people who want to see the thinking before
+              they hit subscribe.
+            </p>
+          </div>
+
+          {/* Cards: 1 large left (height matches right), 2 stacked right (70/30) — full width */}
+          <div className="mt-14 grid w-full gap-8 md:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)] md:items-stretch">
+            {/* Left: big feature article — stretches to match combined height of 2 right cards */}
+            {RESEARCH_FEATURED[0] && (
+              <a
+                href="#"
+                className="group flex min-h-0 flex-1 flex-col justify-between rounded-2xl border border-black/[0.06] bg-[#f9fafb] p-6 text-left transition-colors hover:bg-[#f4f4f4] sm:p-8"
+              >
+                  <div>
+                    <p className="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#9ca3af]">
+                      Featured Article
+                    </p>
+                    <h3 className="mt-3 text-2xl font-semibold tracking-tight text-[#111827] group-hover:text-[#ca3726] sm:text-3xl">
+                      {RESEARCH_FEATURED[0].title}
+                    </h3>
+                    <p className="mt-4 text-base leading-relaxed text-[#4b5563] sm:text-lg">
+                      {RESEARCH_FEATURED[0].summary}
+                    </p>
+                  </div>
+                  <span className="mt-6 inline-flex items-center gap-1 text-sm font-medium text-[#ca3726]">
+                    Read full article <ArrowUpRight className="h-4 w-4" />
+                  </span>
                 </a>
-                <a
-                  href="#"
-                  className="inline-flex items-center gap-2 rounded-lg border-2 border-white/40 px-5 py-3 text-[15px] font-medium text-white transition-colors hover:bg-white/10"
-                >
-                  Enroll in a Course
-                </a>
-                <a
-                  href="#"
-                  className="inline-flex items-center gap-2 rounded-lg border-2 border-white/40 px-5 py-3 text-[15px] font-medium text-white transition-colors hover:bg-white/10"
-                >
-                  Book a Session
-                </a>
+              )}
+
+              {/* Right: two smaller articles stacked */}
+              <div className="space-y-5">
+                {RESEARCH_FEATURED.slice(1).map((r) => (
+                  <a
+                    key={r.title}
+                    href="#"
+                    className="group flex flex-col justify-between rounded-2xl border border-black/[0.06] bg-[#ca3726] p-6 text-left transition-opacity hover:opacity-95 sm:p-7"
+                  >
+                    <div>
+                      <p className="text-[0.7rem] font-semibold uppercase tracking-[0.2em] text-white/70">
+                        Article
+                      </p>
+                      <h3 className="mt-2.5 text-base font-semibold tracking-tight text-white group-hover:text-white/95 sm:text-lg">
+                        {r.title}
+                      </h3>
+                      <p className="mt-3 line-clamp-2 text-sm leading-relaxed text-white/90 sm:text-base">{r.summary}</p>
+                    </div>
+                    <span className="mt-4 inline-flex items-center gap-1 text-xs font-medium text-white sm:text-sm">
+                      Read more <ArrowUpRight className="h-4 w-4" />
+                    </span>
+                  </a>
+                ))}
               </div>
             </div>
+        </div>
+      </section>
+
+      {/* 8. Testimonials — clone reference UI, white bg, carousel */}
+      <section className="relative z-[1] w-full bg-white">
+        <div className="px-4 py-24 sm:px-6 lg:px-8 lg:py-32">
+          {/* Header row */}
+          <div className="grid gap-10 md:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] md:items-end md:gap-16">
+              <h2 className="max-w-3xl text-4xl font-medium leading-[1.05] tracking-tighter text-[#222222] sm:text-5xl lg:text-6xl xl:text-7xl 2xl:text-[4.25rem]">
+                Hear from the people inside the room
+              </h2>
+              <p className="max-w-2xl text-xl leading-relaxed tracking-tight text-[#555555] sm:text-2xl md:pb-1">
+                From certified graduates to active members, here is what the Chaotic Confluence community has to say about what it is like to learn, think, and grow inside it.
+              </p>
+            </div>
+
+          <div className="mt-12 md:mt-16 lg:mt-20">
+            <div className="mb-3 flex flex-row flex-wrap items-center justify-between gap-4">
+              <p className="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#6b7280]">
+                What Our Community Says
+              </p>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => scrollTestimonials("left")}
+                  className="flex h-10 w-10 items-center justify-center rounded border border-[#e5e7eb] bg-white text-[#374151] transition-colors hover:bg-[#f9fafb]"
+                  aria-label="Previous testimonial"
+                >
+                  <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M15 18l-6-6 6-6" />
+                  </svg>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => scrollTestimonials("right")}
+                  className="flex h-10 w-10 items-center justify-center rounded border border-[#e5e7eb] bg-white text-[#374151] transition-colors hover:bg-[#f9fafb]"
+                  aria-label="Next testimonial"
+                >
+                  <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M9 18l6-6-6-6" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+            <div
+              ref={testimonialsScrollRef}
+              className="flex gap-6 overflow-x-auto pb-4 scroll-smooth md:gap-8 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+            >
+                {TESTIMONIALS.map((t, i) => (
+                <article
+                  key={i}
+                  className="flex min-w-[85%] max-w-[520px] flex-shrink-0 flex-col justify-between rounded-2xl border border-black/[0.06] bg-[#f9fafb] p-6 sm:min-w-[75%] sm:p-8 md:min-w-[55%] lg:min-w-[48%]"
+                >
+                  <p className="text-[0.7rem] font-semibold uppercase tracking-[0.2em] text-[#111827]">
+                    {t.role}
+                  </p>
+                  <span className="mt-4 block text-5xl font-semibold leading-none text-[#111827] sm:text-6xl lg:text-7xl">&ldquo;</span>
+                  <p className="mt-4 text-lg font-semibold leading-snug text-[#111827] sm:text-xl">{t.quote}</p>
+                  <footer className="mt-6 flex items-center gap-4">
+                    <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-[#f3f4f6] text-sm font-semibold text-[#111827]">
+                      {t.author.split(" ").map((n) => n[0]).join("")}
+                    </div>
+                    <div>
+                      <p className="font-semibold text-[#111827]">{t.author}</p>
+                      <p className="text-xs font-medium uppercase tracking-wider text-[#6b7280]">{t.role}</p>
+                    </div>
+                  </footer>
+                </article>
+                ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 10. Closing CTA — full width with communityher background */}
+      <section
+        id="subscribe"
+        className="relative z-[1] w-full overflow-hidden"
+        style={{
+          backgroundImage: "url('/communityher.png')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
+      >
+        <div className="absolute inset-0 z-0 bg-black/45" aria-hidden />
+        <div className="pointer-events-none absolute inset-0 z-0 opacity-40" style={gridBg} aria-hidden />
+        <div className="relative z-[1] px-4 py-24 text-center sm:px-6 sm:py-28 lg:px-8 lg:py-32">
+          <h2 className="mx-auto max-w-6xl text-3xl font-medium leading-[1.1] tracking-tighter text-white sm:text-4xl lg:text-5xl xl:text-6xl">
+            Because knowing how to use AI is not the same as knowing how to lead with it.
+          </h2>
+          <p className="mx-auto mt-6 max-w-5xl text-lg leading-relaxed text-white/95 sm:text-xl lg:text-2xl">
+            That distinction is what Chaotic Confluence is built around. Subscribe to the weekly newsletter and join a
+            community of leaders who are thinking about AI the right way.
+          </p>
+          <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
+            <a
+              href="#newsletter"
+              className="inline-flex items-center gap-2 rounded-lg bg-white px-6 py-3.5 text-[15px] font-medium text-[#222222] transition-opacity hover:opacity-95"
+            >
+              Subscribe to our Newsletter
+              <ArrowUpRight className="h-4 w-4" />
+            </a>
+            <a
+              href="#"
+              className="inline-flex items-center gap-2 rounded-lg border-2 border-white/60 px-6 py-3.5 text-[15px] font-medium text-white transition-colors hover:bg-white/15"
+            >
+              Join the next session
+            </a>
           </div>
         </div>
       </section>
