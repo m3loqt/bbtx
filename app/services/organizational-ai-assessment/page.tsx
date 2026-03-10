@@ -76,9 +76,9 @@ export default function OrganizationalAIAssessmentPage() {
       <Nav />
 
       {/* 1. Hero — light top with headline + grid, full-width image bottom half */}
-      <section className="relative z-[1] flex min-h-screen w-full flex-col bg-[#f7f7f7] pt-20">
+      <section className="relative z-[1] flex min-h-[calc(100vh-3.5rem)] w-full flex-col bg-[#f7f7f7] pt-14 sm:min-h-screen sm:pt-20">
         <div className="pointer-events-none absolute inset-0 z-0 opacity-60" style={gridBg} aria-hidden />
-        <div className="relative z-[1] flex flex-1 flex-col justify-end px-4 pb-10 sm:px-6 lg:px-8 lg:pb-14">
+        <div className="relative z-[1] flex flex-1 flex-col justify-end px-4 pb-10 pt-6 sm:pt-0 sm:px-6 lg:px-8 lg:pb-14">
           <p className="mb-6 text-xs font-semibold uppercase tracking-[0.22em] text-[#555555]/60 sm:text-sm">
             Organizational AI Assessment
           </p>
@@ -88,7 +88,7 @@ export default function OrganizationalAIAssessmentPage() {
               where you actually stand.
             </span>
           </h1>
-          <p className="mt-6 max-w-7xl text-xl leading-relaxed tracking-tight text-[#555555] sm:text-2xl">
+          <p className="mt-4 max-w-7xl text-base leading-relaxed tracking-tight text-[#555555] sm:mt-6 sm:text-2xl">
             Across most small and mid-size organizations, AI is being used across departments, functions, and teams, informally, inconsistently, and without oversight. Before you build a strategy, you need a clear picture of what's already in motion.
           </p>
         </div>
@@ -98,20 +98,20 @@ export default function OrganizationalAIAssessmentPage() {
       </section>
 
       {/* 2. The reality — dark, centered */}
-      <section className="relative z-[1] min-h-screen w-full bg-[#222222]">
-        <div className="relative z-[1] flex min-h-screen flex-col items-center justify-center px-4 text-center sm:px-6 lg:px-8">
+      <section className="relative z-[1] w-full bg-[#222222]">
+        <div className="relative z-[1] flex flex-col items-center justify-center px-4 py-16 text-center sm:min-h-screen sm:px-6 sm:py-24 lg:px-8">
           <div className="w-full">
             <p className="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-white/40">The reality</p>
-            <h2 className="mx-auto mt-6 max-w-[86%] text-[2.2rem] font-medium leading-[1.1] tracking-tighter text-white sm:text-[3rem] lg:text-[3.6rem] xl:text-[4.4rem]">
+            <h2 className="mx-auto mt-5 max-w-[92%] text-[1.7rem] font-medium leading-[1.1] tracking-tighter text-white sm:max-w-[86%] sm:text-[3rem] lg:text-[3.6rem] xl:text-[4.4rem]">
               AI is already happening inside your organization. The question is{" "}
               <span className="font-normal italic" style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}>
                 whether anyone is leading it.
               </span>
             </h2>
-            <p className="mx-auto mt-8 max-w-4xl text-xl leading-relaxed tracking-tight text-white/80 sm:max-w-5xl sm:text-2xl">
+            <p className="mx-auto mt-5 max-w-4xl text-base leading-relaxed tracking-tight text-white/80 sm:mt-8 sm:max-w-5xl sm:text-2xl">
               Across most small and mid-size organizations, AI is being used across departments, functions, and teams informally, inconsistently, and without oversight. Before you build a strategy, you need a clear picture of what's already in motion.
             </p>
-            <div className="mx-auto mt-16 grid max-w-6xl gap-5 text-left sm:grid-cols-3 lg:mt-20 lg:max-w-7xl">
+            <div className="mx-auto mt-10 grid max-w-6xl gap-4 text-left sm:mt-16 sm:grid-cols-3 lg:mt-20 lg:max-w-7xl">
               {[
                 {
                   title: "Discover what's real",
@@ -142,7 +142,7 @@ export default function OrganizationalAIAssessmentPage() {
       {/* 3. What we evaluate — left eyebrow, right content blocks */}
       <section className="relative z-[1] w-full bg-[#f7f7f7]">
         <div className="pointer-events-none absolute inset-0 z-0 opacity-60" style={gridBg} aria-hidden />
-        <div className="relative z-[1] px-4 py-24 sm:px-6 lg:px-8 lg:py-32">
+        <div className="relative z-[1] px-4 py-12 sm:px-6 sm:py-24 lg:px-8 lg:py-32">
           <div className="grid gap-6 lg:grid-cols-[3fr_7fr] lg:items-start lg:gap-12">
             {/* Left eyebrow */}
             <p className="text-base font-normal text-[#555555] sm:text-lg">
@@ -151,13 +151,13 @@ export default function OrganizationalAIAssessmentPage() {
 
             {/* Right: headline + intro + cards */}
             <div className="pr-0 lg:pr-[10%]">
-              <h2 className="text-[2.2rem] font-medium leading-[1.1] tracking-tighter text-[#222222] sm:text-[3rem] lg:text-[3.6rem] xl:text-[4.4rem]">
+              <h2 className="text-[1.7rem] font-medium leading-[1.1] tracking-tighter text-[#222222] sm:text-[3rem] lg:text-[3.6rem] xl:text-[4.4rem]">
                 A structured view of{" "}
                 <span className="font-normal italic" style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}>
                   your AI landscape
                 </span>
               </h2>
-              <p className="mt-6 max-w-2xl text-xl leading-relaxed tracking-tight text-[#555555] sm:text-2xl">
+              <p className="mt-4 max-w-2xl text-base leading-relaxed tracking-tight text-[#555555] sm:mt-6 sm:text-2xl">
                 We assess how AI is actually being used and how prepared your organization is to manage it responsibly and strategically.
               </p>
 
@@ -191,7 +191,7 @@ export default function OrganizationalAIAssessmentPage() {
                 ].map((item) => (
                   <div
                     key={item.title}
-                    className="flex min-h-[190px] flex-col rounded-2xl border border-black/[0.06] bg-white p-5 shadow-[0_2px_12px_rgba(0,0,0,0.02)] sm:min-h-[200px] sm:p-6"
+                    className="flex flex-col rounded-2xl border border-black/[0.06] bg-white p-4 shadow-[0_2px_12px_rgba(0,0,0,0.02)] sm:min-h-[200px] sm:p-6"
                   >
                     <h3 className="text-xl font-semibold tracking-tight text-[#222222] sm:text-2xl">{item.title}</h3>
                     <p className="mt-auto pt-4 text-base leading-relaxed text-[#555555] sm:text-lg">{item.body}</p>
@@ -206,10 +206,10 @@ export default function OrganizationalAIAssessmentPage() {
       {/* 4. How the assessment works — 4-step flow */}
       <section className="relative z-[1] w-full bg-white">
         <div className="pointer-events-none absolute inset-0 z-0 opacity-40" style={gridBg} aria-hidden />
-        <div className="relative z-[1] px-4 py-24 sm:px-6 lg:px-8 lg:py-32">
+        <div className="relative z-[1] px-4 py-12 sm:px-6 sm:py-24 lg:px-8 lg:py-32">
           <div className="w-full">
             <p className="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#555555]/60">How It Works</p>
-            <h2 className="mt-5 text-[2.2rem] font-medium leading-[1.1] tracking-tighter text-[#222222] sm:text-[3rem] lg:text-[3.6rem] xl:text-[4.4rem]">
+            <h2 className="mt-4 text-[1.7rem] font-medium leading-[1.1] tracking-tighter text-[#222222] sm:mt-5 sm:text-[3rem] lg:text-[3.6rem] xl:text-[4.4rem]">
               Disciplined. Methodical.{" "}
               <span className="font-normal italic" style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}>
                 Executive focused.
@@ -240,7 +240,7 @@ export default function OrganizationalAIAssessmentPage() {
               ].map((item) => (
                 <div
                   key={item.step}
-                  className="flex min-h-[200px] flex-col rounded-2xl border border-black/[0.06] bg-[#f7f7f7] p-6 shadow-[0_2px_12px_rgba(0,0,0,0.02)] sm:min-h-[220px] sm:p-7"
+                  className="flex flex-col rounded-2xl border border-black/[0.06] bg-[#f7f7f7] p-4 shadow-[0_2px_12px_rgba(0,0,0,0.02)] sm:min-h-[220px] sm:p-7"
                 >
                   <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[#ca3726]" style={{ fontFamily: "var(--font-mono), monospace" }}>
                     {item.step}
@@ -255,11 +255,11 @@ export default function OrganizationalAIAssessmentPage() {
       </section>
 
       {/* 5. What you receive — full-page deliverables */}
-      <section className="relative z-[1] min-h-screen w-full bg-[#222222]">
-        <div className="relative z-[1] flex min-h-screen flex-col justify-center px-4 py-24 sm:px-6 lg:px-8 lg:py-32">
+      <section className="relative z-[1] w-full bg-[#222222]">
+        <div className="relative z-[1] flex flex-col justify-center px-4 py-12 sm:min-h-screen sm:px-6 sm:py-24 lg:px-8 lg:py-32">
           <div className="w-full">
             <p className="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-white/40">Your Deliverables</p>
-            <h2 className="mt-5 text-[2.2rem] font-medium leading-[1.1] tracking-tighter text-white sm:text-[3rem] lg:text-[3.6rem] xl:text-[4.4rem]">
+            <h2 className="mt-4 text-[1.7rem] font-medium leading-[1.1] tracking-tighter text-white sm:mt-5 sm:text-[3rem] lg:text-[3.6rem] xl:text-[4.4rem]">
               What you walk away with.{" "}
               <span className="font-normal italic" style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}>
                 Every time.
@@ -303,7 +303,7 @@ export default function OrganizationalAIAssessmentPage() {
               ].map((item) => (
                 <div
                   key={item.label}
-                  className="flex min-h-[180px] flex-col rounded-2xl border border-white/10 bg-white/[0.04] p-6 sm:min-h-[200px] sm:p-7"
+                  className="flex flex-col rounded-2xl border border-white/10 bg-white/[0.04] p-4 sm:min-h-[200px] sm:p-7"
                 >
                   <p
                     className="text-[0.7rem] font-semibold uppercase tracking-[0.2em] text-[#ca3726]"
@@ -321,10 +321,10 @@ export default function OrganizationalAIAssessmentPage() {
       </section>
 
       {/* 6. Before and after clarity — full-page split (matches AI Organizational Model layout) */}
-      <section className="relative z-[1] min-h-screen w-full">
-        <div className="flex min-h-screen flex-col lg:flex-row">
+      <section className="relative z-[1] w-full">
+        <div className="flex flex-col lg:flex-row lg:min-h-screen">
           {/* Before */}
-          <div className="relative flex flex-col justify-center bg-[#f0f0f0] px-6 py-20 sm:px-10 lg:basis-[32%] lg:min-h-screen lg:px-12 lg:py-32">
+          <div className="relative flex flex-col justify-center bg-[#f0f0f0] px-6 py-12 sm:px-10 sm:py-20 lg:basis-[32%] lg:min-h-screen lg:px-12 lg:py-32">
             <div className="pointer-events-none absolute inset-0 z-0 opacity-50" style={gridBg} aria-hidden />
             <div className="relative z-[1]">
               <p className="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#555555]/60">
@@ -349,7 +349,7 @@ export default function OrganizationalAIAssessmentPage() {
             </div>
           </div>
           {/* After */}
-          <div className="flex flex-col justify-center bg-white px-6 py-20 sm:px-10 lg:basis-[68%] lg:min-h-screen lg:px-20 lg:py-32 xl:px-28">
+          <div className="flex flex-col justify-center bg-white px-6 py-12 sm:px-10 sm:py-20 lg:basis-[68%] lg:min-h-screen lg:px-20 lg:py-32 xl:px-28">
             <p className="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#ca3726]">
               After the assessment
             </p>
@@ -375,16 +375,16 @@ export default function OrganizationalAIAssessmentPage() {
 
       {/* Testimonial — centered block, red background */}
       <section className="relative z-[1] w-full bg-[#ca3726]">
-        <div className="flex min-h-[60vh] flex-col items-center justify-center px-4 py-20 text-center sm:px-6 lg:px-8 lg:py-28">
+        <div className="flex flex-col items-center justify-center px-4 py-12 text-center sm:min-h-[60vh] sm:px-6 sm:py-20 lg:px-8 lg:py-28">
           <svg
-            className="mb-8 h-12 w-12 text-white/25 sm:h-16 sm:w-16"
+            className="mb-6 h-10 w-10 text-white/25 sm:mb-8 sm:h-16 sm:w-16"
             viewBox="0 0 24 24"
             fill="currentColor"
             aria-hidden
           >
             <path d="M4.583 17.321C3.553 16.227 3 15 3 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311C9.591 11.69 11 13.2 11 15c0 1.82-1.343 3.317-3.182 3.317-1.08 0-2.169-.48-3.235-1.996zM14.583 17.321C13.553 16.227 13 15 13 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311C19.591 11.69 21 13.2 21 15c0 1.82-1.343 3.317-3.182 3.317-1.08 0-2.169-.48-3.235-1.996z" />
           </svg>
-          <blockquote className="max-w-4xl text-2xl font-medium leading-snug tracking-tight text-white sm:text-3xl lg:text-[2.5rem] lg:leading-snug">
+          <blockquote className="max-w-4xl text-lg font-medium leading-snug tracking-tight text-white sm:text-3xl lg:text-[2.5rem] lg:leading-snug">
             We had no idea how much AI was already in use across the organization. The assessment gave us a complete picture: where it was, who was using it, and where we were exposed. We had alignment in three weeks.
           </blockquote>
           <div className="mt-10 flex items-center gap-4">
@@ -398,18 +398,18 @@ export default function OrganizationalAIAssessmentPage() {
       </section>
 
       {/* FAQ — collapsible with Plus icon */}
-      <section className="relative z-[1] flex min-h-screen w-full flex-col items-center justify-center border-t border-black/[0.06] bg-[#f7f7f7] px-4 py-24 sm:px-6 lg:px-8 lg:py-32">
+      <section className="relative z-[1] w-full border-t border-black/[0.06] bg-[#f7f7f7] px-4 py-12 sm:px-6 sm:py-24 lg:px-8 lg:py-32">
         <div className="mx-auto w-full max-w-4xl text-center">
           <p className="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#555555]/60">
             What Leaders Ask Us
           </p>
-          <h2 className="mt-5 text-4xl font-medium leading-tight tracking-tighter text-[#222222] sm:text-5xl lg:text-5xl xl:text-6xl 2xl:text-[4rem]">
+          <h2 className="mt-4 text-3xl font-medium leading-tight tracking-tighter text-[#222222] sm:mt-5 sm:text-5xl lg:text-5xl xl:text-6xl 2xl:text-[4rem]">
             Frequently Asked{" "}
             <span className="font-normal italic" style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}>
               Questions
             </span>
           </h2>
-          <ul className="mt-16 flex flex-col gap-3 text-left sm:mt-20 sm:gap-4">
+          <ul className="mt-8 flex flex-col gap-3 text-left sm:mt-16 sm:gap-4">
             {ASSESSMENT_FAQ_ITEMS.map((item, index) => {
               const isOpen = faqOpenIndex === index;
               return (

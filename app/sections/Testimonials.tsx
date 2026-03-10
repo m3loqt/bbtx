@@ -71,7 +71,7 @@ export function Testimonials() {
   const goNext = () => setPage((p) => (p >= totalPages - 1 ? 0 : p + 1));
 
   return (
-    <section className="relative z-[1] min-h-screen bg-[#f7f7f7]">
+    <section className="relative z-[1] bg-[#f7f7f7]">
       <div
         className="pointer-events-none absolute inset-0 z-0 opacity-60"
         style={{
@@ -83,7 +83,7 @@ export function Testimonials() {
         }}
         aria-hidden
       />
-      <div className="relative z-[1] flex min-h-screen flex-col justify-center px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
+      <div className="relative z-[1] flex flex-col justify-center px-4 py-16 sm:px-6 sm:py-24 lg:px-8 lg:py-28">
         <div className="w-full">
           <p className="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#555555]/60">
             Testimonials

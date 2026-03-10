@@ -1,7 +1,7 @@
 export function Problem() {
   return (
-    <section className="relative z-[1] min-h-screen w-full bg-[#222222]">
-      <div className="relative z-[1] flex min-h-screen flex-col items-center justify-center px-4 text-center sm:px-6 lg:px-8">
+    <section className="relative z-[1] w-full bg-[#222222]">
+      <div className="relative z-[1] flex flex-col items-center justify-center px-4 py-20 text-center sm:px-6 sm:py-28 lg:px-8 lg:min-h-screen lg:py-32">
         <div className="w-full">
           <p className="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-white/40">
             The Challenge We Solve
@@ -16,7 +16,7 @@ export function Problem() {
           <p className="mx-auto mt-8 max-w-5xl text-xl leading-relaxed tracking-tight text-white/80 sm:max-w-6xl sm:text-2xl">
             The result is scattered initiatives, misaligned investments, and a workforce that&apos;s either overwhelmed or left behind. It&apos;s not a technology problem. It&apos;s a leadership and strategy problem.
           </p>
-          <div className="mx-auto mt-16 grid max-w-6xl gap-5 text-left sm:grid-cols-3 lg:mt-20">
+          <div className="mx-auto mt-12 grid max-w-6xl gap-4 text-left sm:grid-cols-3 sm:mt-16 lg:mt-20">
             {[
               {
                 title: "No Clear AI Strategy",
@@ -33,7 +33,7 @@ export function Problem() {
             ].map((item) => (
               <div
                 key={item.title}
-                className="flex min-h-[180px] flex-col rounded-2xl border border-white/15 bg-white/[0.03] p-6 text-left sm:min-h-[200px] sm:p-8"
+                className="flex flex-col rounded-2xl border border-white/15 bg-white/[0.03] p-5 text-left sm:min-h-[200px] sm:p-6 lg:p-8"
               >
                 <h3 className="text-base font-semibold tracking-tight text-white/90 sm:text-lg">{item.title}</h3>
                 <p className="mt-4 text-sm leading-relaxed text-white/75 sm:text-base">{item.body}</p>

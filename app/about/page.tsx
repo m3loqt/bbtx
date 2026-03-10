@@ -110,7 +110,7 @@ export default function AboutPage() {
     <div className="min-h-screen">
       <Nav />
       {/* Purpose: big pull quote style */}
-      <section className="relative z-[1] w-full overflow-hidden pt-20">
+      <section className="relative z-[1] w-full overflow-hidden pt-14 sm:pt-20">
         {/* Background image */}
         <img
           src="/grant.jpg"
@@ -134,9 +134,9 @@ export default function AboutPage() {
           }}
           aria-hidden
         />
-        <div className="relative z-[3] flex h-[calc(100vh-5rem)] flex-col justify-end px-4 pb-0 pt-16 sm:px-6 lg:px-8">
-          <p className="mb-8 text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-white/40">Purpose</p>
-          <h2 className="max-w-[88%] text-[2.1rem] font-medium leading-[1.1] tracking-tighter text-white sm:text-[2.6rem] md:text-[3.1rem] lg:text-[3.8rem] xl:text-[4.4rem]">
+        <div className="relative z-[3] flex h-[calc(100vh-3.5rem)] flex-col justify-end px-4 pb-0 pt-16 sm:h-[calc(100vh-5rem)] sm:px-6 lg:px-8">
+          <p className="mb-4 text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-white/40 sm:mb-8">Purpose</p>
+          <h2 className="max-w-[95%] text-[1.7rem] font-medium leading-[1.1] tracking-tighter text-white sm:max-w-[88%] sm:text-[2.6rem] md:text-[3.1rem] lg:text-[3.8rem] xl:text-[4.4rem]">
             We exist to help leaders and organizations use AI with{" "}
             <span
               className="font-normal italic"
@@ -147,7 +147,7 @@ export default function AboutPage() {
             , turning complex decisions into confident ones.
           </h2>
           {/* Marquee at bottom */}
-          <div className="mt-16 overflow-hidden border-t border-b border-white/10 py-5">
+          <div className="mt-8 overflow-hidden border-t border-b border-white/10 py-4 sm:mt-16 sm:py-5">
             <div className="flex animate-[marquee_20s_linear_infinite] whitespace-nowrap">
               {Array.from({ length: 8 }).map((_, i) => (
                 <span
@@ -176,8 +176,8 @@ export default function AboutPage() {
           }}
           aria-hidden
         />
-        <div className="relative z-[1] px-4 py-20 sm:px-6 lg:px-12 lg:py-28 xl:px-16">
-          <h2 className="mb-16 text-center text-4xl font-medium tracking-tighter text-[#222222] sm:text-5xl lg:mb-20 lg:text-6xl xl:text-7xl">
+        <div className="relative z-[1] px-4 py-12 sm:px-6 sm:py-20 lg:px-12 lg:py-28 xl:px-16">
+          <h2 className="mb-10 text-center text-3xl font-medium tracking-tighter text-[#222222] sm:mb-16 sm:text-5xl lg:mb-20 lg:text-6xl xl:text-7xl">
             Our{" "}
             <span
               className="font-normal italic"
@@ -194,7 +194,7 @@ export default function AboutPage() {
               style={{ height: "calc(100% + 2rem)" }}
               aria-hidden
             />
-            <div className="flex flex-col gap-16 lg:gap-20">
+            <div className="flex flex-col gap-10 sm:gap-16 lg:gap-20">
               {STORY_ENTRIES.map((entry) => (
                 <div
                   key={entry.year}
@@ -204,13 +204,13 @@ export default function AboutPage() {
                   <div className={entry.side === "left" ? "order-2 pl-6 lg:order-1 lg:pl-0 lg:pr-12" : "order-2 lg:order-1"}>
                     {entry.side === "left" && (
                       <>
-                        <p className="text-2xl font-semibold tracking-tight text-[#222222] sm:text-3xl lg:text-4xl">
+                        <p className="text-xl font-semibold tracking-tight text-[#222222] sm:text-3xl lg:text-4xl">
                           {entry.year} — {entry.title}
                         </p>
-                        <p className="mt-3 text-base leading-relaxed text-[#555555] sm:text-lg lg:text-xl">
+                        <p className="mt-2 text-sm leading-relaxed text-[#555555] sm:mt-3 sm:text-lg lg:text-xl">
                           {entry.description}
                         </p>
-                        <div className="mt-4 aspect-[16/10] w-full max-w-2xl rounded-xl border border-black/[0.06] bg-black/[0.04] lg:ml-auto xl:max-w-[64rem]" aria-hidden />
+                        <div className="mt-3 aspect-[16/10] w-full max-w-2xl rounded-xl border border-black/[0.06] bg-black/[0.04] lg:ml-auto xl:max-w-[64rem]" aria-hidden />
                       </>
                     )}
                   </div>
@@ -222,13 +222,13 @@ export default function AboutPage() {
                   <div className={entry.side === "right" ? "order-2 pl-6 lg:order-3 lg:pl-12 lg:text-left" : "order-2 lg:order-3"}>
                     {entry.side === "right" && (
                       <>
-                        <p className="text-2xl font-semibold tracking-tight text-[#222222] sm:text-3xl lg:text-4xl">
+                        <p className="text-xl font-semibold tracking-tight text-[#222222] sm:text-3xl lg:text-4xl">
                           {entry.year} — {entry.title}
                         </p>
-                        <p className="mt-3 text-base leading-relaxed text-[#555555] sm:text-lg lg:text-xl">
+                        <p className="mt-2 text-sm leading-relaxed text-[#555555] sm:mt-3 sm:text-lg lg:text-xl">
                           {entry.description}
                         </p>
-                        <div className="mt-4 aspect-[16/10] w-full max-w-2xl rounded-xl border border-black/[0.06] bg-black/[0.04] xl:max-w-[64rem]" aria-hidden />
+                        <div className="mt-3 aspect-[16/10] w-full max-w-2xl rounded-xl border border-black/[0.06] bg-black/[0.04] xl:max-w-[64rem]" aria-hidden />
                       </>
                     )}
                   </div>
@@ -241,12 +241,12 @@ export default function AboutPage() {
 
       {/* By the numbers: four metric cards (half-page) */}
       <section className="relative z-[1] w-full bg-white">
-        <div className="relative z-[1] flex min-h-[50vh] flex-col justify-center px-4 py-20 sm:px-6 lg:px-8 lg:py-24">
+        <div className="relative z-[1] flex min-h-[50vh] flex-col justify-center px-4 py-12 sm:px-6 sm:py-20 lg:px-8 lg:py-24">
           <div className="w-full">
             <p className="mb-4 text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#555555]/60">
               By the numbers
             </p>
-            <h2 className="text-4xl font-medium leading-tight tracking-tighter text-[#222222] sm:text-5xl lg:text-6xl 2xl:text-[4rem]">
+            <h2 className="text-3xl font-medium leading-tight tracking-tighter text-[#222222] sm:text-5xl lg:text-6xl 2xl:text-[4rem]">
               What{" "}
               <span
                 className="font-normal italic"
@@ -257,7 +257,7 @@ export default function AboutPage() {
               looks like in numbers.
             </h2>
           </div>
-          <div className="mt-10 grid w-full grid-cols-1 gap-4 sm:mt-12 sm:grid-cols-2 lg:mt-14 lg:grid-cols-4 lg:gap-5">
+          <div className="mt-6 grid w-full grid-cols-2 gap-3 sm:mt-12 sm:grid-cols-2 sm:gap-4 lg:mt-14 lg:grid-cols-4 lg:gap-5">
             {[
               {
                 stat: "100+",
@@ -286,16 +286,16 @@ export default function AboutPage() {
             ].map((item) => (
               <article
                 key={item.label}
-                className="flex min-h-[220px] flex-col rounded-2xl border border-black/[0.06] bg-[#fafafa] p-6 shadow-[0_2px_12px_rgba(0,0,0,0.02)] sm:min-h-[230px] lg:p-7"
+                className="flex flex-col rounded-2xl border border-black/[0.06] bg-[#fafafa] p-4 shadow-[0_2px_12px_rgba(0,0,0,0.02)] sm:min-h-[230px] sm:p-6 lg:p-7"
               >
-                <p className="text-3xl font-semibold tracking-tight text-[#222222] sm:text-4xl lg:text-5xl xl:text-6xl">
+                <p className="text-2xl font-semibold tracking-tight text-[#222222] sm:text-4xl lg:text-5xl xl:text-6xl">
                   {item.stat}
                 </p>
-                <div className="mt-auto pt-4">
-                  <p className="text-sm font-medium text-[#222222] sm:text-base">
+                <div className="mt-3 sm:mt-auto sm:pt-4">
+                  <p className="text-xs font-medium text-[#222222] sm:text-base">
                     {item.label}
                   </p>
-                  <p className="mt-2 text-sm leading-relaxed text-[#555555] sm:text-[15px]">
+                  <p className="mt-1 hidden text-sm leading-relaxed text-[#555555] sm:block sm:text-[15px]">
                     {item.context}
                   </p>
                 </div>
@@ -307,11 +307,11 @@ export default function AboutPage() {
 
       {/* Values: oversized numbered list */}
       <section className="relative z-[1] w-full bg-[#222222]">
-        <div className="px-4 py-24 sm:px-6 lg:px-8 lg:py-32">
-          <div className="mb-16 flex items-end justify-between lg:mb-20">
+        <div className="px-4 py-12 sm:px-6 sm:py-24 lg:px-8 lg:py-32">
+          <div className="mb-10 flex items-end justify-between sm:mb-16 lg:mb-20">
             <div>
               <p className="mb-4 text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-white/40">Values</p>
-              <h2 className="text-4xl font-medium tracking-tighter text-white sm:text-5xl lg:text-6xl">
+              <h2 className="text-3xl font-medium tracking-tighter text-white sm:text-5xl lg:text-6xl">
                 What{" "}
                 <span
                   className="font-normal italic"
@@ -327,10 +327,10 @@ export default function AboutPage() {
             {VALUES.map((v) => (
               <div
                 key={v.num}
-                className="grid gap-4 py-10 sm:py-12 lg:grid-cols-[260px_0.9fr_1.3fr] lg:items-center lg:gap-10"
+                className="grid gap-2 py-6 sm:gap-4 sm:py-12 lg:grid-cols-[260px_0.9fr_1.3fr] lg:items-center lg:gap-10"
               >
                 <span
-                  className="block text-[5rem] font-bold leading-none tracking-tighter sm:text-[6rem]"
+                  className="block text-[3.5rem] font-bold leading-none tracking-tighter sm:text-[5rem] lg:text-[6rem]"
                   style={{
                     background: "linear-gradient(to bottom, #ca3726 0%, rgba(202,55,38,0.35) 100%)",
                     WebkitBackgroundClip: "text",
@@ -340,10 +340,10 @@ export default function AboutPage() {
                 >
                   {v.num}
                 </span>
-                <h3 className="pl-0 text-2xl font-semibold tracking-tight text-white sm:text-3xl lg:pl-8 lg:text-4xl">
+                <h3 className="pl-0 text-lg font-semibold tracking-tight text-white sm:text-3xl lg:pl-8 lg:text-4xl">
                   {v.title}
                 </h3>
-                <p className="text-base leading-relaxed text-white/60 sm:text-lg lg:text-xl">
+                <p className="text-sm leading-relaxed text-white/60 sm:text-lg lg:text-xl">
                   {v.description}
                 </p>
               </div>
@@ -362,16 +362,16 @@ export default function AboutPage() {
           }}
           aria-hidden
         />
-        <div className="relative z-[1] flex min-h-[70vh] flex-col items-center justify-center px-4 py-24 text-center sm:px-6 lg:px-8 lg:py-32">
+        <div className="relative z-[1] flex min-h-[50vh] flex-col items-center justify-center px-4 py-14 text-center sm:min-h-[70vh] sm:px-6 sm:py-24 lg:px-8 lg:py-32">
           <svg
-            className="mb-8 h-12 w-12 text-white/30 sm:h-16 sm:w-16"
+            className="mb-6 h-10 w-10 text-white/30 sm:mb-8 sm:h-16 sm:w-16"
             viewBox="0 0 24 24"
             fill="currentColor"
             aria-hidden
           >
             <path d="M4.583 17.321C3.553 16.227 3 15 3 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311C9.591 11.69 11 13.2 11 15c0 1.82-1.343 3.317-3.182 3.317-1.08 0-2.169-.48-3.235-1.996zM14.583 17.321C13.553 16.227 13 15 13 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311C19.591 11.69 21 13.2 21 15c0 1.82-1.343 3.317-3.182 3.317-1.08 0-2.169-.48-3.235-1.996z" />
           </svg>
-          <blockquote className="max-w-4xl text-2xl font-medium leading-snug tracking-tight text-white sm:text-3xl lg:text-[2.5rem] lg:leading-snug">
+          <blockquote className="max-w-4xl text-xl font-medium leading-snug tracking-tight text-white sm:text-3xl lg:text-[2.5rem] lg:leading-snug">
             BBTx helped us move from experimentation to measurable results in a
             matter of months. They didn&apos;t just advise, they
             built alongside us and stayed accountable for outcomes.
@@ -399,10 +399,10 @@ export default function AboutPage() {
           }}
           aria-hidden
         />
-        <div className="relative z-[1] px-4 py-24 sm:px-6 lg:px-8 lg:py-32">
-          <div className="mb-16 text-center lg:mb-20">
+        <div className="relative z-[1] px-4 py-12 sm:px-6 sm:py-24 lg:px-8 lg:py-32">
+          <div className="mb-10 text-center sm:mb-16 lg:mb-20">
             <p className="mb-4 text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#555555]/60">People</p>
-            <h2 className="text-4xl font-medium tracking-tighter text-[#222222] sm:text-5xl lg:text-6xl">
+            <h2 className="text-3xl font-medium tracking-tighter text-[#222222] sm:text-5xl lg:text-6xl">
               The team behind{" "}
               <span
                 className="font-normal italic"
@@ -425,11 +425,11 @@ export default function AboutPage() {
                 />
                 {/* Dark overlay on hover */}
                 <div
-                  className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                  className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-100 transition-opacity duration-300 sm:opacity-0 sm:group-hover:opacity-100"
                   aria-hidden
                 />
-                {/* Content at bottom, visible on hover */}
-                <div className="absolute inset-x-0 bottom-0 flex flex-col p-5 opacity-0 transition-all duration-300 group-hover:opacity-100 sm:p-6">
+                {/* Content at bottom, always visible on mobile, hover on desktop */}
+                <div className="absolute inset-x-0 bottom-0 flex flex-col p-5 opacity-100 transition-all duration-300 sm:opacity-0 sm:group-hover:opacity-100 sm:p-6">
                   <h3 className="text-lg font-semibold tracking-tight text-white sm:text-xl">
                     {p.name}
                   </h3>

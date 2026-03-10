@@ -37,7 +37,7 @@ export function Process() {
         }}
         aria-hidden
       />
-      <div className="relative z-[1] px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
+      <div className="relative z-[1] px-4 py-14 sm:px-6 sm:py-16 lg:px-8 lg:py-24">
         {/* Eyebrow */}
         <p className="mb-6 text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-white/40">
           How We Work
@@ -70,14 +70,14 @@ export function Process() {
               </svg>
             </div>
           </div>
-          <div className="relative z-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:gap-5">
+          <div className="relative z-10 grid grid-cols-2 gap-3 sm:grid-cols-2 lg:grid-cols-4 lg:gap-5">
             {STEPS.map((step) => (
               <div
                 key={step.num}
-                className="relative overflow-hidden rounded-2xl border border-white/15 bg-white/[0.07] p-6 sm:p-8 before:absolute before:left-0 before:right-0 before:top-1/2 before:z-[1] before:hidden before:h-px before:-translate-y-1/2 before:bg-[#ca3726] before:content-[''] lg:before:block"
+                className="relative overflow-hidden rounded-2xl border border-white/15 bg-white/[0.07] p-5 sm:p-6 lg:p-8 before:absolute before:left-0 before:right-0 before:top-1/2 before:z-[1] before:hidden before:h-px before:-translate-y-1/2 before:bg-[#ca3726] before:content-[''] lg:before:block"
               >
                 <span
-                  className="block text-[5rem] font-bold leading-none tracking-tighter sm:text-[6rem]"
+                  className="block text-[3.5rem] font-bold leading-none tracking-tighter sm:text-[4.5rem] lg:text-[5rem]"
                   style={{
                     background: "linear-gradient(to bottom, rgba(255,255,255,0.25), rgba(255,255,255,0))",
                     WebkitBackgroundClip: "text",
@@ -87,10 +87,10 @@ export function Process() {
                 >
                   {step.num}
                 </span>
-                <h3 className="mt-2 text-lg font-semibold tracking-tight text-white sm:text-xl">
+                <h3 className="mt-2 text-base font-semibold tracking-tight text-white sm:text-lg lg:text-xl">
                   {step.title}
                 </h3>
-                <p className="mt-3 text-base leading-relaxed text-white/70 sm:text-[17px]">
+                <p className="mt-2 text-xs leading-relaxed text-white/70 sm:text-sm lg:text-base lg:mt-3">
                   {step.description}
                 </p>
               </div>

@@ -63,12 +63,12 @@ export default function BlogPage() {
       <Nav />
 
       {/* Blog header — full-width, dark, journal-style */}
-      <section className="relative z-[1] w-full overflow-hidden bg-[#222222] pt-20">
+      <section className="relative z-[1] w-full overflow-hidden bg-[#222222] pt-14 sm:pt-20">
         <div className="pointer-events-none absolute inset-0 z-0 opacity-40" style={gridBg} aria-hidden />
         <div className="relative z-[1] w-full px-4 pb-20 pt-16 sm:px-6 lg:px-8 lg:pb-24 lg:pt-20">
           <div className="w-full">
             <p className="mb-6 text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-white/40">Blog</p>
-            <h1 className="mb-3 w-full max-w-[60%] text-4xl font-medium leading-tight tracking-tighter text-white sm:text-5xl lg:mb-4 lg:text-5xl xl:text-6xl 2xl:text-[4rem]">
+            <h1 className="mb-3 w-full text-[1.75rem] font-medium leading-tight tracking-tighter text-white sm:max-w-[60%] sm:text-4xl sm:text-5xl lg:mb-4 lg:text-5xl xl:text-6xl 2xl:text-[4rem]">
               The Journal:{" "}
               <span
                 className="font-normal italic"
@@ -87,7 +87,7 @@ export default function BlogPage() {
                   <input
                     type="email"
                     placeholder="Enter your email"
-                    className="min-w-0 max-w-[60%] flex-1 rounded-lg border border-white/20 bg-white/10 px-4 py-3.5 text-base text-white placeholder:text-white/50 focus:border-white/40 focus:outline-none focus:ring-0"
+                    className="min-w-0 flex-1 rounded-lg border border-white/20 bg-white/10 px-4 py-3.5 text-base text-white placeholder:text-white/50 focus:border-white/40 focus:outline-none focus:ring-0 sm:max-w-[60%]"
                     aria-label="Email for newsletter"
                   />
                   <button
@@ -98,7 +98,7 @@ export default function BlogPage() {
                   </button>
                 </form>
               </div>
-              <p className="text-xl leading-relaxed text-[#555555] sm:text-2xl lg:text-right">
+              <p className="text-sm leading-relaxed text-white/50 sm:text-base lg:text-right">
                 Subscribe to learn about new insights, the latest in AI strategy, implementation practices, and updates.
               </p>
             </div>
@@ -122,7 +122,7 @@ export default function BlogPage() {
         <div className="relative z-[1] w-full px-4 py-12 sm:px-6 lg:px-10 lg:py-16">
           <div className="mx-auto flex w-full flex-col gap-8 lg:flex-row lg:items-start lg:gap-10">
             {/* Left sidebar: filters + social */}
-            <aside className="min-w-0 w-full max-w-[19rem] rounded-xl border border-black/[0.06] bg-white px-6 py-6 shadow-[0_2px_12px_rgba(0,0,0,0.02)] sm:max-w-xs sm:px-7 sm:py-7 lg:sticky lg:top-28 lg:h-[380px]">
+            <aside className="min-w-0 w-full rounded-xl border border-black/[0.06] bg-white px-5 py-5 shadow-[0_2px_12px_rgba(0,0,0,0.02)] sm:px-7 sm:py-7 lg:max-w-[19rem] lg:sticky lg:top-28 lg:h-[380px]">
               <div className="min-w-0">
                 <p className="text-sm font-semibold tracking-tight text-[#222222]">Quick filters</p>
                 <div className="mt-4 min-w-0 space-y-2">
@@ -163,8 +163,8 @@ export default function BlogPage() {
               {POSTS.map((post, index) => (
                 <article
                   key={post.title}
-                  className={`group flex min-h-[180px] flex-col gap-4 rounded-xl border border-black/[0.06] bg-white px-5 py-5 shadow-[0_2px_12px_rgba(0,0,0,0.02)] sm:px-7 sm:py-6 ${
-                    index === 0 ? "lg:min-h-[200px] lg:px-8 lg:py-7" : ""
+                  className={`group flex flex-col gap-3 rounded-xl border border-black/[0.06] bg-white px-4 py-4 shadow-[0_2px_12px_rgba(0,0,0,0.02)] sm:gap-4 sm:px-7 sm:py-6 ${
+                    index === 0 ? "lg:px-8 lg:py-7" : ""
                   }`}
                 >
                   {/* Row 1: image + category/date + title */}
@@ -185,15 +185,15 @@ export default function BlogPage() {
                           {post.readTime.toUpperCase()} · {post.date}
                         </span>
                       </div>
-                      <h2 className="mt-2 text-[1.65rem] font-semibold leading-snug tracking-tight text-[#222222] sm:text-[1.8rem] lg:text-[2rem] xl:text-[2.25rem]">
+                      <h2 className="mt-1.5 text-base font-semibold leading-snug tracking-tight text-[#222222] sm:mt-2 sm:text-[1.65rem] lg:text-[2rem] xl:text-[2.25rem]">
                         {post.title}
                       </h2>
                     </div>
                   </div>
 
                   {/* Row 2: description + read link */}
-                  <div className="flex flex-col gap-2.5 pt-3 sm:flex-row sm:items-end sm:justify-between sm:gap-6">
-                    <p className="min-w-0 max-w-4xl flex-1 text-base leading-relaxed text-[#555555] sm:max-w-5xl sm:text-lg">
+                  <div className="flex flex-col gap-2 pt-2 sm:flex-row sm:items-end sm:justify-between sm:gap-6 sm:pt-3">
+                    <p className="min-w-0 max-w-4xl flex-1 text-sm leading-relaxed text-[#555555] sm:max-w-5xl sm:text-lg">
                       {post.excerpt}
                     </p>
                     <div className="flex items-center justify-end gap-4 sm:flex-col sm:items-end sm:justify-center sm:gap-2.5">

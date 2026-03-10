@@ -75,9 +75,9 @@ export default function AIOrganizationalModelPage() {
       <Nav />
 
       {/* 1. Hero */}
-      <section className="relative z-[1] flex min-h-screen w-full flex-col bg-[#f7f7f7] pt-20">
+      <section className="relative z-[1] flex min-h-[calc(100vh-3.5rem)] w-full flex-col bg-[#f7f7f7] pt-14 sm:min-h-screen sm:pt-20">
         <div className="pointer-events-none absolute inset-0 z-0 opacity-60" style={gridBg} aria-hidden />
-        <div className="relative z-[1] flex flex-1 flex-col justify-end px-4 pb-10 sm:px-6 lg:px-8 lg:pb-14">
+        <div className="relative z-[1] flex flex-1 flex-col justify-end px-4 pb-10 pt-6 sm:pt-0 sm:px-6 lg:px-8 lg:pb-14">
           <p className="mb-6 text-xs font-semibold uppercase tracking-[0.22em] text-[#555555]/60 sm:text-sm">
             AI Organizational Model
           </p>
@@ -87,7 +87,7 @@ export default function AIOrganizationalModelPage() {
               grounded in reality.
             </span>
           </h1>
-          <p className="mt-6 max-w-5xl text-xl leading-relaxed tracking-tight text-[#555555] sm:text-2xl">
+          <p className="mt-4 max-w-5xl text-base leading-relaxed tracking-tight text-[#555555] sm:mt-6 sm:text-2xl">
             A dynamic digital model of your organization built in days, maintained over time, and designed to make every leadership decision more informed.
           </p>
         </div>
@@ -98,20 +98,20 @@ export default function AIOrganizationalModelPage() {
 
       {/* 2. What the Model Represents — centered editorial, 3 numbered blocks in a row */}
       <section className="relative z-[1] w-full bg-white">
-        <div className="flex min-h-screen flex-col items-center justify-center px-4 py-28 text-center sm:px-6 lg:px-8 lg:py-36">
+        <div className="flex flex-col items-center justify-center px-4 py-14 text-center sm:min-h-screen sm:px-6 sm:py-28 lg:px-8 lg:py-36">
           <p className="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#555555]/60">
             What the Model Represents
           </p>
-          <h2 className="mt-5 max-w-6xl text-[2.2rem] font-medium leading-[1.1] tracking-tighter text-[#222222] sm:text-[3rem] lg:text-[3.6rem] xl:text-[4.4rem]">
+          <h2 className="mt-4 max-w-6xl text-[1.7rem] font-medium leading-[1.1] tracking-tighter text-[#222222] sm:mt-5 sm:text-[3rem] lg:text-[3.6rem] xl:text-[4.4rem]">
             A structured representation of how your organization actually operates.
           </h2>
-          <p className="mt-6 max-w-3xl text-xl leading-relaxed tracking-tight text-[#555555] sm:text-2xl">
+          <p className="mt-4 max-w-3xl text-base leading-relaxed tracking-tight text-[#555555] sm:mt-6 sm:text-2xl">
             An AI organizational model creates a structured view of the organization so leadership can examine how it
             truly operates.
           </p>
 
-          <div className="mt-20 w-full max-w-[90rem]">
-            <div className="rounded-2xl bg-[#f7f7f7] p-8 sm:p-10 lg:p-12">
+          <div className="mt-10 w-full max-w-[90rem] sm:mt-20">
+            <div className="rounded-2xl bg-[#f7f7f7] p-5 sm:p-10 lg:p-12">
               <div className="grid grid-cols-1 gap-10 text-left sm:grid-cols-3 sm:gap-12">
                 {[
                   { num: "01", title: "Organizational Structure", body: "Who sits where, who reports to whom, and how your teams are actually organized beyond what the org chart shows. A clear map of the human architecture of your organization." },
@@ -142,37 +142,37 @@ export default function AIOrganizationalModelPage() {
       {/* 3. What the Model Represents — left eyebrow, right headline + cards */}
       <section className="relative z-[1] w-full bg-[#f7f7f7]">
         <div className="pointer-events-none absolute inset-0 z-0 opacity-60" style={gridBg} aria-hidden />
-        <div className="relative z-[1] px-4 py-24 sm:px-6 lg:px-8 lg:py-32">
+        <div className="relative z-[1] px-4 py-12 sm:px-6 sm:py-24 lg:px-8 lg:py-32">
           <div className="grid gap-6 lg:grid-cols-[3fr_7fr] lg:items-start lg:gap-12">
             <p className="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#555555]/60">
               What the Model Represents
             </p>
             <div className="pr-0 lg:pr-[10%]">
-              <h2 className="text-4xl font-medium leading-tight tracking-tighter text-[#222222] sm:text-5xl lg:text-5xl xl:text-6xl 2xl:text-[4rem]">
+              <h2 className="text-3xl font-medium leading-tight tracking-tighter text-[#222222] sm:text-5xl lg:text-5xl xl:text-6xl 2xl:text-[4rem]">
                 A structured representation of how your organization actually operates.
               </h2>
               <div className="mt-10 grid grid-cols-1 gap-1 sm:grid-cols-2 lg:mt-14 lg:gap-1.5">
-                <div className="rounded-2xl border border-black/[0.06] bg-white p-8 shadow-[0_2px_12px_rgba(0,0,0,0.02)] sm:col-span-2 sm:p-10 lg:p-12">
-                  <span className="text-[4rem] font-bold leading-none tracking-tighter text-[#222222]/10 sm:text-[5rem]">01</span>
-                  <h3 className="mt-2 text-xl font-semibold tracking-tight text-[#222222] sm:text-2xl lg:text-3xl">
+                <div className="rounded-2xl border border-black/[0.06] bg-white p-5 shadow-[0_2px_12px_rgba(0,0,0,0.02)] sm:col-span-2 sm:p-10 lg:p-12">
+                  <span className="text-[3rem] font-bold leading-none tracking-tighter text-[#222222]/10 sm:text-[5rem]">01</span>
+                  <h3 className="mt-2 text-lg font-semibold tracking-tight text-[#222222] sm:text-2xl lg:text-3xl">
                     Organizational Structure
                   </h3>
                   <p className="mt-3 text-base leading-relaxed text-[#555555] sm:text-lg">
                     A clear map of who sits where, who reports to whom, and how your teams are really wired beyond the formal org chart. The human architecture of your organization in one place so leadership can see how structure shapes day-to-day work and where gaps create friction.
                   </p>
                 </div>
-                <div className="rounded-2xl border border-black/[0.06] bg-white p-8 shadow-[0_2px_12px_rgba(0,0,0,0.02)] sm:p-10 lg:p-12">
-                  <span className="text-[4rem] font-bold leading-none tracking-tighter text-[#222222]/10 sm:text-[5rem]">02</span>
-                  <h3 className="mt-2 text-xl font-semibold tracking-tight text-[#222222] sm:text-2xl">
+                <div className="rounded-2xl border border-black/[0.06] bg-white p-5 shadow-[0_2px_12px_rgba(0,0,0,0.02)] sm:p-10 lg:p-12">
+                  <span className="text-[3rem] font-bold leading-none tracking-tighter text-[#222222]/10 sm:text-[5rem]">02</span>
+                  <h3 className="mt-2 text-lg font-semibold tracking-tight text-[#222222] sm:text-2xl">
                     Workflow Movement
                   </h3>
                   <p className="mt-3 text-base leading-relaxed text-[#555555] sm:text-lg">
                     How work moves across your organization. Where it flows efficiently, where it gets stuck, and where handoffs between teams and functions create friction or delay.
                   </p>
                 </div>
-                <div className="rounded-2xl border border-black/[0.06] bg-white p-8 shadow-[0_2px_12px_rgba(0,0,0,0.02)] sm:p-10 lg:p-12">
-                  <span className="text-[4rem] font-bold leading-none tracking-tighter text-[#222222]/10 sm:text-[5rem]">03</span>
-                  <h3 className="mt-2 text-xl font-semibold tracking-tight text-[#222222] sm:text-2xl">
+                <div className="rounded-2xl border border-black/[0.06] bg-white p-5 shadow-[0_2px_12px_rgba(0,0,0,0.02)] sm:p-10 lg:p-12">
+                  <span className="text-[3rem] font-bold leading-none tracking-tighter text-[#222222]/10 sm:text-[5rem]">03</span>
+                  <h3 className="mt-2 text-lg font-semibold tracking-tight text-[#222222] sm:text-2xl">
                     Decision Flow & Collaboration
                   </h3>
                   <p className="mt-3 text-base leading-relaxed text-[#555555] sm:text-lg">
@@ -245,7 +245,7 @@ export default function AIOrganizationalModelPage() {
                   className="relative overflow-hidden rounded-2xl border border-white/15 bg-white/[0.07] p-6 sm:p-8"
                 >
                   <span
-                    className="block text-[5rem] font-bold leading-none tracking-tighter sm:text-[6rem]"
+                    className="block text-[3.5rem] font-bold leading-none tracking-tighter sm:text-[5rem] lg:text-[6rem]"
                     style={{
                       background: "linear-gradient(to bottom, rgba(255,255,255,0.25), rgba(255,255,255,0))",
                       WebkitBackgroundClip: "text",
@@ -269,10 +269,10 @@ export default function AIOrganizationalModelPage() {
       </section>
 
       {/* 5. Before and After Visibility — full-screen split */}
-      <section className="relative z-[1] min-h-screen w-full">
-        <div className="flex min-h-screen flex-col lg:flex-row">
+      <section className="relative z-[1] w-full">
+        <div className="flex flex-col lg:flex-row lg:min-h-screen">
           {/* Before */}
-          <div className="relative flex flex-col justify-center bg-[#f0f0f0] px-6 py-20 sm:px-10 lg:basis-[32%] lg:min-h-screen lg:px-12 lg:py-32">
+          <div className="relative flex flex-col justify-center bg-[#f0f0f0] px-6 py-12 sm:px-10 sm:py-20 lg:basis-[32%] lg:min-h-screen lg:px-12 lg:py-32">
             <div className="pointer-events-none absolute inset-0 z-0 opacity-50" style={gridBg} aria-hidden />
             <div className="relative z-[1]">
               <p className="mb-5 text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#555555]/60">Before</p>
@@ -296,7 +296,7 @@ export default function AIOrganizationalModelPage() {
           </div>
 
           {/* After */}
-          <div className="flex flex-col justify-center bg-white px-6 py-20 sm:px-10 lg:basis-[68%] lg:min-h-screen lg:px-20 lg:py-32 xl:px-28">
+          <div className="flex flex-col justify-center bg-white px-6 py-12 sm:px-10 sm:py-20 lg:basis-[68%] lg:min-h-screen lg:px-20 lg:py-32 xl:px-28">
             <p className="mb-6 text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#ca3726]">After</p>
             <h3 className="text-[2.2rem] font-medium leading-tight tracking-tighter text-[#222222] sm:text-[3rem] lg:text-[3.6rem] xl:text-[4.2rem]">
               Systemic{" "}
@@ -304,7 +304,7 @@ export default function AIOrganizationalModelPage() {
                 understanding.
               </span>
             </h3>
-            <p className="mt-6 max-w-2xl text-xl leading-relaxed tracking-tight text-[#555555] sm:text-2xl">
+            <p className="mt-4 max-w-2xl text-base leading-relaxed tracking-tight text-[#555555] sm:mt-6 sm:text-2xl">
               The organizational model gives leadership a connected, explorable view of how the entire system behaves.
             </p>
             <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 sm:gap-8 lg:mt-16">
@@ -326,16 +326,16 @@ export default function AIOrganizationalModelPage() {
 
       {/* 7. Testimonial — centered block, red background */}
       <section className="relative z-[1] w-full bg-[#ca3726]">
-        <div className="flex min-h-[60vh] flex-col items-center justify-center px-4 py-20 text-center sm:px-6 lg:px-8 lg:py-28">
+        <div className="flex flex-col items-center justify-center px-4 py-12 text-center sm:min-h-[60vh] sm:px-6 sm:py-20 lg:px-8 lg:py-28">
           <svg
-            className="mb-8 h-12 w-12 text-white/25 sm:h-16 sm:w-16"
+            className="mb-6 h-10 w-10 text-white/25 sm:mb-8 sm:h-16 sm:w-16"
             viewBox="0 0 24 24"
             fill="currentColor"
             aria-hidden
           >
             <path d="M4.583 17.321C3.553 16.227 3 15 3 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311C9.591 11.69 11 13.2 11 15c0 1.82-1.343 3.317-3.182 3.317-1.08 0-2.169-.48-3.235-1.996zM14.583 17.321C13.553 16.227 13 15 13 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311C19.591 11.69 21 13.2 21 15c0 1.82-1.343 3.317-3.182 3.317-1.08 0-2.169-.48-3.235-1.996z" />
           </svg>
-          <blockquote className="max-w-4xl text-2xl font-medium leading-snug tracking-tight text-white sm:text-3xl lg:text-[2.5rem] lg:leading-snug">
+          <blockquote className="max-w-4xl text-lg font-medium leading-snug tracking-tight text-white sm:text-3xl lg:text-[2.5rem] lg:leading-snug">
             The organizational model gave us a view of our company we&apos;d never had before. We could finally see how teams, workflows, and decisions connected — and where the real friction was hiding.
           </blockquote>
           <div className="mt-10 flex items-center gap-4">
@@ -349,18 +349,18 @@ export default function AIOrganizationalModelPage() {
       </section>
 
       {/* 8. FAQ — collapsible with Plus icon */}
-      <section className="relative z-[1] flex min-h-screen w-full flex-col items-center justify-center border-t border-black/[0.06] bg-[#f7f7f7] px-4 py-24 sm:px-6 lg:px-8 lg:py-32">
+      <section className="relative z-[1] w-full border-t border-black/[0.06] bg-[#f7f7f7] px-4 py-12 sm:px-6 sm:py-24 lg:px-8 lg:py-32">
         <div className="mx-auto w-full max-w-4xl text-center">
           <p className="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#555555]/60">
             What Leaders Ask Us
           </p>
-          <h2 className="mt-5 text-4xl font-medium leading-tight tracking-tighter text-[#222222] sm:text-5xl lg:text-5xl xl:text-6xl 2xl:text-[4rem]">
+          <h2 className="mt-4 text-3xl font-medium leading-tight tracking-tighter text-[#222222] sm:mt-5 sm:text-5xl lg:text-5xl xl:text-6xl 2xl:text-[4rem]">
             Frequently Asked{" "}
             <span className="font-normal italic" style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}>
               Questions
             </span>
           </h2>
-          <ul className="mt-16 flex flex-col gap-3 text-left sm:mt-20 sm:gap-4">
+          <ul className="mt-8 flex flex-col gap-3 text-left sm:mt-16 sm:gap-4">
             {MODEL_FAQ_ITEMS.map((item, index) => {
               const isOpen = faqOpenIndex === index;
               return (

@@ -31,7 +31,7 @@ export const METRICS = [
 export function Results() {
   return (
     <section className="relative z-[1] bg-white">
-      <div className="relative z-[1] px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
+      <div className="relative z-[1] px-4 pt-16 pb-0 sm:px-6 sm:py-16 lg:px-8 lg:py-20">
         {/* Header and description first */}
         <div className="grid gap-8 lg:grid-cols-[3fr_2fr] lg:items-end lg:gap-12">
           <h2 className="text-4xl font-medium leading-tight tracking-tighter text-[#222222] sm:text-5xl lg:text-5xl xl:text-6xl 2xl:text-[4rem]">
@@ -51,23 +51,23 @@ export function Results() {
         </div>
 
         {/* Logo carousel below headline */}
-        <div className="relative -mb-40 mt-0 w-full min-h-[320px] overflow-hidden sm:-mb-44 sm:min-h-[400px] sm:mt-2 lg:-mb-52 lg:min-h-[460px] lg:mt-4">
+        <div className="relative mb-2 mt-4 w-full min-h-[150px] overflow-hidden sm:-mb-44 sm:min-h-[400px] sm:mt-2 lg:-mb-52 lg:min-h-[460px] lg:mt-4">
           <div
-            className="pointer-events-none absolute inset-y-0 left-0 z-10 w-24 shrink-0 sm:w-32 lg:w-40"
+            className="pointer-events-none absolute inset-y-0 left-0 z-10 hidden w-32 shrink-0 sm:block lg:w-40"
             style={{
-              background: "linear-gradient(to right, #ffffff 0%, transparent 100%)",
+              background: "linear-gradient(to right, rgba(255,255,255,0.4) 0%, transparent 100%)",
             }}
             aria-hidden
           />
           <div
-            className="pointer-events-none absolute inset-y-0 right-0 z-10 w-24 shrink-0 sm:w-32 lg:w-40"
+            className="pointer-events-none absolute inset-y-0 right-0 z-10 hidden w-32 shrink-0 sm:block lg:w-40"
             style={{
-              background: "linear-gradient(to left, #ffffff 0%, transparent 100%)",
+              background: "linear-gradient(to left, rgba(255,255,255,0.4) 0%, transparent 100%)",
             }}
             aria-hidden
           />
           <div
-            className="flex w-max items-center gap-3 sm:gap-4 lg:gap-5"
+            className="flex w-max items-center gap-4 sm:gap-4 lg:gap-5"
             style={{
               animation: "logo-scroll 80s linear infinite",
               willChange: "transform",
@@ -77,14 +77,14 @@ export function Results() {
             {[...COMPANY_LOGOS, ...COMPANY_LOGOS].map((src, i) => (
               <div
                 key={`${src}-${i}`}
-                className="relative flex h-56 shrink-0 items-center justify-center px-2 sm:h-72 sm:px-3 lg:h-88 lg:px-4"
+                className="relative flex h-36 shrink-0 items-center justify-center px-2 sm:h-72 sm:px-3 lg:h-88 lg:px-4"
               >
                 <Image
                   src={src}
                   alt=""
                   width={960}
                   height={384}
-                  className="h-40 w-auto max-w-[700px] object-contain opacity-80 sm:h-48 sm:max-w-[800px] lg:h-56 lg:max-w-[880px]"
+                  className="h-24 w-auto max-w-[260px] object-contain opacity-80 sm:h-48 sm:max-w-[800px] lg:h-56 lg:max-w-[880px]"
                   unoptimized
                 />
               </div>

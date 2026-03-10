@@ -36,7 +36,7 @@ export function Footer() {
     <footer className="bg-[#222222] text-[#e8e8e8]">
       <div className="w-full px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
         {/* Top: logo + newsletter (left 60%), nav columns (right 40%) */}
-        <div className="grid gap-10 lg:grid-cols-[6fr_4fr] lg:gap-16">
+        <div className="grid gap-10 sm:grid-cols-1 lg:grid-cols-[6fr_4fr] lg:gap-16">
           <div className="space-y-6">
             <a href="/" className="flex items-center gap-2">
               <Image
@@ -55,7 +55,7 @@ export function Footer() {
                 Subscribe for our newsletter
               </h3>
               <form
-                className="mt-3 flex w-full max-w-[408px] items-center gap-2"
+                className="mt-3 flex w-full max-w-[408px] items-center gap-2 sm:max-w-sm"
                 onSubmit={(e) => e.preventDefault()}
               >
                 <input
@@ -77,9 +77,9 @@ export function Footer() {
               </p>
             </div>
           </div>
-          <div className="grid grid-cols-1 gap-8 text-right sm:grid-cols-3">
+          <div className="grid grid-cols-2 gap-8 sm:grid-cols-3">
             {FOOTER_NAV.map((col) => (
-              <div key={col.heading} className="text-right">
+              <div key={col.heading} className="text-left sm:text-right">
                 <h3 className="text-xs font-normal uppercase tracking-wider text-[#e8e8e8]">
                   {col.heading}
                 </h3>
@@ -125,11 +125,11 @@ export function Footer() {
               </a>
             </div>
           </div>
-          <div className="mt-6 flex flex-col gap-4 border-t border-[#333] pt-6 sm:flex-row sm:items-center sm:justify-between">
-            <p className="text-xs text-[#888]">
+          <div className="mt-6 flex flex-col gap-3 border-t border-[#333] pt-6 sm:flex-row sm:items-center sm:justify-between">
+            <p className="text-xs leading-relaxed text-[#888]">
               We help organizations assess AI readiness, build strategy, and scale implementation for long-term value.
             </p>
-            <p className="text-sm text-[#888]">Designed by BBTx</p>
+            <p className="text-xs text-[#888] sm:text-sm sm:shrink-0">Designed by BBTx</p>
           </div>
         </div>
       </div>

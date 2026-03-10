@@ -53,8 +53,8 @@ export function Differentiation() {
         aria-hidden
       />
 
-      <div className="relative z-[1] px-4 py-8 sm:px-6 lg:px-8 lg:py-10">
-        <div className="h-full w-full rounded-xl border border-black/[0.06] bg-white px-4 py-8 shadow-[0_2px_12px_rgba(0,0,0,0.01)] sm:px-6 lg:px-8 lg:py-10">
+      <div className="relative z-[1] px-3 py-6 sm:px-6 sm:py-8 lg:px-8 lg:py-10">
+        <div className="h-full w-full rounded-xl border border-black/[0.06] bg-white px-4 py-8 shadow-[0_2px_12px_rgba(0,0,0,0.01)] sm:px-6 sm:py-8 lg:px-8 lg:py-10">
           {/* Header block, centered */}
           <div className="mx-auto max-w-4xl text-center">
           <p className="mb-4 text-center text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#555555]/60">
@@ -87,7 +87,7 @@ export function Differentiation() {
                 {TYPICAL_POINTS.map((point) => (
                   <div
                     key={point}
-                    className="flex items-center gap-4 rounded-xl border border-black/[0.06] bg-[#f0f0f0] px-4 py-4 text-base text-[#222222] shadow-[0_2px_12px_rgba(0,0,0,0.01)] sm:px-5 sm:py-5 sm:text-lg"
+                    className="flex items-center gap-3 rounded-xl border border-black/[0.06] bg-[#f0f0f0] px-3 py-3 text-sm text-[#222222] shadow-[0_2px_12px_rgba(0,0,0,0.01)] sm:gap-4 sm:px-5 sm:py-4 sm:text-base lg:text-lg"
                   >
                     <MinusIcon />
                     <p className="leading-relaxed">{point}</p>
@@ -105,7 +105,7 @@ export function Differentiation() {
                 {BBTX_POINTS.map((point) => (
                   <div
                     key={point}
-                    className="flex items-center gap-4 rounded-xl border border-black/[0.06] bg-[#f0f0f0] px-4 py-4 text-base text-[#222222] shadow-[0_2px_12px_rgba(0,0,0,0.01)] sm:px-5 sm:py-5 sm:text-lg"
+                    className="flex items-center gap-3 rounded-xl border border-black/[0.06] bg-[#f0f0f0] px-3 py-3 text-sm text-[#222222] shadow-[0_2px_12px_rgba(0,0,0,0.01)] sm:gap-4 sm:px-5 sm:py-4 sm:text-base lg:text-lg"
                   >
                     <PlusIcon />
                     <p className="leading-relaxed">{point}</p>

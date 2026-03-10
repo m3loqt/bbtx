@@ -61,7 +61,7 @@ export function FAQ() {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
-    <section className="relative z-[1] flex min-h-screen w-full flex-col items-center justify-center border-t border-black/[0.06] bg-white px-4 py-24 sm:px-6 lg:px-8 lg:py-32">
+    <section className="relative z-[1] w-full border-t border-black/[0.06] bg-white px-4 py-16 sm:px-6 sm:py-24 lg:px-8 lg:py-32">
       <div className="mx-auto w-full max-w-4xl text-center">
         <p className="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#555555]/60">
           What Leaders Ask Us

@@ -89,9 +89,9 @@ export default function StrategyRoadmapPage() {
       <Nav />
 
       {/* 1. Hero — light top with headline + grid, full-width image bottom half */}
-      <section className="relative z-[1] flex min-h-screen w-full flex-col bg-[#f7f7f7] pt-20">
+      <section className="relative z-[1] flex min-h-[calc(100vh-3.5rem)] w-full flex-col bg-[#f7f7f7] pt-14 sm:min-h-screen sm:pt-20">
         <div className="pointer-events-none absolute inset-0 z-0 opacity-60" style={gridBg} aria-hidden />
-        <div className="relative z-[1] flex flex-1 flex-col justify-end px-4 pb-10 sm:px-6 lg:px-8 lg:pb-14">
+        <div className="relative z-[1] flex flex-1 flex-col justify-end px-4 pb-10 pt-6 sm:pt-0 sm:px-6 lg:px-8 lg:pb-14">
           <p className="mb-6 text-xs font-semibold uppercase tracking-[0.22em] text-[#555555]/60 sm:text-sm">
             Transformational Strategy & Implementation Plan
           </p>
@@ -101,7 +101,7 @@ export default function StrategyRoadmapPage() {
               your leadership can execute with confidence
             </span>
           </h1>
-          <p className="mt-6 max-w-5xl text-xl leading-relaxed tracking-tight text-[#555555] sm:text-2xl">
+          <p className="mt-4 max-w-5xl text-base leading-relaxed tracking-tight text-[#555555] sm:mt-6 sm:text-2xl">
             We help you find the one question that matters most, then build a strategy with prioritized initiatives, clear ownership, and a 90-day plan your team can execute.
           </p>
         </div>
@@ -111,10 +111,10 @@ export default function StrategyRoadmapPage() {
       </section>
 
       {/* 2. The noise — scattered questions that leaders face, then clarity cuts through */}
-      <section className="relative z-[1] min-h-screen w-full bg-[#222222]">
-        <div className="relative z-[1] flex min-h-screen flex-col items-center justify-center px-4 text-center sm:px-6 lg:px-8">
+      <section className="relative z-[1] w-full bg-[#222222]">
+        <div className="relative z-[1] flex flex-col items-center justify-center px-4 py-16 text-center sm:min-h-screen sm:px-6 sm:py-24 lg:px-8">
           <div className="w-full">
-            <p className="mb-16 text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-white/40 lg:mb-20">
+            <p className="mb-10 text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-white/40 sm:mb-16 lg:mb-20">
               Sound familiar?
             </p>
             <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-4 sm:gap-x-8 sm:gap-y-5 lg:gap-x-12 lg:gap-y-6">
@@ -132,8 +132,8 @@ export default function StrategyRoadmapPage() {
                 </span>
               ))}
             </div>
-            <div className="my-16 h-px w-full bg-white/20 lg:my-20" />
-            <p className="mx-auto max-w-7xl text-[2rem] font-medium leading-[1.08] tracking-tighter text-white sm:text-[2.5rem] md:text-[2.75rem] lg:text-[3.25rem] xl:text-[3.75rem]">
+            <div className="my-10 h-px w-full bg-white/20 sm:my-16 lg:my-20" />
+            <p className="mx-auto max-w-7xl text-[1.6rem] font-medium leading-[1.08] tracking-tighter text-white sm:text-[2.5rem] md:text-[2.75rem] lg:text-[3.25rem] xl:text-[3.75rem]">
               We don't answer all of them at once. We help you find the{" "}
               <span className="text-[#ca3726]">one question</span>{" "}
               that matters most right now and build a strategy from there.
@@ -143,18 +143,18 @@ export default function StrategyRoadmapPage() {
       </section>
 
       {/* 3. Who this is for — half page, three qualifiers */}
-      <section className="relative z-[1] flex min-h-[50vh] w-full flex-col justify-center border-t border-black/[0.06] bg-white px-4 py-24 sm:px-6 lg:px-8 lg:py-32">
+      <section className="relative z-[1] flex w-full flex-col justify-center border-t border-black/[0.06] bg-white px-4 py-12 sm:min-h-[50vh] sm:px-6 sm:py-24 lg:px-8 lg:py-32">
         <div className="w-full">
           <p className="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#555555]/60">
             Is This Right For You
           </p>
-          <h2 className="mt-5 max-w-6xl text-4xl font-medium leading-tight tracking-tighter text-[#222222] sm:text-5xl lg:text-5xl xl:text-6xl">
+          <h2 className="mt-4 max-w-6xl text-3xl font-medium leading-tight tracking-tighter text-[#222222] sm:mt-5 sm:text-5xl lg:text-5xl xl:text-6xl">
             This engagement is built for leaders who are{" "}
             <span className="font-normal italic" style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}>
               serious about moving forward.
             </span>
           </h2>
-          <div className="mt-12 grid grid-cols-1 gap-8 sm:gap-10 md:grid-cols-3 lg:mt-16 lg:gap-12">
+          <div className="mt-8 grid grid-cols-1 gap-6 sm:mt-12 sm:gap-10 md:grid-cols-3 lg:mt-16 lg:gap-12">
             <div>
               <h3 className="text-lg font-semibold tracking-tight text-[#222222] sm:text-xl">
                 You know AI matters but don't know where to start
@@ -186,13 +186,13 @@ export default function StrategyRoadmapPage() {
       {/* 4. How we work — same structure as Services: left = eyebrow, right = headline + cards */}
       <section className="relative z-[1] w-full bg-[#f7f7f7]">
         <div className="pointer-events-none absolute inset-0 z-0 opacity-60" style={gridBg} aria-hidden />
-        <div className="relative z-[1] px-4 py-24 sm:px-6 lg:px-8 lg:py-32">
+        <div className="relative z-[1] px-4 py-12 sm:px-6 sm:py-24 lg:px-8 lg:py-32">
           <div className="grid gap-6 lg:grid-cols-[3fr_7fr] lg:items-start lg:gap-12">
             <p className="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#555555]/60">
               How we work
             </p>
             <div className="pr-0 lg:pr-[10%]">
-              <h2 className="text-4xl font-medium leading-tight tracking-tighter text-[#222222] sm:text-5xl lg:text-5xl xl:text-6xl 2xl:text-[4rem]">
+              <h2 className="text-3xl font-medium leading-tight tracking-tighter text-[#222222] sm:text-5xl lg:text-5xl xl:text-6xl 2xl:text-[4rem]">
                 Prioritized initiatives, defined ownership,{" "}
                 <span className="font-normal italic" style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}>
                   sequenced rollout.
@@ -200,25 +200,25 @@ export default function StrategyRoadmapPage() {
               </h2>
               {/* Cards on the right: 1 full-width, then 2 side by side */}
               <div className="mt-10 grid grid-cols-1 gap-1 sm:grid-cols-2 lg:mt-14 lg:gap-1.5">
-                <div className="rounded-2xl border border-black/[0.06] bg-white p-8 shadow-[0_2px_12px_rgba(0,0,0,0.02)] sm:col-span-2 sm:p-10 lg:p-12">
-                  <span className="text-[4rem] font-bold leading-none tracking-tighter text-[#222222]/10 sm:text-[5rem]">01</span>
-                  <h3 className="mt-2 text-xl font-semibold tracking-tight text-[#222222] sm:text-2xl lg:text-3xl">The context</h3>
-                  <div className="mt-6 space-y-4 text-base leading-relaxed text-[#555555] sm:text-lg">
+                <div className="rounded-2xl border border-black/[0.06] bg-white p-5 shadow-[0_2px_12px_rgba(0,0,0,0.02)] sm:col-span-2 sm:p-10 lg:p-12">
+                  <span className="text-[3rem] font-bold leading-none tracking-tighter text-[#222222]/10 sm:text-[5rem]">01</span>
+                  <h3 className="mt-2 text-lg font-semibold tracking-tight text-[#222222] sm:text-2xl lg:text-3xl">The context</h3>
+                  <div className="mt-4 space-y-4 text-sm leading-relaxed text-[#555555] sm:mt-6 sm:text-lg">
                     <p>What decision are you trying to make? Who needs to be in the room? We map constraints: budget, timeline, talent, and risk appetite so the transformation strategy is grounded in your reality. We start with what's true, then build a plan your leadership can own.</p>
                     
                   </div>
                 </div>
-                <div className="rounded-2xl border border-black/[0.06] bg-white p-8 shadow-[0_2px_12px_rgba(0,0,0,0.02)] sm:p-10 lg:p-12">
-                  <span className="text-[4rem] font-bold leading-none tracking-tighter text-[#222222]/10 sm:text-[5rem]">02</span>
-                  <h3 className="mt-2 text-xl font-semibold tracking-tight text-[#222222] sm:text-2xl">Prioritized initiatives & ownership</h3>
-                  <p className="mt-6 text-base leading-relaxed text-[#555555] sm:text-lg">
+                <div className="rounded-2xl border border-black/[0.06] bg-white p-5 shadow-[0_2px_12px_rgba(0,0,0,0.02)] sm:p-10 lg:p-12">
+                  <span className="text-[3rem] font-bold leading-none tracking-tighter text-[#222222]/10 sm:text-[5rem]">02</span>
+                  <h3 className="mt-2 text-lg font-semibold tracking-tight text-[#222222] sm:text-2xl">Prioritized initiatives & ownership</h3>
+                  <p className="mt-4 text-sm leading-relaxed text-[#555555] sm:mt-6 sm:text-lg">
                     We tie every initiative to revenue, cost, or risk and assign clear ownership. What's worth doing now? What can wait? Your plan has names and accountability, not vague "use cases."
                   </p>
                 </div>
-                <div className="rounded-2xl border border-black/[0.06] bg-white p-8 shadow-[0_2px_12px_rgba(0,0,0,0.02)] sm:p-10 lg:p-12">
-                  <span className="text-[4rem] font-bold leading-none tracking-tighter text-[#222222]/10 sm:text-[5rem]">03</span>
-                  <h3 className="mt-2 text-xl font-semibold tracking-tight text-[#222222] sm:text-2xl">Sequence & 90-day plan</h3>
-                  <p className="mt-6 text-base leading-relaxed text-[#555555] sm:text-lg">
+                <div className="rounded-2xl border border-black/[0.06] bg-white p-5 shadow-[0_2px_12px_rgba(0,0,0,0.02)] sm:p-10 lg:p-12">
+                  <span className="text-[3rem] font-bold leading-none tracking-tighter text-[#222222]/10 sm:text-[5rem]">03</span>
+                  <h3 className="mt-2 text-lg font-semibold tracking-tight text-[#222222] sm:text-2xl">Sequence & 90-day plan</h3>
+                  <p className="mt-4 text-sm leading-relaxed text-[#555555] sm:mt-6 sm:text-lg">
                     A sequenced rollout with a concrete 90-day action plan and clear success metrics. First this, then that, with dates. Practical direction your teams can execute.
                   </p>
                 </div>
@@ -229,20 +229,20 @@ export default function StrategyRoadmapPage() {
       </section>
 
       {/* 5. Your Deliverables — 1x4 grid, red section with frosted cards */}
-      <section className="relative z-[1] w-full bg-[#b03020] px-4 py-24 sm:px-6 lg:px-8 lg:py-32">
+      <section className="relative z-[1] w-full bg-[#b03020] px-4 py-12 sm:px-6 sm:py-24 lg:px-8 lg:py-32">
         <div className="w-full">
           <p className="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-white/60">
             Your Deliverables
           </p>
-          <h2 className="mt-5 max-w-6xl text-4xl font-medium leading-tight tracking-tighter text-white sm:text-5xl lg:text-5xl xl:text-6xl">
+          <h2 className="mt-4 max-w-6xl text-3xl font-medium leading-tight tracking-tighter text-white sm:mt-5 sm:text-5xl lg:text-5xl xl:text-6xl">
             Everything your leadership team needs to{" "}
             <span className="font-normal italic" style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}>
               move with confidence.
             </span>
           </h2>
-          <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:mt-16 lg:grid-cols-4 lg:gap-6">
-            <div className="rounded-2xl border border-white/15 bg-white/[0.12] p-8 shadow-[0_2px_20px_rgba(0,0,0,0.08)] sm:p-8 lg:p-10">
-              <span className="text-6xl font-bold leading-none tracking-tighter text-white/30 sm:text-7xl lg:text-8xl">1</span>
+          <div className="mt-8 grid grid-cols-1 gap-4 sm:mt-12 sm:grid-cols-2 lg:mt-16 lg:grid-cols-4 lg:gap-6">
+            <div className="rounded-2xl border border-white/15 bg-white/[0.12] p-5 shadow-[0_2px_20px_rgba(0,0,0,0.08)] sm:p-8 lg:p-10">
+              <span className="text-5xl font-bold leading-none tracking-tighter text-white/30 sm:text-7xl lg:text-8xl">1</span>
               <h3 className="mt-4 text-lg font-bold tracking-tight text-white sm:text-xl">
                 Written Transformation Strategy Document
               </h3>
@@ -250,8 +250,8 @@ export default function StrategyRoadmapPage() {
                 A clear, senior-ready document capturing your AI vision, strategic priorities, organizational readiness, and the rationale behind every recommendation.
               </p>
             </div>
-            <div className="rounded-2xl border border-white/15 bg-white/[0.12] p-8 shadow-[0_2px_20px_rgba(0,0,0,0.08)] sm:p-8 lg:p-10">
-              <span className="text-6xl font-bold leading-none tracking-tighter text-white/30 sm:text-7xl lg:text-8xl">2</span>
+            <div className="rounded-2xl border border-white/15 bg-white/[0.12] p-5 shadow-[0_2px_20px_rgba(0,0,0,0.08)] sm:p-8 lg:p-10">
+              <span className="text-5xl font-bold leading-none tracking-tighter text-white/30 sm:text-7xl lg:text-8xl">2</span>
               <h3 className="mt-4 text-lg font-bold tracking-tight text-white sm:text-xl">
                 Prioritized AI Initiative Roadmap
               </h3>
@@ -259,8 +259,8 @@ export default function StrategyRoadmapPage() {
                 A ranked list of AI initiatives tied to business outcomes, with effort, impact, and ownership mapped for each one. No ambiguity about where to start.
               </p>
             </div>
-            <div className="rounded-2xl border border-white/15 bg-white/[0.12] p-8 shadow-[0_2px_20px_rgba(0,0,0,0.08)] sm:p-8 lg:p-10">
-              <span className="text-6xl font-bold leading-none tracking-tighter text-white/30 sm:text-7xl lg:text-8xl">3</span>
+            <div className="rounded-2xl border border-white/15 bg-white/[0.12] p-5 shadow-[0_2px_20px_rgba(0,0,0,0.08)] sm:p-8 lg:p-10">
+              <span className="text-5xl font-bold leading-none tracking-tighter text-white/30 sm:text-7xl lg:text-8xl">3</span>
               <h3 className="mt-4 text-lg font-bold tracking-tight text-white sm:text-xl">
                 90-Day Action Plan
               </h3>
@@ -268,8 +268,8 @@ export default function StrategyRoadmapPage() {
                 A concrete, time-bound plan your team can execute immediately. Milestones, owners, and success metrics built in from day one.
               </p>
             </div>
-            <div className="rounded-2xl border border-white/15 bg-white/[0.12] p-8 shadow-[0_2px_20px_rgba(0,0,0,0.08)] sm:p-8 lg:p-10">
-              <span className="text-6xl font-bold leading-none tracking-tighter text-white/30 sm:text-7xl lg:text-8xl">4</span>
+            <div className="rounded-2xl border border-white/15 bg-white/[0.12] p-5 shadow-[0_2px_20px_rgba(0,0,0,0.08)] sm:p-8 lg:p-10">
+              <span className="text-5xl font-bold leading-none tracking-tighter text-white/30 sm:text-7xl lg:text-8xl">4</span>
               <h3 className="mt-4 text-lg font-bold tracking-tight text-white sm:text-xl">
                 Implementation Timeline
               </h3>
@@ -283,16 +283,16 @@ export default function StrategyRoadmapPage() {
 
       {/* 6. Testimonial — centered block, red background */}
       <section className="relative z-[1] w-full bg-[#ca3726]">
-        <div className="flex min-h-[60vh] flex-col items-center justify-center px-4 py-20 text-center sm:px-6 lg:px-8 lg:py-28">
+        <div className="flex flex-col items-center justify-center px-4 py-12 text-center sm:min-h-[60vh] sm:px-6 sm:py-20 lg:px-8 lg:py-28">
           <svg
-            className="mb-8 h-12 w-12 text-white/25 sm:h-16 sm:w-16"
+            className="mb-6 h-10 w-10 text-white/25 sm:mb-8 sm:h-16 sm:w-16"
             viewBox="0 0 24 24"
             fill="currentColor"
             aria-hidden
           >
             <path d="M4.583 17.321C3.553 16.227 3 15 3 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311C9.591 11.69 11 13.2 11 15c0 1.82-1.343 3.317-3.182 3.317-1.08 0-2.169-.48-3.235-1.996zM14.583 17.321C13.553 16.227 13 15 13 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311C19.591 11.69 21 13.2 21 15c0 1.82-1.343 3.317-3.182 3.317-1.08 0-2.169-.48-3.235-1.996z" />
           </svg>
-          <blockquote className="max-w-4xl text-2xl font-medium leading-snug tracking-tight text-white sm:text-3xl lg:text-[2.5rem] lg:leading-snug">
+          <blockquote className="max-w-4xl text-lg font-medium leading-snug tracking-tight text-white sm:text-3xl lg:text-[2.5rem] lg:leading-snug">
             We had a dozen AI ideas and no way to prioritize them. We left with a focused transformation strategy, defined ownership, and a 90-day plan our leadership could execute with confidence.
           </blockquote>
           <div className="mt-10 flex items-center gap-4">
@@ -306,18 +306,18 @@ export default function StrategyRoadmapPage() {
       </section>
 
       {/* 7. FAQ — collapsible with Plus icon */}
-      <section className="relative z-[1] flex min-h-screen w-full flex-col items-center justify-center border-t border-black/[0.06] bg-[#f7f7f7] px-4 py-24 sm:px-6 lg:px-8 lg:py-32">
+      <section className="relative z-[1] w-full border-t border-black/[0.06] bg-[#f7f7f7] px-4 py-12 sm:px-6 sm:py-24 lg:px-8 lg:py-32">
         <div className="mx-auto w-full max-w-4xl text-center">
           <p className="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#555555]/60">
             What Leaders Ask Us
           </p>
-          <h2 className="mt-5 text-4xl font-medium leading-tight tracking-tighter text-[#222222] sm:text-5xl lg:text-5xl xl:text-6xl 2xl:text-[4rem]">
+          <h2 className="mt-4 text-3xl font-medium leading-tight tracking-tighter text-[#222222] sm:mt-5 sm:text-5xl lg:text-5xl xl:text-6xl 2xl:text-[4rem]">
             Frequently Asked{" "}
             <span className="font-normal italic" style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}>
               Questions
             </span>
           </h2>
-          <ul className="mt-16 flex flex-col gap-3 text-left sm:mt-20 sm:gap-4">
+          <ul className="mt-8 flex flex-col gap-3 text-left sm:mt-16 sm:gap-4">
             {STRATEGY_FAQ_ITEMS.map((item, index) => {
               const isOpen = faqOpenIndex === index;
               return (

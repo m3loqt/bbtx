@@ -289,7 +289,7 @@ export default function CommunityPage() {
       <Nav />
 
       {/* 1. Hero — full-width hero, background image + left column */}
-      <section className="relative overflow-hidden bg-[#000000] pt-20">
+      <section className="relative overflow-hidden bg-[#000000] pt-14 sm:pt-20">
         {/* Background image */}
         <div
           className="absolute inset-0 z-0"
@@ -319,30 +319,30 @@ export default function CommunityPage() {
           aria-hidden
         />
         <div className="relative z-[1]">
-          <div className="flex min-h-[calc(100vh-5rem)] w-full flex-col items-stretch gap-10 px-4 pt-40 pb-24 sm:px-6 sm:pt-48 sm:pb-28 lg:px-8 lg:pt-56 lg:pb-32">
-            <div className="cc-hero-left max-w-7xl mt-10 sm:mt-14 lg:mt-20">
-              <p className="mb-6 text-[11px] font-medium tracking-[0.38em] text-white">
+          <div className="flex min-h-[calc(100vh-3.5rem)] w-full flex-col items-stretch justify-end gap-6 px-4 pb-12 sm:justify-start sm:min-h-[calc(100vh-5rem)] sm:gap-10 sm:px-6 sm:pt-48 sm:pb-28 lg:px-8 lg:pt-56 lg:pb-32">
+            <div className="cc-hero-left max-w-7xl sm:mt-14 lg:mt-20">
+              <p className="mb-4 text-[11px] font-medium tracking-[0.38em] text-white sm:mb-6">
                 CHAOTIC CONFLUENCE
               </p>
-              <h1 className="text-[3.6rem] font-normal leading-[1.02] tracking-tighter text-white sm:text-[4.4rem] md:text-[5.2rem] lg:text-[6.4rem] xl:text-[6rem] 2xl:text-[6.4rem]">
+              <h1 className="text-[2rem] font-normal leading-[1.05] tracking-tighter text-white sm:text-[4.4rem] md:text-[5.2rem] lg:text-[6.4rem] xl:text-[6rem] 2xl:text-[6.4rem]">
                 Where leaders come to think about AI, not just use it.
               </h1>
             </div>
-            <div className="mt-0 max-w-5xl text-lg leading-relaxed text-white/90 sm:mt-1 sm:text-xl md:text-2xl">
+            <div className="mt-0 max-w-5xl text-base leading-relaxed text-white/90 sm:mt-1 sm:text-xl md:text-2xl">
               Chaotic Confluence is a weekly newsletter, a library of courses, and a live learning space for leaders and
               professionals navigating the human side of the AI era.
             </div>
             <div className="mt-1 flex flex-col gap-3 sm:mt-2 sm:flex-row sm:items-center sm:gap-4">
               <a
                 href="#subscribe"
-                className="inline-flex h-[50px] w-full items-center justify-center gap-2 rounded-lg bg-white px-7 text-[15px] font-medium text-[#111111] transition-opacity duration-200 ease-out hover:opacity-95 sm:w-auto"
+                className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-lg bg-white px-6 text-sm font-medium text-[#111111] transition-opacity duration-200 ease-out hover:opacity-95 sm:h-[50px] sm:w-auto sm:px-7 sm:text-[15px]"
               >
                 Subscribe to the newsletter
                 <ArrowUpRight className="h-4 w-4" />
               </a>
               <a
                 href="#"
-                className="inline-flex h-[50px] w-full items-center justify-center rounded-lg border border-white/70 bg-transparent px-7 text-[15px] font-medium text-white transition-colors duration-200 ease-out hover:bg-white/10 sm:w-auto"
+                className="inline-flex h-11 w-full items-center justify-center rounded-lg border border-white/70 bg-transparent px-6 text-sm font-medium text-white transition-colors duration-200 ease-out hover:bg-white/10 sm:h-[50px] sm:w-auto sm:px-7 sm:text-[15px]"
               >
                 Join the next session
                 <ArrowUpRight className="h-4 w-4" />
@@ -354,45 +354,45 @@ export default function CommunityPage() {
 
       {/* 2. Who It's For — headline + description */}
       <section className="relative z-[1] w-full border-t border-black/[0.06] bg-white">
-        <div className="px-4 py-24 sm:px-6 sm:py-28 lg:px-8 lg:py-32">
-          <div className="grid gap-10 md:grid-cols-2 md:items-start md:gap-20">
+        <div className="px-4 py-12 sm:px-6 sm:py-28 lg:px-8 lg:py-32">
+          <div className="grid gap-6 md:grid-cols-2 md:items-start md:gap-20">
             <div>
               <p className="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#555555]/60">
                 What Chaotic Confluence is
               </p>
-              <h2 className="mt-4 max-w-3xl text-4xl font-medium leading-[1.05] tracking-tighter text-[#222222] sm:text-5xl lg:text-6xl xl:text-7xl 2xl:text-[4.25rem]">
+              <h2 className="mt-3 max-w-3xl text-3xl font-medium leading-[1.05] tracking-tighter text-[#222222] sm:mt-4 sm:text-5xl lg:text-6xl xl:text-7xl 2xl:text-[4.25rem]">
                 A different kind of AI conversation
               </h2>
             </div>
-            <div className="mt-8 max-w-2xl text-xl leading-relaxed tracking-tight text-[#555555] sm:mt-10 sm:text-2xl lg:mt-12">
+            <div className="mt-4 max-w-2xl text-base leading-relaxed tracking-tight text-[#555555] sm:mt-10 sm:text-2xl lg:mt-12">
               For senior leaders, mid-career professionals, and managers who believe that how you think about AI matters
               just as much as how you use it
             </div>
           </div>
 
           {/* Metrics row */}
-          <div className="mt-16 grid gap-10 text-[#111827] sm:grid-cols-2 lg:grid-cols-4 sm:gap-12">
+          <div className="mt-10 grid grid-cols-2 gap-6 text-[#111827] sm:mt-16 sm:grid-cols-2 sm:gap-12 lg:grid-cols-4">
             <div>
-              <p className="text-5xl font-semibold tracking-tight sm:text-6xl">50+</p>
-              <p className="mt-4 text-sm leading-relaxed text-[#4b5563] sm:text-base">
+              <p className="text-4xl font-semibold tracking-tight sm:text-6xl">50+</p>
+              <p className="mt-2 text-xs leading-relaxed text-[#4b5563] sm:mt-4 sm:text-base">
                 Passionate members driving change.
               </p>
             </div>
             <div>
-              <p className="text-5xl font-semibold tracking-tight sm:text-6xl">300+</p>
-              <p className="mt-4 text-sm leading-relaxed text-[#4b5563] sm:text-base">
+              <p className="text-4xl font-semibold tracking-tight sm:text-6xl">300+</p>
+              <p className="mt-2 text-xs leading-relaxed text-[#4b5563] sm:mt-4 sm:text-base">
                 Hours of shared learning and growth.
               </p>
             </div>
             <div>
-              <p className="text-5xl font-semibold tracking-tight sm:text-6xl">20+</p>
-              <p className="mt-4 text-sm leading-relaxed text-[#4b5563] sm:text-base">
+              <p className="text-4xl font-semibold tracking-tight sm:text-6xl">20+</p>
+              <p className="mt-2 text-xs leading-relaxed text-[#4b5563] sm:mt-4 sm:text-base">
                 Cohorts, workshops, and live sessions run.
               </p>
             </div>
             <div>
-              <p className="text-5xl font-semibold tracking-tight sm:text-6xl">Countless</p>
-              <p className="mt-4 text-sm leading-relaxed text-[#4b5563] sm:text-base">
+              <p className="text-4xl font-semibold tracking-tight sm:text-6xl">Countless</p>
+              <p className="mt-2 text-xs leading-relaxed text-[#4b5563] sm:mt-4 sm:text-base">
                 Ideas sparked, challenged, and brought to life.
               </p>
             </div>
@@ -402,15 +402,15 @@ export default function CommunityPage() {
 
       {/* 3. What's Inside — newsletter, podcast, live sessions, Gumroad products */}
       <section className="relative z-[1] w-full bg-[#f7f7f7]">
-        <div className="px-4 py-24 sm:px-6 lg:px-8 lg:py-32">
+        <div className="px-4 py-12 sm:px-6 sm:py-24 lg:px-8 lg:py-32">
           <div className="mx-auto max-w-7xl text-center">
             <p className="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#555555]/60">
               What's Inside
             </p>
-            <h2 className="mt-4 mx-auto max-w-5xl text-4xl font-medium leading-[1.05] tracking-tighter text-[#222222] sm:text-5xl lg:text-6xl xl:text-7xl 2xl:text-[4.25rem]">
+            <h2 className="mt-3 mx-auto max-w-5xl text-3xl font-medium leading-[1.05] tracking-tighter text-[#222222] sm:mt-4 sm:text-5xl lg:text-6xl xl:text-7xl 2xl:text-[4.25rem]">
               Everything inside is built to meet you where you actually are.
             </h2>
-            <p className="mx-auto mt-4 max-w-5xl text-xl leading-relaxed tracking-tight text-[#555555] sm:text-2xl">
+            <p className="mx-auto mt-3 max-w-5xl text-base leading-relaxed tracking-tight text-[#555555] sm:mt-4 sm:text-2xl">
               Articles, podcast, live sessions, courses, and resources. The same depth of thinking expressed in different
               formats so you can engage however learning works best for you.
             </p>
@@ -421,7 +421,7 @@ export default function CommunityPage() {
               {ACTIVITIES.slice(0, 2).map((item, idx) => (
                 <div
                   key={item.title}
-                  className="flex min-h-[340px] flex-col justify-between rounded-2xl border border-black/[0.06] bg-white p-6 sm:p-7 lg:p-8"
+                  className="flex min-h-[220px] flex-col justify-between rounded-2xl border border-black/[0.06] bg-white p-5 sm:min-h-[340px] sm:p-7 lg:p-8"
                 >
                   <div className="flex flex-1 flex-col gap-6">
                     {/* Icon area */}
@@ -480,7 +480,7 @@ export default function CommunityPage() {
               {ACTIVITIES.slice(2).map((item, idx) => (
                 <div
                   key={item.title}
-                  className={`flex min-h-[300px] flex-col justify-between rounded-2xl border border-black/[0.08] p-6 sm:p-7 ${
+                  className={`flex min-h-[200px] flex-col justify-between rounded-2xl border border-black/[0.08] p-5 sm:min-h-[300px] sm:p-7 ${
                     idx === 2 ? "bg-[#ca3726] text-white" : "bg-white text-[#222222]"
                   }`}
                 >
@@ -586,17 +586,17 @@ export default function CommunityPage() {
 
       {/* 4. Courses & Certifications */}
       <section className="relative z-[1] w-full border-t border-black/[0.06] bg-white">
-        <div className="px-4 py-24 sm:px-6 lg:px-8 lg:py-32">
-          <div className="grid gap-10 md:grid-cols-2 md:items-start md:gap-20">
+        <div className="px-4 py-12 sm:px-6 sm:py-24 lg:px-8 lg:py-32">
+          <div className="grid gap-6 md:grid-cols-2 md:items-start md:gap-20">
             <div>
               <p className="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#555555]/60">
                 Courses & Certifications
               </p>
-              <h2 className="mt-4 max-w-4xl text-4xl font-medium leading-[1.05] tracking-tighter text-[#222222] sm:text-5xl lg:text-6xl xl:text-7xl 2xl:text-[4.25rem]">
+              <h2 className="mt-3 max-w-4xl text-3xl font-medium leading-[1.05] tracking-tighter text-[#222222] sm:mt-4 sm:text-5xl lg:text-6xl xl:text-7xl 2xl:text-[4.25rem]">
                 Real learning for leaders navigating a real shift
               </h2>
             </div>
-            <div className="mt-8 max-w-3xl text-xl leading-relaxed tracking-tight text-[#555555] sm:mt-10 sm:text-2xl lg:mt-12">
+            <div className="mt-4 max-w-3xl text-base leading-relaxed tracking-tight text-[#555555] sm:mt-10 sm:text-2xl lg:mt-12">
               <p>
                 Structured courses built for leaders and professionals who want to go deeper on AI. Complete a course,
                 earn a certification, and walk away with knowledge you can put to work immediately.
@@ -611,16 +611,16 @@ export default function CommunityPage() {
             </div>
           </div>
 
-          <div className="mt-16 grid gap-8 sm:grid-cols-2 xl:grid-cols-3">
+          <div className="mt-8 grid gap-5 sm:mt-16 sm:grid-cols-2 xl:grid-cols-3">
             {COURSES.map((course) => {
               return (
                 <article
                   key={course.title}
-                  className="flex min-h-[420px] flex-col overflow-hidden rounded-2xl border border-black/[0.06] bg-white shadow-[0_12px_40px_rgba(15,23,42,0.04)]"
+                  className="flex flex-col overflow-hidden rounded-2xl border border-black/[0.06] bg-white shadow-[0_12px_40px_rgba(15,23,42,0.04)]"
                 >
                   {/* Cover image area */}
                   <div
-                    className="relative h-52 w-full bg-cover bg-center"
+                    className="relative h-36 w-full bg-cover bg-center sm:h-52"
                     style={{ backgroundImage: "url('/service.png')" }}
                   >
                     <div className="absolute inset-0 bg-[radial-gradient(circle_at_0%_0%,rgba(255,255,255,0.45),transparent_55%),radial-gradient(circle_at_100%_100%,rgba(0,0,0,0.25),transparent_55%)]" />
@@ -770,17 +770,17 @@ export default function CommunityPage() {
 
       {/* 5. Upcoming Live Sessions */}
       <section className="relative z-[1] w-full bg-[#f7f7f7]">
-        <div className="px-4 py-24 sm:px-6 lg:px-8 lg:py-32">
-          <div className="grid gap-12 md:grid-cols-[minmax(0,1.4fr)_minmax(0,1.2fr)] md:items-start">
+        <div className="px-4 py-12 sm:px-6 sm:py-24 lg:px-8 lg:py-32">
+          <div className="grid gap-8 md:grid-cols-[minmax(0,1.4fr)_minmax(0,1.2fr)] md:items-start md:gap-12">
             {/* Left: header + description */}
             <div>
               <p className="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#555555]/60">
                 Upcoming Live Sessions
               </p>
-              <h2 className="mt-4 max-w-3xl text-4xl font-medium leading-[1.05] tracking-tighter text-[#222222] sm:text-5xl lg:text-6xl xl:text-7xl 2xl:text-[4.25rem]">
+              <h2 className="mt-3 max-w-3xl text-3xl font-medium leading-[1.05] tracking-tighter text-[#222222] sm:mt-4 sm:text-5xl lg:text-6xl xl:text-7xl 2xl:text-[4.25rem]">
                 Join the conversation while it's happening.
               </h2>
-              <p className="mt-6 max-w-3xl text-xl leading-relaxed tracking-tight text-[#555555] sm:text-2xl">
+              <p className="mt-4 max-w-3xl text-base leading-relaxed tracking-tight text-[#555555] sm:mt-6 sm:text-2xl">
                 Webinars, cohorts, and live sessions you can join from anywhere. Real time thinking on AI and leadership
                 with people navigating the same questions you are.
               </p>
@@ -789,7 +789,7 @@ export default function CommunityPage() {
             {/* Right: stacked cards */}
             <div className="space-y-4">
               {/* Card 1 — large */}
-              <article className="relative flex min-h-[320px] flex-col justify-between overflow-hidden rounded-2xl border border-black/[0.08] bg-[#111111] text-white sm:min-h-[360px]">
+              <article className="relative flex min-h-[220px] flex-col justify-between overflow-hidden rounded-2xl border border-black/[0.08] bg-[#111111] text-white sm:min-h-[360px]">
                 <div
                   className="pointer-events-none absolute inset-0 z-0 bg-cover bg-center"
                   style={{ backgroundImage: "url('/service.png')" }}
@@ -824,7 +824,7 @@ export default function CommunityPage() {
               </article>
 
               {/* Card 2 — smaller */}
-              <article className="flex min-h-[180px] flex-col rounded-2xl border border-black/[0.08] bg-white p-6 sm:p-7">
+              <article className="flex flex-col rounded-2xl border border-black/[0.08] bg-white p-5 sm:min-h-[180px] sm:p-7">
                 <div className="flex items-center justify-between gap-4">
                   <span className="text-xs font-semibold uppercase tracking-[0.22em] text-[#ca3726]">
                     Cohort
@@ -851,7 +851,7 @@ export default function CommunityPage() {
               </article>
 
               {/* Card 3 — smaller */}
-              <article className="flex min-h-[180px] flex-col rounded-2xl border border-black/[0.08] bg-white p-6 sm:p-7">
+              <article className="flex flex-col rounded-2xl border border-black/[0.08] bg-white p-5 sm:min-h-[180px] sm:p-7">
                 <div className="flex items-center justify-between gap-4">
                   <span className="text-xs font-semibold uppercase tracking-[0.22em] text-[#ca3726]">
                     Live Session
@@ -883,16 +883,16 @@ export default function CommunityPage() {
 
       {/* 6. From the Library — featured Substack articles */}
       <section className="relative z-[1] w-full bg-white">
-        <div className="px-4 py-24 sm:px-6 lg:px-8 lg:py-32">
+        <div className="px-4 py-12 sm:px-6 sm:py-24 lg:px-8 lg:py-32">
           {/* Centered header — full width container */}
           <div className="w-full text-center">
             <p className="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#555555]/60">
               From the Library
             </p>
-            <h2 className="mt-4 text-4xl font-medium leading-[1.05] tracking-tighter text-[#111827] sm:text-5xl lg:text-6xl">
+            <h2 className="mt-3 text-3xl font-medium leading-[1.05] tracking-tighter text-[#111827] sm:mt-4 sm:text-5xl lg:text-6xl">
               Good thinking doesn&apos;t need a pitch.
             </h2>
-            <p className="mx-auto mt-6 max-w-4xl text-xl leading-relaxed tracking-tight text-[#4b5563] sm:text-2xl">
+            <p className="mx-auto mt-3 max-w-4xl text-base leading-relaxed tracking-tight text-[#4b5563] sm:mt-6 sm:text-2xl">
               Featured pieces from our library. Read them first. Subscribe when you&apos;re ready.
             </p>
           </div>
@@ -906,9 +906,9 @@ export default function CommunityPage() {
               {RESEARCH_FEATURED[0] && (
                 <a
                   href="#"
-                  className="group flex h-full min-h-[380px] flex-1 flex-col rounded-2xl border border-black/[0.06] bg-white text-left transition-colors hover:bg-white sm:min-h-[440px]"
+                  className="group flex h-full flex-1 flex-col rounded-2xl border border-black/[0.06] bg-white text-left transition-colors hover:bg-white sm:min-h-[440px]"
                 >
-                  <div className="flex flex-1 flex-col p-6 sm:p-8">
+                  <div className="flex flex-1 flex-col p-4 sm:p-8">
                     <div>
                       <div className="flex items-center justify-between gap-2">
                         <div className="inline-flex items-center gap-1.5 rounded-full bg-[#f3f4f6] px-3 py-1 text-[0.75rem] font-medium uppercase tracking-[0.18em] text-[#4b5563] sm:text-xs">
@@ -919,10 +919,10 @@ export default function CommunityPage() {
                           {RESEARCH_FEATURED[0].published}
                         </p>
                       </div>
-                      <h3 className="mt-5 text-[1.9rem] font-semibold leading-tight tracking-tight text-[#111827] group-hover:text-[#ca3726] sm:text-[2.1rem] lg:text-[2.35rem]">
+                      <h3 className="mt-4 text-[1.35rem] font-semibold leading-tight tracking-tight text-[#111827] group-hover:text-[#ca3726] sm:mt-5 sm:text-[2.1rem] lg:text-[2.35rem]">
                         {RESEARCH_FEATURED[0].title}
                       </h3>
-                      <p className="mt-4 text-lg leading-relaxed text-[#4b5563] sm:text-xl">
+                      <p className="mt-3 text-sm leading-relaxed text-[#4b5563] sm:mt-4 sm:text-xl">
                         {RESEARCH_FEATURED[0].summary}
                       </p>
                     </div>
@@ -969,18 +969,18 @@ export default function CommunityPage() {
               {RESEARCH_FEATURED[1] && (
                 <a
                   href="#"
-                  className="group flex h-full min-h-[400px] flex-1 flex-col overflow-hidden rounded-2xl border border-black/[0.06] bg-white text-left transition-colors hover:bg-white sm:min-h-[460px]"
+                  className="group flex h-full flex-1 flex-col overflow-hidden rounded-2xl border border-black/[0.06] bg-white text-left transition-colors hover:bg-white sm:min-h-[460px]"
                 >
                   {/* Cover image area */}
                   <div
-                    className="relative h-48 w-full bg-cover bg-center sm:h-52"
+                    className="relative h-36 w-full bg-cover bg-center sm:h-52"
                     style={{ backgroundImage: "url('/service.png')" }}
                   >
                     <div className="absolute inset-0 bg-[radial-gradient(circle_at_0%_0%,rgba(255,255,255,0.45),transparent_55%),radial-gradient(circle_at_100%_100%,rgba(0,0,0,0.25),transparent_55%)]" />
                   </div>
 
                   {/* Content */}
-                  <div className="flex flex-1 flex-col p-6 sm:p-7">
+                  <div className="flex flex-1 flex-col p-5 sm:p-7">
                     <div>
                       <div className="flex items-center justify-between gap-2">
                         <div className="inline-flex items-center gap-1.5 rounded-full bg-[#f3f4f6] px-3 py-1 text-[0.7rem] font-medium uppercase tracking-[0.18em] text-[#4b5563] sm:text-xs">
@@ -1018,18 +1018,18 @@ export default function CommunityPage() {
                 <a
                   key={`grid-${r.title}`}
                   href="#"
-                  className="group flex h-full min-h-[400px] flex-1 flex-col overflow-hidden rounded-2xl border border-black/[0.06] bg-white text-left transition-colors hover:bg-white sm:min-h-[460px]"
+                  className="group flex h-full flex-1 flex-col overflow-hidden rounded-2xl border border-black/[0.06] bg-white text-left transition-colors hover:bg-white sm:min-h-[460px]"
                 >
                   {/* Cover image area */}
                   <div
-                    className="relative h-48 w-full bg-cover bg-center sm:h-52"
+                    className="relative h-36 w-full bg-cover bg-center sm:h-52"
                     style={{ backgroundImage: "url('/service.png')" }}
                   >
                     <div className="absolute inset-0 bg-[radial-gradient(circle_at_0%_0%,rgba(255,255,255,0.45),transparent_55%),radial-gradient(circle_at_100%_100%,rgba(0,0,0,0.25),transparent_55%)]" />
                   </div>
 
                   {/* Content */}
-                  <div className="flex flex-1 flex-col p-6 sm:p-7">
+                  <div className="flex flex-1 flex-col p-5 sm:p-7">
                     <div>
                       <div className="flex items-center justify-between gap-2">
                         <div className="inline-flex items-center gap-1.5 rounded-full bg-[#f3f4f6] px-3 py-1 text-[0.7rem] font-medium uppercase tracking-[0.18em] text-[#4b5563] sm:text-xs">
@@ -1066,13 +1066,13 @@ export default function CommunityPage() {
 
       {/* 8. Testimonials — gray bg, white cards, carousel */}
       <section className="relative z-[1] w-full bg-[#f7f7f7]">
-        <div className="px-4 py-24 sm:px-6 lg:px-8 lg:py-32">
+        <div className="px-4 py-12 sm:px-6 sm:py-24 lg:px-8 lg:py-32">
           {/* Header row */}
-          <div className="grid gap-10 md:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] md:items-end md:gap-16">
-              <h2 className="max-w-3xl text-4xl font-medium leading-[1.05] tracking-tighter text-[#222222] sm:text-5xl lg:text-6xl xl:text-7xl 2xl:text-[4.25rem]">
+          <div className="grid gap-6 md:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] md:items-end md:gap-16">
+              <h2 className="max-w-3xl text-3xl font-medium leading-[1.05] tracking-tighter text-[#222222] sm:text-5xl lg:text-6xl xl:text-7xl 2xl:text-[4.25rem]">
                 Hear from the people inside the room
               </h2>
-              <p className="max-w-2xl text-xl leading-relaxed tracking-tight text-[#555555] sm:text-2xl md:pb-1">
+              <p className="max-w-2xl text-base leading-relaxed tracking-tight text-[#555555] sm:text-2xl md:pb-1">
                 From certified graduates to active members, here is what the Chaotic Confluence community has to say about what it is like to learn, think, and grow inside it.
               </p>
             </div>
@@ -1153,11 +1153,11 @@ export default function CommunityPage() {
       >
         <div className="absolute inset-0 z-0 bg-black/45" aria-hidden />
         <div className="pointer-events-none absolute inset-0 z-0 opacity-40" style={gridBg} aria-hidden />
-        <div className="relative z-[1] px-4 py-24 text-center sm:px-6 sm:py-28 lg:px-8 lg:py-32">
-          <h2 className="mx-auto max-w-6xl text-3xl font-medium leading-[1.1] tracking-tighter text-white sm:text-4xl lg:text-5xl xl:text-6xl">
+        <div className="relative z-[1] px-4 py-14 text-center sm:px-6 sm:py-28 lg:px-8 lg:py-32">
+          <h2 className="mx-auto max-w-6xl text-2xl font-medium leading-[1.1] tracking-tighter text-white sm:text-4xl lg:text-5xl xl:text-6xl">
             Because knowing how to use AI is not the same as knowing how to lead with it.
           </h2>
-          <p className="mx-auto mt-6 max-w-5xl text-lg leading-relaxed text-white/95 sm:text-xl lg:text-2xl">
+          <p className="mx-auto mt-4 max-w-5xl text-base leading-relaxed text-white/95 sm:mt-6 sm:text-xl lg:text-2xl">
             That distinction is what Chaotic Confluence is built around. Subscribe to the weekly newsletter and join a
             community of leaders who are thinking about AI the right way.
           </p>

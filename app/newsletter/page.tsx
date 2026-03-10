@@ -27,14 +27,14 @@ export default function NewsletterPage() {
     <div className="min-h-screen">
       <Nav />
 
-      <section className="relative z-[1] min-h-[calc(100vh-5rem)] w-full pt-20">
-        <div className="grid min-h-[calc(100vh-5rem)] w-full grid-cols-1 lg:grid-cols-[11fr_9fr]">
+      <section className="relative z-[1] min-h-[calc(100vh-3.5rem)] w-full pt-14 sm:min-h-[calc(100vh-5rem)] sm:pt-20">
+        <div className="grid min-h-[calc(100vh-3.5rem)] w-full grid-cols-1 sm:min-h-[calc(100vh-5rem)] lg:grid-cols-[11fr_9fr]">
           {/* Left: benefits — light grey, content with standard padding */}
-          <div className="flex flex-col justify-center bg-[#f7f7f7] px-6 py-16 sm:px-8 sm:py-20 lg:px-10 lg:py-24 xl:px-12 xl:py-28">
+          <div className="flex flex-col justify-center bg-[#f7f7f7] px-5 py-10 sm:px-8 sm:py-20 lg:px-10 lg:py-24 xl:px-12 xl:py-28">
             <p className="mb-6 text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#555555]/60">
               BBTx Insights Newsletter
             </p>
-            <h1 className="max-w-[calc(100%-10px)] text-[2.75rem] font-medium leading-[1.1] tracking-tighter text-[#222222] sm:text-[3.1rem] md:text-[3.6rem] lg:text-[4.2rem] xl:text-[4.6rem]">
+            <h1 className="max-w-[calc(100%-10px)] text-[2rem] font-medium leading-[1.1] tracking-tighter text-[#222222] sm:text-[2.75rem] md:text-[3.6rem] lg:text-[4.2rem] xl:text-[4.6rem]">
               Our weekly briefing for leaders{" "}
               <span
                 className="font-normal italic"
@@ -43,21 +43,21 @@ export default function NewsletterPage() {
                 working through AI
               </span>
             </h1>
-            <p className="mt-6 max-w-lg text-xl leading-relaxed text-[#555555] sm:max-w-xl sm:text-2xl">
+            <p className="mt-4 max-w-lg text-base leading-relaxed text-[#555555] sm:mt-6 sm:max-w-xl sm:text-xl">
               Clear thinking and practical insights for leaders navigating AI in their organizations.
             </p>
             <ul className="mt-10 space-y-4">
               {BENEFITS.map((item) => (
                 <li key={item} className="flex items-start gap-3">
                   <CheckIcon />
-                  <span className="text-lg leading-relaxed text-[#222222] sm:text-xl">{item}</span>
+                  <span className="text-sm leading-relaxed text-[#222222] sm:text-lg">{item}</span>
                 </li>
               ))}
             </ul>
           </div>
 
           {/* Right: dark sign-up block — charcoal card with margin and corner radius */}
-          <div className="flex flex-col justify-center rounded-2xl bg-[#1a1a1a] py-16 pl-8 pr-6 sm:py-20 sm:pl-10 sm:pr-8 lg:my-6 lg:mr-6 lg:rounded-3xl lg:py-24 lg:pl-12 lg:pr-10 xl:pl-14 xl:pr-12">
+          <div className="flex flex-col justify-center rounded-2xl bg-[#1a1a1a] py-10 pl-5 pr-5 sm:py-20 sm:pl-10 sm:pr-8 lg:my-6 lg:mr-6 lg:rounded-3xl lg:py-24 lg:pl-12 lg:pr-10 xl:pl-14 xl:pr-12">
             <p className="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-white/40">Sign up for:</p>
             <h2
               className="mt-3 text-[2.1rem] font-medium leading-tight tracking-tight text-white sm:text-[2.4rem] lg:text-[2.7rem] xl:text-[3rem]"

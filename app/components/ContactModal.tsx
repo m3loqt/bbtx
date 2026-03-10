@@ -50,7 +50,7 @@ export function ContactModal({ open, onClose }: ContactModalProps) {
 
   return (
     <div
-      className="fixed inset-0 z-[200] flex flex-col items-center justify-start pt-[100px] pb-8"
+      className="fixed inset-0 z-[200] flex flex-col items-center justify-start pt-16 pb-6 sm:pt-[100px] sm:pb-8"
       role="dialog"
       aria-modal="true"
       aria-labelledby="contact-modal-title"
@@ -63,40 +63,40 @@ export function ContactModal({ open, onClose }: ContactModalProps) {
         onClick={onClose}
       />
 
-      <div className="relative z-10 flex w-full flex-col items-center px-4 sm:px-6 lg:px-8">
+      <div className="relative z-10 min-h-0 flex-1 w-full overflow-y-auto px-3 sm:px-6 lg:px-8">
         <div className="mx-auto flex w-full max-w-[960px] flex-col items-center">
           {/* Modal panel - same width as navbar */}
           <div className="w-full rounded-lg bg-white">
           {/* Top: heading + contact info */}
-          <div className="px-6 py-6">
-            <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between sm:gap-6">
+          <div className="px-4 py-4 sm:px-6 sm:py-6">
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between sm:gap-6">
               <h2
                 id="contact-modal-title"
-                className="mb-[15px] text-4xl font-normal tracking-tighter text-[#222222] sm:text-5xl"
+                className="text-2xl font-normal tracking-tighter text-[#222222] sm:mb-[15px] sm:text-4xl"
               >
                 Send us a message
               </h2>
-              <div className="flex flex-col gap-1 text-right">
+              <div className="flex flex-row flex-wrap gap-x-4 gap-y-0.5 sm:flex-col sm:gap-1 sm:text-right">
                 <a
                   href={`mailto:${CONTACT_EMAIL}`}
-                  className="text-lg font-semibold text-[#222222] underline underline-offset-2 hover:text-[#555] sm:text-xl"
+                  className="text-sm font-semibold text-[#222222] underline underline-offset-2 hover:text-[#555] sm:text-xl"
                 >
                   {CONTACT_EMAIL}
                 </a>
                 <a
                   href={`tel:${CONTACT_PHONE.replace(/\s/g, "")}`}
-                  className="text-lg font-semibold text-[#222222] underline underline-offset-2 hover:text-[#555] sm:text-xl"
+                  className="text-sm font-semibold text-[#222222] underline underline-offset-2 hover:text-[#555] sm:text-xl"
                 >
                   {CONTACT_PHONE}
                 </a>
               </div>
             </div>
-            <div className="mx-1 mt-10 border-t border-black/10" aria-hidden />
+            <div className="mx-1 mt-4 border-t border-black/10 sm:mt-10" aria-hidden />
           </div>
 
           {/* Form */}
           <form
-            className="grid gap-4 p-6 sm:grid-cols-[1fr_1fr] sm:gap-6 sm:items-stretch"
+            className="grid gap-3 p-4 sm:grid-cols-[1fr_1fr] sm:gap-6 sm:items-stretch sm:p-6"
             onSubmit={(e) => {
               e.preventDefault();
               // Placeholder: wire to your backend or mailto
@@ -204,7 +204,7 @@ export function ContactModal({ open, onClose }: ContactModalProps) {
               <textarea
                 name="message"
                 required
-                className="min-h-[120px] flex-1 resize-y rounded border border-black/12 bg-[#ebebeb] px-3 py-2.5 text-[15px] text-[#222222] placeholder:text-[#888] focus:border-black/20 focus:outline-none focus:ring-1 focus:ring-black/10 sm:min-h-0"
+                className="min-h-[90px] flex-1 resize-y rounded border border-black/12 bg-[#ebebeb] px-3 py-2.5 text-[15px] text-[#222222] placeholder:text-[#888] focus:border-black/20 focus:outline-none focus:ring-1 focus:ring-black/10 sm:min-h-0"
                 placeholder=""
               />
             </label>

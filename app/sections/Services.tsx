@@ -36,12 +36,12 @@ export function Services() {
       />
       <div className="relative z-[1] px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
         {/* 30/70 grid: eyebrow + headline row, then cards in right column only */}
-        <div className="grid gap-6 lg:grid-cols-[3fr_7fr] lg:items-start lg:gap-12">
+        <div className="grid gap-4 lg:grid-cols-[3fr_7fr] lg:items-start lg:gap-12">
           <p className="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#555555]/60">
             WHAT WE DO
           </p>
           {/* Right column: headline + cards, with 10% margin on the right */}
-          <div className="pr-[10%]">
+          <div className="pr-0 lg:pr-[10%]">
             <div className="max-w-4xl">
               <h2 className="text-4xl font-medium leading-tight tracking-tighter text-[#222222] sm:text-5xl lg:text-5xl xl:text-6xl 2xl:text-[4rem]">
                 Level up your organization with{" "}
@@ -59,16 +59,16 @@ export function Services() {
               </p>
             </div>
             {/* Cards: 1 full-width on top, 2 side by side below */}
-            <div className="mt-10 grid grid-cols-1 gap-1 sm:grid-cols-2 lg:mt-14 lg:gap-1.5">
+            <div className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:mt-14 lg:gap-4">
           {SERVICE_CARDS.map((card, i) => (
             <div
               key={card.title}
-              className={`flex min-h-[240px] flex-col rounded-lg border border-black/[0.06] bg-white p-6 shadow-[0_2px_12px_rgba(0,0,0,0.01)] sm:min-h-[260px] lg:p-8 ${i === 0 ? "sm:col-span-2" : ""}`}
+              className={`flex flex-col rounded-xl border border-black/[0.06] bg-white p-5 shadow-[0_2px_12px_rgba(0,0,0,0.01)] sm:min-h-[220px] sm:p-6 lg:p-8 ${i === 0 ? "sm:col-span-2" : ""}`}
             >
-              <p className="text-xl font-semibold tracking-tight text-[#222222] sm:text-2xl">
+              <p className="text-lg font-semibold tracking-tight text-[#222222] sm:text-xl lg:text-2xl">
                 {card.title}
               </p>
-              <p className="mt-auto pt-4 text-base leading-relaxed text-[#555555] sm:text-lg">
+              <p className="mt-3 text-sm leading-relaxed text-[#555555] sm:mt-auto sm:pt-4 sm:text-base lg:text-lg">
                 {card.description}
               </p>
             </div>

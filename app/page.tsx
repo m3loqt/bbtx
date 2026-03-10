@@ -78,7 +78,7 @@ export default function Home() {
       />
       <Nav />
       {/* Spacer so content starts below fixed nav */}
-      <div className="h-20 shrink-0" aria-hidden />
+      <div className="h-14 shrink-0 sm:h-20" aria-hidden />
       <AnimateSection noAnimation>
         <Hero />
       </AnimateSection>
