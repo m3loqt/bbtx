@@ -7,25 +7,26 @@ const FOOTER_NAV = [
   {
     heading: "SERVICES",
     links: [
-      { label: "Strategy & Roadmap", href: "/services/strategy-roadmap" },
-      { label: "Implementation & Integration", href: "#" },
-      { label: "Data & Measurement", href: "#" },
+      { label: "AI Strategy and Roadmap", href: "/services/strategy-roadmap" },
+      { label: "Organizational AI Assessment", href: "/services/organizational-ai-assessment" },
+      { label: "AI Organizational Model", href: "/services/ai-organizational-model" },
     ],
   },
   {
     heading: "COMPANY",
     links: [
-      { label: "About", href: "/about" },
-      { label: "Blogs", href: "/blog" },
+      { label: "About BBTx", href: "/about" },
+      { label: "Blog", href: "/blog" },
+      { label: "Community", href: "/community" },
       { label: "Newsletter", href: "/newsletter" },
     ],
   },
   {
-    heading: "CONTACT & OTHER",
+    heading: "GET STARTED",
     links: [
-      { label: "Talk to us", href: "#" },
-      { label: "All Services", href: "#" },
-      { label: "Privacy", href: "#" },
+      { label: "AI Readiness Assessment", href: "/assessment" },
+      { label: "Contact Us", href: "#" },
+      { label: "Privacy Policy", href: "#" },
     ],
   },
 ];

@@ -69,7 +69,7 @@ export function Results() {
           <div
             className="flex w-max items-center gap-3 sm:gap-4 lg:gap-5"
             style={{
-              animation: "logo-scroll 40s linear infinite",
+              animation: "logo-scroll 80s linear infinite",
               willChange: "transform",
               backfaceVisibility: "hidden",
             }}

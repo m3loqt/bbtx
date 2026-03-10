@@ -42,9 +42,67 @@ const dmSans = DM_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "BBTx Consulting",
+  metadataBase: new URL("https://bbtx.ai"),
+  title: {
+    default: "BBTx | AI Business Consulting for Leaders and Organizations",
+    template: "%s | BBTx",
+  },
   description:
-    "We build, optimize, and scale marketing engines that generate pipeline and improve marketing ROI.",
+    "BBTx helps leaders and organizations integrate AI with strategy, clarity, and confidence. AI consulting, organizational assessment, and implementation support.",
+  keywords: [
+    "BBTX",
+    "BBTx AI",
+    "AI business consulting",
+    "AI organizational consulting",
+    "AI strategy consulting",
+    "AI implementation",
+    "organizational AI assessment",
+    "AI leadership consulting",
+    "Bridge Business Transformations",
+  ],
+  authors: [{ name: "Grant Tate", url: "https://bbtx.ai/about" }],
+  creator: "BBTx",
+  publisher: "BBTx",
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: "https://bbtx.ai",
+    siteName: "BBTx",
+    title: "BBTx | AI Business Consulting for Leaders and Organizations",
+    description:
+      "BBTx helps leaders and organizations integrate AI with strategy, clarity, and confidence. AI consulting, organizational assessment, and implementation support.",
+    images: [
+      {
+        url: "/bbtxlog.png",
+        width: 1200,
+        height: 630,
+        alt: "BBTx AI Business Consulting",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "BBTx | AI Business Consulting",
+    description:
+      "Helping leaders and organizations integrate AI with strategy, clarity, and confidence.",
+    images: ["/bbtxlog.png"],
+  },
+  icons: {
+    icon: "/bbtxlog.png",
+    shortcut: "/bbtxlog.png",
+    apple: "/bbtxlog.png",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
 };
 
 export default function RootLayout({

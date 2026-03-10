@@ -118,18 +118,115 @@ const ASSOCIATES = [
 
 const RESEARCH_FEATURED = [
   {
-    title: "AI Governance for Mid-Size Organizations",
-    summary: "How real organizations are establishing policies, oversight, and accountability for AI.",
+    title: "AI Governance for Mid Size Organizations",
+    summary: "How real organizations are establishing policies, oversight and accountability for AI.",
+    category: "Governance",
+    minutes: "7 min read",
+    published: "March 5, 2026 · 9:30 AM EST",
+    author: "Grant Tate",
   },
   {
     title: "From Pilots to Production",
     summary: "Lessons from teams moving beyond experimentation into measurable business impact.",
+    category: "Implementation",
+    minutes: "6 min read",
+    published: "February 18, 2026 · 1:15 PM EST",
   },
   {
     title: "Leading Through the AI Shift",
     summary: "What leaders need to know when steering their organizations through AI adoption — without the hype.",
+    category: "Leadership",
+    minutes: "8 min read",
+    published: "January 30, 2026 · 10:00 AM EST",
   },
 ];
+
+function categoryIcon(category: string) {
+  const key = category.toLowerCase();
+
+  if (key.includes("governance")) {
+    // Shield icon for Governance
+    return (
+      <svg
+        className="h-3 w-3 text-[#6b7280]"
+        viewBox="0 0 20 20"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+      >
+        <path
+          d="M10 3.25 5.5 5v4.5c0 3.03 1.93 4.98 4.5 6 2.57-1.02 4.5-2.97 4.5-6V5L10 3.25Z"
+          stroke="currentColor"
+          strokeWidth="1.3"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    );
+  }
+
+  if (key.includes("implementation")) {
+    // Gear icon for Implementation
+    return (
+      <svg
+        className="h-3 w-3 text-[#6b7280]"
+        viewBox="0 0 20 20"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+      >
+        <path
+          d="M11.75 3.5 11 2.5 9 2.5 8.25 3.5 6.9 3.8 5.9 2.9 4.4 3.9 4.7 5.25 3.75 6 3.5 7.5 4.5 8.25 4.8 9.6 3.9 10.6 4.9 12.1 6.25 11.8 7 12.5 7.5 14h2l.5-1.5.75-.7 1.35.3 1-1.5-.9-1 .3-1.35 1-.75-.25-1.5-.95-.75-.3-1.35L11.75 3.5Z"
+          stroke="currentColor"
+          strokeWidth="1.3"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <circle cx="10" cy="9.5" r="2" stroke="currentColor" strokeWidth="1.2" />
+      </svg>
+    );
+  }
+
+  if (key.includes("lead")) {
+    // Flag icon for Leadership
+    return (
+      <svg
+        className="h-3 w-3 text-[#6b7280]"
+        viewBox="0 0 20 20"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+      >
+        <path
+          d="M5 3.75v12.5M6 4h7l-1 3 2 3H6"
+          stroke="currentColor"
+          strokeWidth="1.3"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    );
+  }
+
+  // Default document icon
+  return (
+    <svg
+      className="h-3 w-3 text-[#6b7280]"
+      viewBox="0 0 20 20"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+    >
+      <path
+        d="M7 4.25h4.75L15.5 8v7.75H7V4.25Z"
+        stroke="currentColor"
+        strokeWidth="1.3"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
 
 const CHANNELS = [
   { name: "Substack", href: "#", description: "Newsletter, essays, and the full archive" },
@@ -305,8 +402,7 @@ export default function CommunityPage() {
 
       {/* 3. What's Inside — newsletter, podcast, live sessions, Gumroad products */}
       <section className="relative z-[1] w-full bg-[#f7f7f7]">
-        <div className="pointer-events-none absolute inset-0 z-0 opacity-60" style={gridBg} aria-hidden />
-        <div className="relative z-[1] px-4 py-24 sm:px-6 lg:px-8 lg:py-32">
+        <div className="px-4 py-24 sm:px-6 lg:px-8 lg:py-32">
           <div className="mx-auto max-w-7xl text-center">
             <p className="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#555555]/60">
               What's Inside
@@ -674,8 +770,7 @@ export default function CommunityPage() {
 
       {/* 5. Upcoming Live Sessions */}
       <section className="relative z-[1] w-full bg-[#f7f7f7]">
-        <div className="pointer-events-none absolute inset-0 z-0 opacity-60" style={gridBg} aria-hidden />
-        <div className="relative z-[1] px-4 py-24 sm:px-6 lg:px-8 lg:py-32">
+        <div className="px-4 py-24 sm:px-6 lg:px-8 lg:py-32">
           <div className="grid gap-12 md:grid-cols-[minmax(0,1.4fr)_minmax(0,1.2fr)] md:items-start">
             {/* Left: header + description */}
             <div>
@@ -795,71 +890,182 @@ export default function CommunityPage() {
               From the Library
             </p>
             <h2 className="mt-4 text-4xl font-medium leading-[1.05] tracking-tighter text-[#111827] sm:text-5xl lg:text-6xl">
-              A taste of{" "}
-              <span className="font-normal italic" style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}>
-                the work
-              </span>
+              Good thinking doesn&apos;t need a pitch.
             </h2>
-            <p className="mx-auto mt-6 max-w-3xl text-xl leading-relaxed tracking-tight text-[#4b5563] sm:text-2xl">
-              Featured pieces from Substack and our broader library. For people who want to see the thinking before
-              they hit subscribe.
+            <p className="mx-auto mt-6 max-w-4xl text-xl leading-relaxed tracking-tight text-[#4b5563] sm:text-2xl">
+              Featured pieces from our library. Read them first. Subscribe when you&apos;re ready.
             </p>
           </div>
 
-          {/* Cards: 1 large left (height matches right), 2 stacked right (70/30) — full width */}
-          <div className="mt-14 grid w-full gap-8 md:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)] md:items-stretch">
-            {/* Left: big feature article — stretches to match combined height of 2 right cards */}
-            {RESEARCH_FEATURED[0] && (
-              <a
-                href="#"
-                className="group flex min-h-0 flex-1 flex-col justify-between rounded-2xl border border-black/[0.06] bg-[#f9fafb] p-6 text-left transition-colors hover:bg-[#f4f4f4] sm:p-8"
-              >
-                  <div>
-                    <p className="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#9ca3af]">
-                      Featured Article
-                    </p>
-                    <h3 className="mt-3 text-2xl font-semibold tracking-tight text-[#111827] group-hover:text-[#ca3726] sm:text-3xl">
-                      {RESEARCH_FEATURED[0].title}
-                    </h3>
-                    <p className="mt-4 text-base leading-relaxed text-[#4b5563] sm:text-lg">
-                      {RESEARCH_FEATURED[0].summary}
-                    </p>
+          {/* Cards layout:
+              Row 1 — big feature (2/3) + small feature (1/3)
+              Row 2 — three equal cards */}
+          <div className="mt-14 space-y-6">
+            {/* Row 1: 1 big + 1 small */}
+            <div className="grid w-full gap-4 md:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] md:items-stretch">
+              {RESEARCH_FEATURED[0] && (
+                <a
+                  href="#"
+                  className="group flex h-full min-h-[380px] flex-1 flex-col rounded-2xl border border-black/[0.06] bg-white text-left transition-colors hover:bg-white sm:min-h-[440px]"
+                >
+                  <div className="flex flex-1 flex-col p-6 sm:p-8">
+                    <div>
+                      <div className="flex items-center justify-between gap-2">
+                        <div className="inline-flex items-center gap-1.5 rounded-full bg-[#f3f4f6] px-3 py-1 text-[0.75rem] font-medium uppercase tracking-[0.18em] text-[#4b5563] sm:text-xs">
+                          {categoryIcon(RESEARCH_FEATURED[0].category)}
+                          <span>{RESEARCH_FEATURED[0].category}</span>
+                        </div>
+                        <p className="text-[0.75rem] text-[#4b5563] sm:text-xs">
+                          {RESEARCH_FEATURED[0].published}
+                        </p>
+                      </div>
+                      <h3 className="mt-5 text-[1.9rem] font-semibold leading-tight tracking-tight text-[#111827] group-hover:text-[#ca3726] sm:text-[2.1rem] lg:text-[2.35rem]">
+                        {RESEARCH_FEATURED[0].title}
+                      </h3>
+                      <p className="mt-4 text-lg leading-relaxed text-[#4b5563] sm:text-xl">
+                        {RESEARCH_FEATURED[0].summary}
+                      </p>
+                    </div>
+                    <div className="mt-auto pt-8">
+                      {/* Read article CTA row */}
+                      <div>
+                        <button
+                          type="button"
+                          className="inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.16em] text-[#111827]"
+                        >
+                          Read article
+                          <ArrowUpRight className="h-4 w-4" />
+                        </button>
+                      </div>
+
+                      {/* Divider + author / meta row */}
+                      <div className="mt-6 border-t border-[#e5e7eb]" />
+                      <div className="mt-4 flex items-center justify-between gap-4">
+                        <div className="flex items-center gap-3">
+                          <div className="h-10 w-10 overflow-hidden rounded-full bg-[#fee2e2]">
+                            <img
+                              src="/grant.png"
+                              alt={RESEARCH_FEATURED[0].author ?? "Article author"}
+                              className="h-full w-full object-cover"
+                            />
+                          </div>
+                          <div>
+                            <p className="text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-[#9ca3af]">
+                              By {RESEARCH_FEATURED[0].author ?? "Unknown"}
+                            </p>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="inline-flex items-center border border-[#e5e7eb] bg-[#f9fafb] px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#4b5563] sm:text-xs">
+                            {RESEARCH_FEATURED[0].minutes}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                  <span className="mt-6 inline-flex items-center gap-1 text-sm font-medium text-[#ca3726]">
-                    Read full article <ArrowUpRight className="h-4 w-4" />
-                  </span>
                 </a>
               )}
 
-              {/* Right: two smaller articles stacked */}
-              <div className="space-y-5">
-                {RESEARCH_FEATURED.slice(1).map((r) => (
-                  <a
-                    key={r.title}
-                    href="#"
-                    className="group flex flex-col justify-between rounded-2xl border border-black/[0.06] bg-[#ca3726] p-6 text-left transition-opacity hover:opacity-95 sm:p-7"
+              {RESEARCH_FEATURED[1] && (
+                <a
+                  href="#"
+                  className="group flex h-full min-h-[400px] flex-1 flex-col overflow-hidden rounded-2xl border border-black/[0.06] bg-white text-left transition-colors hover:bg-white sm:min-h-[460px]"
+                >
+                  {/* Cover image area */}
+                  <div
+                    className="relative h-48 w-full bg-cover bg-center sm:h-52"
+                    style={{ backgroundImage: "url('/service.png')" }}
                   >
+                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_0%_0%,rgba(255,255,255,0.45),transparent_55%),radial-gradient(circle_at_100%_100%,rgba(0,0,0,0.25),transparent_55%)]" />
+                  </div>
+
+                  {/* Content */}
+                  <div className="flex flex-1 flex-col p-6 sm:p-7">
                     <div>
-                      <p className="text-[0.7rem] font-semibold uppercase tracking-[0.2em] text-white/70">
-                        Article
+                      <div className="flex items-center justify-between gap-2">
+                        <div className="inline-flex items-center gap-1.5 rounded-full bg-[#f3f4f6] px-3 py-1 text-[0.7rem] font-medium uppercase tracking-[0.18em] text-[#4b5563] sm:text-xs">
+                          {categoryIcon(RESEARCH_FEATURED[1].category)}
+                          <span>{RESEARCH_FEATURED[1].category}</span>
+                        </div>
+                        <p className="text-[0.7rem] text-[#4b5563] sm:text-xs">
+                          {RESEARCH_FEATURED[1].published}
+                        </p>
+                      </div>
+                      <h3 className="mt-4 text-base font-semibold tracking-tight text-[#111827] group-hover:text-[#ca3726] sm:text-lg">
+                        {RESEARCH_FEATURED[1].title}
+                      </h3>
+                      <p className="mt-1.5 line-clamp-3 text-sm leading-relaxed text-[#4b5563] sm:text-base">
+                        {RESEARCH_FEATURED[1].summary}
                       </p>
-                      <h3 className="mt-2.5 text-base font-semibold tracking-tight text-white group-hover:text-white/95 sm:text-lg">
+                    </div>
+                    <div className="mt-auto pt-4 flex items-center justify-end gap-3">
+                      <span className="inline-flex items-center border border-[#e5e7eb] bg-[#f9fafb] px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#4b5563] sm:text-xs">
+                        {RESEARCH_FEATURED[1].minutes}
+                      </span>
+                      <span className="h-4 w-px bg-[#e5e7eb]" />
+                      <span className="inline-flex items-center gap-1 text-xs font-medium text-[#ca3726] sm:text-sm">
+                        Read more <ArrowUpRight className="h-4 w-4" />
+                      </span>
+                    </div>
+                  </div>
+                </a>
+              )}
+            </div>
+
+            {/* Row 2: three equal cards */}
+            <div className="grid w-full gap-4 md:grid-cols-3 md:items-stretch">
+              {RESEARCH_FEATURED.map((r) => (
+                <a
+                  key={`grid-${r.title}`}
+                  href="#"
+                  className="group flex h-full min-h-[400px] flex-1 flex-col overflow-hidden rounded-2xl border border-black/[0.06] bg-white text-left transition-colors hover:bg-white sm:min-h-[460px]"
+                >
+                  {/* Cover image area */}
+                  <div
+                    className="relative h-48 w-full bg-cover bg-center sm:h-52"
+                    style={{ backgroundImage: "url('/service.png')" }}
+                  >
+                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_0%_0%,rgba(255,255,255,0.45),transparent_55%),radial-gradient(circle_at_100%_100%,rgba(0,0,0,0.25),transparent_55%)]" />
+                  </div>
+
+                  {/* Content */}
+                  <div className="flex flex-1 flex-col p-6 sm:p-7">
+                    <div>
+                      <div className="flex items-center justify-between gap-2">
+                        <div className="inline-flex items-center gap-1.5 rounded-full bg-[#f3f4f6] px-3 py-1 text-[0.7rem] font-medium uppercase tracking-[0.18em] text-[#4b5563] sm:text-xs">
+                          {categoryIcon(r.category)}
+                          <span>{r.category}</span>
+                        </div>
+                        <p className="text-[0.7rem] text-[#4b5563] sm:text-xs">
+                          {r.published}
+                        </p>
+                      </div>
+                      <h3 className="mt-4 text-base font-semibold tracking-tight text-[#111827] group-hover:text-[#ca3726] sm:text-lg">
                         {r.title}
                       </h3>
-                      <p className="mt-3 line-clamp-2 text-sm leading-relaxed text-white/90 sm:text-base">{r.summary}</p>
+                      <p className="mt-1.5 line-clamp-3 text-sm leading-relaxed text-[#4b5563] sm:text-base">
+                        {r.summary}
+                      </p>
                     </div>
-                    <span className="mt-4 inline-flex items-center gap-1 text-xs font-medium text-white sm:text-sm">
-                      Read more <ArrowUpRight className="h-4 w-4" />
-                    </span>
-                  </a>
-                ))}
-              </div>
+                    <div className="mt-auto pt-4 flex items-center justify-end gap-3">
+                      <span className="inline-flex items-center border border-[#e5e7eb] bg-[#f9fafb] px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#4b5563] sm:text-xs">
+                        {r.minutes}
+                      </span>
+                      <span className="h-4 w-px bg-[#e5e7eb]" />
+                      <span className="inline-flex items-center gap-1 text-xs font-medium text-[#ca3726] sm:text-sm">
+                        Read more <ArrowUpRight className="h-4 w-4" />
+                      </span>
+                    </div>
+                  </div>
+                </a>
+              ))}
             </div>
+          </div>
         </div>
       </section>
 
-      {/* 8. Testimonials — clone reference UI, white bg, carousel */}
-      <section className="relative z-[1] w-full bg-white">
+      {/* 8. Testimonials — gray bg, white cards, carousel */}
+      <section className="relative z-[1] w-full bg-[#f7f7f7]">
         <div className="px-4 py-24 sm:px-6 lg:px-8 lg:py-32">
           {/* Header row */}
           <div className="grid gap-10 md:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] md:items-end md:gap-16">
@@ -899,20 +1105,25 @@ export default function CommunityPage() {
                 </button>
               </div>
             </div>
-            <div
-              ref={testimonialsScrollRef}
-              className="flex gap-6 overflow-x-auto pb-4 scroll-smooth md:gap-8 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-            >
+            <div className="-mx-4 sm:-mx-6 lg:-mx-8">
+              <div
+                ref={testimonialsScrollRef}
+                className="flex gap-3 overflow-x-auto pb-4 pl-4 pr-8 scroll-smooth md:gap-4 sm:pl-6 sm:pr-10 lg:pl-8 lg:pr-12 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+              >
                 {TESTIMONIALS.map((t, i) => (
                 <article
                   key={i}
-                  className="flex min-w-[85%] max-w-[520px] flex-shrink-0 flex-col justify-between rounded-2xl border border-black/[0.06] bg-[#f9fafb] p-6 sm:min-w-[75%] sm:p-8 md:min-w-[55%] lg:min-w-[48%]"
+                  className="flex min-w-[85%] max-w-[520px] flex-shrink-0 flex-col justify-between rounded-2xl border border-black/[0.06] bg-white p-6 sm:min-w-[75%] sm:p-8 md:min-w-[55%] lg:min-w-[48%]"
                 >
                   <p className="text-[0.7rem] font-semibold uppercase tracking-[0.2em] text-[#111827]">
                     {t.role}
                   </p>
-                  <span className="mt-4 block text-5xl font-semibold leading-none text-[#111827] sm:text-6xl lg:text-7xl">&ldquo;</span>
-                  <p className="mt-4 text-lg font-semibold leading-snug text-[#111827] sm:text-xl">{t.quote}</p>
+                  <span className="mt-3 block text-5xl font-semibold leading-none text-[#111827] sm:text-6xl lg:text-7xl">
+                    &ldquo;
+                  </span>
+                  <p className="mt-[-0.6rem] mb-4 text-lg font-semibold leading-snug text-[#111827] sm:text-xl">
+                    {t.quote}
+                  </p>
                   <footer className="mt-6 flex items-center gap-4">
                     <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-[#f3f4f6] text-sm font-semibold text-[#111827]">
                       {t.author.split(" ").map((n) => n[0]).join("")}
@@ -924,6 +1135,7 @@ export default function CommunityPage() {
                   </footer>
                 </article>
                 ))}
+              </div>
             </div>
           </div>
         </div>
