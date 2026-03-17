@@ -7,14 +7,15 @@ import { ContactModal } from "./ContactModal";
 
 const navLinks = [
   { label: "Services", hasDropdown: true, href: "#" },
-  { label: "Resources", hasDropdown: true, href: "#" },
   { label: "About", hasDropdown: false, href: "/about" },
   { label: "Community", hasDropdown: false, href: "/community" },
+  { label: "Articles", hasDropdown: false, href: "/blog" },
 ];
 
 const MOBILE_NAV_LINKS = [
   { label: "About", href: "/about" },
   { label: "Community", href: "/community" },
+  { label: "Articles", href: "/blog" },
 ];
 
 const DROPDOWNS: Record<
@@ -39,20 +40,6 @@ const DROPDOWNS: Record<
       description:
         "Design how AI fits into your organization and decision making. Create alignment between teams, initiatives, and strategy.",
       href: "/services/ai-organizational-model",
-    },
-  ],
-  Resources: [
-    {
-      title: "Blogs",
-      description:
-        "Insights on AI strategy, implementation, and leadership decisions. Lessons drawn from real work with organizations.",
-      href: "/blog",
-    },
-    {
-      title: "Newsletter",
-      description:
-        "A short weekly briefing from our work in the field. Ideas and observations for leaders navigating AI.",
-      href: "/newsletter",
     },
   ],
 };
@@ -256,25 +243,6 @@ export function Nav() {
               </p>
               <div className="space-y-0.5">
                 {DROPDOWNS.Services.map((item) => (
-                  <a
-                    key={item.title}
-                    href={item.href ?? "#"}
-                    onClick={closeMobileMenu}
-                    className="flex items-center rounded-lg px-3 py-2.5 text-sm font-medium text-[#222222] transition-colors hover:bg-[#f7f7f7]"
-                  >
-                    {item.title}
-                  </a>
-                ))}
-              </div>
-            </div>
-
-            {/* Resources group */}
-            <div className="mt-4">
-              <p className="px-2 pb-2 pt-1 text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-[#999999]">
-                Resources
-              </p>
-              <div className="space-y-0.5">
-                {DROPDOWNS.Resources.map((item) => (
                   <a
                     key={item.title}
                     href={item.href ?? "#"}

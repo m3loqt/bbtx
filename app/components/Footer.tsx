@@ -16,9 +16,8 @@ const FOOTER_NAV = [
     heading: "COMPANY",
     links: [
       { label: "About BBTx", href: "/about" },
-      { label: "Blog", href: "/blog" },
+      { label: "Articles", href: "/blog" },
       { label: "Community", href: "/community" },
-      { label: "Newsletter", href: "/newsletter" },
     ],
   },
   {

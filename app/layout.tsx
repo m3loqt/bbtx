@@ -4,9 +4,11 @@ import {
   Playfair_Display,
   Space_Mono,
   Fraunces,
-  DM_Sans,
-} from "next/font/google";
+  DM_Sans, Geist } from "next/font/google";
 import "./globals.css";
+import { cn } from "@/lib/utils";
+
+const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
 const inter = Inter({
   variable: "--font-inter",
@@ -111,7 +113,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${playfair.variable} ${spaceMono.variable} ${fraunces.variable} ${dmSans.variable}`}>
+    <html lang="en" className={cn(inter.variable, playfair.variable, spaceMono.variable, fraunces.variable, dmSans.variable, "font-sans", geist.variable)}>
       <body className="antialiased relative z-[1]">
         {children}
       </body>

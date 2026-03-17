@@ -16,44 +16,44 @@ const gridBg = {
 
 const POSTS = [
   {
-    category: "Transformational Strategy",
-    date: "Feb 4, 2026",
-    title: "From experimentation to strategy: how leaders are integrating AI",
+    category: "AI Leadership",
+    date: "Mar 12, 2026",
+    title: "Why the Best Leaders Are Slowing Down on AI",
     excerpt:
-      "How organizations are moving beyond pilots and into sustainable AI strategy that leaders can actually execute.",
+      "Rushing AI adoption is costing organizations more than it saves. Here is what the most effective leaders are doing instead.",
     readTime: "6 min read",
   },
   {
-    category: "Organizational AI Assessment",
-    date: "Jan 28, 2026",
-    title: "Building AI readiness: what boards and executives need to know",
+    category: "Strategy",
+    date: "Mar 5, 2026",
+    title: "The One Question Every Leader Must Answer Before Adopting AI",
     excerpt:
-      "What to evaluate before you commit real budget to AI initiatives, and how to align leadership around the same picture.",
-    readTime: "4 min read",
-  },
-  {
-    category: "AI Organizational Model",
-    date: "Jan 15, 2026",
-    title: "Where AI actually lives inside your organization",
-    excerpt:
-      "Moving from scattered experiments to a coherent model of teams, ownership, and responsibilities.",
+      "Most organizations start with the wrong question. Here is the one that actually leads to a strategy worth building.",
     readTime: "5 min read",
   },
   {
-    category: "Implementation",
-    date: "Dec 12, 2025",
-    title: "From pilot to production without losing momentum",
+    category: "Organization",
+    date: "Feb 18, 2026",
+    title: "AI Governance for Mid-Size Organizations",
     excerpt:
-      "How to move from a successful proof of concept to a system that teams rely on every day, with clear owners and support.",
+      "How real organizations are establishing policies, oversight, and accountability for AI without a dedicated team.",
+    readTime: "8 min read",
+  },
+  {
+    category: "Leadership",
+    date: "Feb 4, 2026",
+    title: "What It Actually Means to Lead with AI",
+    excerpt:
+      "There is a difference between an organization that uses AI and one that leads with it. Here is how to close that gap.",
     readTime: "7 min read",
   },
   {
-    category: "Measurement",
-    date: "Nov 30, 2025",
-    title: "What to measure when you ship an AI initiative",
+    category: "Workforce",
+    date: "Jan 28, 2026",
+    title: "Bringing Your Team Through an AI Transition Without Losing Them",
     excerpt:
-      "A practical view on adoption, outcomes, and risk metrics so you can tell if an AI project is actually working.",
-    readTime: "3 min read",
+      "The human cost of AI adoption is real. Here is how leaders can bring their workforce through change with clarity and care.",
+    readTime: "6 min read",
   },
 ];
 
@@ -67,16 +67,16 @@ export default function BlogPage() {
         <div className="pointer-events-none absolute inset-0 z-0 opacity-40" style={gridBg} aria-hidden />
         <div className="relative z-[1] w-full px-4 pb-20 pt-16 sm:px-6 lg:px-8 lg:pb-24 lg:pt-20">
           <div className="w-full">
-            <p className="mb-6 text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-white/40">Blog</p>
+            <p className="mb-6 text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-white/40">Articles</p>
             <h1 className="mb-3 w-full text-[1.75rem] font-medium leading-tight tracking-tighter text-white sm:max-w-[60%] sm:text-4xl sm:text-5xl lg:mb-4 lg:text-5xl xl:text-6xl 2xl:text-[4rem]">
               The Journal:{" "}
               <span
                 className="font-normal italic"
                 style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}
               >
-                AI strategy
+                AI, leadership,
               </span>
-              , implementation, and industry insights
+              {" "}and the human questions that matter most right now
             </h1>
             <div className="grid gap-12 lg:grid-cols-[3fr_2fr] lg:items-end lg:gap-16">
               <div>
@@ -99,7 +99,7 @@ export default function BlogPage() {
                 </form>
               </div>
               <p className="text-sm leading-relaxed text-white/50 sm:text-base lg:text-right">
-                Subscribe to learn about new insights, the latest in AI strategy, implementation practices, and updates.
+                Writing on AI, leadership, and the human questions that matter most right now. From the Chaotic Confluence library.
               </p>
             </div>
           </div>
@@ -126,7 +126,7 @@ export default function BlogPage() {
               <div className="min-w-0">
                 <p className="text-sm font-semibold tracking-tight text-[#222222]">Quick filters</p>
                 <div className="mt-4 min-w-0 space-y-2">
-                  {["Transformational Strategy", "Organizational AI Assessment", "AI Organizational Model", "Implementation", "Measurement"].map(
+                  {["AI Leadership", "Strategy", "Organization", "Leadership", "Workforce"].map(
                     (label, idx) => (
                       <label key={label} className="flex min-w-0 items-start gap-3 text-sm text-[#222222] sm:text-[15px]">
                         <span
@@ -159,7 +159,8 @@ export default function BlogPage() {
             </aside>
 
             {/* Right: list of posts */}
-            <div className="flex-1 space-y-2.5 sm:space-y-3">
+            <div className="flex-1">
+              <div className="space-y-2.5 sm:space-y-3">
               {POSTS.map((post, index) => (
                 <article
                   key={post.title}
@@ -201,13 +202,22 @@ export default function BlogPage() {
                         href="#"
                         className="inline-flex items-center gap-1 text-sm font-medium text-[#222222] transition-colors group-hover:text-[#ca3726]"
                       >
-                        Read full blog
+                        Read full article
                         <ArrowUpRight className="h-4 w-4" />
                       </a>
                     </div>
                   </div>
                 </article>
               ))}
+              </div>
+              <div className="mt-8 flex justify-end">
+                <a
+                  href="/blog"
+                  className="text-sm font-medium text-[#ca3726] transition-opacity hover:opacity-80"
+                >
+                  View all articles &rarr;
+                </a>
+              </div>
             </div>
           </div>
         </div>

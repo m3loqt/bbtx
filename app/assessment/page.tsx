@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Script from "next/script";
 import { ArrowDownLeft, ArrowUpRight } from "@/app/components/ArrowIcon";
 
 const ACCENT_RED = "#ca3726";
@@ -83,12 +84,20 @@ function AssessmentForm({
   setStep,
   formData,
   setFormData,
+  isSubmitting,
+  submitError,
+  onSubmit,
 }: {
   step: number;
   setStep: (n: number) => void;
   formData: FormData;
   setFormData: (d: FormData | ((prev: FormData) => FormData)) => void;
+  isSubmitting: boolean;
+  submitError: string;
+  onSubmit: () => void;
 }) {
+  const [calendlyLoaded, setCalendlyLoaded] = useState(false);
+
   const update = (key: keyof FormData, value: string | string[]) => {
     setFormData((prev) => ({ ...prev, [key]: value }));
   };
@@ -99,6 +108,8 @@ function AssessmentForm({
       return { ...prev, [key]: next };
     });
   };
+
+  const calendlyUrl = process.env.NEXT_PUBLIC_CALENDLY_URL;
 
   return (
     <section className="relative z-[1] min-h-screen w-full pt-8">
@@ -111,7 +122,6 @@ function AssessmentForm({
               const isCurrent = step === i + 1;
               return (
                 <div key={label} className="relative flex items-start gap-3 lg:gap-4 lg:py-0.5">
-                  {/* Opaque circle wrapper masks the line so it doesn’t show through */}
                   <div
                     className="relative z-[1] flex h-6 w-6 shrink-0 items-center justify-center rounded-full border-2 lg:h-7 lg:w-7"
                     style={{
@@ -377,9 +387,12 @@ function AssessmentForm({
           {step === 5 && (
             <>
               <h2 className="text-2xl font-semibold tracking-tight text-[#222222] sm:text-3xl">
-                Book your call
+                You're all set. Book your kickoff call.
               </h2>
-              <p className="mt-1 text-sm text-[#555555]">Confirm and schedule your kickoff.</p>
+              <p className="mt-1 text-sm text-[#555555]">
+                Grant will review your answers before your call so your time together is focused from minute one.
+              </p>
+
               <div className="mt-8 rounded-xl border border-black/[0.08] bg-[#f7f7f7] p-6">
                 <h3 className="text-sm font-semibold text-[#222222]">Summary of your answers</h3>
                 <ul className="mt-3 space-y-1.5 text-sm text-[#555555]">
@@ -394,45 +407,87 @@ function AssessmentForm({
                   <li><strong className="text-[#222222]">Timeline:</strong> {formData.timeline || "—"}</li>
                 </ul>
               </div>
-              <p className="mt-6 text-sm text-[#555555]">
-                Grant will review your answers before your call so your time together is focused from minute one.
-              </p>
-              <div className="mt-6 rounded-xl border border-black/[0.08] bg-[#f7f7f7] p-8 text-center">
-                <p className="text-sm font-medium text-[#222222]">Calendar</p>
-                <p className="mt-1 text-xs text-[#555555]">Calendar embed placeholder — integrate your scheduling link here.</p>
+
+              {/* Calendly inline embed */}
+              <div className="mt-8">
+                {calendlyUrl ? (
+                  <div className="relative w-full overflow-hidden rounded-xl border border-black/[0.08]" style={{ height: "650px" }}>
+                    {!calendlyLoaded && (
+                      <div className="absolute inset-0 flex items-center justify-center bg-[#f7f7f7]">
+                        <p className="text-sm text-[#555555]">Loading calendar…</p>
+                      </div>
+                    )}
+                    <div
+                      className="calendly-inline-widget w-full h-full"
+                      data-url={calendlyUrl}
+                      style={{ minWidth: "320px", height: "650px" }}
+                    />
+                    <Script
+                      src="https://assets.calendly.com/assets/external/widget.js"
+                      strategy="lazyOnload"
+                      onLoad={() => setCalendlyLoaded(true)}
+                    />
+                  </div>
+                ) : (
+                  <div className="rounded-xl border border-black/[0.08] bg-[#f7f7f7] p-8 text-center">
+                    <p className="text-sm font-medium text-[#222222]">Calendar</p>
+                    <p className="mt-1 text-xs text-[#555555]">Set NEXT_PUBLIC_CALENDLY_URL to enable booking.</p>
+                  </div>
+                )}
               </div>
             </>
           )}
 
-          <div className="mt-10 flex items-center justify-end gap-3">
-            <button
-              type="button"
-              onClick={() => setStep(Math.max(1, step - 1))}
-              className={`inline-flex items-center gap-2 text-sm font-medium text-[#555555] hover:text-[#222222] ${step === 1 ? "invisible" : ""}`}
-            >
-              <ArrowDownLeft className="h-4 w-4" />
-              Back
-            </button>
-            {step < 5 ? (
-              <button
-                type="button"
-                onClick={() => setStep(step + 1)}
-                className="inline-flex items-center gap-2 rounded-lg px-5 py-2.5 text-sm font-medium text-white transition-opacity hover:opacity-95"
-                style={{ backgroundColor: ACCENT_RED }}
-              >
-                Continue
-                <ArrowUpRight className="h-4 w-4" />
-              </button>
-            ) : (
-              <button
-                type="button"
-                className="inline-flex items-center gap-2 rounded-lg px-5 py-2.5 text-sm font-medium text-white transition-opacity hover:opacity-95"
-                style={{ backgroundColor: ACCENT_RED }}
-              >
-                Confirm and book
-                <ArrowUpRight className="h-4 w-4" />
-              </button>
+          <div className="mt-10 flex flex-col items-end gap-3">
+            {submitError && step === 4 && (
+              <p className="w-full text-sm text-red-600">{submitError}</p>
             )}
+            <div className="flex items-center gap-3">
+              <button
+                type="button"
+                onClick={() => setStep(Math.max(1, step - 1))}
+                disabled={isSubmitting}
+                className={`inline-flex items-center gap-2 text-sm font-medium text-[#555555] hover:text-[#222222] disabled:opacity-50 ${step === 1 || step === 5 ? "invisible" : ""}`}
+              >
+                <ArrowDownLeft className="h-4 w-4" />
+                Back
+              </button>
+              {step < 4 && (
+                <button
+                  type="button"
+                  onClick={() => setStep(step + 1)}
+                  className="inline-flex items-center gap-2 rounded-lg px-5 py-2.5 text-sm font-medium text-white transition-opacity hover:opacity-95"
+                  style={{ backgroundColor: ACCENT_RED }}
+                >
+                  Continue
+                  <ArrowUpRight className="h-4 w-4" />
+                </button>
+              )}
+              {step === 4 && (
+                <button
+                  type="button"
+                  onClick={onSubmit}
+                  disabled={isSubmitting}
+                  className="inline-flex items-center gap-2 rounded-lg px-5 py-2.5 text-sm font-medium text-white transition-opacity hover:opacity-95 disabled:cursor-not-allowed disabled:opacity-60"
+                  style={{ backgroundColor: ACCENT_RED }}
+                >
+                  {isSubmitting ? (
+                    <>
+                      <svg className="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z" />
+                      </svg>
+                      Submitting…
+                    </>
+                  ) : (
+                    <>
+                      Continue
+                      <ArrowUpRight className="h-4 w-4" />
+                    </>
+                  )}
+                </button>
+              )}
+            </div>
           </div>
         </div>
       </div>
@@ -458,6 +513,36 @@ const initialFormData: FormData = {
 export default function AssessmentPage() {
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState<FormData>(initialFormData);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
+
+  async function handleSubmit() {
+    if (isSubmitting) return;
+    setIsSubmitting(true);
+    setSubmitError("");
+
+    try {
+      const res = await fetch("/api/assessment", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...formData, website: "" }),
+      });
+
+      const json = await res.json();
+
+      if (!res.ok) {
+        setSubmitError(
+          json.error ?? "Something went wrong submitting your assessment. Please try again."
+        );
+      } else {
+        setStep(5);
+      }
+    } catch {
+      setSubmitError("Something went wrong submitting your assessment. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  }
 
   return (
     <div className="relative min-h-screen bg-[#f7f7f7]">
@@ -478,6 +563,9 @@ export default function AssessmentPage() {
         setStep={setStep}
         formData={formData}
         setFormData={setFormData}
+        isSubmitting={isSubmitting}
+        submitError={submitError}
+        onSubmit={handleSubmit}
       />
     </div>
   );

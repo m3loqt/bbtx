@@ -1,6 +1,7 @@
 "use client";
 
-import { useRef, type ReactElement } from "react";
+import { useEffect, useRef, type ReactElement } from "react";
+import Script from "next/script";
 import { Nav } from "@/app/components/Nav";
 import { Footer } from "@/app/components/Footer";
 import { ArrowUpRight } from "@/app/components/ArrowIcon";
@@ -277,6 +278,22 @@ const TESTIMONIALS = [
 export default function CommunityPage() {
   const testimonialsScrollRef = useRef<HTMLDivElement>(null);
 
+  // Set Substack widget config before the widget script loads
+  useEffect(() => {
+    (window as unknown as Record<string, unknown>).CustomSubstackWidget = {
+      substackUrl: "chaoticconfluence.substack.com",
+      placeholder: "Enter your email",
+      buttonText: "Subscribe",
+      theme: "custom",
+      colors: {
+        primary: "#ffffff",
+        input: "rgba(255,255,255,0.15)",
+        email: "white",
+        text: "#ca3726",
+      },
+    };
+  }, []);
+
   const scrollTestimonials = (dir: "left" | "right") => {
     const el = testimonialsScrollRef.current;
     if (!el) return;
@@ -334,18 +351,17 @@ export default function CommunityPage() {
             </div>
             <div className="mt-1 flex flex-col gap-3 sm:mt-2 sm:flex-row sm:items-center sm:gap-4">
               <a
-                href="#subscribe"
+                href="#newsletter"
                 className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-lg bg-white px-6 text-sm font-medium text-[#111111] transition-opacity duration-200 ease-out hover:opacity-95 sm:h-[50px] sm:w-auto sm:px-7 sm:text-[15px]"
               >
-                Subscribe to the newsletter
+                Subscribe to the Newsletter
                 <ArrowUpRight className="h-4 w-4" />
               </a>
               <a
                 href="#"
                 className="inline-flex h-11 w-full items-center justify-center rounded-lg border border-white/70 bg-transparent px-6 text-sm font-medium text-white transition-colors duration-200 ease-out hover:bg-white/10 sm:h-[50px] sm:w-auto sm:px-7 sm:text-[15px]"
               >
-                Join the next session
-                <ArrowUpRight className="h-4 w-4" />
+                Join the Next Session
               </a>
             </div>
           </div>
@@ -361,12 +377,11 @@ export default function CommunityPage() {
                 What Chaotic Confluence is
               </p>
               <h2 className="mt-3 max-w-3xl text-3xl font-medium leading-[1.05] tracking-tighter text-[#222222] sm:mt-4 sm:text-5xl lg:text-6xl xl:text-7xl 2xl:text-[4.25rem]">
-                A different kind of AI conversation
+                What Chaotic Confluence is.
               </h2>
             </div>
             <div className="mt-4 max-w-2xl text-base leading-relaxed tracking-tight text-[#555555] sm:mt-10 sm:text-2xl lg:mt-12">
-              For senior leaders, mid-career professionals, and managers who believe that how you think about AI matters
-              just as much as how you use it
+              Chaotic Confluence is a weekly newsletter, a podcast, and a live learning space created by R. Grant Tate and Mel Angelo Cortes - two people who believe that the most important question about AI is not how to use it, but how to lead with it wisely, humanly, and with a clear sense of what actually matters.
             </div>
           </div>
 
@@ -405,7 +420,7 @@ export default function CommunityPage() {
         <div className="px-4 py-12 sm:px-6 sm:py-24 lg:px-8 lg:py-32">
           <div className="mx-auto max-w-7xl text-center">
             <p className="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#555555]/60">
-              What's Inside
+              WHAT&apos;S INSIDE
             </p>
             <h2 className="mt-3 mx-auto max-w-5xl text-3xl font-medium leading-[1.05] tracking-tighter text-[#222222] sm:mt-4 sm:text-5xl lg:text-6xl xl:text-7xl 2xl:text-[4.25rem]">
               Everything inside is built to meet you where you actually are.
@@ -463,12 +478,19 @@ export default function CommunityPage() {
 
                     {/* Text block, placed toward bottom by parent flex */}
                     <div className="mt-auto">
-                      <h3 className="text-xl font-semibold tracking-tight text-[#222222] sm:text-2xl">
+                      <p className="text-[0.625rem] font-semibold uppercase tracking-[0.22em] text-[#ca3726]">FORMAT</p>
+                      <h3 className="mt-2 text-xl font-semibold tracking-tight text-[#222222] sm:text-2xl">
                         {item.title}
                       </h3>
                       <p className="mt-3 text-sm leading-relaxed text-[#555555] sm:text-base">
                         {item.description}
                       </p>
+                      <a
+                        href={idx === 0 ? "/blog" : "#"}
+                        className="mt-4 inline-flex items-center gap-1 text-[13px] font-medium text-[#ca3726] transition-opacity hover:opacity-80"
+                      >
+                        {idx === 0 ? "Read the latest" : "Listen now"} &rarr;
+                      </a>
                     </div>
                   </div>
                 </div>
@@ -567,7 +589,8 @@ export default function CommunityPage() {
 
                     {/* Text block */}
                     <div className="mt-auto">
-                      <h3 className="text-lg font-semibold tracking-tight sm:text-xl">{item.title}</h3>
+                      <p className={`text-[0.625rem] font-semibold uppercase tracking-[0.22em] ${idx === 2 ? "text-white" : "text-[#ca3726]"}`}>FORMAT</p>
+                      <h3 className="mt-2 text-lg font-semibold tracking-tight sm:text-xl">{item.title}</h3>
                       <p
                         className={`mt-3 text-sm leading-relaxed sm:text-base ${
                           idx === 2 ? "text-white/90" : "text-[#555555]"
@@ -575,6 +598,12 @@ export default function CommunityPage() {
                       >
                         {item.description}
                       </p>
+                      <a
+                        href="#"
+                        className={`mt-4 inline-flex items-center gap-1 text-[13px] font-medium transition-opacity hover:opacity-80 ${idx === 2 ? "text-white" : "text-[#ca3726]"}`}
+                      >
+                        {idx === 0 ? "Browse courses" : idx === 1 ? "View upcoming sessions" : "Explore resources"} &rarr;
+                      </a>
                     </div>
                   </div>
                 </div>
@@ -887,7 +916,7 @@ export default function CommunityPage() {
           {/* Centered header — full width container */}
           <div className="w-full text-center">
             <p className="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#555555]/60">
-              From the Library
+              FROM THE LIBRARY
             </p>
             <h2 className="mt-3 text-3xl font-medium leading-[1.05] tracking-tighter text-[#111827] sm:mt-4 sm:text-5xl lg:text-6xl">
               Good thinking doesn&apos;t need a pitch.
@@ -1060,6 +1089,13 @@ export default function CommunityPage() {
                 </a>
               ))}
             </div>
+          <div className="mt-8 flex justify-center">
+            <a
+              href="/blog"
+              className="text-sm font-medium text-[#ca3726] transition-opacity hover:opacity-80"
+            >
+              View all articles &rarr;
+            </a>
           </div>
         </div>
       </section>
@@ -1070,7 +1106,7 @@ export default function CommunityPage() {
           {/* Header row */}
           <div className="grid gap-6 md:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] md:items-end md:gap-16">
               <h2 className="max-w-3xl text-3xl font-medium leading-[1.05] tracking-tighter text-[#222222] sm:text-5xl lg:text-6xl xl:text-7xl 2xl:text-[4.25rem]">
-                Hear from the people inside the room
+                Straight from our graduates and members.
               </h2>
               <p className="max-w-2xl text-base leading-relaxed tracking-tight text-[#555555] sm:text-2xl md:pb-1">
                 From certified graduates to active members, here is what the Chaotic Confluence community has to say about what it is like to learn, think, and grow inside it.
@@ -1079,8 +1115,9 @@ export default function CommunityPage() {
 
           <div className="mt-12 md:mt-16 lg:mt-20">
             <div className="mb-3 flex flex-row flex-wrap items-center justify-between gap-4">
+              {/* TODO: Grant - replace all testimonial content below with real quotes from graduates/members */}
               <p className="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#6b7280]">
-                What Our Community Says
+                WHAT OUR COMMUNITY SAYS
               </p>
               <div className="flex items-center gap-2">
                 <button
@@ -1141,6 +1178,70 @@ export default function CommunityPage() {
         </div>
       </section>
 
+      {/* 9. Newsletter signup */}
+      <section id="newsletter" className="relative z-[1] w-full border-t border-black/[0.06]">
+        <div className="grid w-full grid-cols-1 lg:grid-cols-[11fr_9fr]">
+          {/* Left: benefits */}
+          <div className="flex flex-col justify-center bg-[#f7f7f7] px-5 py-10 sm:px-8 sm:py-20 lg:px-10 lg:py-24 xl:px-12 xl:py-28">
+            <p className="mb-6 text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#555555]/60">
+              Chaotic Confluence
+            </p>
+            <h2 className="max-w-[calc(100%-10px)] text-[2rem] font-medium leading-[1.1] tracking-tighter text-[#222222] sm:text-[2.75rem] md:text-[3.6rem] lg:text-[4.2rem] xl:text-[4.6rem]">
+              Because knowing how to use AI is not the same as knowing how to{" "}
+              <span
+                className="font-normal italic"
+                style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}
+              >
+                lead with it.
+              </span>
+            </h2>
+            <p className="mt-4 max-w-lg text-base leading-relaxed text-[#555555] sm:mt-6 sm:max-w-xl sm:text-xl">
+              Subscribe to the weekly newsletter and start building the kind of judgment that tools alone will never give you.
+            </p>
+          </div>
+
+          {/* Right: Substack sign-up block */}
+          <div className="flex flex-col justify-center rounded-2xl bg-[#ca3726] py-10 pl-5 pr-5 sm:py-20 sm:pl-10 sm:pr-8 lg:my-6 lg:mr-6 lg:rounded-3xl lg:py-24 lg:pl-12 lg:pr-10 xl:pl-14 xl:pr-12">
+            <p className="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-white/70">Sign up for:</p>
+            <h3
+              className="mt-3 text-[2.1rem] font-medium leading-tight tracking-tight text-white sm:text-[2.4rem] lg:text-[2.7rem] xl:text-[3rem]"
+              style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}
+            >
+              Chaotic Confluence
+            </h3>
+            <p className="mt-3 text-base leading-relaxed text-white/90 sm:text-[1.05rem]">
+              Subscribe to the weekly newsletter and start building the kind of judgment that tools alone will never give you.
+            </p>
+
+            {/* Substack embed */}
+            <div
+              id="custom-substack-embed"
+              className="mt-8 substack-embed-container"
+            />
+
+            <Script
+              src="https://substackapi.com/widget.js"
+              strategy="lazyOnload"
+            />
+
+            <p className="mt-5 text-[11px] leading-relaxed text-white/60">
+              Your information is never shared with third parties. Unsubscribe anytime.
+            </p>
+            <p className="mt-3 text-[12px] text-white/70">
+              Prefer to subscribe directly?{" "}
+              <a
+                href="https://chaoticconfluence.substack.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline underline-offset-2 hover:text-white"
+              >
+                Visit us on Substack →
+              </a>
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* 10. Closing CTA — full width with communityher background */}
       <section
         id="subscribe"
@@ -1158,22 +1259,21 @@ export default function CommunityPage() {
             Because knowing how to use AI is not the same as knowing how to lead with it.
           </h2>
           <p className="mx-auto mt-4 max-w-5xl text-base leading-relaxed text-white/95 sm:mt-6 sm:text-xl lg:text-2xl">
-            That distinction is what Chaotic Confluence is built around. Subscribe to the weekly newsletter and join a
-            community of leaders who are thinking about AI the right way.
+            Subscribe to the weekly newsletter and start building the kind of judgment that tools alone will never give you.
           </p>
           <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
             <a
               href="#newsletter"
               className="inline-flex items-center gap-2 rounded-lg bg-white px-6 py-3.5 text-[15px] font-medium text-[#222222] transition-opacity hover:opacity-95"
             >
-              Subscribe to our Newsletter
+              Subscribe to the Newsletter
               <ArrowUpRight className="h-4 w-4" />
             </a>
             <a
               href="#"
               className="inline-flex items-center gap-2 rounded-lg border-2 border-white/60 px-6 py-3.5 text-[15px] font-medium text-white transition-colors hover:bg-white/15"
             >
-              Join the next session
+              View Upcoming Live Sessions
             </a>
           </div>
         </div>

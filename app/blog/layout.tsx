@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Blog",
+  title: "Articles | Chaotic Confluence",
   description:
-    "Insights on AI strategy, implementation, and organizational change for leaders. Articles from the BBTx team on how to integrate AI with clarity and intent.",
+    "Writing on AI, leadership, and the human questions that matter most right now. From the Chaotic Confluence library.",
   openGraph: {
-    title: "BBTx Blog | AI Strategy, Implementation, and Leadership Insights",
+    title: "Articles | Chaotic Confluence",
     description:
-      "Weekly writing on AI strategy, organizational change, and implementation. Honest, considered perspectives for leaders navigating AI.",
+      "Writing on AI, leadership, and the human questions that matter most right now. From the Chaotic Confluence library.",
     url: "https://bbtx.ai/blog",
   },
   alternates: {
