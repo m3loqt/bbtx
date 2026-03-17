@@ -90,9 +90,9 @@ export const metadata: Metadata = {
     images: ["/bbtxlog.png"],
   },
   icons: {
-    icon: "/bbtxlog.png",
-    shortcut: "/bbtxlog.png",
-    apple: "/bbtxlog.png",
+    icon: "/icon.png",
+    shortcut: "/icon.png",
+    apple: "/icon.png",
   },
   robots: {
     index: true,

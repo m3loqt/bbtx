@@ -195,7 +195,7 @@ export default function AboutPage() {
               aria-hidden
             />
             <div className="flex flex-col gap-10 sm:gap-16 lg:gap-20">
-              {STORY_ENTRIES.map((entry) => (
+              {STORY_ENTRIES.map((entry, index) => (
                 <div
                   key={entry.year}
                   className="relative grid grid-cols-1 lg:grid-cols-[1fr_auto_1fr] lg:items-start lg:gap-12"
@@ -210,7 +210,21 @@ export default function AboutPage() {
                         <p className="mt-2 text-sm leading-relaxed text-[#555555] sm:mt-3 sm:text-lg lg:text-xl">
                           {entry.description}
                         </p>
-                        <div className="mt-3 aspect-[16/10] w-full max-w-2xl rounded-xl border border-black/[0.06] bg-black/[0.04] lg:ml-auto xl:max-w-[64rem]" aria-hidden />
+                        {index === 1 ? (
+                          <img
+                            src="/image2.png"
+                            alt=""
+                            className="mt-3 aspect-[16/10] w-full max-w-2xl rounded-xl border border-black/[0.06] object-cover lg:ml-auto xl:max-w-[64rem]"
+                          />
+                        ) : index === 3 ? (
+                          <img
+                            src="/image4.jpg"
+                            alt=""
+                            className="mt-3 aspect-[16/10] w-full max-w-2xl rounded-xl border border-black/[0.06] object-cover lg:ml-auto xl:max-w-[64rem]"
+                          />
+                        ) : (
+                          <div className="mt-3 aspect-[16/10] w-full max-w-2xl rounded-xl border border-black/[0.06] bg-black/[0.04] lg:ml-auto xl:max-w-[64rem]" aria-hidden />
+                        )}
                       </>
                     )}
                   </div>
@@ -228,7 +242,27 @@ export default function AboutPage() {
                         <p className="mt-2 text-sm leading-relaxed text-[#555555] sm:mt-3 sm:text-lg lg:text-xl">
                           {entry.description}
                         </p>
-                        <div className="mt-3 aspect-[16/10] w-full max-w-2xl rounded-xl border border-black/[0.06] bg-black/[0.04] xl:max-w-[64rem]" aria-hidden />
+                        {index === 0 ? (
+                          <img
+                            src="/ibmp.jpeg"
+                            alt=""
+                            className="mt-3 aspect-[16/10] w-full max-w-2xl rounded-xl border border-black/[0.06] object-cover xl:max-w-[64rem]"
+                          />
+                        ) : index === 2 ? (
+                          <img
+                            src="/image3.jpg"
+                            alt=""
+                            className="mt-3 aspect-[16/10] w-full max-w-2xl rounded-xl border border-black/[0.06] object-cover xl:max-w-[64rem]"
+                          />
+                        ) : index === 4 ? (
+                          <img
+                            src="/image5.jpg"
+                            alt=""
+                            className="mt-3 aspect-[16/10] w-full max-w-2xl rounded-xl border border-black/[0.06] object-cover xl:max-w-[64rem]"
+                          />
+                        ) : (
+                          <div className="mt-3 aspect-[16/10] w-full max-w-2xl rounded-xl border border-black/[0.06] bg-black/[0.04] xl:max-w-[64rem]" aria-hidden />
+                        )}
                       </>
                     )}
                   </div>

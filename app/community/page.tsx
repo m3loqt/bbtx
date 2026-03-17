@@ -1098,6 +1098,7 @@ export default function CommunityPage() {
             </a>
           </div>
         </div>
+        </div>
       </section>
 
       {/* 8. Testimonials — gray bg, white cards, carousel */}

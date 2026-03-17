@@ -1,44 +1,49 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { ArrowUpRight, ChevronDown } from "./ArrowIcon";
+import { useEffect, useState } from "react";
+import { ArrowUpRight } from "./ArrowIcon";
+import { Loader2, CheckCircle, AlertCircle } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 const CONTACT_EMAIL = "grant@bbtx.ai";
 const CONTACT_PHONE = "+1 (434) 466-4655";
-
-const HELP_OPTIONS = [
-  "Transformational Strategy & Implementation Plan",
-  "Organizational AI Assessment",
-  "AI Organizational Model",
-  "General Inquiry",
-  "Others: Specify",
-] as const;
 
 type ContactModalProps = {
   open: boolean;
   onClose: () => void;
 };
 
-export function ContactModal({ open, onClose }: ContactModalProps) {
-  const [helpWith, setHelpWith] = useState<string>(HELP_OPTIONS[0]);
-  const [otherSpecify, setOtherSpecify] = useState("");
-  const [showOthersAsInput, setShowOthersAsInput] = useState(false);
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle");
-  const [errorMessage, setErrorMessage] = useState("");
-  const dropdownRef = useRef<HTMLDivElement>(null);
+type ContactFormData = {
+  full_name: string;
+  email: string;
+  inquiry_type: string;
+  message: string;
+  website: string;
+};
 
-  useEffect(() => {
-    if (!open) return;
-    const handleClickOutside = (e: MouseEvent) => {
-      const target = e.target as Node;
-      if (dropdownRef.current?.contains(target)) return;
-      setDropdownOpen(false);
-    };
-    document.addEventListener("mousedown", handleClickOutside, true);
-    return () => document.removeEventListener("mousedown", handleClickOutside, true);
-  }, [open]);
+const INQUIRY_OPTIONS = [
+  "Transformational Strategy & Implementation Plan",
+  "Organizational AI Assessment",
+  "AI Organizational Model",
+  "General Inquiry",
+] as const;
+
+export function ContactModal({ open, onClose }: ContactModalProps) {
+  const [isLoading, setIsLoading] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [inquiryType, setInquiryType] = useState<string>(INQUIRY_OPTIONS[0]);
 
   useEffect(() => {
     if (open) {
@@ -52,57 +57,58 @@ export function ContactModal({ open, onClose }: ContactModalProps) {
   // Reset form state when modal closes
   useEffect(() => {
     if (!open) {
-      setSubmitStatus("idle");
-      setErrorMessage("");
-      setIsSubmitting(false);
+      setIsLoading(false);
+      setIsSuccess(false);
+      setError(null);
+      setInquiryType(INQUIRY_OPTIONS[0]);
     }
   }, [open]);
 
   if (!open) return null;
 
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  const handleSubmit = async (formData: ContactFormData) => {
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setError(data.error ?? "Something went wrong. Please try again.");
+        return;
+      }
+
+      setIsSuccess(true);
+    } catch {
+      setError("Something went wrong. Please try again or email us directly.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (isSubmitting) return;
+    if (isLoading) return;
 
     const form = e.currentTarget;
     const data = new FormData(form);
 
-    const inquiryType = showOthersAsInput
-      ? `Others: ${otherSpecify.trim()}`
-      : helpWith;
+    const payload: ContactFormData = {
+      full_name: (data.get("full_name") as string | null)?.trim() ?? "",
+      email: (data.get("email") as string | null)?.trim() ?? "",
+      inquiry_type: inquiryType,
+      message: (data.get("message") as string | null)?.trim() ?? "",
+      website: ((data.get("website") as string | null) ?? "").trim(),
+    };
 
-    setIsSubmitting(true);
-    setSubmitStatus("idle");
-    setErrorMessage("");
-
-    try {
-      const res = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          full_name: (data.get("name") as string)?.trim(),
-          email: (data.get("email") as string)?.trim(),
-          inquiry_type: inquiryType,
-          message: (data.get("message") as string)?.trim(),
-          website: (data.get("website") as string) ?? "",
-        }),
-      });
-
-      const json = await res.json();
-
-      if (!res.ok) {
-        setErrorMessage(json.error ?? "Something went wrong. Please try again or email us directly.");
-        setSubmitStatus("error");
-      } else {
-        setSubmitStatus("success");
-      }
-    } catch {
-      setErrorMessage("Something went wrong. Please try again or email us directly.");
-      setSubmitStatus("error");
-    } finally {
-      setIsSubmitting(false);
-    }
-  }
+    void handleSubmit(payload);
+  };
 
   return (
     <div
@@ -150,162 +156,125 @@ export function ContactModal({ open, onClose }: ContactModalProps) {
               <div className="mx-1 mt-4 border-t border-black/10 sm:mt-10" aria-hidden />
             </div>
 
-            {/* Success state */}
-            {submitStatus === "success" ? (
-              <div className="px-4 pb-8 pt-2 sm:px-6 sm:pb-10">
-                <div className="rounded-lg bg-[#f7f7f7] px-6 py-8 text-center">
-                  <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-[#ca3726]/10">
-                    <svg className="h-6 w-6 text-[#ca3726]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                    </svg>
-                  </div>
-                  <p className="text-lg font-semibold text-[#222222]">Thank you.</p>
-                  <p className="mt-1 text-sm text-[#555555]">Grant will be in touch shortly.</p>
+            {isSuccess ? (
+              <div className="px-4 pb-8 pt-2 sm:px-6 sm:pb-10 flex flex-col items-center text-center">
+                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-[#ca3726]/10">
+                  <CheckCircle className="h-7 w-7 text-[#ca3726]" />
                 </div>
+                <p className="text-[20px] font-semibold text-[#1a1a1a]">Message sent.</p>
+                <p className="mt-2 text-[15px] text-[#666666]">
+                  Thank you. Grant will be in touch shortly.
+                </p>
+                <Button
+                  variant="ghost"
+                  className="mt-6"
+                  type="button"
+                  onClick={onClose}
+                >
+                  Close
+                </Button>
               </div>
             ) : (
-              /* Form */
               <form
-                className="grid gap-3 p-4 sm:grid-cols-[1fr_1fr] sm:gap-6 sm:items-stretch sm:p-6"
-                onSubmit={handleSubmit}
+                className="grid gap-4 p-4 sm:grid-cols-[1fr_1fr] sm:gap-6 sm:items-stretch sm:p-6"
+                onSubmit={onSubmit}
               >
                 {/* Honeypot — hidden from real users, catches bots */}
                 <input
                   type="text"
                   name="website"
+                  style={{ display: "none" }}
                   tabIndex={-1}
                   autoComplete="off"
-                  style={{ display: "none" }}
-                  aria-hidden="true"
+                  value=""
+                  onChange={() => {}}
                 />
 
                 <div className="flex flex-col gap-4">
-                  <label className="flex flex-col gap-1.5">
-                    <span className="text-xs font-medium uppercase tracking-wider text-[#555555]">
-                      Your name
-                    </span>
-                    <input
+                  <div className="space-y-1.5">
+                    <Label className="text-xs font-medium uppercase tracking-[0.18em] text-[#555555]">
+                      Your Name
+                    </Label>
+                    <Input
+                      name="full_name"
                       type="text"
-                      name="name"
                       required
-                      disabled={isSubmitting}
-                      className="rounded border border-black/12 bg-[#ebebeb] px-3 py-2.5 text-[15px] text-[#222222] placeholder:text-[#888] focus:border-black/20 focus:outline-none focus:ring-1 focus:ring-black/10 disabled:opacity-60"
-                      placeholder=""
+                      disabled={isLoading}
+                      className="h-11 rounded-md border-black/10 bg-[#f2f2f2] text-[15px]"
                     />
-                  </label>
-                  <label className="flex flex-col gap-1.5">
-                    <span className="text-xs font-medium uppercase tracking-wider text-[#555555]">
-                      What can we help you with
-                    </span>
-                    {showOthersAsInput ? (
-                      <>
-                        <input
-                          type="text"
-                          name="other_specify"
-                          value={otherSpecify}
-                          onChange={(e) => setOtherSpecify(e.target.value)}
-                          placeholder="Please specify"
-                          disabled={isSubmitting}
-                          className="rounded border border-black/12 bg-[#ebebeb] pr-8 py-2.5 pl-3 text-[15px] text-[#222222] placeholder:text-[#888] focus:border-black/20 focus:outline-none focus:ring-1 focus:ring-black/10 disabled:opacity-60"
-                        />
-                        <input type="hidden" name="help_with" value="Others: Specify" />
-                        <button
-                          type="button"
-                          onClick={() => setShowOthersAsInput(false)}
-                          className="text-left text-xs text-[#555555] underline underline-offset-2 hover:text-[#222222]"
-                        >
-                          Choose from list
-                        </button>
-                      </>
-                    ) : (
-                      <div ref={dropdownRef} className="relative">
-                        <input type="hidden" name="help_with" value={helpWith} />
-                        <button
-                          type="button"
-                          disabled={isSubmitting}
-                          onClick={() => setDropdownOpen((o) => !o)}
-                          className="flex w-full items-center justify-between rounded border border-black/12 bg-[#ebebeb] py-2.5 pl-3 pr-3 text-left text-[15px] text-[#222222] focus:border-black/20 focus:outline-none focus:ring-1 focus:ring-black/10 disabled:opacity-60"
-                        >
-                          <span className="truncate pr-2">{helpWith}</span>
-                          <ChevronDown className="h-4 w-4 shrink-0 text-[#555555]" />
-                        </button>
-                        {dropdownOpen && (
-                          <div
-                            className="absolute left-0 right-0 top-full z-10 mt-1 overflow-hidden rounded-lg bg-[#363636] py-1 shadow-lg"
-                            role="listbox"
-                          >
-                            {HELP_OPTIONS.map((opt) => {
-                              const selected = helpWith === opt;
-                              return (
-                                <button
-                                  key={opt}
-                                  type="button"
-                                  role="option"
-                                  aria-selected={selected}
-                                  onMouseDown={(e) => {
-                                    e.preventDefault();
-                                    e.stopPropagation();
-                                    setDropdownOpen(false);
-                                    setHelpWith(opt);
-                                    if (opt === "Others: Specify") setShowOthersAsInput(true);
-                                  }}
-                                  className={`w-full px-4 py-2.5 text-left text-[15px] text-white ${
-                                    selected ? "bg-[#ca3726]" : "hover:bg-white/10"
-                                  }`}
-                                >
-                                  <span className="block truncate">{opt}</span>
-                                </button>
-                              );
-                            })}
-                          </div>
-                        )}
-                      </div>
-                    )}
-                  </label>
-                  <label className="flex flex-col gap-1.5">
-                    <span className="text-xs font-medium uppercase tracking-wider text-[#555555]">
-                      Email address
-                    </span>
-                    <input
-                      type="email"
+                  </div>
+
+                  <div className="space-y-1.5">
+                    <Label className="text-xs font-medium uppercase tracking-[0.18em] text-[#555555]">
+                      What can we help you with?
+                    </Label>
+                    <Select
+                      value={inquiryType}
+                      onValueChange={(val) => setInquiryType(val ?? INQUIRY_OPTIONS[0])}
+                      disabled={isLoading}
+                    >
+                      <SelectTrigger className="h-11 rounded-md border-black/10 bg-[#f2f2f2] text-[15px]">
+                        <SelectValue placeholder="Select an option" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {INQUIRY_OPTIONS.map((opt) => (
+                          <SelectItem key={opt} value={opt}>
+                            {opt}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div className="space-y-1.5">
+                    <Label className="text-xs font-medium uppercase tracking-[0.18em] text-[#555555]">
+                      Email Address
+                    </Label>
+                    <Input
                       name="email"
+                      type="email"
                       required
-                      disabled={isSubmitting}
-                      className="rounded border border-black/12 bg-[#ebebeb] px-3 py-2.5 text-[15px] text-[#222222] placeholder:text-[#888] focus:border-black/20 focus:outline-none focus:ring-1 focus:ring-black/10 disabled:opacity-60"
-                      placeholder=""
+                      disabled={isLoading}
+                      className="h-11 rounded-md border-black/10 bg-[#f2f2f2] text-[15px]"
                     />
-                  </label>
+                  </div>
                 </div>
+
                 <div className="flex flex-col gap-3 sm:h-full">
-                  <label className="flex min-h-0 flex-col gap-1.5 sm:h-full">
-                    <span className="text-xs font-medium uppercase tracking-wider text-[#555555]">
-                      Your message
-                    </span>
-                    <textarea
+                  <div className="space-y-1.5 flex min-h-0 flex-col sm:h-full">
+                    <Label className="text-xs font-medium uppercase tracking-[0.18em] text-[#555555]">
+                      Your Message
+                    </Label>
+                    <Textarea
                       name="message"
+                      rows={4}
                       required
-                      disabled={isSubmitting}
-                      className="min-h-[90px] flex-1 resize-y rounded border border-black/12 bg-[#ebebeb] px-3 py-2.5 text-[15px] text-[#222222] placeholder:text-[#888] focus:border-black/20 focus:outline-none focus:ring-1 focus:ring-black/10 sm:min-h-0 disabled:opacity-60"
-                      placeholder=""
+                      disabled={isLoading}
+                      className="min-h-[100px] flex-1 rounded-md border-black/10 bg-[#f2f2f2] text-[15px]"
                     />
-                  </label>
-                  {submitStatus === "error" && (
-                    <p className="text-sm text-red-600">{errorMessage}</p>
+                  </div>
+
+                  {error && (
+                    <Alert variant="destructive" className="sm:col-span-2">
+                      <AlertCircle className="h-4 w-4" />
+                      <div>
+                        <AlertTitle>Error</AlertTitle>
+                        <AlertDescription>{error}</AlertDescription>
+                      </div>
+                    </Alert>
                   )}
                 </div>
+
                 <div className="flex justify-end sm:col-span-2">
-                  <button
+                  <Button
                     type="submit"
-                    disabled={isSubmitting}
-                    className="inline-flex items-center gap-2 rounded-lg bg-[#ca3726] px-5 py-3 text-sm font-semibold text-white transition-opacity hover:opacity-95 disabled:cursor-not-allowed disabled:opacity-60"
+                    disabled={isLoading}
+                    className="inline-flex items-center gap-2 rounded-md bg-[#ca3726] px-5 py-3 text-sm font-semibold text-white transition-opacity hover:opacity-95 disabled:cursor-not-allowed disabled:opacity-60"
                   >
-                    {isSubmitting ? (
+                    {isLoading ? (
                       <>
-                        <svg className="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none">
-                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z" />
-                        </svg>
-                        Sending…
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                        Sending...
                       </>
                     ) : (
                       <>
@@ -313,20 +282,22 @@ export function ContactModal({ open, onClose }: ContactModalProps) {
                         <ArrowUpRight className="h-4 w-4" />
                       </>
                     )}
-                  </button>
+                  </Button>
                 </div>
               </form>
             )}
           </div>
 
           {/* Close link */}
-          <button
-            type="button"
-            onClick={onClose}
-            className="mt-6 text-sm font-medium text-[#222222] underline underline-offset-2 hover:text-[#555]"
-          >
-            Close
-          </button>
+          {!isSuccess && (
+            <button
+              type="button"
+              onClick={onClose}
+              className="mt-6 text-sm font-medium text-[#222222] underline underline-offset-2 hover:text-[#555]"
+            >
+              Close
+            </button>
+          )}
         </div>
       </div>
     </div>
