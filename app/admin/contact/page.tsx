@@ -77,7 +77,7 @@ function ContactDetailSheet({
   const [lookingUp, setLookingUp] = useState(false)
   const [assessment, setAssessment] = useState<AssessmentSubmission | null>(null)
   const [assessmentSheetOpen, setAssessmentSheetOpen] = useState(false)
-  const saveTimeout = useRef<ReturnType<typeof setTimeout>>()
+  const saveTimeout = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   useEffect(() => {
     if (contact) {
@@ -100,7 +100,9 @@ function ContactDetailSheet({
 
   function handleNotesChange(val: string) {
     setNotes(val)
-    clearTimeout(saveTimeout.current)
+    if (saveTimeout.current) {
+      clearTimeout(saveTimeout.current)
+    }
     saveTimeout.current = setTimeout(async () => {
       try {
         await updateContactNotes(contact!.id, val)
@@ -304,7 +306,10 @@ export default function ContactPage() {
             onChange={(e) => setSearch(e.target.value)}
           />
         </div>
-        <Select value={statusFilter} onValueChange={setStatusFilter}>
+        <Select
+          value={statusFilter}
+          onValueChange={(value) => setStatusFilter(value ?? 'all')}
+        >
           <SelectTrigger className="w-36">
             <SelectValue placeholder="Status" />
           </SelectTrigger>
