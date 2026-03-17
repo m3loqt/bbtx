@@ -34,7 +34,7 @@ export function AssessmentDetailSheet({ assessment, open, onOpenChange, onUpdate
   const [status, setStatus] = useState(assessment?.status ?? 'new')
   const [notes, setNotes] = useState(assessment?.grant_notes ?? '')
   const [savedIndicator, setSavedIndicator] = useState(false)
-  const saveTimeout = useRef<ReturnType<typeof setTimeout>>()
+  const saveTimeout = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
 
   useEffect(() => {
     if (assessment) {
@@ -45,7 +45,8 @@ export function AssessmentDetailSheet({ assessment, open, onOpenChange, onUpdate
 
   if (!assessment) return null
 
-  async function handleStatusChange(val: string) {
+  async function handleStatusChange(val: string | null) {
+    if (!val) return
     setStatus(val)
     try {
       await updateAssessmentStatus(assessment!.id, val)

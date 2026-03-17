@@ -75,7 +75,8 @@ export default function EventsPage() {
   const [statusFilter, setStatusFilter] = useState('all')
 
   const { register, handleSubmit, reset, setValue, watch, formState: { errors } } = useForm<EventFormData>({
-    resolver: zodResolver(eventSchema),
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    resolver: zodResolver(eventSchema) as any,
     defaultValues: { is_free: true, is_published: false, sort_order: 0, timezone: 'EST' },
   })
 
@@ -209,7 +210,7 @@ export default function EventsPage() {
 
       {/* Filters */}
       <div className="flex flex-wrap gap-3">
-        <Select value={typeFilter} onValueChange={setTypeFilter}>
+        <Select value={typeFilter} onValueChange={(v) => setTypeFilter(v ?? 'all')}>
           <SelectTrigger className="w-40">
             <SelectValue placeholder="Event Type" />
           </SelectTrigger>
@@ -218,7 +219,7 @@ export default function EventsPage() {
             {EVENT_TYPES.map((t) => <SelectItem key={t} value={t}>{t}</SelectItem>)}
           </SelectContent>
         </Select>
-        <Select value={statusFilter} onValueChange={setStatusFilter}>
+        <Select value={statusFilter} onValueChange={(v) => setStatusFilter(v ?? 'all')}>
           <SelectTrigger className="w-36">
             <SelectValue placeholder="Status" />
           </SelectTrigger>
@@ -345,7 +346,7 @@ export default function EventsPage() {
 
             <div className="space-y-2">
               <Label>Event Type *</Label>
-              <Select value={eventType} onValueChange={(v) => setValue('event_type', v)}>
+              <Select value={eventType} onValueChange={(v) => v && setValue('event_type', v)}>
                 <SelectTrigger>
                   <SelectValue placeholder="Select type" />
                 </SelectTrigger>
@@ -372,7 +373,7 @@ export default function EventsPage() {
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label>Timezone</Label>
-                <Select value={timezone} onValueChange={(v) => setValue('timezone', v)}>
+                <Select value={timezone} onValueChange={(v) => v && setValue('timezone', v)}>
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>

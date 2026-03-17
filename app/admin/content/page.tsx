@@ -111,7 +111,8 @@ function BlogTab({ trigger }: { trigger: number }) {
   const [coverPreview, setCoverPreview] = useState('')
 
   const { register, handleSubmit, reset, setValue, watch, formState: { errors } } = useForm<BlogFormData>({
-    resolver: zodResolver(blogSchema),
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    resolver: zodResolver(blogSchema) as any,
     defaultValues: { is_featured: false, is_published: false, sort_order: 0 },
   })
 
@@ -457,7 +458,8 @@ function PodcastTab({ trigger }: { trigger: number }) {
   const [coverPreview, setCoverPreview] = useState('')
 
   const { register, handleSubmit, reset, setValue, watch, formState: { errors } } = useForm<PodcastFormData>({
-    resolver: zodResolver(podcastSchema),
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    resolver: zodResolver(podcastSchema) as any,
     defaultValues: { is_featured: false, is_published: false, sort_order: 0 },
   })
 

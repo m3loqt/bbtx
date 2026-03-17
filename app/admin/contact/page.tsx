@@ -88,7 +88,8 @@ function ContactDetailSheet({
 
   if (!contact) return null
 
-  async function handleStatusChange(val: string) {
+  async function handleStatusChange(val: string | null) {
+    if (!val) return
     setStatus(val)
     try {
       await updateContactStatus(contact!.id, val)

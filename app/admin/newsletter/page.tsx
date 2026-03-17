@@ -149,7 +149,7 @@ export default function NewsletterPage() {
             onChange={(e) => setSearch(e.target.value)}
           />
         </div>
-        <Select value={sourceFilter} onValueChange={setSourceFilter}>
+        <Select value={sourceFilter} onValueChange={(v) => setSourceFilter(v ?? 'all')}>
           <SelectTrigger className="w-36">
             <SelectValue placeholder="Source" />
           </SelectTrigger>

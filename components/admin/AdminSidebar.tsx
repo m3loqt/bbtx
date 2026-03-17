@@ -91,7 +91,7 @@ export function AdminSidebar() {
               {group.items.map((item) => (
                 <SidebarMenuItem key={item.href}>
                   <SidebarMenuButton
-                    isActive={isActive(item.href, item.exact)}
+                    isActive={isActive(item.href, 'exact' in item ? item.exact : undefined)}
                     onClick={() => router.push(item.href)}
                   >
                     <item.icon className="h-4 w-4" />

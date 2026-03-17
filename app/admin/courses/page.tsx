@@ -56,7 +56,8 @@ export default function CoursesPage() {
   const [coverPreview, setCoverPreview] = useState('')
 
   const { register, handleSubmit, reset, setValue, watch, formState: { errors } } = useForm<CourseFormData>({
-    resolver: zodResolver(courseSchema),
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    resolver: zodResolver(courseSchema) as any,
     defaultValues: { has_certification: false, is_featured: false, is_published: false, sort_order: 0 },
   })
 
