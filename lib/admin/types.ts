@@ -90,12 +90,18 @@ export interface AssessmentSubmission {
   industry: string | null
   organization_size: string | null
   currently_using_ai: string | null
+  ai_usage_visibility: string | null
+  ai_guidelines_status: string | null
+  leadership_ai_training: string | null
   ai_target_areas: string[] | null
+  ai_strategy_owner: string | null
   ai_strategy_status: string | null
+  has_strategic_plan: string | null
   biggest_challenges: string[] | null
   other_challenge: string | null
   primary_need: string | null
   timeline: string | null
+  wants_orientation_workshop: boolean | null
   status: string
   ip_address: string | null
   grant_notes: string | null

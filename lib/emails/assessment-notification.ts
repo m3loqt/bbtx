@@ -1,97 +1,138 @@
-export type AssessmentData = {
-  full_name?: string
-  role?: string
-  organization_name?: string
-  industry?: string
-  organization_size?: string
-  currently_using_ai?: string
-  ai_target_areas?: string[]
-  ai_strategy_status?: string
-  biggest_challenges?: string[]
-  other_challenge?: string
-  primary_need?: string
-  timeline?: string
+interface AssessmentEmailData {
+  full_name: string
+  email: string
+  role: string | null
+  organization_name: string | null
+  industry: string | null
+  organization_size: string | null
+  currently_using_ai: string | null
+  ai_usage_visibility: string | null
+  ai_guidelines_status: string | null
+  leadership_ai_training: string | null
+  ai_strategy_owner: string | null
+  ai_strategy_status: string | null
+  has_strategic_plan: string | null
+  biggest_challenges: string[] | null
+  other_challenge: string | null
+  primary_need: string | null
+  timeline: string | null
+  wants_orientation_workshop: boolean
+  submitted_at: string
 }
 
-function row(label: string, value: string | undefined): string {
+function escapeHtml(value: string | null | undefined): string {
   if (!value) return ''
-  return `
-    <tr>
-      <td style="padding:6px 0;width:180px;vertical-align:top;color:#555555;font-size:13px;font-family:Arial,sans-serif;">${label}</td>
-      <td style="padding:6px 0;color:#1a1a1a;font-size:13px;font-family:Arial,sans-serif;">${value}</td>
-    </tr>`
+  return value
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
 }
 
-function sectionHeader(title: string): string {
+function fieldRow(label: string, value: string | null | undefined, isLink = false): string {
+  const content = isLink && value
+    ? `<a href="mailto:${escapeHtml(value)}" style="color:#ca3726;text-decoration:none;">${escapeHtml(value)}</a>`
+    : `<span style="color:${value ? '#1a1a1a' : '#aaaaaa'};">${value ? escapeHtml(value) : 'Not provided'}</span>`
   return `
-    <tr>
-      <td colspan="2" style="padding:20px 0 8px;font-size:11px;font-family:Arial,sans-serif;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#ca3726;border-bottom:1px solid #e5e5e5;">${title}</td>
-    </tr>`
+    <div style="margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid #f0f0f0;">
+      <span style="display:block;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#888888;margin-bottom:4px;">${label}</span>
+      <span style="display:block;font-size:14px;line-height:1.6;">${content}</span>
+    </div>`
 }
 
-export function buildAssessmentEmail(data: AssessmentData): string {
-  const orgName = data.organization_name || 'Unknown Organization'
-  const aiAreas = data.ai_target_areas?.join(', ') || '—'
-  const challenges = data.biggest_challenges?.join(', ') || '—'
+function sectionLabel(title: string): string {
+  return `
+    <div style="background:#f9f9f9;padding:8px 0;font-size:10px;color:#ca3726;letter-spacing:3px;text-transform:uppercase;font-weight:700;border-bottom:1px solid #f0f0f0;margin-bottom:12px;margin-top:24px;">
+      ${title}
+    </div>`
+}
+
+export function buildAssessmentEmail(data: AssessmentEmailData): string {
+  const challengesList = data.biggest_challenges?.length
+    ? data.biggest_challenges.map(c => `<div style="margin-bottom:4px;">· ${escapeHtml(c)}</div>`).join('')
+    : '<span style="color:#aaaaaa;">Not provided</span>'
+
+  const workshopDisplay = data.wants_orientation_workshop
+    ? `<span style="color:#ca3726;font-weight:700;">Yes, signed up</span>`
+    : `<span style="color:#888888;">Not interested</span>`
 
   return `<!DOCTYPE html>
 <html lang="en">
-<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
-<body style="margin:0;padding:0;background:#f7f7f7;font-family:Arial,sans-serif;">
-  <table width="100%" cellpadding="0" cellspacing="0" style="background:#f7f7f7;padding:32px 16px;">
-    <tr>
-      <td align="center">
-        <table width="600" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:8px;overflow:hidden;border:1px solid #e5e5e5;max-width:600px;">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>New Assessment Submission</title>
+  </head>
+  <body style="margin:0;padding:0;background:#ffffff;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
+    <table width="100%" cellpadding="0" cellspacing="0" role="presentation" style="background:#ffffff;padding:40px 0;">
+      <tr>
+        <td align="center">
+          <table width="100%" cellpadding="0" cellspacing="0" role="presentation" style="max-width:580px;background:#ffffff;border-radius:8px;overflow:hidden;border:1px solid #f0f0f0;">
 
-          <!-- Header -->
-          <tr>
-            <td style="background:#1a1a1a;padding:28px 32px;">
-              <p style="margin:0;font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:#ca3726;font-family:Arial,sans-serif;">BBTx Consulting</p>
-              <h1 style="margin:8px 0 0;font-size:20px;font-weight:700;color:#ffffff;font-family:Arial,sans-serif;">New Assessment Submission</h1>
-              <p style="margin:4px 0 0;font-size:14px;color:#aaaaaa;font-family:Arial,sans-serif;">${orgName}</p>
-            </td>
-          </tr>
+            <tr>
+              <td style="padding:32px;">
+                <div style="font-size:11px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#ca3726;margin-bottom:8px;">
+                  NEW ASSESSMENT SUBMISSION
+                </div>
+                <div style="font-size:24px;font-weight:700;color:#1a1a1a;margin-bottom:24px;">
+                  ${escapeHtml(data.full_name)} is ready to talk.
+                </div>
 
-          <!-- Body -->
-          <tr>
-            <td style="padding:28px 32px;">
-              <table width="100%" cellpadding="0" cellspacing="0">
+                ${sectionLabel('ABOUT THEM')}
+                ${fieldRow('REPLY TO', data.email, true)}
+                ${fieldRow('ROLE', data.role)}
+                ${fieldRow('ORGANIZATION', data.organization_name)}
+                ${fieldRow('INDUSTRY', data.industry)}
+                ${fieldRow('SIZE', data.organization_size)}
 
-                ${sectionHeader('Step 1 — Organization')}
-                ${row('Name', data.full_name)}
-                ${row('Role', data.role)}
-                ${row('Organization', data.organization_name)}
-                ${row('Industry', data.industry)}
-                ${row('Org Size', data.organization_size)}
+                ${sectionLabel('AI USAGE')}
+                ${fieldRow('CURRENTLY USING AI', data.currently_using_ai)}
+                ${fieldRow('EMPLOYEE AI VISIBILITY', data.ai_usage_visibility)}
+                ${fieldRow('AI GUIDELINES STATUS', data.ai_guidelines_status)}
+                ${fieldRow('LEADERSHIP AI TRAINING', data.leadership_ai_training)}
 
-                ${sectionHeader('Step 2 — AI Situation')}
-                ${row('Using AI?', data.currently_using_ai)}
-                ${row('AI Areas', aiAreas)}
-                ${row('AI Strategy', data.ai_strategy_status)}
+                ${sectionLabel('AI STRATEGY')}
+                ${fieldRow('STRATEGY OWNER', data.ai_strategy_owner)}
+                ${fieldRow('CURRENT AI STRATEGY', data.ai_strategy_status)}
+                ${fieldRow('FOLLOWING STRATEGIC PLAN', data.has_strategic_plan)}
 
-                ${sectionHeader('Step 3 — Challenges')}
-                ${row('Challenges', challenges)}
-                ${row('Other Notes', data.other_challenge)}
+                ${sectionLabel('CHALLENGES')}
+                <div style="margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid #f0f0f0;">
+                  <span style="display:block;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#888888;margin-bottom:8px;">BIGGEST CHALLENGES</span>
+                  <div style="font-size:14px;line-height:1.8;color:#1a1a1a;">${challengesList}</div>
+                </div>
+                ${data.other_challenge ? fieldRow('OTHER', data.other_challenge) : ''}
 
-                ${sectionHeader('Step 4 — Needs & Timeline')}
-                ${row('Primary Need', data.primary_need)}
-                ${row('Timeline', data.timeline)}
+                ${sectionLabel('WHAT THEY NEED')}
+                <div style="margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid #f0f0f0;">
+                  <span style="display:block;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#888888;margin-bottom:8px;">PRIMARY NEED</span>
+                  <div style="background:#f9f9f9;border-left:3px solid #ca3726;padding:16px;font-size:14px;line-height:1.6;color:#1a1a1a;">
+                    ${data.primary_need ? escapeHtml(data.primary_need) : '<span style="color:#aaaaaa;">Not provided</span>'}
+                  </div>
+                </div>
+                ${fieldRow('TIMELINE', data.timeline)}
+                <div style="margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid #f0f0f0;">
+                  <span style="display:block;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#888888;margin-bottom:4px;">ORIENTATION WORKSHOP</span>
+                  <span style="display:block;font-size:14px;line-height:1.6;">${workshopDisplay}</span>
+                </div>
 
-              </table>
-            </td>
-          </tr>
+                ${sectionLabel('RECEIVED')}
+                <div style="font-size:14px;color:#1a1a1a;margin-bottom:24px;">${escapeHtml(data.submitted_at)}</div>
 
-          <!-- Footer -->
-          <tr>
-            <td style="background:#f7f7f7;padding:20px 32px;border-top:1px solid #e5e5e5;">
-              <p style="margin:0;font-size:12px;color:#888888;font-family:Arial,sans-serif;">Log in to Supabase to view all submissions.</p>
-            </td>
-          </tr>
+                <div style="text-align:center;margin-top:32px;">
+                  <a
+                    href="https://bbtx.ai/admin/assessments"
+                    style="background:#ca3726;color:#ffffff;padding:14px 28px;border-radius:4px;font-size:14px;font-weight:600;text-decoration:none;display:inline-block;"
+                  >
+                    Review Assessment →
+                  </a>
+                </div>
+              </td>
+            </tr>
 
-        </table>
-      </td>
-    </tr>
-  </table>
-</body>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
 </html>`
 }

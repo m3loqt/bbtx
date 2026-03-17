@@ -113,7 +113,10 @@ export default function AssessmentsPage() {
             onChange={(e) => setSearch(e.target.value)}
           />
         </div>
-        <Select value={statusFilter} onValueChange={setStatusFilter}>
+        <Select
+          value={statusFilter}
+          onValueChange={(value) => setStatusFilter(value ?? 'all')}
+        >
           <SelectTrigger className="w-36">
             <SelectValue placeholder="Status" />
           </SelectTrigger>
