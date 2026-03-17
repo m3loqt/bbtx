@@ -2,7 +2,7 @@
 
 export const dynamic = 'force-dynamic'
 
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { Suspense, useState, useEffect, useCallback } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -62,7 +62,7 @@ const typeBadgeColors: Record<string, string> = {
   'Live Session': 'bg-green-100 text-green-800 border-green-200',
 }
 
-export default function EventsPage() {
+function EventsPageInner() {
   const searchParams = useSearchParams()
   const [events, setEvents] = useState<Event[]>([])
   const [loading, setLoading] = useState(true)
@@ -478,5 +478,13 @@ export default function EventsPage() {
         </DialogContent>
       </Dialog>
     </div>
+  )
+}
+
+export default function EventsPage() {
+  return (
+    <Suspense>
+      <EventsPageInner />
+    </Suspense>
   )
 }

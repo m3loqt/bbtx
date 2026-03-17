@@ -2,7 +2,7 @@
 
 export const dynamic = 'force-dynamic'
 
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { Suspense, useState, useEffect, useCallback } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -46,7 +46,7 @@ const courseSchema = z.object({
 
 type CourseFormData = z.infer<typeof courseSchema>
 
-export default function CoursesPage() {
+function CoursesPageInner() {
   const searchParams = useSearchParams()
   const [courses, setCourses] = useState<Course[]>([])
   const [loading, setLoading] = useState(true)
@@ -359,5 +359,13 @@ export default function CoursesPage() {
         </DialogContent>
       </Dialog>
     </div>
+  )
+}
+
+export default function CoursesPage() {
+  return (
+    <Suspense>
+      <CoursesPageInner />
+    </Suspense>
   )
 }

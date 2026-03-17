@@ -2,7 +2,7 @@
 
 export const dynamic = 'force-dynamic'
 
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { Suspense, useState, useEffect, useCallback } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -769,7 +769,7 @@ function PodcastTab({ trigger }: { trigger: number }) {
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
-export default function ContentPage() {
+function ContentPageInner() {
   const searchParams = useSearchParams()
   const newParam = searchParams.get('new')
   const defaultTab = newParam === 'podcast' ? 'podcasts' : 'blogs'
@@ -814,5 +814,13 @@ export default function ContentPage() {
         </TabsContent>
       </Tabs>
     </div>
+  )
+}
+
+export default function ContentPage() {
+  return (
+    <Suspense>
+      <ContentPageInner />
+    </Suspense>
   )
 }
