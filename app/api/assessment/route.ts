@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 import { createClient } from '@supabase/supabase-js'
-import { resend } from '@/lib/resend'
+import { getResend } from '@/lib/resend'
 import { buildAssessmentEmail } from '@/lib/emails/assessment-notification'
 import { buildWorkshopEmail } from '@/lib/emails/workshop-notification'
 
@@ -128,7 +128,7 @@ export async function POST(req: NextRequest) {
 
     if (notifyTo) {
       // Main assessment notification
-      const { error: emailError } = await resend.emails.send({
+      const { error: emailError } = await getResend().emails.send({
         from: notifyFrom,
         to: notifyTo,
         subject: `New Assessment: ${data.full_name.trim()} — ${toStr(data.organization_name) ?? 'Unknown Organization'}`,
@@ -161,7 +161,7 @@ export async function POST(req: NextRequest) {
 
       // Workshop signup notification (separate email)
       if (data.wants_orientation_workshop) {
-        const { error: workshopEmailError } = await resend.emails.send({
+        const { error: workshopEmailError } = await getResend().emails.send({
           from: notifyFrom,
           to: notifyTo,
           subject: `Workshop Signup: ${data.full_name.trim()} from ${toStr(data.organization_name) ?? 'Unknown Organization'}`,

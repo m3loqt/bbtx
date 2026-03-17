@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 import { supabase } from '@/lib/supabase'
-import { resend } from '@/lib/resend'
+import { getResend } from '@/lib/resend'
 import { buildContactEmail } from '@/lib/emails/contact-notification'
 
 // In-memory rate limit store: IP → array of timestamps
@@ -87,7 +87,7 @@ export async function POST(req: NextRequest) {
         timeStyle: 'short',
       })
 
-      const { error: emailError } = await resend.emails.send({
+      const { error: emailError } = await getResend().emails.send({
         from: notifyFrom,
         to: notifyTo,
         subject: `New Contact: ${inquiryValue ?? 'General Inquiry'} — ${full_name}`,
