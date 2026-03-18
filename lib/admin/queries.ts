@@ -214,7 +214,9 @@ export async function getCourses(): Promise<Course[]> {
   const { data, error } = await supabaseAdmin
     .from('courses')
     .select('*')
-    .order('sort_order', { ascending: true })
+    // `sort_order` may not exist anymore if schema was simplified.
+    // Ordering by `created_at` keeps the query valid on both new and legacy schemas.
+    .order('created_at', { ascending: false })
   if (error) throw error
   return data as Course[]
 }

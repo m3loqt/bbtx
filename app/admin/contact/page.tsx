@@ -375,7 +375,10 @@ export default function ContactPage() {
                 </TableCell>
                 <TableCell onClick={(e) => e.stopPropagation()}>
                   <DropdownMenu>
-                    <DropdownMenuTrigger className="inline-flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50">
+                    <DropdownMenuTrigger
+                      id={`dropdown-contact-${c.id}`}
+                      className="inline-flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
+                    >
                       <MoreHorizontal className="h-4 w-4" />
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">

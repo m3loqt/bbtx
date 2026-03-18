@@ -11,15 +11,10 @@ import { toast } from 'sonner'
 import { getCourses, upsertCourse, deleteCourse } from '@/lib/admin/queries'
 import type { Course } from '@/lib/admin/types'
 import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
-import { Switch } from '@/components/ui/switch'
 import { Label } from '@/components/ui/label'
 import { Skeleton } from '@/components/ui/skeleton'
-import {
-  Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
-} from '@/components/ui/table'
 import {
   Sheet, SheetContent, SheetFooter, SheetHeader, SheetTitle,
 } from '@/components/ui/sheet'
@@ -29,19 +24,27 @@ import {
 import {
   DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { Plus, MoreHorizontal, Trash2, Edit, Loader2, Award } from 'lucide-react'
+import { supabaseAdmin } from '@/lib/admin/supabase-admin'
+import { Plus, MoreHorizontal, Trash2, Edit, Loader2, Award, UploadCloud, Star, CheckCircle2 } from 'lucide-react'
+import { ArrowUpRight } from '@/app/components/ArrowIcon'
+
+const featureKeySchema = z.enum(['certification', 'featured', 'published'])
+
+const courseUrlSchema = z.preprocess((val) => {
+  if (typeof val !== 'string') return val
+  const s = val.trim()
+  if (!s) return s
+  // Zod's url() requires protocol; users often paste Gumroad URLs without it.
+  if (!/^https?:\/\//i.test(s)) return `https://${s}`
+  return s
+}, z.string().url('Please enter a valid course URL').min(1, 'Course URL is required'))
 
 const courseSchema = z.object({
   title: z.string().min(1, 'Title is required'),
   description: z.string().nullable().optional(),
-  cover_image_url: z.string().url('Must be a valid URL').nullable().optional().or(z.literal('')),
-  gumroad_url: z.string().url('Must be a valid URL').min(1, 'Gumroad URL is required'),
-  price_usd: z.coerce.number().nullable().optional(),
-  has_certification: z.boolean().default(false),
-  certification_label: z.string().nullable().optional(),
-  is_featured: z.boolean().default(false),
-  is_published: z.boolean().default(false),
-  sort_order: z.coerce.number().default(0),
+  features: z.array(featureKeySchema).default([]),
+  // URL the frontend/admin uses to open the course in a new tab.
+  course_url: courseUrlSchema,
 })
 
 type CourseFormData = z.infer<typeof courseSchema>
@@ -56,25 +59,18 @@ function CoursesPageInner() {
   const [saving, setSaving] = useState(false)
   const [deleting, setDeleting] = useState(false)
   const [coverPreview, setCoverPreview] = useState('')
+  const [coverFile, setCoverFile] = useState<File | null>(null)
+  const fileInputRef = React.useRef<HTMLInputElement | null>(null)
+  const [coverObjectUrl, setCoverObjectUrl] = useState<string | null>(null)
+  const [coverAspectRatio, setCoverAspectRatio] = useState<string>('16/9')
 
   const { register, handleSubmit, reset, setValue, watch, formState: { errors } } = useForm<CourseFormData>({
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     resolver: zodResolver(courseSchema) as any,
-    defaultValues: { has_certification: false, is_featured: false, is_published: false, sort_order: 0 },
+    defaultValues: { features: [], course_url: '' },
   })
 
-  const hasCertification = watch('has_certification')
-  const isFeatured = watch('is_featured')
-  const isPublished = watch('is_published')
-  const coverUrl = watch('cover_image_url')
-
-  useEffect(() => {
-    if (typeof coverUrl === 'string' && coverUrl.startsWith('http')) {
-      setCoverPreview(coverUrl)
-    } else {
-      setCoverPreview('')
-    }
-  }, [coverUrl])
+  const features = watch('features')
 
   const load = useCallback(async () => {
     try {
@@ -104,35 +100,113 @@ function CoursesPageInner() {
   function openSheet(course: Course | null) {
     setEditTarget(course)
     if (course) {
+      const nextFeatures: CourseFormData['features'] = []
+      if (course.has_certification) nextFeatures.push('certification')
+      if (Boolean(course.is_featured)) nextFeatures.push('featured')
+      if (Boolean(course.is_published)) nextFeatures.push('published')
+
       reset({
         title: course.title,
         description: course.description ?? '',
-        cover_image_url: course.cover_image_url ?? '',
-        gumroad_url: course.gumroad_url,
-        price_usd: course.price_usd ?? undefined,
-        has_certification: course.has_certification,
-        certification_label: course.certification_label ?? '',
-        is_featured: course.is_featured,
-        is_published: course.is_published,
-        sort_order: course.sort_order,
+        course_url: course.gumroad_url ?? '',
+        features: nextFeatures,
       })
+      setCoverPreview(course.cover_image_url ?? '')
+      setCoverFile(null)
     } else {
-      reset({ has_certification: false, is_featured: false, is_published: false, sort_order: 0 })
+      reset({ features: [], course_url: '' })
+      setCoverPreview('')
+      if (coverObjectUrl) URL.revokeObjectURL(coverObjectUrl)
+      setCoverObjectUrl(null)
+      setCoverFile(null)
     }
     setSheetOpen(true)
+  }
+
+  useEffect(() => {
+    // Compute aspect ratio so the preview height matches the selected cover's real ratio.
+    if (!coverPreview) return
+
+    const img = new Image()
+    img.src = coverPreview
+    img.onload = () => {
+      if (img.naturalWidth > 0 && img.naturalHeight > 0) {
+        setCoverAspectRatio(`${img.naturalWidth}/${img.naturalHeight}`)
+      }
+    }
+  }, [coverPreview])
+
+  const toggleFeature = (key: CourseFormData['features'][number]) => {
+    const next = new Set(features ?? [])
+    if (next.has(key)) next.delete(key)
+    else next.add(key)
+    setValue('features', Array.from(next) as CourseFormData['features'], { shouldDirty: true })
   }
 
   async function onSubmit(data: CourseFormData) {
     setSaving(true)
     try {
-      await upsertCourse({
-        ...(editTarget ? { id: editTarget.id } : {}),
-        ...data,
+      // Handle image upload if a new file was selected.
+      let coverUrlToSave: string | null = editTarget?.cover_image_url ?? null
+
+      if (coverFile) {
+        const formData = new FormData()
+        formData.append('file', coverFile)
+
+        const res = await fetch('/api/courses/cover-upload', {
+          method: 'POST',
+          body: formData,
+        })
+
+        const json = (await res.json()) as { url?: string; error?: string }
+
+        if (!res.ok || !json.url) {
+          console.error('Cover upload failed', json.error)
+          toast.error('Failed to upload cover image. Please try again.')
+          setSaving(false)
+          return
+        }
+
+        coverUrlToSave = json.url
+      }
+
+      const hasCertification = data.features.includes('certification')
+      const isFeatured = data.features.includes('featured')
+      const isPublished = data.features.includes('published')
+
+      const basePayload = {
+        title: data.title,
         description: data.description || null,
-        cover_image_url: data.cover_image_url || null,
-        price_usd: data.price_usd ?? null,
-        certification_label: data.has_certification ? (data.certification_label || null) : null,
-      })
+        cover_image_url: coverUrlToSave,
+        has_certification: hasCertification,
+        certification_label: hasCertification ? (editTarget?.certification_label ?? 'Certificate') : null,
+        gumroad_url: data.course_url,
+      }
+
+      const payloadWithLegacyDefaults = {
+        ...(editTarget ? { id: editTarget.id } : {}),
+        ...basePayload,
+        // Legacy fields: only used in first attempt. If your schema was simplified
+        // and these columns were dropped, the retry below will omit them.
+        is_featured: isFeatured,
+        is_published: isPublished,
+        // If these columns still exist, satisfy NOT NULL constraints with safe defaults.
+        price_usd: editTarget?.price_usd ?? null,
+        sort_order: editTarget?.sort_order ?? 0,
+      }
+
+      const payloadMinimal = {
+        ...(editTarget ? { id: editTarget.id } : {}),
+        ...basePayload,
+      }
+
+      try {
+        await upsertCourse(payloadWithLegacyDefaults as any)
+      } catch (e) {
+        // If schema was simplified and legacy columns were dropped, retry without them.
+        console.warn('upsert failed with legacy fields, retrying minimal', e)
+        await upsertCourse(payloadMinimal as any)
+      }
       toast.success('Course saved')
       setSheetOpen(false)
       await load()
@@ -195,72 +269,113 @@ function CoursesPageInner() {
           </Button>
         </div>
       ) : (
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead className="w-12">Cover</TableHead>
-              <TableHead>Title</TableHead>
-              <TableHead className="w-24">Price</TableHead>
-              <TableHead className="w-32">Certification</TableHead>
-              <TableHead className="w-20">Featured</TableHead>
-              <TableHead className="w-24">Status</TableHead>
-              <TableHead className="w-12"></TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {courses.map((course) => (
-              <TableRow key={course.id} className="h-[52px]">
-                <TableCell>
-                  {course.cover_image_url ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img src={course.cover_image_url} alt="" className="w-10 h-10 rounded object-cover" />
-                  ) : (
-                    <div className="w-10 h-10 rounded bg-secondary" />
+        <div className="mt-8 grid gap-5 sm:mt-16 sm:grid-cols-2 xl:grid-cols-3">
+          {courses.map((course) => {
+            const featurePills: Array<{ label: string; icon: React.ReactNode; key: string }> = []
+
+            if (course.has_certification) {
+              featurePills.push({
+                key: 'certification',
+                label: course.certification_label ?? 'Certificate',
+                icon: <Award className="h-3.5 w-3.5 text-[#ca3726]" />,
+              })
+            }
+
+            if (Boolean(course.is_featured)) {
+              featurePills.push({
+                key: 'featured',
+                label: 'Featured',
+                icon: <Star className="h-3.5 w-3.5 text-[#ca3726]" />,
+              })
+            }
+
+            if (Boolean(course.is_published)) {
+              featurePills.push({
+                key: 'published',
+                label: 'Published',
+                icon: <CheckCircle2 className="h-3.5 w-3.5 text-[#ca3726]" />,
+              })
+            }
+
+            const href = course.gumroad_url || '#'
+
+            return (
+              <article
+                key={course.id}
+                className="flex flex-col overflow-hidden rounded-2xl border border-black/[0.06] bg-white shadow-[0_12px_40px_rgba(15,23,42,0.04)]"
+              >
+                <div
+                  className="relative h-36 w-full bg-cover bg-center sm:h-52"
+                  style={{
+                    backgroundImage: course.cover_image_url
+                      ? `url('${course.cover_image_url}')`
+                      : "url('/service.png')",
+                  }}
+                >
+                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_0%_0%,rgba(255,255,255,0.45),transparent_55%),radial-gradient(circle_at_100%_100%,rgba(0,0,0,0.25),transparent_55%)]" />
+                </div>
+
+                <div className="flex flex-1 flex-col p-6 sm:p-7">
+                  <div className="flex items-start justify-between gap-4">
+                    <h3 className="text-lg font-semibold tracking-tight text-[#111827] sm:text-xl">
+                      {course.title}
+                    </h3>
+
+                    <DropdownMenu>
+                      <DropdownMenuTrigger
+                        id={`dropdown-course-${course.id}`}
+                        className="inline-flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
+                      >
+                        <MoreHorizontal className="h-4 w-4" />
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        <DropdownMenuItem onClick={() => openSheet(course)}>
+                          <Edit className="mr-2 h-4 w-4" /> Edit
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                          className="text-destructive"
+                          onClick={() => setDeleteTarget(course)}
+                        >
+                          <Trash2 className="mr-2 h-4 w-4" /> Delete
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </div>
+
+                  {featurePills.length > 0 && (
+                    <div className="mt-4 flex flex-wrap gap-2">
+                      {featurePills.map((pill) => (
+                        <span
+                          key={pill.key}
+                          className="inline-flex items-center gap-1.5 rounded-full border border-black/[0.08] bg-[#f9fafb] px-3 py-1 text-xs font-medium text-[#4b5563]"
+                        >
+                          {pill.icon}
+                          <span>{pill.label}</span>
+                        </span>
+                      ))}
+                    </div>
                   )}
-                </TableCell>
-                <TableCell className="font-medium">{course.title}</TableCell>
-                <TableCell className="text-sm">
-                  {course.price_usd != null ? `$${course.price_usd}` : 'Free'}
-                </TableCell>
-                <TableCell>
-                  {course.has_certification && (
-                    <Badge variant="outline" className="gap-1 text-xs">
-                      <Award className="h-3 w-3" />
-                      {course.certification_label ?? 'Certificate'}
-                    </Badge>
-                  )}
-                </TableCell>
-                <TableCell>
-                  <Switch
-                    checked={course.is_featured}
-                    onCheckedChange={async (val) => {
-                      setCourses((prev) => prev.map((c) => c.id === course.id ? { ...c, is_featured: val } : c))
-                      try { await upsertCourse({ id: course.id, is_featured: val }) } catch { void 0 }
-                    }}
-                  />
-                </TableCell>
-                <TableCell>
-                  <Switch checked={course.is_published} onCheckedChange={() => handleTogglePublished(course)} />
-                </TableCell>
-                <TableCell>
-                  <DropdownMenu>
-                    <DropdownMenuTrigger className="inline-flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50">
-                      <MoreHorizontal className="h-4 w-4" />
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                      <DropdownMenuItem onClick={() => openSheet(course)}>
-                        <Edit className="mr-2 h-4 w-4" /> Edit
-                      </DropdownMenuItem>
-                      <DropdownMenuItem className="text-destructive" onClick={() => setDeleteTarget(course)}>
-                        <Trash2 className="mr-2 h-4 w-4" /> Delete
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+
+                  <p className="mt-4 text-sm leading-relaxed text-[#4b5563] sm:text-base">
+                    {course.description ?? ''}
+                  </p>
+
+                  <div className="mt-6">
+                    <a
+                      href={href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 rounded-full border border-[#111827]/15 px-4 py-2 text-xs font-semibold text-[#111827] hover:bg-[#f3f4f6] sm:px-5 sm:py-2.5 sm:text-sm"
+                    >
+                      Learn more
+                      <ArrowUpRight className="h-4 w-4" />
+                    </a>
+                  </div>
+                </div>
+              </article>
+            )
+          })}
+        </div>
       )}
 
       {/* Sheet */}
@@ -282,51 +397,143 @@ function CoursesPageInner() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="c-cover">Cover Image URL</Label>
-              <Input id="c-cover" type="url" placeholder="https://" {...register('cover_image_url')} />
-              {coverPreview && (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img src={coverPreview} alt="Preview" className="h-20 w-auto rounded border object-cover" />
-              )}
-              {errors.cover_image_url && <p className="text-xs text-destructive">{errors.cover_image_url.message}</p>}
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="c-gumroad">Gumroad URL *</Label>
-              <Input id="c-gumroad" type="url" placeholder="https://gumroad.com/..." {...register('gumroad_url')} />
-              {errors.gumroad_url && <p className="text-xs text-destructive">{errors.gumroad_url.message}</p>}
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="c-price">Price (USD)</Label>
-              <Input id="c-price" type="number" step="0.01" min={0} placeholder="0.00" {...register('price_usd')} />
-            </div>
-
-            <div className="flex items-center justify-between">
-              <Label htmlFor="c-cert">Has Certification</Label>
-              <Switch id="c-cert" checked={hasCertification} onCheckedChange={(v) => setValue('has_certification', v)} />
-            </div>
-
-            {hasCertification && (
-              <div className="space-y-2 transition-all">
-                <Label htmlFor="c-certlabel">Certification Label</Label>
-                <Input id="c-certlabel" placeholder="e.g. AI Leadership Certificate" {...register('certification_label')} />
+              <Label htmlFor="c-cover">Cover image</Label>
+              <div
+                className="relative flex cursor-pointer flex-col items-center justify-center gap-2 rounded-md border-2 border-dashed border-black/[0.10] bg-[#fafafa] p-6 text-center transition-colors hover:bg-[#f9fafb] overflow-hidden"
+                style={{
+                  aspectRatio: coverAspectRatio,
+                  minHeight: coverPreview ? undefined : 150,
+                }}
+                onClick={() => fileInputRef.current?.click()}
+                onDragOver={(e) => {
+                  e.preventDefault()
+                }}
+                onDrop={(e) => {
+                  e.preventDefault()
+                  const file = e.dataTransfer.files?.[0]
+                  if (file) {
+                    setCoverFile(file)
+                    const url = URL.createObjectURL(file)
+                    if (coverObjectUrl) URL.revokeObjectURL(coverObjectUrl)
+                    setCoverObjectUrl(url)
+                    setCoverPreview(url)
+                  }
+                }}
+                role="button"
+                tabIndex={0}
+                aria-label="Upload cover image"
+              >
+                {coverPreview && (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={coverPreview}
+                    alt="Cover preview"
+                    className="absolute inset-0 h-full w-full rounded-md object-cover"
+                  />
+                )}
+                <div
+                  className={[
+                    "flex flex-col items-center gap-2 text-center",
+                    coverPreview ? "relative z-[1]" : "",
+                  ].join(" ")}
+                >
+                  {!coverPreview && (
+                    <>
+                      <UploadCloud className="h-6 w-6 text-muted-foreground" />
+                      <p className="text-sm font-medium text-[#111827]">
+                        Drag and Drop file here
+                      </p>
+                      <p className="text-xs font-medium text-muted-foreground">
+                        or{" "}
+                        <span className="underline underline-offset-2">
+                          Choose file
+                        </span>
+                      </p>
+                    </>
+                  )}
+                </div>
+                <input
+                  ref={fileInputRef}
+                  id="c-cover"
+                  type="file"
+                  accept="image/*"
+                  className="sr-only"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0]
+                    if (file) {
+                      setCoverFile(file)
+                      const url = URL.createObjectURL(file)
+                      if (coverObjectUrl) URL.revokeObjectURL(coverObjectUrl)
+                      setCoverObjectUrl(url)
+                      setCoverPreview(url)
+                    }
+                  }}
+                />
               </div>
-            )}
-
-            <div className="flex items-center justify-between">
-              <Label htmlFor="c-featured">Featured</Label>
-              <Switch id="c-featured" checked={isFeatured} onCheckedChange={(v) => setValue('is_featured', v)} />
-            </div>
-
-            <div className="flex items-center justify-between">
-              <Label htmlFor="c-published">Published</Label>
-              <Switch id="c-published" checked={isPublished} onCheckedChange={(v) => setValue('is_published', v)} />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="c-sort">Sort Order</Label>
-              <Input id="c-sort" type="number" {...register('sort_order')} />
+              <Label htmlFor="c-course-url">Course URL *</Label>
+              <Input
+                id="c-course-url"
+                type="text"
+                placeholder="https://..."
+                {...register('course_url')}
+              />
+              {errors.course_url && (
+                <p className="text-xs text-destructive">{errors.course_url.message}</p>
+              )}
+            </div>
+
+            <div className="space-y-2">
+              <Label>Features</Label>
+              <div className="flex flex-wrap gap-2">
+                <button
+                  type="button"
+                  onClick={() => toggleFeature('certification')}
+                  className={[
+                    'rounded-full border border-black/[0.08] px-3 py-1 text-xs font-medium transition-colors',
+                    features?.includes('certification')
+                      ? 'bg-[#ca3726] border-[#ca3726] text-white'
+                      : 'bg-[#f9fafb] text-[#4b5563] hover:bg-white',
+                  ].join(' ')}
+                >
+                  <span className="inline-flex items-center gap-2">
+                    <Award className="h-3.5 w-3.5" />
+                    Certification
+                  </span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => toggleFeature('featured')}
+                  className={[
+                    'rounded-full border border-black/[0.08] px-3 py-1 text-xs font-medium transition-colors',
+                    features?.includes('featured')
+                      ? 'bg-[#ca3726] border-[#ca3726] text-white'
+                      : 'bg-[#f9fafb] text-[#4b5563] hover:bg-white',
+                  ].join(' ')}
+                >
+                  <span className="inline-flex items-center gap-2">
+                    <Star className="h-3.5 w-3.5" />
+                    Featured
+                  </span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => toggleFeature('published')}
+                  className={[
+                    'rounded-full border border-black/[0.08] px-3 py-1 text-xs font-medium transition-colors',
+                    features?.includes('published')
+                      ? 'bg-[#ca3726] border-[#ca3726] text-white'
+                      : 'bg-[#f9fafb] text-[#4b5563] hover:bg-white',
+                  ].join(' ')}
+                >
+                  <span className="inline-flex items-center gap-2">
+                    <CheckCircle2 className="h-3.5 w-3.5" />
+                    Published
+                  </span>
+                </button>
+              </div>
             </div>
 
             <SheetFooter className="pt-2">

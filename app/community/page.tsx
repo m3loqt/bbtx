@@ -1,7 +1,6 @@
 "use client";
 
-import { useEffect, useRef, type ReactElement } from "react";
-import Script from "next/script";
+import { useRef, type ReactElement } from "react";
 import { Nav } from "@/app/components/Nav";
 import { Footer } from "@/app/components/Footer";
 import { ArrowUpRight } from "@/app/components/ArrowIcon";
@@ -67,6 +66,8 @@ const COURSES = [
       "A clear, hype-free foundation in how modern generative AI works — so you can make better decisions about when and where to use it.",
     features: ["Core concepts", "Live walkthroughs", "Practical use cases"],
     tone: "warm",
+    cover: "/introtogenai.png",
+    url: "https://chaoticconfluence.gumroad.com/l/hcvcs",
   },
   {
     title: "Mastering Prompt Patterns",
@@ -74,6 +75,8 @@ const COURSES = [
       "A practical toolkit of reusable prompt patterns you can apply across tools, workflows, and roles — not just one-off tricks.",
     features: ["Prompt libraries", "Live practice", "Templates you can reuse"],
     tone: "cool",
+    cover: "/masterpp.png",
+    url: "https://chaoticconfluence.gumroad.com/l/mastering-prompt-patterns",
   },
   {
     title: "AI Implementation for Business Value",
@@ -81,6 +84,8 @@ const COURSES = [
       "From pilot to production. Learn how to move real initiatives forward, measure impact, and avoid the traps that stall most AI projects.",
     features: ["Use case mapping", "ROI models", "Change management"],
     tone: "bold",
+    cover: "/bizval.png",
+    url: "https://chaoticconfluence.gumroad.com/l/vggusf",
   },
   {
     title: "AI for Leadership and Organizational Transformation",
@@ -88,6 +93,8 @@ const COURSES = [
       "Frameworks for leaders who need to steer culture, governance, and strategy through the realities of an AI-shaped organization.",
     features: ["Executive frameworks", "Governance models", "Org design"],
     tone: "neutral",
+    cover: "/ai4leadership.png",
+    url: "https://chaoticconfluence.gumroad.com/l/vpeyt",
   },
   {
     title: "Building AI-Enhanced Organizational Models for Consultants",
@@ -95,6 +102,8 @@ const COURSES = [
       "For consultants and advisors building AI into their client work — from operating models to offers, pricing, and delivery.",
     features: ["Client playbooks", "Operating models", "Case studies"],
     tone: "accent",
+    cover: "/buildaienhanced.png",
+    url: "https://chaoticconfluence.gumroad.com/l/baeeas",
   },
   {
     title: "AI-Empowered Coaching & Consulting",
@@ -102,6 +111,8 @@ const COURSES = [
       "Practical ways to integrate AI into coaching, facilitation, and advisory work without losing the human depth that makes it valuable.",
     features: ["Session workflows", "Coaching tools", "Conversation guides"],
     tone: "soft",
+    cover: "/aiempcoach.png",
+    url: "https://chaoticconfluence.gumroad.com/l/uykxq",
   },
 ];
 
@@ -277,22 +288,6 @@ const TESTIMONIALS = [
 
 export default function CommunityPage() {
   const testimonialsScrollRef = useRef<HTMLDivElement>(null);
-
-  // Set Substack widget config before the widget script loads
-  useEffect(() => {
-    (window as unknown as Record<string, unknown>).CustomSubstackWidget = {
-      substackUrl: "chaoticconfluence.substack.com",
-      placeholder: "Enter your email",
-      buttonText: "Subscribe",
-      theme: "custom",
-      colors: {
-        primary: "#ffffff",
-        input: "rgba(255,255,255,0.15)",
-        email: "white",
-        text: "#ca3726",
-      },
-    };
-  }, []);
 
   const scrollTestimonials = (dir: "left" | "right") => {
     const el = testimonialsScrollRef.current;
@@ -648,11 +643,16 @@ export default function CommunityPage() {
                   className="flex flex-col overflow-hidden rounded-2xl border border-black/[0.06] bg-white shadow-[0_12px_40px_rgba(15,23,42,0.04)]"
                 >
                   {/* Cover image area */}
-                  <div
-                    className="relative h-36 w-full bg-cover bg-center sm:h-52"
-                    style={{ backgroundImage: "url('/service.png')" }}
-                  >
-                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_0%_0%,rgba(255,255,255,0.45),transparent_55%),radial-gradient(circle_at_100%_100%,rgba(0,0,0,0.25),transparent_55%)]" />
+                  <div className="p-2">
+                    <div
+                      className="relative h-56 w-full overflow-hidden rounded-xl bg-cover bg-center sm:h-72"
+                      style={{
+                        backgroundImage: `url('${
+                          course.cover ?? "/service.png"
+                        }')`,
+                      }}
+                    >
+                    </div>
                   </div>
 
                   {/* Content */}
@@ -780,9 +780,11 @@ export default function CommunityPage() {
                       {course.description}
                     </p>
 
-                    <div className="mt-6">
+                    <div className="mt-6 flex justify-end">
                       <a
-                        href="#"
+                        href={course.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
                         className="inline-flex items-center gap-2 rounded-full border border-[#111827]/15 px-4 py-2 text-xs font-semibold text-[#111827] hover:bg-[#f3f4f6] sm:px-5 sm:py-2.5 sm:text-sm"
                       >
                         Learn more
@@ -1002,7 +1004,7 @@ export default function CommunityPage() {
                 >
                   {/* Cover image area */}
                   <div
-                    className="relative h-36 w-full bg-cover bg-center sm:h-52"
+                    className="relative h-48 w-full bg-cover bg-center sm:h-60"
                     style={{ backgroundImage: "url('/service.png')" }}
                   >
                     <div className="absolute inset-0 bg-[radial-gradient(circle_at_0%_0%,rgba(255,255,255,0.45),transparent_55%),radial-gradient(circle_at_100%_100%,rgba(0,0,0,0.25),transparent_55%)]" />
@@ -1051,7 +1053,7 @@ export default function CommunityPage() {
                 >
                   {/* Cover image area */}
                   <div
-                    className="relative h-36 w-full bg-cover bg-center sm:h-52"
+                    className="relative h-48 w-full bg-cover bg-center sm:h-60"
                     style={{ backgroundImage: "url('/service.png')" }}
                   >
                     <div className="absolute inset-0 bg-[radial-gradient(circle_at_0%_0%,rgba(255,255,255,0.45),transparent_55%),radial-gradient(circle_at_100%_100%,rgba(0,0,0,0.25),transparent_55%)]" />
@@ -1179,71 +1181,7 @@ export default function CommunityPage() {
         </div>
       </section>
 
-      {/* 9. Newsletter signup */}
-      <section id="newsletter" className="relative z-[1] w-full border-t border-black/[0.06]">
-        <div className="grid w-full grid-cols-1 lg:grid-cols-[11fr_9fr]">
-          {/* Left: benefits */}
-          <div className="flex flex-col justify-center bg-[#f7f7f7] px-5 py-10 sm:px-8 sm:py-20 lg:px-10 lg:py-24 xl:px-12 xl:py-28">
-            <p className="mb-6 text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#555555]/60">
-              Chaotic Confluence
-            </p>
-            <h2 className="max-w-[calc(100%-10px)] text-[2rem] font-medium leading-[1.1] tracking-tighter text-[#222222] sm:text-[2.75rem] md:text-[3.6rem] lg:text-[4.2rem] xl:text-[4.6rem]">
-              Because knowing how to use AI is not the same as knowing how to{" "}
-              <span
-                className="font-normal italic"
-                style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}
-              >
-                lead with it.
-              </span>
-            </h2>
-            <p className="mt-4 max-w-lg text-base leading-relaxed text-[#555555] sm:mt-6 sm:max-w-xl sm:text-xl">
-              Subscribe to the weekly newsletter and start building the kind of judgment that tools alone will never give you.
-            </p>
-          </div>
-
-          {/* Right: Substack sign-up block */}
-          <div className="flex flex-col justify-center rounded-2xl bg-[#ca3726] py-10 pl-5 pr-5 sm:py-20 sm:pl-10 sm:pr-8 lg:my-6 lg:mr-6 lg:rounded-3xl lg:py-24 lg:pl-12 lg:pr-10 xl:pl-14 xl:pr-12">
-            <p className="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-white/70">Sign up for:</p>
-            <h3
-              className="mt-3 text-[2.1rem] font-medium leading-tight tracking-tight text-white sm:text-[2.4rem] lg:text-[2.7rem] xl:text-[3rem]"
-              style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}
-            >
-              Chaotic Confluence
-            </h3>
-            <p className="mt-3 text-base leading-relaxed text-white/90 sm:text-[1.05rem]">
-              Subscribe to the weekly newsletter and start building the kind of judgment that tools alone will never give you.
-            </p>
-
-            {/* Substack embed */}
-            <div
-              id="custom-substack-embed"
-              className="mt-8 substack-embed-container"
-            />
-
-            <Script
-              src="https://substackapi.com/widget.js"
-              strategy="lazyOnload"
-            />
-
-            <p className="mt-5 text-[11px] leading-relaxed text-white/60">
-              Your information is never shared with third parties. Unsubscribe anytime.
-            </p>
-            <p className="mt-3 text-[12px] text-white/70">
-              Prefer to subscribe directly?{" "}
-              <a
-                href="https://chaoticconfluence.substack.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="underline underline-offset-2 hover:text-white"
-              >
-                Visit us on Substack →
-              </a>
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* 10. Closing CTA — full width with communityher background */}
+      {/* 9. Closing CTA — full width with communityher background */}
       <section
         id="subscribe"
         className="relative z-[1] w-full overflow-hidden"
