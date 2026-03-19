@@ -239,7 +239,7 @@ export default function StrategyRoadmapPage() {
               move with confidence.
             </span>
           </h2>
-          <div className="mx-auto mt-8 grid w-full max-w-7xl grid-cols-1 gap-3 sm:mt-12 sm:grid-cols-2 lg:mt-16 lg:grid-cols-4 lg:gap-4">
+          <div className="mt-8 grid w-full grid-cols-1 gap-3 sm:mt-12 sm:grid-cols-2 lg:mt-16 lg:grid-cols-4 lg:gap-4">
             <div className="flex flex-col overflow-hidden rounded-2xl border border-black/[0.06] bg-white shadow-[0_2px_20px_rgba(0,0,0,0.04)]">
               <div className="relative h-48 w-full bg-[#f9fafb] sm:h-56 lg:h-64" aria-hidden>
                 <img src="/docu.png" alt="" className="absolute inset-0 h-full w-full object-cover" />

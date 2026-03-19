@@ -197,7 +197,7 @@ export default function AIOrganizationalModelPage() {
             </span>
           </h2>
 
-          <div className="relative mx-auto mt-14 w-full max-w-7xl lg:mt-20">
+          <div className="relative mt-14 w-full lg:mt-20">
             <div className="relative z-[1] grid gap-3 sm:grid-cols-2 lg:grid-cols-4 lg:gap-4">
               {[
                 {
