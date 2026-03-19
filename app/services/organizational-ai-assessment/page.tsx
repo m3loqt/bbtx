@@ -141,7 +141,6 @@ export default function OrganizationalAIAssessmentPage() {
 
       {/* 3. What we evaluate — left eyebrow, right content blocks */}
       <section className="relative z-[1] w-full bg-[#f7f7f7]">
-        <div className="pointer-events-none absolute inset-0 z-0 opacity-60" style={gridBg} aria-hidden />
         <div className="relative z-[1] px-4 py-12 sm:px-6 sm:py-24 lg:px-8 lg:py-32">
           <div className="grid gap-6 lg:grid-cols-[3fr_7fr] lg:items-start lg:gap-12">
             {/* Left eyebrow */}
@@ -254,71 +253,34 @@ export default function OrganizationalAIAssessmentPage() {
         </div>
       </section>
 
+      <div className="h-px w-full bg-black/[0.06]" aria-hidden />
+
       {/* 5. What you receive — full-page deliverables */}
-      <section className="relative z-[1] w-full bg-[#222222]">
+      <section className="relative z-[1] w-full bg-white">
         <div className="relative z-[1] flex flex-col justify-center px-4 py-12 sm:min-h-screen sm:px-6 sm:py-24 lg:px-8 lg:py-32">
-          <div className="w-full">
-            <p className="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-white/40">Your Deliverables</p>
-            <h2 className="mt-4 text-[1.7rem] font-medium leading-[1.1] tracking-tighter text-white sm:mt-5 sm:text-[3rem] lg:text-[3.6rem] xl:text-[4.4rem]">
-              What you walk away with.{" "}
-              <span className="font-normal italic" style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}>
-                Every time.
-              </span>
+          <div className="w-full text-center">
+            <p className="mx-auto text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#555555]/60">
+              Your Deliverables
+            </p>
+            <h2 className="mt-4 mx-auto max-w-4xl text-[1.7rem] font-medium leading-[1.1] tracking-tighter text-[#222222] sm:mt-5 sm:text-[3rem] lg:text-[3.6rem] xl:text-[4.4rem]">
+              What you walk away with{" "}
+            
             </h2>
-            <p className="mt-6 max-w-2xl text-xl leading-relaxed tracking-tight text-white/60 sm:text-2xl">
+            <p className="mt-6 mx-auto max-w-2xl text-xl leading-relaxed tracking-tight text-[#555555]/80 sm:text-2xl">
               Not a list of recommendations. A complete picture of reality your leadership team can act on.
             </p>
-            <div className="mt-14 grid gap-2 sm:grid-cols-2 lg:mt-16 lg:grid-cols-3 lg:gap-2.5">
-              {[
-                {
-                  label: "01",
-                  title: "Executive Summary Briefing",
-                  body: "A concise document your leadership team can align around and act on immediately.",
-                },
-                {
-                  label: "02",
-                  title: "Organizational AI Usage Map",
-                  body: "A clear view of how, where, and by whom AI is currently being used across your organization.",
-                },
-                {
-                  label: "03",
-                  title: "Risk Exposure Overview",
-                  body: "Identified vulnerabilities in governance, data handling, compliance, and oversight.",
-                },
-                {
-                  label: "04",
-                  title: "Governance Gap Analysis",
-                  body: "A review of where your current policies fall short and what needs to be addressed before you scale.",
-                },
-                {
-                  label: "05",
-                  title: "Opportunity Prioritization Matrix",
-                  body: "The highest-value AI opportunities specific to your organization ranked by impact and feasibility.",
-                },
-                {
-                  label: "06",
-                  title: "Recommended Next Actions",
-                  body: "A clear, sequenced set of next steps that feeds directly into your Transformational Strategy engagement.",
-                },
-              ].map((item) => (
-                <div
-                  key={item.label}
-                  className="flex flex-col rounded-2xl border border-white/10 bg-white/[0.04] p-4 sm:min-h-[200px] sm:p-7"
-                >
-                  <p
-                    className="text-[0.7rem] font-semibold uppercase tracking-[0.2em] text-[#ca3726]"
-                    style={{ fontFamily: "var(--font-mono), monospace" }}
-                  >
-                    {item.label}
-                  </p>
-                  <h3 className="mt-3 text-lg font-semibold tracking-tight text-white sm:text-xl">{item.title}</h3>
-                  <p className="mt-auto pt-4 text-base leading-relaxed text-white/55 sm:text-lg">{item.body}</p>
-                </div>
-              ))}
+            <div className="mt-10 w-full overflow-hidden sm:mt-14 lg:mt-16">
+              <img
+                src="/deliverable.png"
+                alt=""
+                className="mt-[-2.5rem] h-[420px] w-full object-contain sm:mt-[-3rem] sm:h-[520px] lg:mt-[-4rem] lg:h-[680px] xl:mt-[-4.5rem] xl:h-[740px]"
+              />
             </div>
           </div>
         </div>
       </section>
+
+      <div className="h-px w-full bg-black/[0.06]" aria-hidden />
 
       {/* 6. Before and after clarity — full-page split (matches AI Organizational Model layout) */}
       <section className="relative z-[1] w-full">

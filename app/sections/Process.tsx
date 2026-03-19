@@ -1,103 +1,112 @@
+import { Compass } from "lucide-react";
+
 const STEPS = [
   {
-    num: "1",
-    title: "Assess",
+    num: "01",
+    title: "We Learn Your Organization",
     description:
-      "We start by understanding your organization from the inside. Leadership alignment, current capabilities, cultural readiness, and where AI fits into your broader business goals.",
+      "Your competitive position, operations, financials, leadership, and strategic challenges",
+    image: "/img1.png",
   },
   {
-    num: "2",
-    title: "Plan",
+    num: "02",
+    title: "We Build Your Digital Twin",
     description:
-      "With a full picture in hand, we build your roadmap. Priorities, sequencing, resource requirements, and success metrics. A plan specific to your organization, not a template borrowed from someone else's.",
+      "Five dimensions. One living model. A complete picture of how your organization actually works.",
+    image: "/img2.png",
   },
   {
-    num: "3",
-    title: "Implement",
+    num: "03",
+    title: "We Align Your Leadership",
     description:
-      "We work alongside your team to bring the plan to life. Supporting decisions, navigating resistance, and keeping momentum when the complexity of real organizational change sets in.",
+      "We close the gaps, make decisions tangible, and turn the model into a strategy",
+    image: "/img3.png",
   },
   {
-    num: "4",
-    title: "Measure & Scale",
+    num: "04",
+    title: "We Keep It Alive",
     description:
-      "We don't disappear after launch. We help you track what matters, learn from what's working, and build the internal capability to keep growing your AI advantage over time.",
+      "We maintain and update the twin as your organization evolves. It never goes stale.",
+    image: "/img4.png",
   },
-];
+]
 
 export function Process() {
   return (
-    <section className="relative z-[1] w-full overflow-hidden bg-[#ca3726]">
+    <section className="relative z-[1] w-full overflow-hidden bg-white">
       {/* Subtle dot texture */}
       <div
         className="pointer-events-none absolute inset-0 z-0 opacity-[0.10]"
         style={{
-          backgroundImage: `radial-gradient(circle, rgba(255,255,255,0.4) 1px, transparent 1px)`,
+          backgroundImage: `radial-gradient(circle, rgba(0,0,0,0.12) 1px, transparent 1px)`,
           backgroundSize: "24px 24px",
         }}
         aria-hidden
       />
-      <div className="relative z-[1] px-4 py-14 sm:px-6 sm:py-16 lg:px-8 lg:py-24">
+
+      <div className="relative z-[1] px-4 py-16 sm:px-6 sm:py-16 lg:px-8 lg:py-24">
         {/* Eyebrow */}
-        <p className="mb-6 text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-white/40">
-          How We Work
+        <p className="mb-6 flex items-center gap-2 text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#555555]/60">
+          <Compass className="h-4 w-4 text-[#ca3726]" />
+          Our Approach
         </p>
 
-        {/* Headline */}
-        <h2 className="w-full text-4xl font-medium leading-tight tracking-tighter text-white sm:text-5xl lg:text-5xl xl:text-6xl 2xl:text-[4rem]">
-          A clear path from where you are{" "}
-          <span
-            className="font-normal italic"
-            style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}
-          >
-            to where you need to be.
+        <div className="mt-2 grid gap-10 lg:grid-cols-[6fr_4fr] lg:items-start">
+          {/* Headline */}
+        <h2 className="max-w-6xl text-4xl font-medium leading-tight tracking-tighter text-[#222222] sm:text-5xl lg:text-5xl xl:text-6xl 2xl:text-[4rem]">
+          <span className="block">
+            Strategy that{" "}
+            <span
+              className="font-normal italic"
+              style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}
+            >
+              lives and grows
+            </span>
           </span>
+          <span className="block">inside your organization</span>
         </h2>
 
-        {/* Step cards with connecting arrow line behind */}
-        <div className="relative mt-14 lg:mt-20">
-          {/* Arrow line sits behind the cards (z-0); cards on top (z-10) so line never overlays */}
-          <div className="pointer-events-none absolute inset-x-0 top-1/2 z-0 hidden -translate-y-1/2 items-center lg:flex" aria-hidden>
-            <div className="mx-10 flex flex-1 items-center">
-              <div className="h-px flex-1 bg-white/25" />
-              <svg
-                className="h-3 w-3 shrink-0 text-white/25"
-                viewBox="0 0 12 12"
-                fill="currentColor"
-                aria-hidden
-              >
-                <path d="M1 6h9M7 3l3 3-3 3" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </div>
-          </div>
-          <div className="relative z-10 grid grid-cols-2 gap-3 sm:grid-cols-2 lg:grid-cols-4 lg:gap-5">
-            {STEPS.map((step) => (
-              <div
-                key={step.num}
-                className="relative overflow-hidden rounded-2xl border border-white/15 bg-white/[0.07] p-5 sm:p-6 lg:p-8 before:absolute before:left-0 before:right-0 before:top-1/2 before:z-[1] before:hidden before:h-px before:-translate-y-1/2 before:bg-[#ca3726] before:content-[''] lg:before:block"
-              >
-                <span
-                  className="block text-[3.5rem] font-bold leading-none tracking-tighter sm:text-[4.5rem] lg:text-[5rem]"
-                  style={{
-                    background: "linear-gradient(to bottom, rgba(255,255,255,0.25), rgba(255,255,255,0))",
-                    WebkitBackgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
-                    backgroundClip: "text",
-                  }}
+          {/* Supporting line */}
+          <p className="max-w-2xl text-xl leading-relaxed tracking-tight text-[#222222] sm:text-2xl mt-10 lg:mt-6">
+            Every BBTX engagement follows the same process. We build a digital twin of your organization and use it to
+            drive every strategic decision that follows.
+          </p>
+        </div>
+
+        {/* Centered 4-column cards */}
+        <div className="mt-12 lg:mt-16">
+          <div className="mx-auto w-full max-w-[110rem]">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-4">
+              {STEPS.map((step) => (
+                <div
+                  key={step.num}
+                  className="rounded-2xl border border-black/[0.06] bg-white overflow-hidden"
                 >
-                  {step.num}
-                </span>
-                <h3 className="mt-2 text-base font-semibold tracking-tight text-white sm:text-lg lg:text-xl">
-                  {step.title}
-                </h3>
-                <p className="mt-2 text-xs leading-relaxed text-white/70 sm:text-sm lg:text-base lg:mt-3">
-                  {step.description}
-                </p>
-              </div>
-            ))}
+                  {/* Image placeholder (will be replaced with real images) */}
+                  <div
+                    className="h-48 w-full overflow-hidden bg-[#f9fafb] sm:h-60"
+                    aria-hidden
+                  >
+                    <img
+                      src={step.image}
+                      alt=""
+                      className="h-full w-full object-cover"
+                    />
+                  </div>
+                  <div className="p-5 sm:p-6">
+                    <h3 className="text-lg font-semibold tracking-tight text-[#111827] sm:text-xl">
+                      {step.title}
+                    </h3>
+                    <p className="mt-3 text-sm leading-relaxed text-[#4b5563] sm:text-base">
+                      {step.description}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
     </section>
-  );
+  )
 }

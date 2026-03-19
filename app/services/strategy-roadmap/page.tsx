@@ -185,7 +185,6 @@ export default function StrategyRoadmapPage() {
 
       {/* 4. How we work — same structure as Services: left = eyebrow, right = headline + cards */}
       <section className="relative z-[1] w-full bg-[#f7f7f7]">
-        <div className="pointer-events-none absolute inset-0 z-0 opacity-60" style={gridBg} aria-hidden />
         <div className="relative z-[1] px-4 py-12 sm:px-6 sm:py-24 lg:px-8 lg:py-32">
           <div className="grid gap-6 lg:grid-cols-[3fr_7fr] lg:items-start lg:gap-12">
             <p className="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#555555]/60">
@@ -229,53 +228,69 @@ export default function StrategyRoadmapPage() {
       </section>
 
       {/* 5. Your Deliverables — 1x4 grid, red section with frosted cards */}
-      <section className="relative z-[1] w-full bg-[#b03020] px-4 py-12 sm:px-6 sm:py-24 lg:px-8 lg:py-32">
+      <section className="relative z-[1] w-full bg-white px-4 py-12 sm:px-6 sm:py-24 lg:px-8 lg:py-32">
         <div className="w-full">
-          <p className="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-white/60">
+          <p className="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#555555]/60">
             Your Deliverables
           </p>
-          <h2 className="mt-4 max-w-6xl text-3xl font-medium leading-tight tracking-tighter text-white sm:mt-5 sm:text-5xl lg:text-5xl xl:text-6xl">
+          <h2 className="mt-4 max-w-6xl text-3xl font-medium leading-tight tracking-tighter text-[#222222] sm:mt-5 sm:text-5xl lg:text-5xl xl:text-6xl">
             Everything your leadership team needs to{" "}
             <span className="font-normal italic" style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}>
               move with confidence.
             </span>
           </h2>
-          <div className="mt-8 grid grid-cols-1 gap-4 sm:mt-12 sm:grid-cols-2 lg:mt-16 lg:grid-cols-4 lg:gap-6">
-            <div className="rounded-2xl border border-white/15 bg-white/[0.12] p-5 shadow-[0_2px_20px_rgba(0,0,0,0.08)] sm:p-8 lg:p-10">
-              <span className="text-5xl font-bold leading-none tracking-tighter text-white/30 sm:text-7xl lg:text-8xl">1</span>
-              <h3 className="mt-4 text-lg font-bold tracking-tight text-white sm:text-xl">
-                Written Transformation Strategy Document
-              </h3>
-              <p className="mt-4 text-base leading-relaxed text-white/95 sm:text-lg">
-                A clear, senior-ready document capturing your AI vision, strategic priorities, organizational readiness, and the rationale behind every recommendation.
-              </p>
+          <div className="mx-auto mt-8 grid w-full max-w-7xl grid-cols-1 gap-3 sm:mt-12 sm:grid-cols-2 lg:mt-16 lg:grid-cols-4 lg:gap-4">
+            <div className="flex flex-col overflow-hidden rounded-2xl border border-black/[0.06] bg-white shadow-[0_2px_20px_rgba(0,0,0,0.04)]">
+              <div className="relative h-48 w-full bg-[#f9fafb] sm:h-56 lg:h-64" aria-hidden>
+                <img src="/docu.png" alt="" className="absolute inset-0 h-full w-full object-cover" />
+              </div>
+              <div className="flex flex-col gap-3 p-5 sm:p-6">
+                <h3 className="text-lg font-bold tracking-tight text-[#222222] sm:text-xl">
+                  Transformation Strategy Document
+                </h3>
+                <p className="text-base leading-relaxed text-[#4b5563] sm:text-lg">
+                  A clear, senior-ready document capturing your AI vision, strategic priorities, organizational readiness, and the rationale behind every recommendation.
+                </p>
+              </div>
             </div>
-            <div className="rounded-2xl border border-white/15 bg-white/[0.12] p-5 shadow-[0_2px_20px_rgba(0,0,0,0.08)] sm:p-8 lg:p-10">
-              <span className="text-5xl font-bold leading-none tracking-tighter text-white/30 sm:text-7xl lg:text-8xl">2</span>
-              <h3 className="mt-4 text-lg font-bold tracking-tight text-white sm:text-xl">
-                Prioritized AI Initiative Roadmap
-              </h3>
-              <p className="mt-4 text-base leading-relaxed text-white/95 sm:text-lg">
-                A ranked list of AI initiatives tied to business outcomes, with effort, impact, and ownership mapped for each one. No ambiguity about where to start.
-              </p>
+            <div className="flex flex-col overflow-hidden rounded-2xl border border-black/[0.06] bg-white shadow-[0_2px_20px_rgba(0,0,0,0.04)]">
+              <div className="relative h-48 w-full bg-[#f9fafb] sm:h-56 lg:h-64" aria-hidden>
+                <img src="/prio.png" alt="" className="absolute inset-0 h-full w-full object-cover" />
+              </div>
+              <div className="flex flex-col gap-3 p-5 sm:p-6">
+                <h3 className="text-lg font-bold tracking-tight text-[#222222] sm:text-xl">
+                  Prioritized AI Initiative Roadmap
+                </h3>
+                <p className="text-base leading-relaxed text-[#4b5563] sm:text-lg">
+                  A ranked list of AI initiatives tied to business outcomes, with effort, impact, and ownership mapped for each one. No ambiguity about where to start.
+                </p>
+              </div>
             </div>
-            <div className="rounded-2xl border border-white/15 bg-white/[0.12] p-5 shadow-[0_2px_20px_rgba(0,0,0,0.08)] sm:p-8 lg:p-10">
-              <span className="text-5xl font-bold leading-none tracking-tighter text-white/30 sm:text-7xl lg:text-8xl">3</span>
-              <h3 className="mt-4 text-lg font-bold tracking-tight text-white sm:text-xl">
-                90-Day Action Plan
-              </h3>
-              <p className="mt-4 text-base leading-relaxed text-white/95 sm:text-lg">
-                A concrete, time-bound plan your team can execute immediately. Milestones, owners, and success metrics built in from day one.
-              </p>
+            <div className="flex flex-col overflow-hidden rounded-2xl border border-black/[0.06] bg-white shadow-[0_2px_20px_rgba(0,0,0,0.04)]">
+              <div className="relative h-48 w-full bg-[#f9fafb] sm:h-56 lg:h-64" aria-hidden>
+                <img src="/action.png" alt="" className="absolute inset-0 h-full w-full object-cover" />
+              </div>
+              <div className="flex flex-col gap-3 p-5 sm:p-6">
+                <h3 className="text-lg font-bold tracking-tight text-[#222222] sm:text-xl">
+                  90-Day Action Plan
+                </h3>
+                <p className="text-base leading-relaxed text-[#4b5563] sm:text-lg">
+                  A concrete, time-bound plan your team can execute immediately. Milestones, owners, and success metrics built in from day one.
+                </p>
+              </div>
             </div>
-            <div className="rounded-2xl border border-white/15 bg-white/[0.12] p-5 shadow-[0_2px_20px_rgba(0,0,0,0.08)] sm:p-8 lg:p-10">
-              <span className="text-5xl font-bold leading-none tracking-tighter text-white/30 sm:text-7xl lg:text-8xl">4</span>
-              <h3 className="mt-4 text-lg font-bold tracking-tight text-white sm:text-xl">
-                Implementation Timeline
-              </h3>
-              <p className="mt-4 text-base leading-relaxed text-white/95 sm:text-lg">
-                A phased rollout timeline that sequences your initiatives in the order that makes the most sense for your organization's capacity, budget, and goals.
-              </p>
+            <div className="flex flex-col overflow-hidden rounded-2xl border border-black/[0.06] bg-white shadow-[0_2px_20px_rgba(0,0,0,0.04)]">
+              <div className="relative h-48 w-full bg-[#f9fafb] sm:h-56 lg:h-64" aria-hidden>
+                <img src="/timeline.png" alt="" className="absolute inset-0 h-full w-full object-cover" />
+              </div>
+              <div className="flex flex-col gap-3 p-5 sm:p-6">
+                <h3 className="text-lg font-bold tracking-tight text-[#222222] sm:text-xl">
+                  Implementation Timeline
+                </h3>
+                <p className="text-base leading-relaxed text-[#4b5563] sm:text-lg">
+                  A phased rollout timeline that sequences your initiatives in the order that makes the most sense for your organization's capacity, budget, and goals.
+                </p>
+              </div>
             </div>
           </div>
         </div>

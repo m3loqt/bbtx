@@ -141,7 +141,6 @@ export default function AIOrganizationalModelPage() {
 
       {/* 3. What the Model Represents — left eyebrow, right headline + cards */}
       <section className="relative z-[1] w-full bg-[#f7f7f7]">
-        <div className="pointer-events-none absolute inset-0 z-0 opacity-60" style={gridBg} aria-hidden />
         <div className="relative z-[1] px-4 py-12 sm:px-6 sm:py-24 lg:px-8 lg:py-32">
           <div className="grid gap-6 lg:grid-cols-[3fr_7fr] lg:items-start lg:gap-12">
             <p className="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#555555]/60">
@@ -185,88 +184,77 @@ export default function AIOrganizationalModelPage() {
         </div>
       </section>
 
-      {/* 4. How We Build It — dark theme, frosted cards, arrow line */}
-      <section className="relative z-[1] w-full overflow-hidden bg-[#222222]">
-        <div
-          className="pointer-events-none absolute inset-0 z-0 opacity-60"
-          style={gridBg}
-          aria-hidden
-        />
+      {/* 4. How We Build It — white theme, image cards */}
+      <section className="relative z-[1] w-full overflow-hidden bg-white">
         <div className="relative z-[1] px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
-          <p className="mb-6 text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-white/40">
+          <p className="mb-6 text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#555555]/60">
             How We Build It
           </p>
-          <h2 className="w-full text-4xl font-medium leading-tight tracking-tighter text-white sm:text-5xl lg:text-5xl xl:text-6xl 2xl:text-[4rem]">
+          <h2 className="w-full text-4xl font-medium leading-tight tracking-tighter text-[#222222] sm:text-5xl lg:text-5xl xl:text-6xl 2xl:text-[4rem]">
             Building the{" "}
             <span className="font-normal italic" style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}>
               organizational model.
             </span>
           </h2>
 
-          <div className="relative mt-14 lg:mt-20">
-            <div className="pointer-events-none absolute inset-x-0 top-1/2 z-0 hidden -translate-y-1/2 items-center lg:flex">
-              <div className="mx-10 flex flex-1 items-center">
-                <div className="h-px flex-1 bg-white/25" />
-                <svg
-                  className="h-3 w-3 shrink-0 text-white/25"
-                  viewBox="0 0 12 12"
-                  fill="currentColor"
-                  aria-hidden
-                >
-                  <path d="M1 6h9M7 3l3 3-3 3" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </div>
-            </div>
-            <div className="relative z-[1] grid gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:gap-5">
+          <div className="relative mx-auto mt-14 w-full max-w-7xl lg:mt-20">
+            <div className="relative z-[1] grid gap-3 sm:grid-cols-2 lg:grid-cols-4 lg:gap-4">
               {[
                 {
                   num: "01",
                   title: "Organizational Discovery",
                   body: "We start by mapping your organization as it actually exists today — structure, teams, reporting lines, and current workflows across departments and functions.",
+                  image: "/stream.png",
                 },
                 {
                   num: "02",
                   title: "Structural Mapping",
                   body: "We analyze how your processes, workflows, and organizational structure interact, identifying connections, gaps, and areas where friction is concentrated.",
+                  image: "/structure.png",
                 },
                 {
                   num: "03",
                   title: "Model Construction",
                   body: "We build your dynamic digital model — a living representation of your organization that your leadership team can reference, interrogate, and act on.",
+                  image: "/layer.png",
                 },
                 {
                   num: "04",
                   title: "Leadership Exploration",
                   body: "We walk your leadership team through the model, highlighting strategic opportunities, organizational risks, and decisions that become clearer when you can see the whole system at once.",
+                  image: "/explore.png",
                 },
               ].map((step) => (
                 <div
                   key={step.num}
-                  className="relative overflow-hidden rounded-2xl border border-white/15 bg-white/[0.07] p-6 sm:p-8"
+                  className="relative flex flex-col overflow-hidden rounded-2xl border border-black/[0.06] bg-white"
                 >
-                  <span
-                    className="block text-[3.5rem] font-bold leading-none tracking-tighter sm:text-[5rem] lg:text-[6rem]"
-                    style={{
-                      background: "linear-gradient(to bottom, rgba(255,255,255,0.25), rgba(255,255,255,0))",
-                      WebkitBackgroundClip: "text",
-                      WebkitTextFillColor: "transparent",
-                      backgroundClip: "text",
-                    }}
+                  <div
+                    className="relative h-40 w-full bg-[#f9fafb] sm:h-56 lg:h-64"
+                    aria-hidden
                   >
-                    {step.num}
-                  </span>
-                  <h3 className="mt-2 text-lg font-semibold tracking-tight text-white sm:text-xl">
-                    {step.title}
-                  </h3>
-                  <p className="mt-3 text-base leading-relaxed text-white/70 sm:text-[17px]">
-                    {step.body}
-                  </p>
+                    <img
+                      src={step.image}
+                      alt=""
+                      className="absolute inset-0 h-full w-full object-cover"
+                    />
+                  </div>
+                  <div className="flex flex-col gap-3 p-6 sm:p-8">
+                    <h3 className="text-lg font-semibold tracking-tight text-[#222222] sm:text-xl">
+                      {step.title}
+                    </h3>
+                    <p className="text-base leading-relaxed text-[#4b5563] sm:text-[17px]">
+                      {step.body}
+                    </p>
+                  </div>
                 </div>
               ))}
             </div>
           </div>
         </div>
       </section>
+
+      <div className="h-px w-full bg-black/[0.06]" aria-hidden />
 
       {/* 5. Before and After Visibility — full-screen split */}
       <section className="relative z-[1] w-full">

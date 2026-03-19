@@ -20,7 +20,7 @@ const COMPANY_LOGOS = [
   "RIV.png",
   "bri.png",
   "bar.png",
-].map((file) => `/companies/${file}`);
+].map((file) => `/companies-nobg/${file}`);
 
 export const METRICS = [
   { value: "100+", label: "Organizations Served" },
@@ -30,7 +30,7 @@ export const METRICS = [
 
 export function Results() {
   return (
-    <section className="relative z-[1] bg-white">
+    <section className="relative z-[1] bg-[#f7f7f7]">
       <div className="relative z-[1] px-4 pt-16 pb-0 sm:px-6 sm:py-16 lg:px-8 lg:py-20">
         {/* Header and description first */}
         <div className="grid gap-8 lg:grid-cols-[3fr_2fr] lg:items-end lg:gap-12">
@@ -53,21 +53,7 @@ export function Results() {
         {/* Logo carousel below headline */}
         <div className="relative mb-2 mt-4 w-full min-h-[150px] overflow-hidden sm:-mb-44 sm:min-h-[400px] sm:mt-2 lg:-mb-52 lg:min-h-[460px] lg:mt-4">
           <div
-            className="pointer-events-none absolute inset-y-0 left-0 z-10 hidden w-32 shrink-0 sm:block lg:w-40"
-            style={{
-              background: "linear-gradient(to right, rgba(255,255,255,0.4) 0%, transparent 100%)",
-            }}
-            aria-hidden
-          />
-          <div
-            className="pointer-events-none absolute inset-y-0 right-0 z-10 hidden w-32 shrink-0 sm:block lg:w-40"
-            style={{
-              background: "linear-gradient(to left, rgba(255,255,255,0.4) 0%, transparent 100%)",
-            }}
-            aria-hidden
-          />
-          <div
-            className="flex w-max items-center gap-4 sm:gap-4 lg:gap-5"
+            className="flex w-max items-center gap-4 px-4 sm:gap-4 sm:px-6 lg:gap-5 lg:px-8"
             style={{
               animation: "logo-scroll 80s linear infinite",
               willChange: "transform",

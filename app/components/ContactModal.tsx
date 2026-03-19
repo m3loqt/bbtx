@@ -213,7 +213,7 @@ export function ContactModal({ open, onClose }: ContactModalProps) {
                       onValueChange={(val) => setInquiryType(val ?? INQUIRY_OPTIONS[0])}
                       disabled={isLoading}
                     >
-                      <SelectTrigger className="h-11 rounded-md border-black/10 bg-[#f2f2f2] text-[15px]">
+                      <SelectTrigger className="h-11 w-full min-w-0 rounded-md border-black/10 bg-[#f2f2f2] text-[15px]">
                         <SelectValue placeholder="Select an option" />
                       </SelectTrigger>
                       <SelectContent>

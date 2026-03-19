@@ -1,3 +1,5 @@
+import { ArrowLeftRight } from "lucide-react";
+
 const TYPICAL_POINTS = [
   "Focuses on tools before understanding your business",
   "Delivers a report and walks away",
@@ -41,23 +43,12 @@ function PlusIcon({ className }: { className?: string }) {
 export function Differentiation() {
   return (
     <section className="relative z-[1] bg-[#f7f7f7]">
-      <div
-        className="pointer-events-none absolute inset-0 z-0 opacity-60"
-        style={{
-          backgroundImage: `
-            linear-gradient(to right, rgba(0,0,0,0.04) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(0,0,0,0.04) 1px, transparent 1px)
-          `,
-          backgroundSize: "48px 48px",
-        }}
-        aria-hidden
-      />
-
       <div className="relative z-[1] px-3 py-6 sm:px-6 sm:py-8 lg:px-8 lg:py-10">
         <div className="h-full w-full rounded-xl border border-black/[0.06] bg-white px-4 py-8 shadow-[0_2px_12px_rgba(0,0,0,0.01)] sm:px-6 sm:py-8 lg:px-8 lg:py-10">
           {/* Header block, centered */}
           <div className="mx-auto max-w-4xl text-center">
-          <p className="mb-4 text-center text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#555555]/60">
+          <p className="mb-4 flex items-center justify-center gap-2 text-center text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#555555]/60">
+            <ArrowLeftRight className="h-4 w-4 text-[#ca3726]" />
             Compare
           </p>
           <h2 className="text-4xl font-medium leading-tight tracking-tighter text-[#222222] sm:text-5xl lg:text-5xl xl:text-6xl 2xl:text-[4rem]">

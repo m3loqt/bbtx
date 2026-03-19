@@ -6,7 +6,6 @@ import {
   Fraunces,
   DM_Sans, Geist } from "next/font/google";
 import "./globals.css";
-import { cn } from "@/lib/utils";
 
 const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
@@ -112,9 +111,21 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const htmlClassName = [
+    inter.variable,
+    playfair.variable,
+    spaceMono.variable,
+    fraunces.variable,
+    dmSans.variable,
+    "font-sans",
+    geist.variable,
+  ]
+    .filter(Boolean)
+    .join(" ")
+
   return (
-    <html lang="en" className={cn(inter.variable, playfair.variable, spaceMono.variable, fraunces.variable, dmSans.variable, "font-sans", geist.variable)}>
-      <body className="antialiased relative z-[1]">
+    <html lang="en" className={htmlClassName} suppressHydrationWarning>
+      <body className="antialiased relative z-[1]" suppressHydrationWarning>
         {children}
       </body>
     </html>

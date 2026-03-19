@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, type ReactElement } from "react";
+import { Star } from "lucide-react";
 import { Nav } from "@/app/components/Nav";
 import { Footer } from "@/app/components/Footer";
 import { ArrowUpRight } from "@/app/components/ArrowIcon";
@@ -253,36 +254,42 @@ const TESTIMONIALS = [
       "Before the AI Integration Program, I had no idea what AI was. The training broke down what AI can do and how to use it in my workflow. Now, tasks that used to take 30 minutes take just 5, and my productivity has increased by about 50%. This program was powerful and extremely beneficial.",
     author: "Jamie Wilson",
     role: "Marketing Manager",
+    image: "/jamie.png",
   },
   {
     quote:
       "The hands-on learning, expert insights, and practical tools gave me the confidence to start integrating AI into my coaching practice. What impressed me most was the emphasis on ethical, responsible implementation. Whether you're a professional or consultant, this program equips you to lead in the AI era.",
     author: "Terry Barnhart",
     role: "Executive Coach",
+    image: "/terry.jpeg",
   },
   {
     quote:
       "I had the privilege of attending Grant Tate's AI Integration Workshop. The material was organized and easy to follow, and learning alongside professionals from diverse backgrounds showed me countless ways to use AI in the workplace. I use AI daily now, both professionally and personally. I strongly recommend these classes.",
     author: "Nancy Soans",
     role: "Executive Administrator",
+    image: "/nancy.jpeg",
   },
   {
     quote:
       "Since the class, I've redone all my staff's job requirements and accountabilities, developed marketing plans, and streamlined team reviews. I'm excited to keep learning and using AI to benefit my organization and community.",
     author: "Todd Johnson",
     role: "President & CEO",
+    image: "/todd.jpg",
   },
   {
     quote:
       "I've used AI before, but the sessions opened my eyes to using it for business planning and analysis. There are so many ways I can incorporate AI that I hadn't considered before.",
     author: "Laura Beltran",
     role: "Education Director",
+    image: "/laura.png",
   },
   {
     quote:
       "Before Chaotic Confluence, I only knew AI from a technical side. This community helped me understand how leadership and business work, and showed me how AI can make a real difference for people, not just in code. It's helped me grow a lot.",
     author: "Mel Angelo Cortes",
     role: "IT Specialist",
+    image: "/mel.png",
   },
 ];
 
@@ -1119,7 +1126,8 @@ export default function CommunityPage() {
           <div className="mt-12 md:mt-16 lg:mt-20">
             <div className="mb-3 flex flex-row flex-wrap items-center justify-between gap-4">
               {/* TODO: Grant - replace all testimonial content below with real quotes from graduates/members */}
-              <p className="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#6b7280]">
+              <p className="flex items-center gap-2 text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#6b7280]">
+                <Star className="h-4 w-4 text-[#ca3726]" />
                 WHAT OUR COMMUNITY SAYS
               </p>
               <div className="flex items-center gap-2">
@@ -1155,18 +1163,26 @@ export default function CommunityPage() {
                   key={i}
                   className="flex min-w-[85%] max-w-[520px] flex-shrink-0 flex-col justify-between rounded-2xl border border-black/[0.06] bg-white p-6 sm:min-w-[75%] sm:p-8 md:min-w-[55%] lg:min-w-[48%]"
                 >
-                  <p className="text-[0.7rem] font-semibold uppercase tracking-[0.2em] text-[#111827]">
-                    {t.role}
-                  </p>
-                  <span className="mt-3 block text-5xl font-semibold leading-none text-[#111827] sm:text-6xl lg:text-7xl">
-                    &ldquo;
-                  </span>
-                  <p className="mt-[-0.6rem] mb-4 text-lg font-semibold leading-snug text-[#111827] sm:text-xl">
+                  <div className="mb-4 mt-0 flex self-start gap-1 text-[#f59e0b]">
+                    {Array.from({ length: 5 }).map((_, idx) => (
+                      <Star
+                        // eslint-disable-next-line react/no-array-index-key
+                        key={idx}
+                        className="h-6 w-6 sm:h-7 sm:w-7 lg:h-8 lg:w-8"
+                        fill="currentColor"
+                      />
+                    ))}
+                  </div>
+                  <p className="mt-0 mb-4 text-lg font-semibold leading-snug text-[#111827] sm:text-xl">
                     {t.quote}
                   </p>
                   <footer className="mt-6 flex items-center gap-4">
-                    <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-[#f3f4f6] text-sm font-semibold text-[#111827]">
-                      {t.author.split(" ").map((n) => n[0]).join("")}
+                    <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center overflow-hidden rounded-full bg-[#f3f4f6]">
+                      <img
+                        src={t.image}
+                        alt=""
+                        className="h-full w-full object-cover"
+                      />
                     </div>
                     <div>
                       <p className="font-semibold text-[#111827]">{t.author}</p>

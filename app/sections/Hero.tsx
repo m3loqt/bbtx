@@ -1,5 +1,6 @@
 import { ArrowDown } from "@/app/components/ArrowIcon";
 import { METRICS } from "@/app/sections/Results";
+import { Sparkles } from "lucide-react";
 
 export function Hero() {
   return (
@@ -20,8 +21,9 @@ export function Hero() {
           On sm+: justify-start with internal flex-1 spacer keeps Discover more pinned to bottom. */}
       <div className="relative z-[1] flex min-h-0 flex-1 flex-col justify-end pb-20 sm:justify-start sm:pb-10 sm:pt-3 lg:pt-4">
         <div className="flex w-full flex-col sm:mt-3 sm:flex-1 lg:mt-4">
-          <div>
-            <p className="mb-5 text-sm font-normal text-[#555555] sm:mb-10 sm:text-base md:text-lg">
+          <div className="relative translate-y-3 sm:translate-y-4">
+            <p className="mb-5 flex items-center gap-2 text-sm font-normal text-[#555555] sm:mb-10 sm:text-base md:text-lg">
+              <Sparkles className="h-4 w-4 text-[#ca3726]" aria-hidden />
               AI-Powered Business Consulting
             </p>
             <h1 className="text-[2.15rem] font-semibold leading-[1.06] tracking-tighter text-[#222222] sm:leading-[1.02] sm:text-[3.6rem] md:text-[4.5rem] lg:text-[5.8rem] xl:text-[6.6rem] xl:leading-[0.98] 2xl:text-[7.2rem]">

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ArrowUpRight } from "@/app/components/ArrowIcon";
+import { Sparkles } from "lucide-react";
 
 const SERVICE_CARDS = [
   {
@@ -22,22 +23,11 @@ const SERVICE_CARDS = [
 export function Services() {
   return (
     <section className="relative z-[1] bg-[#f7f7f7]">
-      {/* Same grid overlay as Hero / Results */}
-      <div
-        className="pointer-events-none absolute inset-0 z-0 opacity-60"
-        style={{
-          backgroundImage: `
-            linear-gradient(to right, rgba(0,0,0,0.04) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(0,0,0,0.04) 1px, transparent 1px)
-          `,
-          backgroundSize: "48px 48px",
-        }}
-        aria-hidden
-      />
       <div className="relative z-[1] px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
         {/* 30/70 grid: eyebrow + headline row, then cards in right column only */}
         <div className="grid gap-4 lg:grid-cols-[3fr_7fr] lg:items-start lg:gap-12">
-          <p className="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#555555]/60">
+          <p className="flex items-center gap-2 text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#555555]/60">
+            <Sparkles className="h-4 w-4 text-[#ca3726]" />
             WHAT WE DO
           </p>
           {/* Right column: headline + cards, with 10% margin on the right */}

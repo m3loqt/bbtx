@@ -3,17 +3,6 @@ import { ArrowUpRight } from "@/app/components/ArrowIcon";
 export function CTA() {
   return (
     <section className="relative z-[1] bg-[#f7f7f7]">
-      <div
-        className="pointer-events-none absolute inset-0 z-0 opacity-60"
-        style={{
-          backgroundImage: `
-            linear-gradient(to right, rgba(0,0,0,0.04) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(0,0,0,0.04) 1px, transparent 1px)
-          `,
-          backgroundSize: "48px 48px",
-        }}
-        aria-hidden
-      />
       <div className="relative z-[1] w-full px-4 py-8 sm:px-6 lg:px-8 lg:py-10">
         {/* Full-width card with gradient + visual elements */}
         <div
