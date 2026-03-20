@@ -2,6 +2,7 @@
 
 import { useRef, type ReactElement } from "react";
 import { Star } from "lucide-react";
+import Image from "next/image";
 import { Nav } from "@/app/components/Nav";
 import { Footer } from "@/app/components/Footer";
 import { ArrowUpRight } from "@/app/components/ArrowIcon";
@@ -330,17 +331,16 @@ export default function CommunityPage() {
       {/* 1. Hero — full-width hero, background image + left column */}
       <section className="relative overflow-hidden bg-[#000000] pt-14 sm:pt-20">
         {/* Background image */}
-        <div
-          className="absolute inset-0 z-0"
-          style={{
-            backgroundImage: "url('/communityhero.png')",
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            filter: "blur(2px)",
-            transform: "scale(1.03)",
-          }}
-          aria-hidden
-        />
+        <div className="absolute inset-0 z-0" aria-hidden>
+          <Image
+            src="/communityhero.png"
+            alt=""
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover blur-[2px] scale-[1.03]"
+          />
+        </div>
         {/* Subtle dark overlay on top of blurred image */}
         <div className="absolute inset-0 z-0 bg-black/35" aria-hidden />
         {/* Grid + grain for subtle texture over image */}
@@ -856,9 +856,11 @@ export default function CommunityPage() {
                   className="flex flex-col overflow-hidden rounded-[24px] border border-black/[0.06] bg-white shadow-[0_2px_20px_rgba(0,0,0,0.04)]"
                 >
                   <div className="relative h-[340px] sm:h-[400px] lg:h-[440px]">
-                    <img
+                    <Image
                       src="/communityher.png"
                       alt=""
+                      fill
+                      sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
                       className="absolute inset-0 h-full w-full object-cover"
                       aria-hidden
                     />
@@ -953,9 +955,11 @@ export default function CommunityPage() {
                       <div className="mt-4 flex items-center justify-between gap-4">
                         <div className="flex items-center gap-3">
                           <div className="h-10 w-10 overflow-hidden rounded-full bg-[#fee2e2]">
-                            <img
+                            <Image
                               src="/grant.png"
                               alt={RESEARCH_FEATURED[0].author ?? "Article author"}
+                              fill
+                              sizes="40px"
                               className="h-full w-full object-cover"
                             />
                           </div>
@@ -984,10 +988,15 @@ export default function CommunityPage() {
                   className="group flex h-full flex-1 flex-col overflow-hidden border border-black/[0.06] bg-[#f7f7f7] text-left transition-colors hover:bg-[#f2f2f2] sm:min-h-[560px]"
                 >
                   {/* Cover image area */}
-                  <div
-                    className="relative h-56 w-full bg-cover bg-center sm:h-72"
-                    style={{ backgroundImage: "url('/pop2.png')" }}
-                  />
+                  <div className="relative h-56 w-full sm:h-72">
+                    <Image
+                      src="/pop2.png"
+                      alt={RESEARCH_FEATURED[1].title}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                      className="object-cover"
+                    />
+                  </div>
 
                   {/* Content */}
                   <div className="flex flex-1 flex-col p-5 sm:p-7">
@@ -1089,7 +1098,7 @@ export default function CommunityPage() {
                 <Star className="h-4 w-4 text-[#ca3726]" />
                 WHAT OUR COMMUNITY SAYS
               </p>
-              <div className="flex items-center gap-2">
+              <div className="hidden items-center gap-2 sm:flex">
                 <button
                   type="button"
                   onClick={() => scrollTestimonials("left")}
@@ -1112,36 +1121,32 @@ export default function CommunityPage() {
                 </button>
               </div>
             </div>
-            <div className="-mx-4 sm:-mx-6 lg:-mx-8">
+            <div className="overflow-hidden">
               <div
                 ref={testimonialsScrollRef}
-                className="flex gap-3 overflow-x-auto pb-4 pl-4 pr-8 scroll-smooth md:gap-4 sm:pl-6 sm:pr-10 lg:pl-8 lg:pr-12 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+                className="flex snap-x snap-mandatory gap-3 overflow-x-auto px-1 pb-4 pt-1 scroll-smooth md:gap-4 sm:px-2 lg:px-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
               >
                 {TESTIMONIALS.map((t, i) => (
                 <article
                   key={i}
-                  className="flex min-w-[85%] max-w-[520px] flex-shrink-0 flex-col justify-between rounded-2xl border border-black/[0.06] bg-white p-6 sm:min-w-[75%] sm:p-8 md:min-w-[55%] lg:min-w-[48%]"
+                  className="flex min-w-[100%] max-w-[520px] flex-shrink-0 snap-start flex-col justify-between rounded-2xl border border-black/[0.06] bg-white p-4 sm:min-w-[84%] sm:p-6 md:min-w-[64%] lg:min-w-[48%] lg:p-8"
                 >
                   <div className="mb-4 mt-0 flex self-start gap-1 text-[#f59e0b]">
                     {Array.from({ length: 5 }).map((_, idx) => (
                       <Star
                         // eslint-disable-next-line react/no-array-index-key
                         key={idx}
-                        className="h-6 w-6 sm:h-7 sm:w-7 lg:h-8 lg:w-8"
+                        className="h-5 w-5 sm:h-6 sm:w-6 lg:h-7 lg:w-7"
                         fill="currentColor"
                       />
                     ))}
                   </div>
-                  <p className="mt-0 mb-4 text-lg font-semibold leading-snug text-[#111827] sm:text-xl">
+                  <p className="mt-0 mb-4 text-[15px] font-semibold leading-snug text-[#111827] sm:text-lg lg:text-xl">
                     {t.quote}
                   </p>
                   <footer className="mt-6 flex items-center gap-4">
-                    <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center overflow-hidden rounded-full bg-[#f3f4f6]">
-                      <img
-                        src={t.image}
-                        alt=""
-                        className="h-full w-full object-cover"
-                      />
+                    <div className="relative flex h-11 w-11 flex-shrink-0 items-center justify-center overflow-hidden rounded-full bg-[#f3f4f6] sm:h-12 sm:w-12">
+                      <Image src={t.image} alt="" fill sizes="48px" className="h-full w-full object-cover" />
                     </div>
                     <div>
                       <p className="font-semibold text-[#111827]">{t.author}</p>
@@ -1157,15 +1162,15 @@ export default function CommunityPage() {
       </section>
 
       {/* 9. Closing CTA — full width with communityher background */}
-      <section
-        id="subscribe"
-        className="relative z-[1] w-full overflow-hidden"
-        style={{
-          backgroundImage: "url('/communityher.png')",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
-      >
+      <section id="subscribe" className="relative z-[1] w-full overflow-hidden">
+        <Image
+          src="/communityher.png"
+          alt=""
+          fill
+          sizes="100vw"
+          className="object-cover"
+          aria-hidden
+        />
         <div className="absolute inset-0 z-0 bg-black/45" aria-hidden />
         <div className="pointer-events-none absolute inset-0 z-0 opacity-40" style={gridBg} aria-hidden />
         <div className="relative z-[1] px-4 py-14 text-center sm:px-6 sm:py-28 lg:px-8 lg:py-32">

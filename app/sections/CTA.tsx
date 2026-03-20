@@ -1,18 +1,13 @@
 import { ArrowUpRight } from "@/app/components/ArrowIcon";
+import Image from "next/image";
 
 export function CTA() {
   return (
     <section className="relative z-[1] bg-[#f7f7f7]">
       <div className="relative z-[1] w-full px-4 py-8 sm:px-6 lg:px-8 lg:py-10">
         {/* Full-width card with gradient + visual elements */}
-        <div
-          className="relative w-full overflow-hidden rounded-xl border border-white/20 bg-[#ca3726] shadow-[0_4px_24px_rgba(202,55,38,0.25)] sm:rounded-2xl"
-          style={{
-            backgroundImage: "url(/cta.png)",
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-          }}
-        >
+        <div className="relative w-full overflow-hidden rounded-xl border border-white/20 bg-[#ca3726] shadow-[0_4px_24px_rgba(202,55,38,0.25)] sm:rounded-2xl">
+          <Image src="/cta.png" alt="" fill sizes="100vw" className="object-cover" aria-hidden />
           {/* Overlay for text readability */}
           <div
             className="pointer-events-none absolute inset-0 z-0 bg-[#ca3726]/40"

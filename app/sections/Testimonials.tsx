@@ -2,6 +2,7 @@
 
 import { useRef } from "react";
 import { Star } from "lucide-react";
+import Image from "next/image";
 
 const TESTIMONIALS = [
   {
@@ -79,7 +80,7 @@ export function Testimonials() {
               WHAT OUR COMMUNITY SAYS
             </p>
 
-            <div className="flex items-center gap-2">
+            <div className="hidden items-center gap-2 sm:flex">
               <button
                 type="button"
                 onClick={() => scrollTestimonials("left")}
@@ -103,36 +104,32 @@ export function Testimonials() {
             </div>
           </div>
 
-          <div className="-mx-4 sm:-mx-6 lg:-mx-8">
+          <div className="overflow-hidden">
             <div
               ref={testimonialsScrollRef}
-              className="flex gap-3 overflow-x-auto pb-4 pl-4 pr-8 scroll-smooth md:gap-4 sm:pl-6 sm:pr-10 lg:pl-8 lg:pr-12 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+              className="flex snap-x snap-mandatory gap-3 overflow-x-auto px-1 pb-4 pt-1 scroll-smooth md:gap-4 sm:px-2 lg:px-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
             >
               {TESTIMONIALS.map((t, i) => (
                 <article
                   key={i}
-                  className="flex min-w-[85%] max-w-[520px] flex-shrink-0 flex-col justify-between rounded-2xl border border-black/[0.06] bg-white p-6 sm:min-w-[75%] sm:p-8 md:min-w-[55%] lg:min-w-[48%]"
+                  className="flex min-w-[100%] max-w-[520px] flex-shrink-0 snap-start flex-col justify-between rounded-2xl border border-black/[0.06] bg-white p-4 sm:min-w-[84%] sm:p-6 md:min-w-[64%] lg:min-w-[48%] lg:p-8"
                 >
                   <div className="mb-4 mt-0 flex self-start gap-1 text-[#f59e0b]">
                     {Array.from({ length: 5 }).map((_, idx) => (
                       <Star
                         // eslint-disable-next-line react/no-array-index-key
                         key={idx}
-                        className="h-6 w-6 sm:h-7 sm:w-7 lg:h-8 lg:w-8"
+                        className="h-5 w-5 sm:h-6 sm:w-6 lg:h-7 lg:w-7"
                         fill="currentColor"
                       />
                     ))}
                   </div>
-                  <p className="mt-0 mb-4 text-lg font-semibold leading-snug text-[#111827] sm:text-xl">
+                  <p className="mt-0 mb-4 text-[15px] font-semibold leading-snug text-[#111827] sm:text-lg lg:text-xl">
                     {t.quote}
                   </p>
                   <footer className="mt-6 flex items-center gap-4">
-                    <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center overflow-hidden rounded-full bg-[#f3f4f6]">
-                      <img
-                        src={t.image}
-                        alt=""
-                        className="h-full w-full object-cover"
-                      />
+                    <div className="relative flex h-11 w-11 flex-shrink-0 items-center justify-center overflow-hidden rounded-full bg-[#f3f4f6] sm:h-12 sm:w-12">
+                      <Image src={t.image} alt="" fill sizes="48px" className="h-full w-full object-cover" />
                     </div>
                     <div>
                       <p className="font-semibold text-[#111827]">{t.author}</p>

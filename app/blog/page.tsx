@@ -86,15 +86,7 @@ export default function BlogPage() {
 
       {/* Blog header — full-width, dark, journal-style */}
       <section className="relative z-[1] w-full overflow-hidden bg-[#222222] pt-14 sm:pt-20">
-        <div
-          className="absolute inset-0 z-0"
-          style={{
-            backgroundImage: "url('/articleshero.png')",
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-          }}
-          aria-hidden
-        />
+        <Image src="/articleshero.png" alt="" fill priority sizes="100vw" className="object-cover" aria-hidden />
         <div className="absolute inset-0 z-0 bg-black/60" aria-hidden />
         <div className="relative z-[1] flex w-full flex-col justify-end px-4 pb-24 pt-20 sm:px-6 sm:pb-28 sm:pt-24 lg:min-h-[72vh] lg:px-8 lg:pb-32 lg:pt-28">
           <div className="w-full">
