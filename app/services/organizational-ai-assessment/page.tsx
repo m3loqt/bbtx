@@ -98,40 +98,62 @@ export default function OrganizationalAIAssessmentPage() {
       </section>
 
       {/* 2. The reality — dark, centered */}
-      <section className="relative z-[1] w-full bg-[#222222]">
+      <section className="relative z-[1] w-full bg-white">
         <div className="relative z-[1] flex flex-col items-center justify-center px-4 py-16 text-center sm:min-h-screen sm:px-6 sm:py-24 lg:px-8">
           <div className="w-full">
-            <p className="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-white/40">The reality</p>
-            <h2 className="mx-auto mt-5 max-w-[92%] text-[1.7rem] font-medium leading-[1.1] tracking-tighter text-white sm:max-w-[86%] sm:text-[3rem] lg:text-[3.6rem] xl:text-[4.4rem]">
+            <p className="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#555555]/60">The reality</p>
+            <h2 className="mx-auto mt-5 max-w-[92%] text-[1.7rem] font-medium leading-[1.1] tracking-tighter text-[#222222] sm:max-w-[86%] sm:text-[3rem] lg:text-[3.6rem] xl:text-[4.4rem]">
               AI is already happening inside your organization. The question is{" "}
-              <span className="font-normal italic" style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}>
+              <span
+                className="font-normal italic"
+                style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}
+              >
                 whether anyone is leading it.
               </span>
             </h2>
-            <p className="mx-auto mt-5 max-w-4xl text-base leading-relaxed tracking-tight text-white/80 sm:mt-8 sm:max-w-5xl sm:text-2xl">
+            <p className="mx-auto mt-5 max-w-4xl text-base leading-relaxed tracking-tight text-[#555555]/80 sm:mt-8 sm:max-w-5xl sm:text-2xl">
               Across most small and mid-size organizations, AI is being used across departments, functions, and teams informally, inconsistently, and without oversight. Before you build a strategy, you need a clear picture of what's already in motion.
             </p>
-            <div className="mx-auto mt-10 grid max-w-6xl gap-4 text-left sm:mt-16 sm:grid-cols-3 lg:mt-20 lg:max-w-7xl">
+            <div className="mx-auto mt-10 grid w-full max-w-6xl gap-4 text-left sm:mt-16 sm:grid-cols-3 lg:mt-20 lg:max-w-7xl lg:gap-4">
               {[
                 {
                   title: "Discover what's real",
                   body: "Surface how AI is actually being used across your organization today, not how leadership assumes it is.",
+                  image: "/left.png",
                 },
                 {
                   title: "Expose what's at risk",
                   body: "Identify gaps in governance, data handling, and decision-making before they become problems at scale.",
+                  image: "/mid.png",
                 },
                 {
                   title: "Establish the baseline",
                   body: "Give your leadership team a shared, honest starting point for every strategic decision that follows.",
+                  image: "/right.png",
                 },
               ].map((item) => (
                 <div
                   key={item.title}
-                  className="rounded-2xl border border-white/15 bg-white/[0.03] p-6 text-left sm:p-7"
+                  className="overflow-hidden rounded-2xl border border-black/[0.06] bg-white shadow-[0_2px_20px_rgba(0,0,0,0.02)]"
                 >
-                  <h3 className="text-base font-semibold tracking-tight text-white/90 sm:text-lg">{item.title}</h3>
-                  <p className="mt-3 text-base leading-relaxed text-white/75 sm:text-lg">{item.body}</p>
+                  <div
+                    className="relative h-44 w-full bg-[#f9fafb] sm:h-60 lg:h-64"
+                    aria-hidden
+                  >
+                    <img
+                      src={item.image}
+                      alt=""
+                      className="absolute inset-0 h-full w-full object-cover"
+                    />
+                  </div>
+                  <div className="flex flex-col gap-3 p-6 sm:p-8">
+                    <h3 className="text-lg font-semibold tracking-tight text-[#222222] sm:text-xl">
+                      {item.title}
+                    </h3>
+                    <p className="text-base leading-relaxed text-[#4b5563] sm:text-lg">
+                      {item.body}
+                    </p>
+                  </div>
                 </div>
               ))}
             </div>

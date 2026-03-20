@@ -131,26 +131,46 @@ const ASSOCIATES = [
 
 const RESEARCH_FEATURED = [
   {
-    title: "AI Governance for Mid Size Organizations",
-    summary: "How real organizations are establishing policies, oversight and accountability for AI.",
+    title: "AI Isn't Failing. Leadership Is.",
+    summary: "Why execution stalls when leadership assumptions go unchallenged.",
     category: "Governance",
-    minutes: "7 min read",
-    published: "March 5, 2026 · 9:30 AM EST",
+    minutes: "5 min read",
+    published: "Chaotic Confluence",
     author: "Grant Tate",
+    href: "https://chaoticconfluence.substack.com/p/ai-isnt-failing-leadership-is",
   },
   {
-    title: "From Pilots to Production",
-    summary: "Lessons from teams moving beyond experimentation into measurable business impact.",
+    title:
+      "The Great Cognitive Deflation: 2026, The DeepSeek Shock, and the Geopolitics of AI Dumping",
+    summary: "How economics, power, and AI acceleration are colliding in real time.",
     category: "Implementation",
     minutes: "6 min read",
-    published: "February 18, 2026 · 1:15 PM EST",
+    published: "Chaotic Confluence",
+    href: "https://chaoticconfluence.substack.com/p/the-great-cognitive-deflation-2026",
   },
   {
-    title: "Leading Through the AI Shift",
-    summary: "What leaders need to know when steering their organizations through AI adoption — without the hype.",
+    title: "Why Most AI Efforts Fall Flat (And How to Actually Get Results)",
+    summary: "A practical breakdown of why adoption stalls and what to do differently.",
+    category: "Strategy",
+    minutes: "5 min read",
+    published: "Chaotic Confluence",
+    href: "https://chaoticconfluence.substack.com/p/why-most-ai-efforts-fall-flat-and",
+  },
+  {
+    title: "The Unwritten Rules of AI at Work: 4 Surprising Truths You Need to Know",
+    summary: "Unspoken patterns shaping how AI really gets adopted in teams.",
     category: "Leadership",
     minutes: "8 min read",
-    published: "January 30, 2026 · 10:00 AM EST",
+    published: "Chaotic Confluence",
+    href: "https://chaoticconfluence.substack.com/p/the-unwritten-rules-of-ai-at-work",
+  },
+  {
+    title: "AI Standards & Guidelines",
+    summary: "A practical framework for corporate compliance and responsible AI usage.",
+    category: "Governance",
+    minutes: "7 min read",
+    published: "Chaotic Confluence",
+    href: "https://chaoticconfluence.substack.com/p/ai-standards-and-guidelines",
   },
 ];
 
@@ -313,7 +333,7 @@ export default function CommunityPage() {
         <div
           className="absolute inset-0 z-0"
           style={{
-            backgroundImage: "url('/communityher.png')",
+            backgroundImage: "url('/communityhero.png')",
             backgroundSize: "cover",
             backgroundPosition: "center",
             filter: "blur(2px)",
@@ -370,25 +390,10 @@ export default function CommunityPage() {
         </div>
       </section>
 
-      {/* 2. Who It's For — headline + description */}
+      {/* 2. Community Metrics — retain stats */}
       <section className="relative z-[1] w-full border-t border-black/[0.06] bg-white">
         <div className="px-4 py-12 sm:px-6 sm:py-28 lg:px-8 lg:py-32">
-          <div className="grid gap-6 md:grid-cols-2 md:items-start md:gap-20">
-            <div>
-              <p className="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#555555]/60">
-                What Chaotic Confluence is
-              </p>
-              <h2 className="mt-3 max-w-3xl text-3xl font-medium leading-[1.05] tracking-tighter text-[#222222] sm:mt-4 sm:text-5xl lg:text-6xl xl:text-7xl 2xl:text-[4.25rem]">
-                What Chaotic Confluence is.
-              </h2>
-            </div>
-            <div className="mt-4 max-w-2xl text-base leading-relaxed tracking-tight text-[#555555] sm:mt-10 sm:text-2xl lg:mt-12">
-              Chaotic Confluence is a weekly newsletter, a podcast, and a live learning space created by R. Grant Tate and Mel Angelo Cortes - two people who believe that the most important question about AI is not how to use it, but how to lead with it wisely, humanly, and with a clear sense of what actually matters.
-            </div>
-          </div>
-
-          {/* Metrics row */}
-          <div className="mt-10 grid grid-cols-2 gap-6 text-[#111827] sm:mt-16 sm:grid-cols-2 sm:gap-12 lg:grid-cols-4">
+          <div className="grid grid-cols-2 gap-6 text-[#111827] sm:grid-cols-2 sm:gap-12 lg:grid-cols-4">
             <div>
               <p className="text-4xl font-semibold tracking-tight sm:text-6xl">50+</p>
               <p className="mt-2 text-xs leading-relaxed text-[#4b5563] sm:mt-4 sm:text-base">
@@ -647,20 +652,17 @@ export default function CommunityPage() {
               return (
                 <article
                   key={course.title}
-                  className="flex flex-col overflow-hidden rounded-2xl border border-black/[0.06] bg-white shadow-[0_12px_40px_rgba(15,23,42,0.04)]"
+                  className="flex flex-col overflow-hidden border border-black/[0.06] bg-[#f7f7f7] shadow-[0_12px_40px_rgba(15,23,42,0.04)]"
                 >
                   {/* Cover image area */}
-                  <div className="p-2">
-                    <div
-                      className="relative h-56 w-full overflow-hidden rounded-xl bg-cover bg-center sm:h-72"
-                      style={{
-                        backgroundImage: `url('${
-                          course.cover ?? "/service.png"
-                        }')`,
-                      }}
-                    >
-                    </div>
-                  </div>
+                  <div
+                    className="relative h-56 w-full overflow-hidden bg-cover bg-center sm:h-72"
+                    style={{
+                      backgroundImage: `url('${
+                        course.cover ?? "/service.png"
+                      }')`,
+                    }}
+                  />
 
                   {/* Content */}
                   <div className="flex flex-1 flex-col p-6 sm:p-7">
@@ -792,10 +794,12 @@ export default function CommunityPage() {
                         href={course.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 rounded-full border border-[#111827]/15 px-4 py-2 text-xs font-semibold text-[#111827] hover:bg-[#f3f4f6] sm:px-5 sm:py-2.5 sm:text-sm"
+                        className="inline-flex items-center gap-3"
                       >
-                        Learn more
-                        <ArrowUpRight className="h-4 w-4" />
+                        <span className="text-sm font-semibold text-[#111827]">Learn more</span>
+                        <span className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-[#ca3726] text-white">
+                          <ArrowUpRight className="h-4 w-4" />
+                        </span>
                       </a>
                     </div>
                   </div>
@@ -809,111 +813,77 @@ export default function CommunityPage() {
       {/* 5. Upcoming Live Sessions */}
       <section className="relative z-[1] w-full bg-[#f7f7f7]">
         <div className="px-4 py-12 sm:px-6 sm:py-24 lg:px-8 lg:py-32">
-          <div className="grid gap-8 md:grid-cols-[minmax(0,1.4fr)_minmax(0,1.2fr)] md:items-start md:gap-12">
-            {/* Left: header + description */}
-            <div>
-              <p className="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#555555]/60">
-                Upcoming Live Sessions
-              </p>
-              <h2 className="mt-3 max-w-3xl text-3xl font-medium leading-[1.05] tracking-tighter text-[#222222] sm:mt-4 sm:text-5xl lg:text-6xl xl:text-7xl 2xl:text-[4.25rem]">
-                Join the conversation while it's happening.
-              </h2>
-              <p className="mt-4 max-w-3xl text-base leading-relaxed tracking-tight text-[#555555] sm:mt-6 sm:text-2xl">
-                Webinars, cohorts, and live sessions you can join from anywhere. Real time thinking on AI and leadership
-                with people navigating the same questions you are.
-              </p>
-            </div>
+          <div className="w-full text-center">
+            <p className="mx-auto text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#555555]/60">
+              Upcoming Live Sessions
+            </p>
+            <h2 className="mx-auto mt-3 max-w-4xl text-3xl font-medium leading-[1.05] tracking-tighter text-[#222222] sm:mt-4 sm:text-5xl lg:text-6xl xl:text-7xl 2xl:text-[4.25rem]">
+              Join the conversation while it&apos;s happening.
+            </h2>
+            <p className="mx-auto mt-4 max-w-5xl text-base leading-relaxed tracking-tight text-[#555555] sm:mt-6 sm:text-2xl">
+              Webinars, cohorts, and live sessions you can join from anywhere. Real time thinking on AI and leadership
+              with people navigating the same questions you are.
+            </p>
+          </div>
 
-            {/* Right: stacked cards */}
-            <div className="space-y-4">
-              {/* Card 1 — large */}
-              <article className="relative flex min-h-[220px] flex-col justify-between overflow-hidden rounded-2xl border border-black/[0.08] bg-[#111111] text-white sm:min-h-[360px]">
-                <div
-                  className="pointer-events-none absolute inset-0 z-0 bg-cover bg-center"
-                  style={{ backgroundImage: "url('/service.png')" }}
-                  aria-hidden
-                />
-                <div className="pointer-events-none absolute inset-0 z-0 bg-[linear-gradient(to_bottom,rgba(0,0,0,0.45),rgba(0,0,0,0.85))]" aria-hidden />
-                <div className="relative z-[1] flex flex-1 flex-col p-6 sm:p-7">
-                  <div className="flex items-center justify-between gap-4">
-                    <span className="text-xs font-semibold uppercase tracking-[0.22em] text-[#f97373]">
-                      Webinar
-                    </span>
-                    <span className="text-xs font-medium uppercase tracking-[0.16em] text-white/70">
-                      March 24, 2026 · 2:00 PM EST
-                    </span>
-                  </div>
-                  <div className="mt-auto pt-5">
-                    <h3 className="text-lg font-semibold tracking-tight text-white sm:text-xl">
-                      AI and Your Career: What to Protect, What to Delegate, and What to Master
-                    </h3>
-                    <p className="mt-2 text-sm leading-relaxed text-white/85 sm:text-base">
-                      A practical session on how professionals can position themselves in an AI-transformed workplace. Walk
-                      away with a clear framework for where to invest your energy right now.
-                    </p>
-                    <div className="mt-4 flex items-center justify-end">
-                      <a href="#" className="inline-flex items-center gap-2 text-sm font-medium text-[#fed7d7] hover:text-white sm:text-base">
-                        Reserve your spot
-                        <ArrowUpRight className="h-4 w-4" />
-                      </a>
+          <div className="mx-auto mt-10 w-full max-w-[90rem]">
+            <div className="grid grid-cols-1 gap-3 sm:gap-4 lg:grid-cols-[minmax(0,1.7fr)_minmax(0,1fr)_minmax(0,1fr)]">
+              {[
+                {
+                  kind: "Webinar",
+                  date: "March 24, 2026 · 2:00 PM EST",
+                  title: "AI and Your Career: What to Protect, What to Delegate, and What to Master",
+                  description:
+                    "A practical session on how professionals can position themselves in an AI-transformed workplace. Walk away with a clear framework for where to invest your energy right now.",
+                },
+                {
+                  kind: "Cohort",
+                  date: "April 7, 2026 · 11:00 AM EST",
+                  title: "Leading AI Transformation: A Four-Week Cohort for Senior Leaders",
+                  description:
+                    "A structured four-week program for leaders building an AI strategy their organization can actually execute. Limited seats.",
+                },
+                {
+                  kind: "Live Session",
+                  date: "April 21, 2026 · 3:00 PM EST",
+                  title: "Ask Us Anything: AI, Leadership, and What Keeps You Up at Night",
+                  description:
+                    "An open format session where you bring the questions and we bring the honest answers. No slides, no scripts, just a real conversation.",
+                },
+              ].map((event, idx) => (
+                <article
+                  key={event.title}
+                  className="flex flex-col overflow-hidden rounded-[24px] border border-black/[0.06] bg-white shadow-[0_2px_20px_rgba(0,0,0,0.04)]"
+                >
+                  <div className="relative h-[340px] sm:h-[400px] lg:h-[440px]">
+                    <img
+                      src="/communityher.png"
+                      alt=""
+                      className="absolute inset-0 h-full w-full object-cover"
+                      aria-hidden
+                    />
+                    <div
+                      className="absolute inset-0 bg-gradient-to-r from-black/45 via-black/20 to-black/55"
+                      aria-hidden
+                    />
+
+                    <div className="relative z-[1] h-full">
+                      <div className="absolute left-5 right-16 bottom-5 sm:left-6 sm:right-20 sm:bottom-6">
+                        <p className="text-xs font-semibold tracking-normal text-white/75">{event.date}</p>
+                        <h3 className="mt-2 line-clamp-2 text-base font-semibold tracking-tight text-white sm:text-lg">
+                          {event.title}
+                        </h3>
+                      </div>
+
+                      <div className="absolute right-5 bottom-5 sm:right-6 sm:bottom-6">
+                        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white">
+                          <ArrowUpRight className="h-5 w-5 text-[#111827]" />
+                        </div>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </article>
-
-              {/* Card 2 — smaller */}
-              <article className="flex flex-col rounded-2xl border border-black/[0.08] bg-white p-5 sm:min-h-[180px] sm:p-7">
-                <div className="flex items-center justify-between gap-4">
-                  <span className="text-xs font-semibold uppercase tracking-[0.22em] text-[#ca3726]">
-                    Cohort
-                  </span>
-                  <span className="text-xs font-medium uppercase tracking-[0.16em] text-[#6b7280]">
-                    April 7, 2026 · 11:00 AM EST
-                  </span>
-                </div>
-                <div className="mt-auto pt-4">
-                  <h3 className="text-base font-semibold tracking-tight text-[#111827] sm:text-lg">
-                    Leading AI Transformation: A Four-Week Cohort for Senior Leaders
-                  </h3>
-                  <p className="mt-1.5 text-xs leading-relaxed text-[#4b5563] sm:text-sm">
-                    A structured four-week program for leaders building an AI strategy their organization can actually
-                    execute. Limited seats.
-                  </p>
-                  <div className="mt-3 flex items-center justify-end">
-                    <a href="#" className="inline-flex items-center gap-1.5 text-xs font-medium text-[#ca3726] hover:underline sm:text-sm">
-                      Reserve your spot
-                      <ArrowUpRight className="h-3.5 w-3.5" />
-                    </a>
-                  </div>
-                </div>
-              </article>
-
-              {/* Card 3 — smaller */}
-              <article className="flex flex-col rounded-2xl border border-black/[0.08] bg-white p-5 sm:min-h-[180px] sm:p-7">
-                <div className="flex items-center justify-between gap-4">
-                  <span className="text-xs font-semibold uppercase tracking-[0.22em] text-[#ca3726]">
-                    Live Session
-                  </span>
-                  <span className="text-xs font-medium uppercase tracking-[0.16em] text-[#6b7280]">
-                    April 21, 2026 · 3:00 PM EST
-                  </span>
-                </div>
-                <div className="mt-auto pt-4">
-                  <h3 className="text-base font-semibold tracking-tight text-[#111827] sm:text-lg">
-                    Ask Us Anything: AI, Leadership, and What Keeps You Up at Night
-                  </h3>
-                  <p className="mt-1.5 text-xs leading-relaxed text-[#4b5563] sm:text-sm">
-                    An open format session where you bring the questions and we bring the honest answers. No slides, no
-                    scripts, just a real conversation.
-                  </p>
-                  <div className="mt-3 flex items-center justify-end">
-                    <a href="#" className="inline-flex items-center gap-1.5 text-xs font-medium text-[#ca3726] hover:underline sm:text-sm">
-                      Reserve your spot
-                      <ArrowUpRight className="h-3.5 w-3.5" />
-                    </a>
-                  </div>
-                </div>
-              </article>
+                </article>
+              ))}
             </div>
           </div>
         </div>
@@ -933,6 +903,15 @@ export default function CommunityPage() {
             <p className="mx-auto mt-3 max-w-4xl text-base leading-relaxed tracking-tight text-[#4b5563] sm:mt-6 sm:text-2xl">
               Featured pieces from our library. Read them first. Subscribe when you&apos;re ready.
             </p>
+            <div className="mt-6 flex justify-center">
+              <a
+                href="/blog"
+                className="inline-flex h-11 items-center justify-center gap-2 rounded-lg border border-[#ca3726] px-6 text-sm font-medium text-[#ca3726] transition-colors duration-200 ease-out hover:bg-[#ca3726]/10 sm:h-[50px] sm:px-7 sm:text-[15px]"
+              >
+                View all articles
+                <ArrowUpRight className="h-4 w-4" />
+              </a>
+            </div>
           </div>
 
           {/* Cards layout:
@@ -943,20 +922,13 @@ export default function CommunityPage() {
             <div className="grid w-full gap-4 md:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] md:items-stretch">
               {RESEARCH_FEATURED[0] && (
                 <a
-                  href="#"
-                  className="group flex h-full flex-1 flex-col rounded-2xl border border-black/[0.06] bg-white text-left transition-colors hover:bg-white sm:min-h-[440px]"
+                  href={RESEARCH_FEATURED[0].href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group flex h-full flex-1 flex-col border border-black/[0.06] bg-[#f7f7f7] text-left transition-colors hover:bg-[#f2f2f2] sm:min-h-[560px]"
                 >
                   <div className="flex flex-1 flex-col p-4 sm:p-8">
                     <div>
-                      <div className="flex items-center justify-between gap-2">
-                        <div className="inline-flex items-center gap-1.5 rounded-full bg-[#f3f4f6] px-3 py-1 text-[0.75rem] font-medium uppercase tracking-[0.18em] text-[#4b5563] sm:text-xs">
-                          {categoryIcon(RESEARCH_FEATURED[0].category)}
-                          <span>{RESEARCH_FEATURED[0].category}</span>
-                        </div>
-                        <p className="text-[0.75rem] text-[#4b5563] sm:text-xs">
-                          {RESEARCH_FEATURED[0].published}
-                        </p>
-                      </div>
                       <h3 className="mt-4 text-[1.35rem] font-semibold leading-tight tracking-tight text-[#111827] group-hover:text-[#ca3726] sm:mt-5 sm:text-[2.1rem] lg:text-[2.35rem]">
                         {RESEARCH_FEATURED[0].title}
                       </h3>
@@ -1006,29 +978,20 @@ export default function CommunityPage() {
 
               {RESEARCH_FEATURED[1] && (
                 <a
-                  href="#"
-                  className="group flex h-full flex-1 flex-col overflow-hidden rounded-2xl border border-black/[0.06] bg-white text-left transition-colors hover:bg-white sm:min-h-[460px]"
+                  href={RESEARCH_FEATURED[1].href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group flex h-full flex-1 flex-col overflow-hidden border border-black/[0.06] bg-[#f7f7f7] text-left transition-colors hover:bg-[#f2f2f2] sm:min-h-[560px]"
                 >
                   {/* Cover image area */}
                   <div
-                    className="relative h-48 w-full bg-cover bg-center sm:h-60"
-                    style={{ backgroundImage: "url('/service.png')" }}
-                  >
-                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_0%_0%,rgba(255,255,255,0.45),transparent_55%),radial-gradient(circle_at_100%_100%,rgba(0,0,0,0.25),transparent_55%)]" />
-                  </div>
+                    className="relative h-56 w-full bg-cover bg-center sm:h-72"
+                    style={{ backgroundImage: "url('/pop2.png')" }}
+                  />
 
                   {/* Content */}
                   <div className="flex flex-1 flex-col p-5 sm:p-7">
                     <div>
-                      <div className="flex items-center justify-between gap-2">
-                        <div className="inline-flex items-center gap-1.5 rounded-full bg-[#f3f4f6] px-3 py-1 text-[0.7rem] font-medium uppercase tracking-[0.18em] text-[#4b5563] sm:text-xs">
-                          {categoryIcon(RESEARCH_FEATURED[1].category)}
-                          <span>{RESEARCH_FEATURED[1].category}</span>
-                        </div>
-                        <p className="text-[0.7rem] text-[#4b5563] sm:text-xs">
-                          {RESEARCH_FEATURED[1].published}
-                        </p>
-                      </div>
                       <h3 className="mt-4 text-base font-semibold tracking-tight text-[#111827] group-hover:text-[#ca3726] sm:text-lg">
                         {RESEARCH_FEATURED[1].title}
                       </h3>
@@ -1041,8 +1004,11 @@ export default function CommunityPage() {
                         {RESEARCH_FEATURED[1].minutes}
                       </span>
                       <span className="h-4 w-px bg-[#e5e7eb]" />
-                      <span className="inline-flex items-center gap-1 text-xs font-medium text-[#ca3726] sm:text-sm">
-                        Read more <ArrowUpRight className="h-4 w-4" />
+                      <span className="inline-flex items-center gap-3">
+                        <span className="text-sm font-semibold text-[#111827]">Read more</span>
+                        <span className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-[#ca3726] text-white">
+                          <ArrowUpRight className="h-4 w-4" />
+                        </span>
                       </span>
                     </div>
                   </div>
@@ -1052,32 +1018,30 @@ export default function CommunityPage() {
 
             {/* Row 2: three equal cards */}
             <div className="grid w-full gap-4 md:grid-cols-3 md:items-stretch">
-              {RESEARCH_FEATURED.map((r) => (
+              {RESEARCH_FEATURED.slice(2).map((r, idx) => (
                 <a
                   key={`grid-${r.title}`}
-                  href="#"
-                  className="group flex h-full flex-1 flex-col overflow-hidden rounded-2xl border border-black/[0.06] bg-white text-left transition-colors hover:bg-white sm:min-h-[460px]"
+                  href={r.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group flex h-full flex-1 flex-col overflow-hidden border border-black/[0.06] bg-[#f7f7f7] text-left transition-colors hover:bg-[#f2f2f2] sm:min-h-[560px]"
                 >
                   {/* Cover image area */}
                   <div
-                    className="relative h-48 w-full bg-cover bg-center sm:h-60"
-                    style={{ backgroundImage: "url('/service.png')" }}
-                  >
-                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_0%_0%,rgba(255,255,255,0.45),transparent_55%),radial-gradient(circle_at_100%_100%,rgba(0,0,0,0.25),transparent_55%)]" />
-                  </div>
+                    className="relative h-56 w-full bg-cover bg-center sm:h-72"
+                    style={{
+                      backgroundImage:
+                        idx === 0
+                          ? "url('/pop3.png')"
+                          : idx === 1
+                            ? "url('/pop4.png')"
+                            : "url('/latest1.png')",
+                    }}
+                  />
 
                   {/* Content */}
                   <div className="flex flex-1 flex-col p-5 sm:p-7">
                     <div>
-                      <div className="flex items-center justify-between gap-2">
-                        <div className="inline-flex items-center gap-1.5 rounded-full bg-[#f3f4f6] px-3 py-1 text-[0.7rem] font-medium uppercase tracking-[0.18em] text-[#4b5563] sm:text-xs">
-                          {categoryIcon(r.category)}
-                          <span>{r.category}</span>
-                        </div>
-                        <p className="text-[0.7rem] text-[#4b5563] sm:text-xs">
-                          {r.published}
-                        </p>
-                      </div>
                       <h3 className="mt-4 text-base font-semibold tracking-tight text-[#111827] group-hover:text-[#ca3726] sm:text-lg">
                         {r.title}
                       </h3>
@@ -1090,22 +1054,17 @@ export default function CommunityPage() {
                         {r.minutes}
                       </span>
                       <span className="h-4 w-px bg-[#e5e7eb]" />
-                      <span className="inline-flex items-center gap-1 text-xs font-medium text-[#ca3726] sm:text-sm">
-                        Read more <ArrowUpRight className="h-4 w-4" />
+                      <span className="inline-flex items-center gap-3">
+                        <span className="text-sm font-semibold text-[#111827]">Read more</span>
+                        <span className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-[#ca3726] text-white">
+                          <ArrowUpRight className="h-4 w-4" />
+                        </span>
                       </span>
                     </div>
                   </div>
                 </a>
               ))}
             </div>
-          <div className="mt-8 flex justify-center">
-            <a
-              href="/blog"
-              className="text-sm font-medium text-[#ca3726] transition-opacity hover:opacity-80"
-            >
-              View all articles &rarr;
-            </a>
-          </div>
         </div>
         </div>
       </section>

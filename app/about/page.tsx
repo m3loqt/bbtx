@@ -212,18 +212,18 @@ export default function AboutPage() {
                         </p>
                         {index === 1 ? (
                           <img
-                            src="/image2.png"
+                            src="/history2.png"
                             alt=""
-                            className="mt-3 aspect-[16/10] w-full max-w-2xl rounded-xl border border-black/[0.06] object-cover lg:ml-auto xl:max-w-[64rem]"
+                            className="mt-3 aspect-[16/10] w-full max-w-2xl border border-black/[0.06] object-cover lg:ml-auto xl:max-w-[64rem]"
                           />
                         ) : index === 3 ? (
                           <img
-                            src="/image4.jpg"
+                            src="/history4.png"
                             alt=""
-                            className="mt-3 aspect-[16/10] w-full max-w-2xl rounded-xl border border-black/[0.06] object-cover lg:ml-auto xl:max-w-[64rem]"
+                            className="mt-3 aspect-[16/10] w-full max-w-2xl border border-black/[0.06] object-cover lg:ml-auto xl:max-w-[64rem]"
                           />
                         ) : (
-                          <div className="mt-3 aspect-[16/10] w-full max-w-2xl rounded-xl border border-black/[0.06] bg-black/[0.04] lg:ml-auto xl:max-w-[64rem]" aria-hidden />
+                          <div className="mt-3 aspect-[16/10] w-full max-w-2xl border border-black/[0.06] bg-black/[0.04] lg:ml-auto xl:max-w-[64rem]" aria-hidden />
                         )}
                       </>
                     )}
@@ -244,24 +244,24 @@ export default function AboutPage() {
                         </p>
                         {index === 0 ? (
                           <img
-                            src="/ibmp.jpeg"
+                            src="/history1.png"
                             alt=""
-                            className="mt-3 aspect-[16/10] w-full max-w-2xl rounded-xl border border-black/[0.06] object-cover xl:max-w-[64rem]"
+                            className="mt-3 aspect-[16/10] w-full max-w-2xl border border-black/[0.06] object-cover xl:max-w-[64rem]"
                           />
                         ) : index === 2 ? (
                           <img
-                            src="/image3.jpg"
+                            src="/history3.png"
                             alt=""
-                            className="mt-3 aspect-[16/10] w-full max-w-2xl rounded-xl border border-black/[0.06] object-cover xl:max-w-[64rem]"
+                            className="mt-3 aspect-[16/10] w-full max-w-2xl border border-black/[0.06] object-cover xl:max-w-[64rem]"
                           />
                         ) : index === 4 ? (
                           <img
-                            src="/image5.jpg"
+                            src="/history5.png"
                             alt=""
-                            className="mt-3 aspect-[16/10] w-full max-w-2xl rounded-xl border border-black/[0.06] object-cover xl:max-w-[64rem]"
+                            className="mt-3 aspect-[16/10] w-full max-w-2xl border border-black/[0.06] object-cover xl:max-w-[64rem]"
                           />
                         ) : (
-                          <div className="mt-3 aspect-[16/10] w-full max-w-2xl rounded-xl border border-black/[0.06] bg-black/[0.04] xl:max-w-[64rem]" aria-hidden />
+                          <div className="mt-3 aspect-[16/10] w-full max-w-2xl border border-black/[0.06] bg-black/[0.04] xl:max-w-[64rem]" aria-hidden />
                         )}
                       </>
                     )}

@@ -4,56 +4,78 @@ import Image from "next/image";
 import { Nav } from "@/app/components/Nav";
 import { Footer } from "@/app/components/Footer";
 import { CTA } from "@/app/sections/CTA";
-import { ArrowUpRight } from "@/app/components/ArrowIcon";
 
-const gridBg = {
-  backgroundImage: `
-    linear-gradient(to right, rgba(255,255,255,0.06) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255,255,255,0.06) 1px, transparent 1px)
-  `,
-  backgroundSize: "48px 48px",
-};
+const POPULAR_ARTICLES = [
+  {
+    date: "Chaotic Confluence",
+    title: "AI Isn't Failing. Leadership Is.",
+    excerpt: "Why execution stalls when leadership assumptions go unchallenged.",
+    url: "https://chaoticconfluence.substack.com/p/ai-isnt-failing-leadership-is",
+    image: "/pop1.png",
+  },
+  {
+    date: "Chaotic Confluence",
+    title:
+      "The Great Cognitive Deflation: 2026, The DeepSeek Shock, and the Geopolitics of AI Dumping",
+    url: "https://chaoticconfluence.substack.com/p/the-great-cognitive-deflation-2026",
+    image: "/pop2.png",
+  },
+  {
+    date: "Chaotic Confluence",
+    title: "Why Most AI Efforts Fall Flat (And How to Actually Get Results)",
+    url: "https://chaoticconfluence.substack.com/p/why-most-ai-efforts-fall-flat-and",
+    image: "/pop3.png",
+  },
+  {
+    date: "Chaotic Confluence",
+    title: "The Unwritten Rules of AI at Work: 4 Surprising Truths You Need to Know",
+    url: "https://chaoticconfluence.substack.com/p/the-unwritten-rules-of-ai-at-work",
+    image: "/pop4.png",
+  },
+];
 
-const POSTS = [
+const LATEST_ARTICLES = [
   {
-    category: "AI Leadership",
-    date: "Mar 12, 2026",
-    title: "Why the Best Leaders Are Slowing Down on AI",
-    excerpt:
-      "Rushing AI adoption is costing organizations more than it saves. Here is what the most effective leaders are doing instead.",
-    readTime: "6 min read",
+    date: "Chaotic Confluence",
+    title: "AI Standards & Guidelines",
+    excerpt: "A practical framework for corporate compliance and responsible AI usage.",
+    url: "https://chaoticconfluence.substack.com/p/ai-standards-and-guidelines",
+    image: "/latest1.png",
   },
   {
-    category: "Strategy",
-    date: "Mar 5, 2026",
-    title: "The One Question Every Leader Must Answer Before Adopting AI",
-    excerpt:
-      "Most organizations start with the wrong question. Here is the one that actually leads to a strategy worth building.",
-    readTime: "5 min read",
+    date: "Chaotic Confluence",
+    title: "AI User Populations",
+    excerpt: "Understanding how different teams adopt AI inside real workplace environments.",
+    url: "https://chaoticconfluence.substack.com/p/ai-user-populations",
+    image: "/latest2.png",
   },
   {
-    category: "Organization",
-    date: "Feb 18, 2026",
-    title: "AI Governance for Mid-Size Organizations",
-    excerpt:
-      "How real organizations are establishing policies, oversight, and accountability for AI without a dedicated team.",
-    readTime: "8 min read",
+    date: "Chaotic Confluence",
+    title: "AI User Profiles",
+    excerpt: "Mapping user personas and behavioral patterns across digital AI workflows.",
+    url: "https://chaoticconfluence.substack.com/p/ai-user-profiles",
+    image: "/latest3.png",
   },
   {
-    category: "Leadership",
-    date: "Feb 4, 2026",
-    title: "What It Actually Means to Lead with AI",
-    excerpt:
-      "There is a difference between an organization that uses AI and one that leads with it. Here is how to close that gap.",
-    readTime: "7 min read",
+    date: "Chaotic Confluence",
+    title: "A Reflection and a New Capability",
+    excerpt: "A personal reflection on growth, capability, and what AI reveals about us.",
+    url: "https://chaoticconfluence.substack.com/p/a-reflection-and-a-new-capability",
+    image: "/latest4.png",
   },
   {
-    category: "Workforce",
-    date: "Jan 28, 2026",
-    title: "Bringing Your Team Through an AI Transition Without Losing Them",
-    excerpt:
-      "The human cost of AI adoption is real. Here is how leaders can bring their workforce through change with clarity and care.",
-    readTime: "6 min read",
+    date: "Chaotic Confluence",
+    title: "A Tear for Terry",
+    excerpt: "A tribute to gratitude, memory, and meaningful human connection.",
+    url: "https://chaoticconfluence.substack.com/p/a-tear-for-terry",
+    image: "/latest5.png",
+  },
+  {
+    date: "Chaotic Confluence",
+    title: "28 Gigabytes of Chaos: How Claude Cowork Fixed My Messy Database",
+    excerpt: "A real-world breakdown of cleaning up a messy system with AI collaboration.",
+    url: "https://chaoticconfluence.substack.com/p/28-gigabytes-of-chaos-how-claude",
+    image: "/latest6.png",
   },
 ];
 
@@ -64,160 +86,160 @@ export default function BlogPage() {
 
       {/* Blog header — full-width, dark, journal-style */}
       <section className="relative z-[1] w-full overflow-hidden bg-[#222222] pt-14 sm:pt-20">
-        <div className="pointer-events-none absolute inset-0 z-0 opacity-40" style={gridBg} aria-hidden />
-        <div className="relative z-[1] w-full px-4 pb-20 pt-16 sm:px-6 lg:px-8 lg:pb-24 lg:pt-20">
+        <div
+          className="absolute inset-0 z-0"
+          style={{
+            backgroundImage: "url('/articleshero.png')",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
+          aria-hidden
+        />
+        <div className="absolute inset-0 z-0 bg-black/60" aria-hidden />
+        <div className="relative z-[1] flex w-full flex-col justify-end px-4 pb-24 pt-20 sm:px-6 sm:pb-28 sm:pt-24 lg:min-h-[72vh] lg:px-8 lg:pb-32 lg:pt-28">
           <div className="w-full">
             <p className="mb-6 text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-white/40">Articles</p>
-            <h1 className="mb-3 w-full text-[1.75rem] font-medium leading-tight tracking-tighter text-white sm:max-w-[60%] sm:text-4xl sm:text-5xl lg:mb-4 lg:text-5xl xl:text-6xl 2xl:text-[4rem]">
-              The Journal:{" "}
-              <span
-                className="font-normal italic"
-                style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}
-              >
-                AI, leadership,
-              </span>
-              {" "}and the human questions that matter most right now
-            </h1>
-            <div className="grid gap-12 lg:grid-cols-[3fr_2fr] lg:items-end lg:gap-16">
-              <div>
-                <form
-                  className="flex flex-col gap-3 sm:flex-row sm:items-center"
-                  onSubmit={(e) => e.preventDefault()}
+            <div className="flex flex-col gap-6">
+              <h1 className="w-full text-[1.75rem] font-medium leading-tight tracking-tighter text-white sm:text-5xl lg:max-w-[70%] lg:text-5xl xl:text-6xl 2xl:text-[4rem]">
+                The Journal:{" "}
+                <span
+                  className="font-normal italic"
+                  style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}
                 >
-                  <input
-                    type="email"
-                    placeholder="Enter your email"
-                    className="min-w-0 flex-1 rounded-lg border border-white/20 bg-white/10 px-4 py-3.5 text-base text-white placeholder:text-white/50 focus:border-white/40 focus:outline-none focus:ring-0 sm:max-w-[60%]"
-                    aria-label="Email for newsletter"
-                  />
-                  <button
-                    type="submit"
-                    className="shrink-0 rounded-lg bg-[#ca3726] px-6 py-3.5 text-[15px] font-medium text-white transition-opacity hover:opacity-95"
-                  >
-                    Subscribe
-                  </button>
-                </form>
-              </div>
-              <p className="text-sm leading-relaxed text-white/50 sm:text-base lg:text-right">
-                Writing on AI, leadership, and the human questions that matter most right now. From the Chaotic Confluence library.
-              </p>
+                  AI, leadership,
+                </span>
+                {" "}and the human questions that matter most right now
+              </h1>
+              <form
+                className="flex w-full max-w-[34rem] flex-col gap-3 sm:flex-row sm:items-center"
+                onSubmit={(e) => e.preventDefault()}
+              >
+                <input
+                  type="email"
+                  placeholder="Enter your email"
+                  className="min-w-0 flex-1 rounded-lg border border-white/20 bg-white/10 px-4 py-3.5 text-base text-white placeholder:text-white/50 focus:border-white/40 focus:outline-none focus:ring-0"
+                  aria-label="Email for newsletter"
+                />
+                <button
+                  type="submit"
+                  className="shrink-0 rounded-lg bg-[#ca3726] px-6 py-3.5 text-[15px] font-medium text-white transition-opacity hover:opacity-95"
+                >
+                  Subscribe
+                </button>
+              </form>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Blog list — sidebar filters + vertical list (reference layout) */}
-      <section className="relative z-[1] w-full border-y border-black/[0.06] bg-[#f7f7f7]">
-        <div
-          className="pointer-events-none absolute inset-0 z-0 opacity-60"
-          style={{
-            backgroundImage: `
-              linear-gradient(to right, rgba(0,0,0,0.04) 1px, transparent 1px),
-              linear-gradient(to bottom, rgba(0,0,0,0.04) 1px, transparent 1px)
-            `,
-            backgroundSize: "48px 48px",
-          }}
-          aria-hidden
-        />
-        <div className="relative z-[1] w-full px-4 py-12 sm:px-6 lg:px-10 lg:py-16">
-          <div className="mx-auto flex w-full flex-col gap-8 lg:flex-row lg:items-start lg:gap-10">
-            {/* Left sidebar: filters + social */}
-            <aside className="min-w-0 w-full rounded-xl border border-black/[0.06] bg-white px-5 py-5 shadow-[0_2px_12px_rgba(0,0,0,0.02)] sm:px-7 sm:py-7 lg:max-w-[19rem] lg:sticky lg:top-28 lg:h-[380px]">
-              <div className="min-w-0">
-                <p className="text-sm font-semibold tracking-tight text-[#222222]">Quick filters</p>
-                <div className="mt-4 min-w-0 space-y-2">
-                  {["AI Leadership", "Strategy", "Organization", "Leadership", "Workforce"].map(
-                    (label, idx) => (
-                      <label key={label} className="flex min-w-0 items-start gap-3 text-sm text-[#222222] sm:text-[15px]">
-                        <span
-                          className={`mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded border border-[#d0d0d0] bg-white ${
-                            idx === 0 ? "bg-[#222222]" : ""
-                          }`}
-                        >
-                          {idx === 0 && <span className="block h-2 w-2 rounded-sm bg-white" />}
-                        </span>
-                        <span className="min-w-0 flex-1 break-words" style={{ wordBreak: "break-word" }}>{label}</span>
-                      </label>
-                    )
-                  )}
+      {/* Articles index — popular + latest (reference-inspired layout) */}
+      <section className="relative z-[1] w-full bg-[#f7f7f7]">
+        <div className="w-full px-8 py-12 sm:px-14 sm:py-16 lg:px-20 lg:py-20 xl:px-24">
+          <div>
+            <h2 className="text-2xl font-medium tracking-tight text-[#1f2937] sm:text-3xl">
+              Popular Articles
+            </h2>
+            <div className="mt-5 grid gap-4 lg:grid-cols-[minmax(0,1.25fr)_minmax(0,1fr)] lg:items-stretch">
+              <a
+                href={POPULAR_ARTICLES[0].url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex h-full flex-col"
+              >
+                <div className="relative aspect-[16/9] w-full overflow-hidden">
+                  <Image src={POPULAR_ARTICLES[0].image} alt={POPULAR_ARTICLES[0].title} fill className="object-cover" sizes="(max-width: 1024px) 100vw, 60vw" />
                 </div>
-              </div>
-              <div className="mt-8 border-t border-black/[0.06] pt-6">
-                <p className="text-sm font-semibold tracking-tight text-[#222222]">Follow us</p>
-                <div className="mt-4 flex gap-3">
-                  {["X", "In", "↗"].map((icon) => (
-                    <button
-                      key={icon}
-                      type="button"
-                      className="flex h-9 w-9 items-center justify-center rounded-full border border-black/[0.08] bg-white text-xs font-medium text-[#222222] shadow-[0_1px_4px_rgba(0,0,0,0.04)]"
-                    >
-                      {icon}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            </aside>
+                <p className="mt-4 text-[13px] font-medium text-[#8b919b] sm:text-sm">{POPULAR_ARTICLES[0].date}</p>
+                <h3 className="mt-2.5 text-[1.35rem] font-medium leading-[1.22] tracking-tight text-[#121826] sm:text-[1.5rem]">
+                  {POPULAR_ARTICLES[0].title}
+                </h3>
+                <p className="mt-2.5 text-base leading-relaxed text-[#6b7280] sm:text-[1.05rem] sm:leading-[1.38]">
+                  {POPULAR_ARTICLES[0].excerpt}
+                </p>
+              </a>
 
-            {/* Right: list of posts */}
-            <div className="flex-1">
-              <div className="space-y-2.5 sm:space-y-3">
-              {POSTS.map((post, index) => (
-                <article
-                  key={post.title}
-                  className={`group flex flex-col gap-3 rounded-xl border border-black/[0.06] bg-white px-4 py-4 shadow-[0_2px_12px_rgba(0,0,0,0.02)] sm:gap-4 sm:px-7 sm:py-6 ${
-                    index === 0 ? "lg:px-8 lg:py-7" : ""
-                  }`}
-                >
-                  {/* Row 1: image + category/date + title */}
-                  <div className="flex items-center gap-4 sm:gap-5">
-                    <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-lg bg-[#f5f5f5] sm:h-24 sm:w-24">
-                      <Image
-                        src="/grant.jpg"
-                        alt=""
-                        fill
-                        className="object-cover"
-                        sizes="96px"
-                      />
+              <div className="flex h-full flex-col justify-between gap-3 sm:gap-4">
+                {POPULAR_ARTICLES.slice(1).map((post) => (
+                  <a
+                    key={post.title}
+                    href={post.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="grid grid-cols-[230px_minmax(0,1fr)] gap-3 sm:grid-cols-[270px_minmax(0,1fr)] sm:gap-4"
+                  >
+                    <div className="relative aspect-[4/3] w-full overflow-hidden">
+                      <Image src={post.image} alt={post.title} fill className="object-cover" sizes="(max-width: 640px) 230px, 270px" />
                     </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex flex-wrap items-center justify-between gap-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#555555] sm:text-xs">
-                        <span>{post.category}</span>
-                        <span className="text-[#999999]">
-                          {post.readTime.toUpperCase()} · {post.date}
-                        </span>
-                      </div>
-                      <h2 className="mt-1.5 text-base font-semibold leading-snug tracking-tight text-[#222222] sm:mt-2 sm:text-[1.65rem] lg:text-[2rem] xl:text-[2.25rem]">
+                    <div className="min-w-0">
+                      <p className="text-[13px] font-medium text-[#8b919b] sm:text-sm">{post.date}</p>
+                      <h3 className="mt-2.5 text-[1.35rem] font-medium leading-[1.22] tracking-tight text-[#121826] sm:text-[1.5rem]">
                         {post.title}
-                      </h2>
+                      </h3>
                     </div>
-                  </div>
+                  </a>
+                ))}
+              </div>
+            </div>
+          </div>
 
-                  {/* Row 2: description + read link */}
-                  <div className="flex flex-col gap-2 pt-2 sm:flex-row sm:items-end sm:justify-between sm:gap-6 sm:pt-3">
-                    <p className="min-w-0 max-w-4xl flex-1 text-sm leading-relaxed text-[#555555] sm:max-w-5xl sm:text-lg">
-                      {post.excerpt}
-                    </p>
-                    <div className="flex items-center justify-end gap-4 sm:flex-col sm:items-end sm:justify-center sm:gap-2.5">
-                      <a
-                        href="#"
-                        className="inline-flex items-center gap-1 text-sm font-medium text-[#222222] transition-colors group-hover:text-[#ca3726]"
-                      >
-                        Read full article
-                        <ArrowUpRight className="h-4 w-4" />
-                      </a>
-                    </div>
-                  </div>
-                </article>
-              ))}
-              </div>
-              <div className="mt-8 flex justify-end">
+          <div className="mt-14">
+            <h2 className="text-2xl font-medium tracking-tight text-[#1f2937] sm:text-3xl">
+              Latest Articles
+            </h2>
+            <div className="mt-5 grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2 lg:grid-cols-3">
+              {LATEST_ARTICLES.map((post) => (
                 <a
-                  href="/blog"
-                  className="text-sm font-medium text-[#ca3726] transition-opacity hover:opacity-80"
+                  key={post.title}
+                  href={post.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block"
                 >
-                  View all articles &rarr;
+                  <div className="relative aspect-square w-full overflow-hidden">
+                    <Image src={post.image} alt={post.title} fill className="object-cover" sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" />
+                  </div>
+                  <p className="mt-4 text-[13px] font-medium text-[#8b919b] sm:text-sm">{post.date}</p>
+                  <h3 className="mt-2.5 text-[1.35rem] font-medium leading-[1.22] tracking-tight text-[#121826] sm:text-[1.5rem]">
+                    {post.title}
+                  </h3>
+                  <p className="mt-2.5 text-base leading-relaxed text-[#6b7280] sm:text-[1.05rem] sm:leading-[1.38]">
+                    {post.excerpt}
+                  </p>
                 </a>
+              ))}
+            </div>
+
+            <div className="mt-8 flex flex-wrap items-center justify-between gap-4">
+              <button
+                type="button"
+                className="inline-flex items-center gap-2 border border-black/[0.08] bg-white px-6 py-3 text-sm font-medium text-[#374151]"
+              >
+                <span aria-hidden>&larr;</span>
+                Previous
+              </button>
+
+              <div className="flex items-center gap-2">
+                {[1, 2, 3, 4, 5].map((page) => (
+                  <button
+                    key={page}
+                    type="button"
+                    className={`flex h-8 w-8 items-center justify-center rounded-full text-xs font-medium ${
+                      page === 1 ? "bg-[#f6d9d4] text-[#1f2937]" : "text-[#4b5563]"
+                    }`}
+                  >
+                    {page}
+                  </button>
+                ))}
+                <span className="ml-1 text-[#9ca3af]">...</span>
               </div>
+
+              <button
+                type="button"
+                className="inline-flex items-center gap-2 border border-black/[0.08] bg-white px-6 py-3 text-sm font-medium text-[#374151]"
+              >
+                Next
+                <span aria-hidden>&rarr;</span>
+              </button>
             </div>
           </div>
         </div>
