@@ -954,7 +954,7 @@ export default function CommunityPage() {
                       <div className="mt-6 border-t border-[#e5e7eb]" />
                       <div className="mt-4 flex items-center justify-between gap-4">
                         <div className="flex items-center gap-3">
-                          <div className="h-10 w-10 overflow-hidden rounded-full bg-[#fee2e2]">
+                          <div className="relative h-10 w-10 overflow-hidden rounded-full bg-[#fee2e2]">
                             <Image
                               src="/grant.png"
                               alt={RESEARCH_FEATURED[0].author ?? "Article author"}
