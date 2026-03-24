@@ -52,7 +52,7 @@ export function TestimonialSlider({
 
   return (
     <div
-      className="relative -mx-4 mt-12 w-[calc(100%+2rem)] overflow-hidden sm:-mx-6 lg:mt-16 lg:-mx-8"
+      className="relative -mx-4 mt-12 w-[calc(100%+2rem)] overflow-x-visible overflow-y-visible sm:-mx-6 lg:mt-16 lg:-mx-8"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >

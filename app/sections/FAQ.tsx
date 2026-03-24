@@ -64,7 +64,7 @@ export function FAQ() {
   return (
     <section className="relative z-[1] w-full border-t border-black/[0.06] bg-white px-4 py-16 sm:px-6 sm:py-24 lg:px-8 lg:py-32">
       <div className="mx-auto w-full max-w-4xl text-center">
-        <p className="flex items-center gap-2 text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#555555]/60">
+        <p className="flex items-center justify-center gap-2 text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#555555]/60">
           <CircleHelp className="h-4 w-4 text-[#ca3726]" />
           What Leaders Ask Us
         </p>

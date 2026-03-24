@@ -146,8 +146,8 @@ export default function AboutPage() {
             </span>
             , turning complex decisions into confident ones.
           </h2>
-          {/* Marquee at bottom */}
-          <div className="mt-8 overflow-hidden border-t border-b border-white/10 py-4 sm:mt-16 sm:py-5">
+          {/* Marquee at bottom — bleed to section edges; no horizontal clip */}
+          <div className="mt-8 -mx-4 border-t border-b border-white/10 py-4 sm:-mx-6 sm:mt-16 sm:py-5 lg:-mx-8">
             <div className="flex animate-[marquee_20s_linear_infinite] whitespace-nowrap">
               {Array.from({ length: 8 }).map((_, i) => (
                 <span

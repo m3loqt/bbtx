@@ -303,3 +303,24 @@ body::before {
     @apply font-sans;
   }
 }
+
+/* Assessment — Calendly inline widget defaults to a centered max-width; align flush left with form copy */
+.assessment-calendly-host {
+  width: 100%;
+}
+
+.assessment-calendly-host .calendly-inline-widget {
+  position: relative !important;
+  width: 100% !important;
+  max-width: none !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  text-align: left !important;
+}
+
+.assessment-calendly-host .calendly-inline-widget iframe {
+  width: 100% !important;
+  min-width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+}

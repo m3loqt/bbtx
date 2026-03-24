@@ -277,18 +277,8 @@ export default function AssessmentPage() {
 
   const calendlyUrl = process.env.NEXT_PUBLIC_CALENDLY_URL;
 
-  const gridBg = {
-    backgroundImage: `
-      linear-gradient(to right, rgba(0,0,0,0.04) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(0,0,0,0.04) 1px, transparent 1px)
-    `,
-    backgroundSize: "48px 48px",
-  };
-
   return (
     <div className="relative min-h-screen bg-[#f7f7f7]">
-      <div className="pointer-events-none absolute inset-0 z-0 opacity-60" style={gridBg} aria-hidden />
-
       {/* Back link */}
       <div className="relative z-[1]">
         <div className="mx-auto max-w-6xl py-3 pl-4 pr-4 sm:pl-6 sm:pr-6 lg:pl-8 lg:pr-8">
@@ -828,7 +818,7 @@ export default function AssessmentPage() {
                   Grant will review your answers before your call so your time together is focused from minute one.
                 </p>
 
-                <div style={{ position: "relative", minHeight: "700px" }}>
+                <div className="assessment-calendly-host w-full" style={{ position: "relative", minHeight: "700px" }}>
                   {!calendlyLoaded && (
                     <div
                       className="animate-pulse"
@@ -843,10 +833,12 @@ export default function AssessmentPage() {
                   {calendlyUrl && (
                     <>
                       <div
-                        className="calendly-inline-widget"
+                        className="calendly-inline-widget w-full max-w-full"
                         data-url={`${calendlyUrl}?name=${encodeURIComponent(formData.full_name)}&email=${encodeURIComponent(formData.email)}`}
                         style={{
-                          minWidth: "320px",
+                          width: "100%",
+                          maxWidth: "100%",
+                          minWidth: 0,
                           height: "700px",
                           display: calendlyLoaded ? "block" : "none",
                         }}

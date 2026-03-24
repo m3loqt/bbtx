@@ -1129,11 +1129,11 @@ export default function CommunityPage() {
                 </button>
               </div>
             </div>
-            <div className="overflow-hidden">
-              <div
-                ref={testimonialsScrollRef}
-                className="flex snap-x snap-mandatory gap-3 overflow-x-auto px-1 pb-4 pt-1 scroll-smooth md:gap-4 sm:px-2 lg:px-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-              >
+            <div className="-mx-4 sm:-mx-6 lg:-mx-8">
+            <div
+              ref={testimonialsScrollRef}
+              className="flex snap-x snap-mandatory gap-3 overflow-x-auto scroll-smooth pb-4 pt-1 [scrollbar-width:none] md:gap-4 [&::-webkit-scrollbar]:hidden pl-4 pr-4 scroll-pl-4 scroll-pr-4 sm:pl-6 sm:pr-6 sm:scroll-pl-6 sm:scroll-pr-6 lg:pl-8 lg:pr-8 lg:scroll-pl-8 lg:scroll-pr-8"
+            >
                 {TESTIMONIALS.map((t, i) => (
                 <article
                   key={i}
@@ -1163,7 +1163,8 @@ export default function CommunityPage() {
                   </footer>
                 </article>
                 ))}
-              </div>
+                <div className="w-12 shrink-0 sm:w-16 lg:w-20" aria-hidden />
+            </div>
             </div>
           </div>
         </div>

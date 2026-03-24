@@ -77,8 +77,6 @@ export default function Home() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <Nav />
-      {/* Spacer so content starts below fixed nav */}
-      <div className="h-14 shrink-0 sm:h-20" aria-hidden />
       <AnimateSection noAnimation>
         <Hero />
       </AnimateSection>

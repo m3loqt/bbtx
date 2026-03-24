@@ -25,7 +25,7 @@ const COMPANY_LOGOS = [
 export const METRICS = [
   { value: "100+", label: "Organizations Served" },
   { value: "20+", label: "Years in Consulting" },
-  { value: "12 Weeks", label: "Average Time to Results" },
+  { value: "500+", label: "Professionals Coached" },
 ];
 
 export function Results() {
@@ -50,8 +50,8 @@ export function Results() {
           </p>
         </div>
 
-        {/* Logo carousel below headline */}
-        <div className="relative mb-2 mt-4 w-full min-h-[150px] overflow-hidden sm:-mb-44 sm:min-h-[400px] sm:mt-2 lg:-mb-52 lg:min-h-[460px] lg:mt-4">
+        {/* Logo carousel — full viewport width so left/right aren’t clipped by section padding */}
+        <div className="relative left-1/2 z-0 mb-2 mt-4 w-screen max-w-[100vw] min-h-[150px] -translate-x-1/2 sm:-mb-44 sm:min-h-[400px] sm:mt-2 lg:-mb-52 lg:min-h-[460px] lg:mt-4">
           <div
             className="flex w-max items-center gap-4 px-4 sm:gap-4 sm:px-6 lg:gap-5 lg:px-8"
             style={{
