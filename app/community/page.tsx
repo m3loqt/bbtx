@@ -380,7 +380,9 @@ export default function CommunityPage() {
                 <ArrowUpRight className="h-4 w-4" />
               </a>
               <a
-                href="#"
+                href="https://chaoticconfluence.substack.com/"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-flex h-11 w-full items-center justify-center rounded-lg border border-white/70 bg-transparent px-6 text-sm font-medium text-white transition-colors duration-200 ease-out hover:bg-white/10 sm:h-[50px] sm:w-auto sm:px-7 sm:text-[15px]"
               >
                 Join the Next Session
@@ -493,7 +495,9 @@ export default function CommunityPage() {
                         {item.description}
                       </p>
                       <a
-                        href={idx === 0 ? "/blog" : "#"}
+                        href={idx === 0 ? "/blog" : "https://chaoticconfluence.substack.com/"}
+                        target={idx === 0 ? undefined : "_blank"}
+                        rel={idx === 0 ? undefined : "noopener noreferrer"}
                         className="mt-4 inline-flex items-center gap-1 text-[13px] font-medium text-[#ca3726] transition-opacity hover:opacity-80"
                       >
                         {idx === 0 ? "Read the latest" : "Listen now"} &rarr;
@@ -606,7 +610,9 @@ export default function CommunityPage() {
                         {item.description}
                       </p>
                       <a
-                        href="#"
+                        href={idx === 0 ? "https://chaoticconfluence.gumroad.com/" : "https://chaoticconfluence.substack.com/"}
+                        target="_blank"
+                        rel="noopener noreferrer"
                         className={`mt-4 inline-flex items-center gap-1 text-[13px] font-medium transition-opacity hover:opacity-80 ${idx === 2 ? "text-white" : "text-[#ca3726]"}`}
                       >
                         {idx === 0 ? "Browse courses" : idx === 1 ? "View upcoming sessions" : "Explore resources"} &rarr;
@@ -638,7 +644,9 @@ export default function CommunityPage() {
                 earn a certification, and walk away with knowledge you can put to work immediately.
               </p>
               <a
-                href="#"
+                href="https://chaoticconfluence.gumroad.com/"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="mt-7 inline-flex items-center gap-2 rounded-full border border-[#ca3726]/80 px-4 py-2 text-sm font-semibold text-[#ca3726] sm:px-5 sm:py-2.5 sm:text-base"
               >
                 Explore all courses
@@ -1189,7 +1197,9 @@ export default function CommunityPage() {
               <ArrowUpRight className="h-4 w-4" />
             </a>
             <a
-              href="#"
+              href="https://chaoticconfluence.substack.com/"
+              target="_blank"
+              rel="noopener noreferrer"
               className="inline-flex items-center gap-2 rounded-lg border-2 border-white/60 px-6 py-3.5 text-[15px] font-medium text-white transition-colors hover:bg-white/15"
             >
               View Upcoming Live Sessions

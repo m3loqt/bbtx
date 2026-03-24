@@ -1,19 +1,46 @@
+"use client";
+
+import { useState } from "react";
 import { ArrowDown } from "@/app/components/ArrowIcon";
 import { METRICS } from "@/app/sections/Results";
 import { Sparkles } from "lucide-react";
 
 export function Hero() {
+  const [gridSpotlight, setGridSpotlight] = useState<{ x: number; y: number; active: boolean }>({
+    x: 50,
+    y: 50,
+    active: false,
+  });
+
+  const handleGridMove = (event: React.MouseEvent<HTMLElement>) => {
+    const rect = event.currentTarget.getBoundingClientRect();
+    const x = ((event.clientX - rect.left) / rect.width) * 100;
+    const y = ((event.clientY - rect.top) / rect.height) * 100;
+    setGridSpotlight({ x, y, active: true });
+  };
+
   return (
-    <section className="relative z-[1] flex h-[calc(100vh-3.5rem)] max-h-[calc(100vh-3.5rem)] flex-col overflow-hidden px-4 sm:h-[calc(100vh-5rem)] sm:max-h-[calc(100vh-5rem)] sm:px-6 lg:px-8">
+    <section
+      className="relative z-[1] flex h-[calc(100vh-3.5rem)] max-h-[calc(100vh-3.5rem)] flex-col overflow-hidden px-4 sm:h-[calc(100vh-5rem)] sm:max-h-[calc(100vh-5rem)] sm:px-6 lg:px-8"
+      onMouseMove={handleGridMove}
+      onMouseLeave={() => setGridSpotlight((prev) => ({ ...prev, active: false }))}
+    >
       {/* Subtle grid overlay */}
       <div
         className="pointer-events-none absolute inset-0 z-0 opacity-60"
         style={{
           backgroundImage: `
             linear-gradient(to right, rgba(0,0,0,0.04) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(0,0,0,0.04) 1px, transparent 1px)
+            linear-gradient(to bottom, rgba(0,0,0,0.04) 1px, transparent 1px),
+            radial-gradient(
+              420px circle at ${gridSpotlight.x}% ${gridSpotlight.y}%,
+              rgba(202,55,38,0.14),
+              transparent 68%
+            )
           `,
-          backgroundSize: "48px 48px",
+          backgroundSize: "48px 48px, 48px 48px, 100% 100%",
+          opacity: gridSpotlight.active ? 0.72 : 0.6,
+          transition: "opacity 180ms ease-out",
         }}
         aria-hidden
       />
