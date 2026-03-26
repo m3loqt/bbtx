@@ -25,7 +25,7 @@ const COMPANY_LOGOS = [
 export const METRICS = [
   { value: "100+", label: "Organizations Served" },
   { value: "20+", label: "Years in Consulting" },
-  { value: "500+", label: "Professionals Coached" },
+  { value: "12 Weeks", label: "Average Time to Results" },
 ];
 
 export function Results() {
