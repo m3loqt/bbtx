@@ -40,9 +40,9 @@ export function Results() {
               className="font-normal italic"
               style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}
             >
-              integrate AI
+              help people and organizations
             </span>{" "}
-            for measurable impact.
+            succeed
           </h2>
           <p className="mb-[5px] max-w-full text-xl leading-relaxed tracking-tight text-[#222222] sm:text-2xl">
             More than 100 organizations worldwide trusted us to improve their
