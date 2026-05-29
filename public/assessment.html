@@ -1,0 +1,1176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Readiness Assessment · BBTx Consulting</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black:    #111111;
+      --secondary:#666666;
+      --red:      #E8340A;
+      --border:   #E5E5E5;
+      --surface:  #F9F9F9;
+      --white:    #FFFFFF;
+      --sel-bg:   #FFF5F3;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--white);
+      color: var(--black);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── Screen management ── */
+    .screen {
+      display: none;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      flex-direction: column;
+      flex: 1;
+      min-height: 100vh;
+    }
+    .screen.active  { display: flex; }
+    .screen.visible { opacity: 1; }
+
+    /* ── Shared layout ── */
+    .page-wrap {
+      flex: 1;
+      width: 100%;
+      max-width: 950px;
+      margin: 0 auto;
+      padding: 0 28px;
+    }
+
+    /* ── Wordmark ── */
+    .wordmark {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--black);
+      flex-shrink: 0;
+    }
+
+    /* ── Footer (every screen) ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 16px 28px;
+      text-align: center;
+      font-size: 12px;
+      color: var(--secondary);
+      letter-spacing: 0.01em;
+      flex-shrink: 0;
+    }
+    footer a { color: var(--secondary); text-decoration: none; }
+    footer a:hover { color: var(--black); }
+
+    /* ── Shared button base ── */
+    .btn {
+      display: inline-block;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      padding: 13px 28px;
+      cursor: pointer;
+      border: 2px solid transparent;
+      text-decoration: none;
+      text-align: center;
+      transition: background 0.18s, color 0.18s, border-color 0.18s;
+    }
+    .btn-red {
+      background: var(--red);
+      color: var(--white);
+      border-color: var(--red);
+    }
+    .btn-red:hover {
+      background: #c22a07;
+      border-color: #c22a07;
+    }
+    .btn-outline-red {
+      background: transparent;
+      color: var(--red);
+      border-color: var(--red);
+    }
+    .btn-outline-red:hover {
+      background: var(--red);
+      color: var(--white);
+    }
+    .btn-ghost {
+      background: transparent;
+      color: var(--black);
+      border-color: var(--border);
+    }
+    .btn-ghost:hover { border-color: var(--black); }
+
+
+    /* ═══════════════════════════════════════
+       SCREEN 1 — INTRO
+    ═══════════════════════════════════════ */
+    #screen-intro .page-wrap {
+      padding-top: 56px;
+      padding-bottom: 48px;
+      display: flex;
+      flex-direction: column;
+    }
+    .intro-top {
+      margin-bottom: 56px;
+    }
+    .intro-headline {
+      font-size: clamp(30px, 5.5vw, 44px);
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      line-height: 1.12;
+      color: var(--black);
+      margin-bottom: 22px;
+      margin-top: 48px;
+    }
+    .intro-subhead {
+      font-size: 16px;
+      line-height: 1.72;
+      color: var(--secondary);
+      margin-bottom: 6px;
+      max-width: 800px;
+    }
+    .intro-tagline {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--black);
+      margin-bottom: 20px;
+      margin-top: 22px;
+    }
+    .expectation-list {
+      border-left: 2px solid var(--border);
+      padding-left: 20px;
+      margin-bottom: 44px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .expectation-item {
+      font-size: 14px;
+      color: var(--secondary);
+      line-height: 1.65;
+    }
+    .btn-begin {
+      align-self: flex-start;
+    }
+
+
+    /* ═══════════════════════════════════════
+       SCREENS 2–5 — QUESTIONS
+    ═══════════════════════════════════════ */
+
+    /* Progress bar — sticky top */
+    .progress-strip {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 28px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-shrink: 0;
+    }
+    .progress-track {
+      flex: 1;
+      height: 2px;
+      background: var(--border);
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      background: var(--red);
+      transition: width 0.35s ease;
+    }
+    .progress-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--secondary);
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    #screen-question .page-wrap {
+      padding-top: 44px;
+      padding-bottom: 48px;
+      display: flex;
+      flex-direction: column;
+    }
+    .q-top-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 44px;
+    }
+    .q-number {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--red);
+      letter-spacing: 0.08em;
+    }
+    .q-title {
+      font-size: clamp(20px, 4vw, 28px);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.25;
+      color: var(--black);
+      margin-bottom: 10px;
+    }
+    .q-note {
+      font-size: 14px;
+      font-style: italic;
+      color: var(--secondary);
+      line-height: 1.65;
+      margin-bottom: 22px;
+    }
+    .q-diagnostic {
+      font-size: 13px;
+      color: var(--secondary);
+      line-height: 1.7;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 14px 18px;
+      margin-bottom: 36px;
+    }
+
+    /* Rating cards */
+    .rating-group {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 44px;
+    }
+    .rating-card {
+      border: 1.5px solid var(--border);
+      padding: 20px 16px;
+      cursor: pointer;
+      user-select: none;
+      transition: border-color 0.15s, background 0.15s;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .rating-card:hover:not(.selected) { border-color: #aaaaaa; }
+    .rating-card.selected {
+      border-left-width: 3px;
+      border-left-color: var(--red);
+      background: var(--sel-bg);
+    }
+    .rating-card input[type="radio"] { display: none; }
+    .rc-num {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--black);
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+    .rating-card.selected .rc-num { color: var(--red); }
+    .rc-label {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--black);
+      line-height: 1.3;
+    }
+    .rating-card.selected .rc-label { font-weight: 700; }
+    .rc-desc {
+      font-size: 14px;
+      color: var(--secondary);
+      line-height: 1.55;
+    }
+
+    /* Nav buttons */
+    .q-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: auto;
+    }
+    .btn-next:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+
+
+    /* ═══════════════════════════════════════
+       SCREEN 6 — RESULTS
+    ═══════════════════════════════════════ */
+    #screen-result .page-wrap {
+      padding-top: 52px;
+      padding-bottom: 64px;
+    }
+    .result-top-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 44px;
+    }
+    .level-badge {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--red);
+      border: 1px solid var(--red);
+      padding: 5px 10px;
+      margin-bottom: 16px;
+    }
+    .result-title {
+      font-size: clamp(26px, 5vw, 38px);
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      line-height: 1.12;
+      color: var(--black);
+      margin-bottom: 14px;
+    }
+    .result-summary {
+      font-size: 17px;
+      font-style: italic;
+      color: var(--secondary);
+      line-height: 1.65;
+      margin-bottom: 52px;
+    }
+
+    /* Section headers */
+    .section-head {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--black);
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 0;
+    }
+
+    /* Diagnostic breakdown */
+    .diag-section { margin-bottom: 52px; }
+    .diag-row {
+      display: grid;
+      grid-template-columns: 160px 36px 1fr;
+      gap: 16px;
+      align-items: start;
+      padding: 18px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .diag-q {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--secondary);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding-top: 3px;
+    }
+    .diag-dot {
+      width: 28px;
+      height: 28px;
+      background: var(--red);
+      color: var(--white);
+      font-size: 12px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .diag-insight {
+      font-size: 13.5px;
+      line-height: 1.68;
+      color: var(--black);
+    }
+
+    /* Research section */
+    .research-section {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 32px 28px;
+      margin-bottom: 52px;
+    }
+    .research-section .section-head { margin-bottom: 28px; }
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-bottom: 28px;
+    }
+    .stat-item { text-align: center; }
+    .stat-num {
+      font-size: 38px;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      color: var(--black);
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+    .stat-desc {
+      font-size: 11px;
+      color: var(--secondary);
+      line-height: 1.55;
+    }
+    .stat-src {
+      display: block;
+      font-size: 10px;
+      color: #999;
+      margin-top: 5px;
+    }
+    .grant-voice {
+      font-size: 14px;
+      line-height: 1.78;
+      color: var(--secondary);
+      border-top: 1px solid var(--border);
+      padding-top: 22px;
+      font-style: italic;
+    }
+
+    /* Next steps */
+    .next-steps-section { margin-bottom: 52px; }
+    .next-steps-section .section-head { margin-bottom: 22px; }
+    .next-step-body {
+      font-size: 15px;
+      line-height: 1.8;
+      color: var(--black);
+    }
+    .next-step-body p + p { margin-top: 16px; }
+
+    /* CTA box */
+    .cta-box {
+      border: 1px solid var(--border);
+      padding: 32px 28px;
+      margin-bottom: 28px;
+    }
+    .cta-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+      align-items: start;
+    }
+    .cta-col { display: flex; flex-direction: column; gap: 10px; }
+    .cta-col .btn { display: block; }
+    .cta-sub {
+      font-size: 12px;
+      color: var(--secondary);
+      line-height: 1.55;
+    }
+
+    /* PDF download row */
+    .pdf-row {
+      margin-bottom: 16px;
+    }
+    .btn-download {
+      background: none;
+      border: 1.5px solid var(--border);
+      font-family: inherit;
+      font-size: 13px;
+      color: var(--secondary);
+      padding: 9px 18px;
+      cursor: pointer;
+      transition: border-color 0.15s, color 0.15s;
+      letter-spacing: 0.01em;
+    }
+    .btn-download:hover {
+      border-color: var(--black);
+      color: var(--black);
+    }
+
+    .restart-btn {
+      background: none;
+      border: none;
+      font-family: inherit;
+      font-size: 13px;
+      color: var(--secondary);
+      text-decoration: underline;
+      cursor: pointer;
+      padding: 0;
+    }
+    .restart-btn:hover { color: var(--black); }
+
+
+    /* ═══════════════════════════════════════
+       RESPONSIVE
+    ═══════════════════════════════════════ */
+    @media (max-width: 600px) {
+      .page-wrap { padding: 0 20px; }
+
+      #screen-intro .page-wrap { padding-top: 36px; padding-bottom: 40px; }
+      .intro-headline { margin-top: 36px; }
+      .btn-begin { width: 100%; text-align: center; align-self: stretch; }
+
+      .progress-strip { padding: 10px 20px; }
+
+      #screen-question .page-wrap { padding-top: 32px; padding-bottom: 36px; }
+
+      .rating-group { grid-template-columns: 1fr; }
+      .rating-card { flex-direction: row; align-items: flex-start; padding: 16px; }
+      .rc-num { font-size: 18px; min-width: 22px; margin-bottom: 0; margin-right: 4px; flex-shrink: 0; }
+
+      #screen-result .page-wrap { padding-top: 36px; padding-bottom: 48px; }
+      .result-top-row { flex-direction: column; gap: 0; margin-bottom: 32px; }
+      .stat-grid { grid-template-columns: 1fr; gap: 24px; }
+      .cta-grid { grid-template-columns: 1fr; }
+      .diag-row { grid-template-columns: 1fr; gap: 10px; }
+      .diag-q { padding-top: 0; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════════
+     SCREEN 1 — INTRO
+══════════════════════════════════════════════════════ -->
+<div id="screen-intro" class="screen">
+  <div class="page-wrap">
+    <div class="intro-top">
+      <div class="wordmark">BBTx Consulting</div>
+    </div>
+
+    <h1 class="intro-headline">AI Readiness Self-Assessment</h1>
+
+    <p class="intro-subhead">
+      In thirty years of consulting I have watched organizations make the same mistake with every major technology shift. They start with the tool and work backwards to the problem. AI is no different, except the stakes are higher and the decisions are being made faster than anyone expected.
+    </p>
+    <p class="intro-subhead">
+      This assessment asks the four questions most leaders skip. They are not complicated. But they are harder to answer honestly than most people expect — especially about their own organization.
+    </p>
+
+    <p class="intro-tagline">Three things worth knowing before you begin:</p>
+
+    <div class="expectation-list">
+      <div class="expectation-item">This is not a quiz. There are no correct answers.</div>
+      <div class="expectation-item">Your result is a diagnostic, not a grade. It is only useful if your answers reflect how your organization actually operates, not how you would like it to.</div>
+      <div class="expectation-item">Set aside ten minutes. Answer as the leader of your organization, not as someone who has been thinking about AI.</div>
+    </div>
+
+    <button class="btn btn-red btn-begin" onclick="startAssessment()">Begin Assessment</button>
+  </div>
+
+  <footer>
+    Dr. R. Grant Tate &nbsp;·&nbsp; BBTx Consulting &nbsp;·&nbsp;
+    <a href="mailto:grant@bbtx.ai">grant@bbtx.ai</a>
+  </footer>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════
+     SCREENS 2–5 — QUESTIONS
+══════════════════════════════════════════════════════ -->
+<div id="screen-question" class="screen">
+  <div class="progress-strip">
+    <div class="wordmark">BBTx Consulting</div>
+    <div class="progress-track">
+      <div class="progress-fill" id="progress-fill" style="width:25%"></div>
+    </div>
+    <div class="progress-label" id="progress-label">Question 1 of 4</div>
+  </div>
+
+  <div class="page-wrap">
+    <div class="q-top-row">
+      <div class="q-number" id="q-number">01</div>
+    </div>
+
+    <h2 class="q-title" id="q-title"></h2>
+    <p class="q-note" id="q-note"></p>
+    <div class="q-diagnostic" id="q-diagnostic"></div>
+
+    <div class="rating-group" id="rating-group"></div>
+
+    <div class="q-nav">
+      <button class="btn btn-ghost" id="back-btn" onclick="goBack()">← Back</button>
+      <button class="btn btn-red btn-next" id="next-btn" onclick="nextQuestion()" disabled>Next →</button>
+    </div>
+  </div>
+
+  <footer>
+    Dr. R. Grant Tate &nbsp;·&nbsp; BBTx Consulting &nbsp;·&nbsp;
+    <a href="mailto:grant@bbtx.ai">grant@bbtx.ai</a>
+  </footer>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════
+     SCREEN 6 — RESULTS
+══════════════════════════════════════════════════════ -->
+<div id="screen-result" class="screen">
+  <div class="page-wrap">
+    <div class="result-top-row">
+      <div class="wordmark">BBTx Consulting</div>
+    </div>
+
+    <div class="level-badge" id="level-badge"></div>
+    <h1 class="result-title" id="result-title"></h1>
+    <p class="result-summary" id="result-summary"></p>
+
+    <!-- Diagnostic breakdown -->
+    <div class="diag-section">
+      <div class="section-head">What your answers reveal</div>
+      <div id="diag-rows"></div>
+    </div>
+
+    <!-- Research benchmark -->
+    <div class="research-section">
+      <div class="section-head">Where most organizations stand</div>
+      <div class="stat-grid" id="stat-grid"></div>
+      <p class="grant-voice" id="grant-voice"></p>
+    </div>
+
+    <!-- Next steps -->
+    <div class="next-steps-section">
+      <div class="section-head">Your most important next step</div>
+      <div class="next-step-body" id="next-step-body"></div>
+    </div>
+
+    <!-- CTA box -->
+    <div class="cta-box">
+      <div class="cta-grid">
+        <div class="cta-col">
+          <a class="btn btn-red" href="mailto:grant@bbtx.ai">Book a conversation with Grant</a>
+          <p class="cta-sub">Thirty minutes. No agenda, no pitch — just a direct conversation about where your organization is and where you are trying to go.</p>
+        </div>
+        <div class="cta-col">
+          <a class="btn btn-outline-red" href="https://chaoticconfluence.gumroad.com/l/jkrsit" target="_blank" rel="noopener noreferrer">Explore the full methodology</a>
+          <p class="cta-sub">The eight-lesson program behind the Living Strategy Model.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="pdf-row">
+      <button class="btn-download" onclick="downloadPDF()">↓ Download PDF Report</button>
+    </div>
+
+    <button class="restart-btn" onclick="restartAssessment()">Retake the assessment</button>
+  </div>
+
+  <footer>
+    Dr. R. Grant Tate &nbsp;·&nbsp; BBTx Consulting &nbsp;·&nbsp;
+    <a href="mailto:grant@bbtx.ai">grant@bbtx.ai</a>
+  </footer>
+</div>
+
+
+<script>
+/* ─────────────────────────────────────────────────────────
+   DATA — QUESTIONS
+───────────────────────────────────────────────────────── */
+const QUESTIONS = [
+  {
+    num: "01",
+    title: "What does your organization do better than anyone else?",
+    note: "Not your mission statement. The actual thing — the capability that, if it broke down completely for six months, would end the business or fundamentally change what you are.",
+    diagnostic: "If three members of your leadership team answered this question independently right now, would they give the same answer in the same words? In my experience, the gap between what leaders think the answer is and what their team would say is one of the most expensive silences in any organization.",
+    ratings: [
+      { n: 1, label: "Cannot answer clearly",
+        desc: "We have not defined this with precision, or I am reasonably certain our leadership team would give different answers." },
+      { n: 2, label: "Somewhat clear",
+        desc: "We have a general sense of our advantage but I could not state it in one crisp, unambiguous sentence right now." },
+      { n: 3, label: "Clearly defined",
+        desc: "Our entire leadership team would give the same answer, unprompted, without hesitation." }
+    ]
+  },
+  {
+    num: "02",
+    title: "Which of your processes are repetitive enough to automate or accelerate?",
+    note: "Rule-based, time-consuming, done the same way every time. These are not glamorous. They are usually the work nobody talks about in strategy meetings. They are also where AI creates its fastest and most defensible value.",
+    diagnostic: "Have you ever documented a single process end-to-end — what triggers it, what steps it follows, who makes decisions inside it, and what a finished output actually looks like? Most organizations have not. That gap matters more than which AI tool you choose.",
+    ratings: [
+      { n: 1, label: "No visibility",
+        desc: "Our processes are largely undocumented and vary depending on who is doing them and when." },
+      { n: 2, label: "Partial visibility",
+        desc: "We know which processes are repetitive but we have not documented them in a way that would allow anyone — human or AI — to follow them reliably." },
+      { n: 3, label: "Clear visibility",
+        desc: "We have at least one process documented well enough that we could hand it to someone new today and they would produce a consistent output." }
+    ]
+  },
+  {
+    num: "03",
+    title: "Where does your team make judgment calls that better data would improve?",
+    note: "This is where AI creates strategic leverage rather than operational efficiency. The organizations I have watched gain the most from AI are not the ones that automated the most tasks. They are the ones that improved the quality of the decisions that mattered.",
+    diagnostic: "Think about the three most consequential decisions your organization made in the last ninety days. How much of each was grounded in current, reliable data — and how much was experience, assumption, or the most confident voice in the room?",
+    ratings: [
+      { n: 1, label: "Mostly assumption",
+        desc: "Most of our significant decisions rely on experience, institutional memory, or data that we know is incomplete or out of date." },
+      { n: 2, label: "Mixed",
+        desc: "Some decisions are genuinely data-informed. Others rely heavily on judgment and assumption. We know the difference but have not done much about it." },
+      { n: 3, label: "Data-informed",
+        desc: "We have a clear and honest picture of where our data is reliable and where the gaps are. We make decisions accordingly and we know what better data would change." }
+    ]
+  },
+  {
+    num: "04",
+    title: "Where would AI be genuinely harmful to how you operate?",
+    note: "This is the question most AI conversations never reach. Every organization has areas where relationships, trust, and human judgment are not just preferable — they are the product. Identifying those areas before you start is not caution. It is strategy.",
+    diagnostic: "Have you ever had an explicit conversation with your team about which parts of your work should never be handed to AI, and why? The organizations that handle AI integration well almost always have. The ones that create problems they did not anticipate almost never did.",
+    ratings: [
+      { n: 1, label: "Not considered",
+        desc: "We have not had this conversation. We tend to think of AI as broadly useful and have not defined any boundaries around it." },
+      { n: 2, label: "Partially considered",
+        desc: "Some of us have informal views on this but we have never made them explicit or reached any shared agreement as a team." },
+      { n: 3, label: "Explicitly defined",
+        desc: "We have clear and agreed boundaries on where AI should and should not operate in our work. These have been discussed openly and are understood across the team." }
+    ]
+  }
+];
+
+/* ─────────────────────────────────────────────────────────
+   DATA — DIAGNOSTIC INSIGHTS (per question × rating)
+───────────────────────────────────────────────────────── */
+const INSIGHTS = {
+  0: {
+    1: "Your core competitive advantage is not yet clearly or consistently defined. In my experience this is the most common and most consequential gap I find in organizations that struggle with AI. Without a precise answer to this question, every AI decision becomes a guess.",
+    2: "You have a directional sense of your advantage but it is not sharp enough yet to anchor serious decisions. The work of refining this is not a long process — but it requires an honest conversation your leadership team has probably been avoiding.",
+    3: "Your competitive advantage is clearly defined. That puts you ahead of most organizations I work with. The challenge now is that the other gaps are preventing you from building on that foundation."
+  },
+  1: {
+    1: "Your processes are undocumented, which means AI has nothing reliable to work with. A tool is only as useful as the process it is sitting inside. The first step is not a technology decision — it is a documentation decision.",
+    2: "You can see the opportunity but have not yet built the operational foundation to act on it. One fully documented process changes your starting position more than any tool purchase would.",
+    3: "Your process visibility is stronger than most organizations at this level. That is a real asset. The limiting factor is elsewhere."
+  },
+  2: {
+    1: "Most of your significant decisions are running on experience and assumption. AI cannot improve decisions that are not anchored in current, reliable data. Addressing this is worth prioritizing before you evaluate any AI tools for decision support.",
+    2: "You have a mixed picture — some decisions are data-informed, others are not. Mapping which is which is one of the most useful things you can do before any AI evaluation. It takes a day and changes the conversation entirely.",
+    3: "Your data awareness is strong. That self-knowledge is genuinely rarer than it sounds and will serve you well as you build the foundation underneath it."
+  },
+  3: {
+    1: "You have not yet defined where AI should not go in your organization. Without those boundaries, adoption tends to drift into areas where it quietly erodes the things that matter most — trust, judgment, relationships.",
+    2: "You have instincts about this but they are not shared agreements yet. Converting those instincts into an explicit team conversation is fast, low-cost, and prevents the kind of problems that are hard to walk back.",
+    3: "You have done the work of defining boundaries. That kind of intentionality is what separates organizations that integrate AI well from those that create problems they did not see coming."
+  }
+};
+
+const Q_LABELS = [
+  "Competitive Advantage",
+  "Process Visibility",
+  "Decision Quality",
+  "AI Boundaries"
+];
+
+/* ─────────────────────────────────────────────────────────
+   DATA — STATS
+───────────────────────────────────────────────────────── */
+const STAT2 = {
+  low:  {
+    n: "95%",
+    desc: "of organizations faced significant data challenges during AI implementation",
+    src: "AvePoint · AIIM Research, 2024"
+  },
+  high: {
+    n: "42%",
+    desc: "of companies abandoned most AI initiatives in 2025, up from 17% the year before",
+    src: "S&P Global Market Intelligence, 2025"
+  }
+};
+
+/* ─────────────────────────────────────────────────────────
+   DATA — RESULTS
+───────────────────────────────────────────────────────── */
+const RESULTS = [
+  {
+    badge: "LEVEL 1 OF 4",
+    title: "Foundation Required",
+    summary: "The most important work ahead of you is not about AI. It is about strategic clarity.",
+    stat2: STAT2.low,
+    grantVoice: "The research confirms what I see in every engagement. Most organizations are experimenting with AI in isolated pockets — very few have connected it to how they actually make strategic decisions. If you are not clear on your core advantage yet, you are in the majority. The question worth asking is whether you want to stay there.",
+    nextStep: [
+      "Start with one conversation. Gather your leadership team and ask a single question: what is the one thing we do that, if we stopped doing it, would end the business? Do not facilitate it. Do not prepare them. Just ask and listen carefully to whether the answers align.",
+      "What surfaces in that room is more valuable than any AI tool you could buy this quarter. It will also tell you, quickly, whether the strategic clarity work needs to happen before anything else does."
+    ]
+  },
+  {
+    badge: "LEVEL 2 OF 4",
+    title: "Operationally Preparing",
+    summary: "You have the strategic foundation. The gap now is operational — and it is a solvable one.",
+    stat2: STAT2.low,
+    grantVoice: "Strategic clarity is the part most organizations skip entirely. You have done the harder work. What stands between where you are and where you want to be is not vision or commitment — it is documentation, process visibility, and data infrastructure. Those are not glamorous problems. But they are the ones that determine whether AI creates compounding value or compounding frustration.",
+    nextStep: [
+      "Pick one process your team runs repeatedly and document it fully this week. Who initiates it, what steps it follows, who makes decisions inside it, what a good output looks like, and how long it takes from start to finish.",
+      "That document is not administrative work. It is the first concrete input your organization has ever given AI to work with. One process, documented honestly, changes your starting position more than any amount of strategy conversation will."
+    ]
+  },
+  {
+    badge: "LEVEL 3 OF 4",
+    title: "Strategically Positioned",
+    summary: "The foundation is solid. The next step is building the system that makes it permanent.",
+    stat2: STAT2.high,
+    grantVoice: "You have done the foundational work that most organizations skip. The gap between where you are and where you want to be is not strategic — it is systemic. The organizations I have watched sustain real advantage from AI are not the ones with the best tools. They are the ones with a continuously updated picture of their own organization — their competitive position, their operational reality, their leadership alignment — that they actually use to make decisions. Building that system is the next step.",
+    nextStep: [
+      "The next step is building a Living Strategy Model — a continuously updated intelligence system that reflects your competitive position, operational reality, and strategic priorities in real time rather than once a year. That is what transforms the clarity you already have into decisions that compound over time. It is also exactly what the deeper program is designed to help you build."
+    ]
+  },
+  {
+    badge: "LEVEL 4 OF 4",
+    title: "Ready to Scale",
+    summary: "You are in rare company. The work now is building the system that makes this advantage permanent.",
+    stat2: STAT2.high,
+    grantVoice: "The organizations that actually compound value from AI are the ones who started exactly where you are — with honest answers to hard questions before touching a single tool. That discipline is rarer than most people realize. What comes next is not more strategy work. It is building the operational intelligence system that runs underneath your decisions and improves over time. That is what the Organizational Digital Twin methodology is designed to do — and it is built specifically for leaders and advisors who are ready to move from clarity to capability.",
+    nextStep: [
+      "You are ready to build. The Organizational Digital Twin methodology takes the clarity and operational awareness you have already developed and systematizes it into a working intelligence model your entire organization runs on. The program is eight lessons. Every lesson has a required application exercise. By the time you finish, you will have a working twin of a real organization, a configured AI agent, and a maintenance system running. That is the next step."
+    ]
+  }
+];
+
+
+/* ─────────────────────────────────────────────────────────
+   SCORING
+   Pattern-based: check most specific (L4) to least (L1).
+   Score-based fallback ensures every combination resolves.
+───────────────────────────────────────────────────────── */
+function getResult(ans) {
+  const [q1, q2, q3, q4] = ans;
+  const total = q1 + q2 + q3 + q4;
+
+  if (q1 === 3 && q2 === 3 && q3 === 3 && q4 >= 2) return RESULTS[3];
+  if (q1 === 3 && q2 >= 2 && q3 >= 2) return RESULTS[2];
+  if (q1 >= 2 && q2 <= 2 && total >= 7) return RESULTS[1];
+  if (q1 === 1 || total <= 6) return RESULTS[0];
+
+  if (q1 === 3 && total >= 11) return RESULTS[3];
+  if (total >= 9)  return RESULTS[2];
+  if (total >= 7)  return RESULTS[1];
+  return RESULTS[0];
+}
+
+
+/* ─────────────────────────────────────────────────────────
+   STATE
+───────────────────────────────────────────────────────── */
+let currentQ = 0;
+let answers  = [null, null, null, null];
+
+
+/* ─────────────────────────────────────────────────────────
+   SCREEN TRANSITIONS
+───────────────────────────────────────────────────────── */
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active', 'visible'));
+  const el = document.getElementById(id);
+  el.classList.add('active');
+  requestAnimationFrame(() => requestAnimationFrame(() => el.classList.add('visible')));
+  window.scrollTo(0, 0);
+}
+
+function fadeQuestion(fn) {
+  const el = document.getElementById('screen-question');
+  el.style.opacity = '0';
+  setTimeout(() => { fn(); el.style.opacity = '1'; }, 150);
+}
+
+
+/* ─────────────────────────────────────────────────────────
+   QUESTION SCREEN
+───────────────────────────────────────────────────────── */
+function loadQuestion() {
+  const q   = QUESTIONS[currentQ];
+  const pct = ((currentQ + 1) / QUESTIONS.length) * 100;
+
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('progress-label').textContent =
+    'Question ' + (currentQ + 1) + ' of ' + QUESTIONS.length;
+  document.getElementById('q-number').textContent  = q.num;
+  document.getElementById('q-title').textContent   = q.title;
+  document.getElementById('q-note').textContent    = q.note;
+  document.getElementById('q-diagnostic').textContent = q.diagnostic;
+
+  document.getElementById('back-btn').style.visibility =
+    currentQ === 0 ? 'hidden' : 'visible';
+
+  const group = document.getElementById('rating-group');
+  group.innerHTML = '';
+  q.ratings.forEach(r => {
+    const isSelected = answers[currentQ] === r.n;
+    const card = document.createElement('label');
+    card.className = 'rating-card' + (isSelected ? ' selected' : '');
+    card.dataset.value = r.n;
+    card.innerHTML =
+      '<input type="radio" name="rq" value="' + r.n + '"' + (isSelected ? ' checked' : '') + '>' +
+      '<div class="rc-num">' + r.n + '</div>' +
+      '<div class="rc-label">' + r.label + '</div>' +
+      '<div class="rc-desc">' + r.desc + '</div>';
+    card.addEventListener('click', () => selectRating(r.n, card));
+    group.appendChild(card);
+  });
+
+  document.getElementById('next-btn').disabled = (answers[currentQ] === null);
+}
+
+function selectRating(value, card) {
+  answers[currentQ] = value;
+  document.querySelectorAll('.rating-card').forEach(c => c.classList.remove('selected'));
+  card.classList.add('selected');
+  card.querySelector('input').checked = true;
+  document.getElementById('next-btn').disabled = false;
+}
+
+function startAssessment() {
+  currentQ = 0;
+  answers  = [null, null, null, null];
+  loadQuestion();
+  showScreen('screen-question');
+}
+
+function goBack() {
+  if (currentQ > 0) {
+    fadeQuestion(() => { currentQ--; loadQuestion(); });
+  }
+}
+
+function nextQuestion() {
+  if (answers[currentQ] === null) return;
+  if (currentQ < QUESTIONS.length - 1) {
+    fadeQuestion(() => { currentQ++; loadQuestion(); });
+  } else {
+    buildResults();
+    showScreen('screen-result');
+  }
+}
+
+function restartAssessment() {
+  currentQ = 0;
+  answers  = [null, null, null, null];
+  loadQuestion();
+  showScreen('screen-question');
+}
+
+
+/* ─────────────────────────────────────────────────────────
+   RESULTS SCREEN
+───────────────────────────────────────────────────────── */
+function buildResults() {
+  const result = getResult(answers);
+
+  document.getElementById('level-badge').textContent    = result.badge;
+  document.getElementById('result-title').textContent   = result.title;
+  document.getElementById('result-summary').textContent = result.summary;
+  document.getElementById('grant-voice').textContent    = result.grantVoice;
+
+  // Next step — supports multiple paragraphs
+  const nsEl = document.getElementById('next-step-body');
+  nsEl.innerHTML = result.nextStep.map(p => '<p>' + p + '</p>').join('');
+
+  // Diagnostic rows
+  const rowsEl = document.getElementById('diag-rows');
+  rowsEl.innerHTML = '';
+  answers.forEach((ans, i) => {
+    const row = document.createElement('div');
+    row.className = 'diag-row';
+    row.innerHTML =
+      '<div class="diag-q">' + Q_LABELS[i] + '</div>' +
+      '<div class="diag-dot">' + ans + '</div>' +
+      '<div class="diag-insight">' + INSIGHTS[i][ans] + '</div>';
+    rowsEl.appendChild(row);
+  });
+
+  // Stats
+  const s2 = result.stat2;
+  document.getElementById('stat-grid').innerHTML =
+    '<div class="stat-item">' +
+      '<div class="stat-num">Only 1%</div>' +
+      '<div class="stat-desc">of companies believe they have reached AI maturity' +
+        '<span class="stat-src">McKinsey, 2024</span></div>' +
+    '</div>' +
+    '<div class="stat-item">' +
+      '<div class="stat-num">' + s2.n + '</div>' +
+      '<div class="stat-desc">' + s2.desc +
+        '<span class="stat-src">' + s2.src + '</span></div>' +
+    '</div>' +
+    '<div class="stat-item">' +
+      '<div class="stat-num">2x</div>' +
+      '<div class="stat-desc">more likely to achieve meaningful AI returns when workflow is redesigned before tool selection' +
+        '<span class="stat-src">McKinsey, 2025</span></div>' +
+    '</div>';
+}
+
+
+/* ─────────────────────────────────────────────────────────
+   PDF GENERATION
+───────────────────────────────────────────────────────── */
+function downloadPDF() {
+  if (!window.jspdf) {
+    alert('PDF library is still loading. Please try again in a moment.');
+    return;
+  }
+
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF('p', 'mm', 'a4');
+
+  const pageW   = doc.internal.pageSize.getWidth();
+  const pageH   = doc.internal.pageSize.getHeight();
+  const ml      = 20; // margin left
+  const mr      = 20; // margin right
+  const cw      = pageW - ml - mr; // content width
+  const footerY = pageH - 11;
+  let y         = 20;
+
+  const COL = {
+    red:   [232, 52,  10],
+    black: [17,  17,  17],
+    gray:  [102, 102, 102],
+    lgray: [170, 170, 170]
+  };
+
+  // ── Helpers ──────────────────────────────────────
+  function setFont(weight, size, color) {
+    doc.setFont('helvetica', weight);
+    doc.setFontSize(size);
+    doc.setTextColor(...color);
+  }
+
+  function addFooter() {
+    doc.setDrawColor(...COL.lgray);
+    doc.setLineWidth(0.3);
+    doc.line(ml, footerY - 4, pageW - mr, footerY - 4);
+    setFont('normal', 7.5, COL.lgray);
+    doc.text(
+      'Dr. R. Grant Tate · BBTx Consulting · grant@bbtx.ai · bbtx.ai',
+      pageW / 2, footerY, { align: 'center' }
+    );
+  }
+
+  function checkPage(needed) {
+    if (y + needed > footerY - 10) {
+      addFooter();
+      doc.addPage();
+      y = 20;
+    }
+  }
+
+  function writeText(text, size, weight, color, width, extraGap) {
+    setFont(weight, size, color);
+    const lh    = size * 0.42;
+    const lines = doc.splitTextToSize(text, width || cw);
+    checkPage(lines.length * lh + (extraGap || 0));
+    doc.text(lines, ml, y);
+    y += lines.length * lh + (extraGap || 4);
+  }
+
+  function sectionHeader(label) {
+    checkPage(14);
+    setFont('bold', 9, COL.red);
+    doc.text(label.toUpperCase(), ml, y);
+    y += 3;
+    doc.setDrawColor(...COL.red);
+    doc.setLineWidth(0.5);
+    doc.line(ml, y, pageW - mr, y);
+    y += 7;
+  }
+
+  // ── Report header ─────────────────────────────────
+  setFont('bold', 18, COL.red);
+  doc.text('AI Readiness Assessment Report', ml, y);
+  y += 7;
+
+  setFont('bold', 11, COL.black);
+  doc.text('BBTx Consulting', ml, y);
+  y += 5;
+
+  setFont('normal', 9, COL.gray);
+  doc.text('Prepared for you following the AI-Enabled Strategic Planning Workshop', ml, y);
+  y += 10;
+
+  doc.setDrawColor(...COL.lgray);
+  doc.setLineWidth(0.3);
+  doc.line(ml, y, pageW - mr, y);
+  y += 10;
+
+  // ── Section 1: Your Result ────────────────────────
+  const result = getResult(answers);
+
+  sectionHeader('Your Result');
+
+  setFont('normal', 8, COL.gray);
+  doc.text(result.badge, ml, y);
+  y += 5;
+
+  setFont('bold', 16, COL.black);
+  doc.text(result.title, ml, y);
+  y += 7;
+
+  writeText(result.summary, 10, 'italic', COL.gray, cw, 10);
+
+  // ── Section 2: What Your Answers Reveal ──────────
+  sectionHeader('What Your Answers Reveal');
+
+  answers.forEach((ans, i) => {
+    checkPage(28);
+
+    // Question label + rating indicator
+    setFont('bold', 9, COL.black);
+    doc.text(Q_LABELS[i], ml, y);
+    setFont('bold', 9, COL.red);
+    doc.text('Rating ' + ans + ' of 3', pageW - mr, y, { align: 'right' });
+    y += 4;
+
+    // Insight text
+    writeText(INSIGHTS[i][ans], 9.5, 'normal', COL.gray, cw, 8);
+  });
+
+  // ── Section 3: Where Most Organizations Stand ────
+  sectionHeader('Where Most Organizations Stand');
+
+  const stats = [
+    { n: 'Only 1%',  desc: 'of companies believe they have reached AI maturity', src: 'McKinsey, 2024' },
+    { n: result.stat2.n, desc: result.stat2.desc, src: result.stat2.src },
+    { n: '2x',       desc: 'more likely to achieve meaningful AI returns when workflow is redesigned before tool selection', src: 'McKinsey, 2025' }
+  ];
+
+  stats.forEach(stat => {
+    checkPage(22);
+    setFont('bold', 15, COL.black);
+    doc.text(stat.n, ml, y);
+    y += 5;
+    const descLines = doc.splitTextToSize(stat.desc, cw);
+    setFont('normal', 9, COL.gray);
+    doc.text(descLines, ml, y);
+    y += descLines.length * 4;
+    setFont('italic', 8, COL.lgray);
+    doc.text(stat.src, ml, y);
+    y += 8;
+  });
+
+  y += 2;
+  writeText(result.grantVoice, 9.5, 'italic', COL.gray, cw, 10);
+
+  // ── Section 4: Your Most Important Next Step ─────
+  sectionHeader('Your Most Important Next Step');
+
+  result.nextStep.forEach((para, idx) => {
+    writeText(para, 10, 'normal', COL.black, cw, idx < result.nextStep.length - 1 ? 6 : 10);
+  });
+
+  // ── Section 5: Continue the Conversation ─────────
+  sectionHeader('Continue the Conversation');
+
+  const convoBody =
+    'If today’s assessment raised questions you want to think through in the context of your specific organization, I would welcome a conversation. It starts with thirty minutes and no agenda — just an honest discussion about where you are and where you are trying to go.';
+  writeText(convoBody, 10, 'normal', COL.black, cw, 10);
+
+  setFont('bold', 10, COL.black);
+  checkPage(20);
+  doc.text('grant@bbtx.ai', ml, y); y += 5;
+  doc.text('+1 434-466-4655', ml, y); y += 5;
+  doc.text('bbtx.ai', ml, y);
+
+  // ── Footer on final page ──────────────────────────
+  addFooter();
+
+  doc.save('BBTx-AI-Readiness-Assessment.pdf');
+}
+
+
+/* ─────────────────────────────────────────────────────────
+   INIT
+───────────────────────────────────────────────────────── */
+showScreen('screen-intro');
+</script>
+</body>
+</html>
