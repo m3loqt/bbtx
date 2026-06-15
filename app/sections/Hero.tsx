@@ -59,28 +59,30 @@ export function Hero() {
 
           {/* Desktop-only spacer — let hover pass through to the grid */}
           <div className="hidden sm:pointer-events-none sm:block sm:min-h-0 sm:flex-1" />
-          <a
-            href="#"
+          <button
+            type="button"
+            onClick={() => window.scrollBy({ top: window.innerHeight, behavior: "smooth" })}
             className="pointer-events-auto mt-6 hidden w-fit items-center gap-2 text-sm font-bold text-[#222222] transition-colors hover:text-[#555] sm:mt-0 sm:inline-flex sm:text-base"
           >
             Discover more
             <span className="flex h-8 w-8 items-center justify-center rounded bg-[#ca3726] text-white sm:h-9 sm:w-9">
               <ArrowDown className="h-4 w-4 sm:h-5 sm:w-5" />
             </span>
-          </a>
+          </button>
         </div>
       </div>
 
       {/* Discover more — mobile only, pinned to bottom */}
-      <a
-        href="#"
+      <button
+        type="button"
+        onClick={() => window.scrollBy({ top: window.innerHeight, behavior: "smooth" })}
         className="pointer-events-auto absolute bottom-8 left-4 z-10 inline-flex w-fit items-center gap-2 text-sm font-bold text-[#222222] transition-colors hover:text-[#555] sm:hidden"
       >
         Discover more
         <span className="flex h-8 w-8 items-center justify-center rounded bg-[#ca3726] text-white">
           <ArrowDown className="h-4 w-4" />
         </span>
-      </a>
+      </button>
 
       {/* Metrics card — desktop/tablet only, bottom-right absolute */}
       <article className="pointer-events-auto absolute bottom-10 right-6 z-10 hidden min-h-[140px] w-max max-w-[min(100%-3rem,880px)] overflow-hidden rounded-lg border border-black/[0.06] bg-white shadow-[0_2px_12px_rgba(0,0,0,0.01)] sm:flex sm:right-8 sm:min-h-[160px] lg:right-10 lg:min-h-[180px]">

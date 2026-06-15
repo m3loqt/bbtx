@@ -33,9 +33,11 @@ type ContactFormData = {
 };
 
 const INQUIRY_OPTIONS = [
-  "Transformational Strategy & Implementation Plan",
-  "Organizational AI Assessment",
-  "AI Organizational Model",
+  "Organizational Assessment & Analysis",
+  "Strategy & Advisory Services",
+  "Leadership, Management & Team Development",
+  "AI Integration & Innovation",
+  "Implementation & Change Support",
   "General Inquiry",
 ] as const;
 

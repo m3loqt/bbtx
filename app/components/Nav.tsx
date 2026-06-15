@@ -6,15 +6,15 @@ import { ArrowUpRight, ChevronDown } from "./ArrowIcon";
 import { ContactModal } from "./ContactModal";
 
 const navLinks = [
-  { label: "Services", hasDropdown: true, href: "#" },
+  { label: "Services", hasDropdown: true, href: "/services" },
+  { label: "Resources", hasDropdown: true, href: "#" },
   { label: "About", hasDropdown: false, href: "/about" },
-  { label: "Community", hasDropdown: false, href: "/community" },
   { label: "Articles", hasDropdown: false, href: "/blog" },
 ];
 
 const MOBILE_NAV_LINKS = [
+  { label: "Services", href: "/services" },
   { label: "About", href: "/about" },
-  { label: "Community", href: "/community" },
   { label: "Articles", href: "/blog" },
 ];
 
@@ -22,24 +22,43 @@ const DROPDOWNS: Record<
   string,
   { title: string; description: string; href?: string }[]
 > = {
+  Resources: [
+    {
+      title: "AI-Readiness Assessment",
+      description: "Evaluate your organization's readiness to adopt and scale AI across people, process, and technology.",
+      href: "/assessment",
+    },
+    {
+      title: "Digital Twin Snapshot",
+      description: "See your organization the way the market already does — a strategic analysis from your public footprint.",
+      href: "/digital-twin-snapshot",
+    },
+  ],
   Services: [
     {
-      title: "Transformational Strategy & Implementation Plan",
-      description:
-        "Turn AI ambition into a clear strategy your leadership can execute. Focused priorities, ownership, and a practical path forward.",
-      href: "/services/strategy-roadmap",
+      title: "Organizational Assessment & Analysis",
+      description: "Reveal organizational realities, identify risks, and uncover opportunities for improvement.",
+      href: "/services/organizational-assessment",
     },
     {
-      title: "Organizational AI Assessment",
-      description:
-        "Understand where AI can actually create value in your organization. Identify gaps, risks, and the opportunities worth pursuing.",
-      href: "/services/organizational-ai-assessment",
+      title: "Strategy & Advisory Services",
+      description: "Create strategic clarity, strengthen alignment, and improve decision-making discipline.",
+      href: "/services/strategy-advisory",
     },
     {
-      title: "AI Organizational Model",
-      description:
-        "Design how AI fits into your organization and decision making. Create alignment between teams, initiatives, and strategy.",
-      href: "/services/ai-organizational-model",
+      title: "Leadership & Team Development",
+      description: "Develop stronger leaders, healthier teams, and more effective organizations.",
+      href: "/services/leadership-development",
+    },
+    {
+      title: "AI Integration & Innovation",
+      description: "Apply AI responsibly, improve performance, and build organizational capability.",
+      href: "/services/ai-integration",
+    },
+    {
+      title: "Implementation & Change Support",
+      description: "Turn strategic intentions into action, accountability, and lasting results.",
+      href: "/services/implementation-support",
     },
   ],
 };
@@ -98,7 +117,7 @@ export function Nav() {
   return (
     <div className="fixed left-0 right-0 top-0 z-50 w-full px-3 pt-2.5 sm:px-6 sm:pt-[18px] lg:px-8">
       <div
-        className={`relative mx-auto max-w-[960px] ${dropdownItems ? "pb-[420px]" : ""} ${mobileOpen ? "pb-[520px] lg:pb-0" : ""}`}
+        className={`relative mx-auto max-w-[960px] ${dropdownItems ? "pb-[500px]" : ""} ${mobileOpen ? "pb-[520px] lg:pb-0" : ""}`}
         onMouseLeave={handleLeave}
       >
         <div className="relative">
@@ -122,9 +141,9 @@ export function Nav() {
           <div className="hidden items-center gap-4 lg:flex lg:gap-5">
             {navLinks.map(({ label, hasDropdown, href }) =>
               hasDropdown ? (
-                <button
+                <a
                   key={label}
-                  type="button"
+                  href={href ?? "#"}
                   onMouseEnter={() => handleEnter(label, hasDropdown)}
                   className={`relative flex items-center gap-1 text-[15px] font-normal transition-colors ${
                     activeDropdown === label
@@ -136,7 +155,7 @@ export function Nav() {
                   <span className="text-[#222222]">
                     <ChevronDown />
                   </span>
-                </button>
+                </a>
               ) : (
                 <a
                   key={label}
@@ -198,30 +217,57 @@ export function Nav() {
                   : "translate-y-[-8px] opacity-0"
               }`}
             >
-              <div
-                className={`grid gap-2 p-3 sm:gap-3 sm:p-4 ${dropdownItems?.length === 2 ? "sm:grid-cols-2" : "sm:grid-cols-3"}`}
-              >
-                {dropdownItems.map((item) => (
-                  <a
-                    key={item.title}
-                    href={item.href ?? "#"}
-                    className="group flex min-h-[150px] flex-col justify-between rounded-lg border border-black/[0.06] bg-white px-4 py-4 text-left transition-shadow hover:shadow-[0_6px_18px_rgba(0,0,0,0.06)] sm:min-h-[170px] sm:px-5 sm:py-5"
-                  >
-                    <div>
-                      <p className="text-sm font-semibold tracking-tight text-[#222222] sm:text-[15px]">
-                        {item.title}
-                      </p>
-                      <p className="mt-2 text-xs leading-relaxed text-[#555555] sm:text-[13px]">
-                        {item.description}
-                      </p>
-                    </div>
-                    <div className="mt-4 flex justify-end">
-                      <span className="flex h-7 w-7 items-center justify-center rounded-md bg-[#ca3726] text-white transition-colors group-hover:bg-[#b02f21]">
-                        <ArrowUpRight className="h-3.5 w-3.5" />
-                      </span>
-                    </div>
-                  </a>
-                ))}
+              <div className="space-y-2 p-3 sm:space-y-3 sm:p-4">
+                {/* Row 1: 2 or 3 columns depending on item count */}
+                <div className={`grid gap-2 sm:gap-3 ${dropdownItems.slice(0, 3).length < 3 ? "grid-cols-2" : "grid-cols-3"}`}>
+                  {dropdownItems.slice(0, 3).map((item) => (
+                    <a
+                      key={item.title}
+                      href={item.href ?? "#"}
+                      className="group flex min-h-[150px] flex-col justify-between rounded-lg border border-black/[0.06] bg-white px-4 py-4 text-left transition-shadow hover:shadow-[0_6px_18px_rgba(0,0,0,0.06)] sm:min-h-[170px] sm:px-5 sm:py-5"
+                    >
+                      <div>
+                        <p className="text-sm font-semibold tracking-tight text-[#222222] sm:text-[15px]">
+                          {item.title}
+                        </p>
+                        <p className="mt-2 text-xs leading-relaxed text-[#555555] sm:text-[13px]">
+                          {item.description}
+                        </p>
+                      </div>
+                      <div className="mt-4 flex justify-end">
+                        <span className="flex h-7 w-7 items-center justify-center rounded-md bg-[#ca3726] text-white transition-colors group-hover:bg-[#b02f21]">
+                          <ArrowUpRight className="h-3.5 w-3.5" />
+                        </span>
+                      </div>
+                    </a>
+                  ))}
+                </div>
+                {/* Row 2: 2 columns spanning full width */}
+                {dropdownItems.length > 3 && (
+                  <div className="grid grid-cols-2 gap-2 sm:gap-3">
+                    {dropdownItems.slice(3).map((item) => (
+                      <a
+                        key={item.title}
+                        href={item.href ?? "#"}
+                        className="group flex min-h-[130px] flex-col justify-between rounded-lg border border-black/[0.06] bg-white px-4 py-4 text-left transition-shadow hover:shadow-[0_6px_18px_rgba(0,0,0,0.06)] sm:min-h-[150px] sm:px-5 sm:py-5"
+                      >
+                        <div>
+                          <p className="text-sm font-semibold tracking-tight text-[#222222] sm:text-[15px]">
+                            {item.title}
+                          </p>
+                          <p className="mt-2 text-xs leading-relaxed text-[#555555] sm:text-[13px]">
+                            {item.description}
+                          </p>
+                        </div>
+                        <div className="mt-4 flex justify-end">
+                          <span className="flex h-7 w-7 items-center justify-center rounded-md bg-[#ca3726] text-white transition-colors group-hover:bg-[#b02f21]">
+                            <ArrowUpRight className="h-3.5 w-3.5" />
+                          </span>
+                        </div>
+                      </a>
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -236,27 +282,8 @@ export function Nav() {
           }`}
         >
           <div className="p-4">
-            {/* Services group */}
-            <div>
-              <p className="px-2 pb-2 pt-1 text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-[#999999]">
-                Services
-              </p>
-              <div className="space-y-0.5">
-                {DROPDOWNS.Services.map((item) => (
-                  <a
-                    key={item.title}
-                    href={item.href ?? "#"}
-                    onClick={closeMobileMenu}
-                    className="flex items-center rounded-lg px-3 py-2.5 text-sm font-medium text-[#222222] transition-colors hover:bg-[#f7f7f7]"
-                  >
-                    {item.title}
-                  </a>
-                ))}
-              </div>
-            </div>
-
-            {/* Other pages + Contact */}
-            <div className="mt-4 space-y-0.5 border-t border-black/[0.06] pt-4">
+            {/* Nav links + Contact */}
+            <div className="space-y-0.5">
               {MOBILE_NAV_LINKS.map(({ label, href }) => (
                 <a
                   key={label}
@@ -267,6 +294,26 @@ export function Nav() {
                   {label}
                 </a>
               ))}
+              {/* Resources group */}
+              <div className="pt-1">
+                <p className="px-3 pb-1 pt-2 text-[10px] font-semibold uppercase tracking-widest text-[#bbb]">
+                  Resources
+                </p>
+                <a
+                  href="/assessment"
+                  onClick={closeMobileMenu}
+                  className="flex items-center rounded-lg px-3 py-2.5 text-sm font-medium text-[#222222] transition-colors hover:bg-[#f7f7f7]"
+                >
+                  AI-Readiness Assessment
+                </a>
+                <a
+                  href="/digital-twin-snapshot"
+                  onClick={closeMobileMenu}
+                  className="flex items-center rounded-lg px-3 py-2.5 text-sm font-medium text-[#222222] transition-colors hover:bg-[#f7f7f7]"
+                >
+                  Digital Twin Snapshot
+                </a>
+              </div>
               <button
                 type="button"
                 onClick={() => { closeMobileMenu(); setContactOpen(true); }}

@@ -1,3 +1,5 @@
+"use client";
+
 import { ArrowUpRight } from "@/app/components/ArrowIcon";
 import Image from "next/image";
 
@@ -27,13 +29,14 @@ export function CTA() {
             <p className="mx-auto mt-8 max-w-2xl text-xl leading-relaxed tracking-tight text-white/95 sm:text-2xl lg:mt-10">
               Talk to us about your goals. We&apos;ll help you assess readiness, choose the right path, and deliver measurable results.
             </p>
-            <a
-              href="#"
+            <button
+              type="button"
+              onClick={() => window.dispatchEvent(new Event("openContact"))}
               className="mt-12 inline-flex items-center gap-2 rounded-lg bg-white px-5 py-3 text-[15px] font-medium text-[#222222] transition-opacity hover:opacity-95 lg:mt-14"
             >
               Talk to us
               <ArrowUpRight className="h-4 w-4 sm:h-[18px] sm:w-[18px]" />
-            </a>
+            </button>
           </div>
         </div>
       </div>
