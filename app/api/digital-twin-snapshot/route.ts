@@ -1,9 +1,52 @@
 import Anthropic from "@anthropic-ai/sdk";
+import { createClient } from "@supabase/supabase-js";
 import { NextRequest } from "next/server";
 
 const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 const MODEL = process.env.ANTHROPIC_MODEL ?? "claude-sonnet-4-6";
 const TAVILY_KEY = process.env.TAVILY_API_KEY;
+
+// ── Event mode ──────────────────────────────────────────────
+// Disable after the event by setting NEXT_PUBLIC_EVENT_MODE=false and redeploying.
+// Requires a `event_counters` table in Supabase:
+//   CREATE TABLE IF NOT EXISTS event_counters (
+//     key TEXT PRIMARY KEY,
+//     count INTEGER NOT NULL DEFAULT 0
+//   );
+//   INSERT INTO event_counters (key, count)
+//   VALUES ('digital_twin_snapshot_event_count', 0)
+//   ON CONFLICT (key) DO NOTHING;
+const EVENT_MODE = process.env.NEXT_PUBLIC_EVENT_MODE === "true";
+const EVENT_MAX  = parseInt(process.env.EVENT_MAX_GENERATIONS ?? "30", 10);
+const EVENT_KEY  = "digital_twin_snapshot_event_count";
+
+const supabaseAdmin = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_ROLE_KEY!
+);
+
+async function checkAndIncrementEventCount(): Promise<{ allowed: boolean; newCount: number }> {
+  try {
+    const { data } = await supabaseAdmin
+      .from("event_counters")
+      .select("count")
+      .eq("key", EVENT_KEY)
+      .maybeSingle();
+    const current = (data as { count?: number } | null)?.count ?? 0;
+    if (current >= EVENT_MAX) {
+      return { allowed: false, newCount: current };
+    }
+    const next = current + 1;
+    await supabaseAdmin
+      .from("event_counters")
+      .upsert({ key: EVENT_KEY, count: next });
+    return { allowed: true, newCount: next };
+  } catch (err) {
+    // If table doesn't exist yet, fail open so the app keeps working
+    console.warn("[event-cap] Counter unavailable, failing open:", String(err));
+    return { allowed: true, newCount: 0 };
+  }
+}
 
 // ── Rate limiting ──────────────────────────────────────────
 // In-memory store — resets on cold start. For multi-instance
@@ -155,6 +198,17 @@ export async function POST(req: NextRequest) {
           emit("error", { message: `Analysis limit reached. Please try again in ${minutes} minute${minutes === 1 ? "" : "s"}.` });
           controller.close();
           return;
+        }
+
+        // Event cap check — increment immediately (failed analyses still cost credits)
+        if (EVENT_MODE) {
+          const { allowed, newCount } = await checkAndIncrementEventCount();
+          if (!allowed) {
+            emit("capacity", { message: "Strategic Snapshot is currently at capacity for today's event." });
+            controller.close();
+            return;
+          }
+          console.log(`[event-cap] Analysis ${newCount} / ${EVENT_MAX} started`);
         }
 
         const body = await req.json() as Record<string, string | undefined>;

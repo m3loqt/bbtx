@@ -78,7 +78,7 @@ interface ProgressStep {
   phase: "research" | "search" | "analysis";
 }
 
-type PageState = "idle" | "loading" | "results" | "error";
+type PageState = "idle" | "loading" | "results" | "error" | "capacity";
 
 // ── Constants ──────────────────────────────────────────────
 
@@ -258,10 +258,18 @@ export default function DigitalTwinSnapshotPage() {
   const [emailSent, setEmailSent]         = useState(false);
   const [displayedPhrase, setDisplayedPhrase] = useState("Starting the analysis...");
   const [phraseVisible, setPhraseVisible]     = useState(true);
+  const [alreadyGenerated, setAlreadyGenerated] = useState(false);
+  const [storedSnapshot, setStoredSnapshot]     = useState<SnapshotResult | null>(null);
+  const [storedFetchSucceeded, setStoredFetchSucceeded] = useState(true);
+  const [capacityEmail, setCapacityEmail]       = useState("");
+  const [capacityEmailSent, setCapacityEmailSent] = useState(false);
   const resultsRef                        = useRef<HTMLDivElement>(null);
 
   async function handleGenerate(e: React.FormEvent) {
     e.preventDefault();
+
+    // In event mode, the form is hidden when already generated — this is a safeguard
+    if (process.env.NEXT_PUBLIC_EVENT_MODE === "true" && alreadyGenerated) return;
 
     let normalized = url.trim();
     if (!normalized) return;
@@ -321,12 +329,27 @@ export default function DigitalTwinSnapshotPage() {
                 { step: event.step!, phase: (event.phase ?? "research") as ProgressStep["phase"] },
               ]);
             } else if (event.type === "result" && event.snapshot) {
-              setSnapshot(event.snapshot as SnapshotResult);
+              const snap = event.snapshot as SnapshotResult;
+              setSnapshot(snap);
               setFetchSucceeded(event.fetchSucceeded ?? true);
               setPageState("results");
+              // Event mode: set browser-level limit
+              if (process.env.NEXT_PUBLIC_EVENT_MODE === "true") {
+                localStorage.setItem("bbtx_snapshot_generated", "true");
+                localStorage.setItem("bbtx_snapshot_data", JSON.stringify({
+                  snapshot: snap,
+                  fetchSucceeded: event.fetchSucceeded ?? true,
+                  url: normalized,
+                }));
+                setAlreadyGenerated(true);
+                setStoredSnapshot(snap);
+                setStoredFetchSucceeded(event.fetchSucceeded ?? true);
+              }
               setTimeout(() => {
                 resultsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
               }, 120);
+            } else if (event.type === "capacity") {
+              setPageState("capacity");
             } else if (event.type === "error") {
               setErrorMessage(event.message ?? "Something went wrong. Please try again.");
               setPageState("error");
@@ -367,6 +390,52 @@ export default function DigitalTwinSnapshotPage() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
+  function handleViewExistingReport() {
+    if (storedSnapshot) {
+      setSnapshot(storedSnapshot);
+      setFetchSucceeded(storedFetchSucceeded);
+      setPageState("results");
+      setTimeout(() => {
+        resultsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 120);
+    }
+  }
+
+  async function handleCapacityEmailSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!capacityEmail) return;
+    try {
+      await fetch("/api/digital-twin-email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email:     capacityEmail,
+          timestamp: new Date().toISOString(),
+        }),
+      });
+    } catch { /* intentional */ }
+    setCapacityEmailSent(true);
+  }
+
+  // Check browser-level event limit on mount
+  useEffect(() => {
+    if (process.env.NEXT_PUBLIC_EVENT_MODE !== "true") return;
+    if (localStorage.getItem("bbtx_snapshot_generated") !== "true") return;
+    setAlreadyGenerated(true);
+    const raw = localStorage.getItem("bbtx_snapshot_data");
+    if (!raw) return;
+    try {
+      const stored = JSON.parse(raw) as {
+        snapshot: SnapshotResult;
+        fetchSucceeded: boolean;
+        url: string;
+      };
+      setStoredSnapshot(stored.snapshot);
+      setStoredFetchSucceeded(stored.fetchSucceeded);
+      if (stored.url) setUrl(stored.url);
+    } catch { /* stored data malformed */ }
+  }, []);
+
   useEffect(() => {
     if (pageState !== "loading" || progressSteps.length === 0) return;
     const latest = progressSteps[progressSteps.length - 1];
@@ -381,7 +450,7 @@ export default function DigitalTwinSnapshotPage() {
   return (
     <div className="min-h-screen bg-white">
 
-      {/* Nav hidden during loading */}
+      {/* Nav hidden during loading and capacity (capacity has its own full-screen layout) */}
       {pageState !== "loading" && <Nav />}
 
       {/* ── Hero + Form ─────────────────────────────────── */}
@@ -419,71 +488,185 @@ export default function DigitalTwinSnapshotPage() {
               A reading of your public positioning, potential blind spots, and the strategic questions your leadership should be asking.
             </p>
 
-            <form onSubmit={handleGenerate} className="mx-auto mt-8 w-full max-w-2xl">
-              <div className="flex items-center gap-2 rounded-2xl bg-white p-2 shadow-[0_4px_32px_rgba(0,0,0,0.10)] ring-1 ring-black/[0.06]">
-                <input
-                  type="text"
-                  value={url}
-                  onChange={(e) => setUrl(e.target.value)}
-                  placeholder="https://yourorganization.com"
-                  required
-                  className="min-w-0 flex-1 bg-transparent px-3 py-2.5 text-base text-[#222] placeholder-[#aaa] outline-none"
-                />
-                <button
-                  type="submit"
-                  className="flex shrink-0 items-center gap-2 rounded-xl bg-[#ca3726] px-5 py-2.5 text-sm font-semibold text-white transition-opacity hover:opacity-90"
-                >
-                  Analyze My Organization
-                  <ArrowUpRight className="h-4 w-4" />
-                </button>
-              </div>
-
-              <div className="mt-3 overflow-hidden rounded-xl border border-black/[0.07] bg-white/80 text-left backdrop-blur-sm">
-                <button
-                  type="button"
-                  onClick={() => setContextExpanded(!contextExpanded)}
-                  className="flex w-full items-center justify-between px-5 py-3.5 transition-colors hover:bg-black/[0.015]"
-                >
-                  <span className="text-xs font-medium text-[#777]">
-                    Optional: add context to sharpen the analysis
-                  </span>
-                  {contextExpanded
-                    ? <ChevronUp className="h-4 w-4 text-[#aaa]" />
-                    : <ChevronDown className="h-4 w-4 text-[#aaa]" />}
-                </button>
-
-                {contextExpanded && (
-                  <div className="grid gap-3 border-t border-black/[0.06] px-5 pb-5 pt-4 sm:grid-cols-2">
-                    {[
-                      { id: "org-name",     label: "Organization name",               value: orgName,            setter: setOrgName,            placeholder: "ACME Foundation" },
-                      { id: "industry",     label: "Industry or sector",               value: industry,           setter: setIndustry,           placeholder: "Healthcare, nonprofit..." },
-                      { id: "competitors",  label: "Known competitors",                value: competitors,        setter: setCompetitors,        placeholder: "Organization A, Organization B..." },
-                      { id: "strategic-q",  label: "A question you are working through", value: strategicQuestion, setter: setStrategicQuestion, placeholder: "What are we trying to figure out right now?" },
-                    ].map(({ id, label, value, setter, placeholder }) => (
-                      <div key={id}>
-                        <label htmlFor={id} className="mb-1 block text-xs text-[#888]">{label}</label>
-                        <input
-                          id={id}
-                          type="text"
-                          value={value}
-                          onChange={(e) => setter(e.target.value)}
-                          placeholder={placeholder}
-                          className="w-full rounded-lg border border-black/[0.07] bg-[#f8fafc] px-3 py-2 text-sm text-[#222] placeholder-[#bbb] outline-none transition-colors focus:border-[#ca3726]"
-                        />
+            {alreadyGenerated ? (
+              <div className="mx-auto mt-8 w-full max-w-2xl">
+                <div className="rounded-2xl bg-white p-7 shadow-[0_4px_32px_rgba(0,0,0,0.10)] ring-1 ring-black/[0.06] text-left">
+                  <div className="flex items-start gap-4">
+                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#ca3726]/10">
+                      <Check className="h-4.5 w-4.5 text-[#ca3726]" />
+                    </div>
+                    <div className="flex-1">
+                      <p className="text-base font-semibold text-[#111]">
+                        You&apos;ve already generated a Strategic Snapshot in this browser
+                      </p>
+                      <p className="mt-2 text-sm leading-relaxed text-[#777]">
+                        To keep the tool available for everyone during today&apos;s event, we&apos;re limiting each browser to one analysis
+                      </p>
+                      <div className="mt-5 flex flex-col gap-2.5 sm:flex-row">
+                        {storedSnapshot && (
+                          <button
+                            type="button"
+                            onClick={handleViewExistingReport}
+                            className="flex items-center justify-center gap-2 rounded-xl bg-[#ca3726] px-5 py-2.5 text-sm font-semibold text-white transition-opacity hover:opacity-90"
+                          >
+                            View Existing Report
+                            <ArrowUpRight className="h-4 w-4" />
+                          </button>
+                        )}
+                        <button
+                          type="button"
+                          onClick={() => window.dispatchEvent(new Event("openContact"))}
+                          className="flex items-center justify-center gap-2 rounded-xl border border-black/[0.08] bg-white px-5 py-2.5 text-sm font-semibold text-[#111] transition-colors hover:bg-black/[0.02]"
+                        >
+                          Learn More About Digital Twin Strategy
+                        </button>
                       </div>
-                    ))}
+                    </div>
                   </div>
-                )}
+                </div>
               </div>
+            ) : (
+              <form onSubmit={handleGenerate} className="mx-auto mt-8 w-full max-w-2xl">
+                <div className="flex items-center gap-2 rounded-2xl bg-white p-2 shadow-[0_4px_32px_rgba(0,0,0,0.10)] ring-1 ring-black/[0.06]">
+                  <input
+                    type="text"
+                    value={url}
+                    onChange={(e) => setUrl(e.target.value)}
+                    placeholder="https://yourorganization.com"
+                    required
+                    className="min-w-0 flex-1 bg-transparent px-3 py-2.5 text-base text-[#222] placeholder-[#aaa] outline-none"
+                  />
+                  <button
+                    type="submit"
+                    className="flex shrink-0 items-center gap-2 rounded-xl bg-[#ca3726] px-5 py-2.5 text-sm font-semibold text-white transition-opacity hover:opacity-90"
+                  >
+                    Analyze My Organization
+                    <ArrowUpRight className="h-4 w-4" />
+                  </button>
+                </div>
 
-              {pageState === "error" && errorMessage && (
-                <p className="mt-3 text-sm text-[#ca3726]">{errorMessage}</p>
+                <div className="mt-3 overflow-hidden rounded-xl border border-black/[0.07] bg-white/80 text-left backdrop-blur-sm">
+                  <button
+                    type="button"
+                    onClick={() => setContextExpanded(!contextExpanded)}
+                    className="flex w-full items-center justify-between px-5 py-3.5 transition-colors hover:bg-black/[0.015]"
+                  >
+                    <span className="text-xs font-medium text-[#777]">
+                      Optional: add context to sharpen the analysis
+                    </span>
+                    {contextExpanded
+                      ? <ChevronUp className="h-4 w-4 text-[#aaa]" />
+                      : <ChevronDown className="h-4 w-4 text-[#aaa]" />}
+                  </button>
+
+                  {contextExpanded && (
+                    <div className="grid gap-3 border-t border-black/[0.06] px-5 pb-5 pt-4 sm:grid-cols-2">
+                      {[
+                        { id: "org-name",     label: "Organization name",               value: orgName,            setter: setOrgName,            placeholder: "ACME Foundation" },
+                        { id: "industry",     label: "Industry or sector",               value: industry,           setter: setIndustry,           placeholder: "Healthcare, nonprofit..." },
+                        { id: "competitors",  label: "Known competitors",                value: competitors,        setter: setCompetitors,        placeholder: "Organization A, Organization B..." },
+                        { id: "strategic-q",  label: "A question you are working through", value: strategicQuestion, setter: setStrategicQuestion, placeholder: "What are we trying to figure out right now?" },
+                      ].map(({ id, label, value, setter, placeholder }) => (
+                        <div key={id}>
+                          <label htmlFor={id} className="mb-1 block text-xs text-[#888]">{label}</label>
+                          <input
+                            id={id}
+                            type="text"
+                            value={value}
+                            onChange={(e) => setter(e.target.value)}
+                            placeholder={placeholder}
+                            className="w-full rounded-lg border border-black/[0.07] bg-[#f8fafc] px-3 py-2 text-sm text-[#222] placeholder-[#bbb] outline-none transition-colors focus:border-[#ca3726]"
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                {pageState === "error" && errorMessage && (
+                  <p className="mt-3 text-sm text-[#ca3726]">{errorMessage}</p>
+                )}
+
+                {process.env.NEXT_PUBLIC_EVENT_MODE === "true" && (
+                  <p className="mt-3 text-center text-xs text-[#aaa]">
+                    Strategic Snapshot is available as a complimentary resource for participants in today&apos;s event
+                  </p>
+                )}
+
+                <p className="mt-2 text-center text-xs text-[#aaa]">
+                  Based entirely on publicly available information
+                </p>
+              </form>
+            )}
+          </div>
+        </section>
+      )}
+
+      {/* ── Capacity (global event cap reached) ─────────── */}
+      {pageState === "capacity" && (
+        <section className="relative flex min-h-screen flex-col overflow-hidden">
+          <div className="absolute inset-0 z-0 overflow-hidden">
+            <InteractiveGridPattern
+              width={56}
+              height={56}
+              squares={[40, 28]}
+              className="h-full w-full min-h-full min-w-full"
+              squaresClassName="stroke-black/[0.014]"
+            />
+          </div>
+
+          <div className="relative z-[1] mx-auto flex w-full max-w-6xl flex-1 flex-col items-center justify-center px-4 py-28 text-center sm:px-6 lg:px-8">
+            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-black/[0.07] bg-white/70 px-4 py-1.5 text-xs font-medium text-[#555] shadow-sm backdrop-blur-sm">
+              <Sparkles className="h-3 w-3 text-[#ca3726]" aria-hidden />
+              BBTx Strategic Analysis
+            </div>
+
+            <h1 className="text-[2.2rem] font-semibold leading-[1.06] tracking-tighter text-[#111] sm:text-[3.2rem] lg:text-[4rem]">
+              Strategic Snapshot is at capacity
+              <br className="hidden sm:block" />
+              {" "}<span
+                className="font-normal italic text-[#ca3726]"
+                style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}
+              >
+                for today&apos;s event
+              </span>
+            </h1>
+
+            <p className="mx-auto mt-5 max-w-xl text-base leading-relaxed text-[#555] sm:text-lg">
+              We&apos;d still love to learn about your organization and continue the conversation
+            </p>
+
+            <div className="mx-auto mt-8 w-full max-w-md rounded-2xl bg-white p-6 shadow-[0_4px_32px_rgba(0,0,0,0.10)] ring-1 ring-black/[0.06] text-left">
+              {!capacityEmailSent ? (
+                <>
+                  <p className="text-sm font-semibold text-[#111]">Stay in the loop</p>
+                  <p className="mt-1.5 text-xs leading-relaxed text-[#888]">
+                    Leave your email and we&apos;ll reach out about Digital Twin Strategy
+                  </p>
+                  <form onSubmit={handleCapacityEmailSubmit} className="mt-4 flex gap-2">
+                    <input
+                      type="email"
+                      value={capacityEmail}
+                      onChange={(e) => setCapacityEmail(e.target.value)}
+                      placeholder="Your email"
+                      required
+                      className="min-w-0 flex-1 rounded-lg border border-black/[0.07] bg-[#f8fafc] px-3.5 py-2.5 text-sm text-[#222] placeholder-[#bbb] outline-none transition-colors focus:border-[#ca3726]"
+                    />
+                    <button
+                      type="submit"
+                      className="shrink-0 rounded-lg bg-[#111] px-4 py-2.5 text-sm font-medium text-white transition-opacity hover:opacity-80"
+                    >
+                      Submit
+                    </button>
+                  </form>
+                </>
+              ) : (
+                <div className="py-2 text-center">
+                  <p className="text-sm font-semibold text-[#111]">Got it. We&apos;ll be in touch.</p>
+                  <p className="mt-1.5 text-xs text-[#888]">Thank you for your interest in Digital Twin Strategy</p>
+                </div>
               )}
-
-              <p className="mt-3 text-center text-xs text-[#aaa]">
-                Based entirely on publicly available information
-              </p>
-            </form>
+            </div>
           </div>
         </section>
       )}
@@ -1048,7 +1231,7 @@ export default function DigitalTwinSnapshotPage() {
         </div>
       )}
 
-      {pageState !== "loading" && <Footer />}
+      {pageState !== "loading" && pageState !== "capacity" && <Footer />}
     </div>
   );
 }
