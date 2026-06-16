@@ -1,5 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
+import { renderToBuffer } from "@react-pdf/renderer";
+import React from "react";
 import { getResend } from "@/lib/resend";
+import { SnapshotPDF, type SnapshotForPDF } from "@/lib/emails/snapshot-pdf";
+import { buildSnapshotUserEmail } from "@/lib/emails/snapshot-user-email";
 
 // ── Rate limiting ──────────────────────────────────────────
 const emailIpStore = new Map<string, { count: number; resetAt: number }>();
@@ -32,34 +36,70 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const { email, name, websiteUrl, timestamp } = (await req.json()) as {
+    const { email, name, websiteUrl, timestamp, snapshot } = (await req.json()) as {
       email?: string;
       name?: string;
       websiteUrl?: string;
       timestamp?: string;
+      snapshot?: SnapshotForPDF;
     };
 
     if (!email || typeof email !== "string" || email.length > 320 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       return NextResponse.json({ error: "Valid email is required" }, { status: 400 });
     }
 
-    // Log payload cleanly for debugging / future CRM integration
-    console.log("[digital-twin-email]", {
-      email,
-      name: name || "(not provided)",
-      websiteUrl: websiteUrl || "(not provided)",
-      timestamp: timestamp || new Date().toISOString(),
-    });
-
-    // Notify Grant
-    const notifyTo = process.env.GRANT_NOTIFICATION_EMAIL;
     const notifyFrom = process.env.RESEND_FROM_EMAIL;
+    const notifyTo   = process.env.GRANT_NOTIFICATION_EMAIL;
 
-    if (notifyTo && notifyFrom) {
+    if (!notifyFrom) {
+      console.warn("[digital-twin-email] RESEND_FROM_EMAIL not set");
+      return NextResponse.json({ success: true });
+    }
+
+    const orgName = snapshot
+      ? snapshot.snapshotTitle.replace(/^Strategic Snapshot:\s*/i, "") || snapshot.snapshotTitle
+      : (websiteUrl ?? "Your Organization");
+
+    const generatedAt = timestamp
+      ? new Date(timestamp).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })
+      : new Date().toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
+
+    const resend = getResend();
+
+    // ── Generate PDF and send to submitter ──────────────
+    if (snapshot) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const pdfBuffer = await renderToBuffer(
+        React.createElement(SnapshotPDF, {
+          snapshot,
+          websiteUrl: websiteUrl ?? "",
+          generatedAt,
+        }) as any
+      );
+
+      const safeOrgSlug = orgName.toLowerCase().replace(/[^a-z0-9]+/g, "-").slice(0, 40);
+      const filename = `strategic-snapshot-${safeOrgSlug}.pdf`;
+
+      await resend.emails.send({
+        from: notifyFrom,
+        to: email,
+        subject: `Your Strategic Snapshot — ${orgName}`,
+        html: buildSnapshotUserEmail({ name, orgName, websiteUrl: websiteUrl ?? "" }),
+        attachments: [
+          {
+            filename,
+            content: Buffer.from(pdfBuffer),
+          },
+        ],
+      });
+    }
+
+    // ── Notify Grant ─────────────────────────────────────
+    if (notifyTo) {
       const displayName = name ? `${name} (${email})` : email;
-      const analyzedUrl = websiteUrl || "not provided";
+      const analyzedUrl = websiteUrl ?? "not provided";
 
-      await getResend().emails.send({
+      await resend.emails.send({
         from: notifyFrom,
         to: notifyTo,
         subject: `Digital Twin Snapshot — Email Capture: ${displayName}`,
@@ -70,7 +110,7 @@ export async function POST(req: NextRequest) {
             <table style="width: 100%; border-collapse: collapse; font-size: 15px;">
               <tr>
                 <td style="padding: 10px 0; border-bottom: 1px solid #eee; color: #555; width: 140px;">Name</td>
-                <td style="padding: 10px 0; border-bottom: 1px solid #eee;">${name || "—"}</td>
+                <td style="padding: 10px 0; border-bottom: 1px solid #eee;">${name ?? "—"}</td>
               </tr>
               <tr>
                 <td style="padding: 10px 0; border-bottom: 1px solid #eee; color: #555;">Email</td>
@@ -82,7 +122,7 @@ export async function POST(req: NextRequest) {
               </tr>
               <tr>
                 <td style="padding: 10px 0; color: #555;">Submitted</td>
-                <td style="padding: 10px 0;">${timestamp ? new Date(timestamp).toLocaleString("en-US", { timeZone: "America/New_York", dateStyle: "full", timeStyle: "short" }) : "—"}</td>
+                <td style="padding: 10px 0;">${generatedAt}</td>
               </tr>
             </table>
           </div>
@@ -90,10 +130,11 @@ export async function POST(req: NextRequest) {
       });
     }
 
+    console.log("[digital-twin-email] sent", { email, orgName, websiteUrl, generatedAt });
     return NextResponse.json({ success: true });
+
   } catch (error) {
     console.error("[digital-twin-email]", error);
-    // Still return 200 — log it, but don't block the user experience
     return NextResponse.json({ success: true });
   }
 }

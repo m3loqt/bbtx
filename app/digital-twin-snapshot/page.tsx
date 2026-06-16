@@ -352,6 +352,7 @@ export default function DigitalTwinSnapshotPage() {
           name:       emailName || undefined,
           websiteUrl: url,
           timestamp:  new Date().toISOString(),
+          snapshot,
         }),
       });
     } catch { /* intentional */ }
