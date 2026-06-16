@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import { Nav } from "@/app/components/Nav";
 import { Footer } from "@/app/components/Footer";
 import { ArrowUpRight } from "@/app/components/ArrowIcon";
-import { Sparkles, ChevronDown, ChevronUp, Check, Globe, Search, Cpu } from "lucide-react";
+import { Sparkles, ChevronDown, ChevronUp, Check, Globe, Search, Cpu, Info } from "lucide-react";
 import { InteractiveGridPattern } from "@/components/ui/interactive-grid-pattern";
 
 // ── Types ──────────────────────────────────────────────────
@@ -176,6 +176,69 @@ function HorizontalBarChart({
   );
 }
 
+// ── Evidence quality ───────────────────────────────────────
+
+interface EvidenceQualityResult {
+  level: "High" | "Moderate" | "Limited";
+  totalSources: number;
+  websitePages: number;
+  externalSources: number;
+  websitePageLabels: string[];
+  externalSourceLabels: string[];
+}
+
+function calculateEvidenceQuality(
+  sourcesUsed: string[] | undefined,
+  fetchSucceeded: boolean
+): EvidenceQualityResult {
+  const empty: EvidenceQualityResult = {
+    level: "Limited",
+    totalSources: 0,
+    websitePages: 0,
+    externalSources: 0,
+    websitePageLabels: [],
+    externalSourceLabels: [],
+  };
+  if (!sourcesUsed || sourcesUsed.length === 0) return empty;
+
+  const websitePageLabels = sourcesUsed.filter(
+    (s) => s.startsWith("Homepage") || /^\/[a-z]/i.test(s)
+  );
+  const externalSourceLabels = sourcesUsed.filter(
+    (s) => !websitePageLabels.includes(s)
+  );
+  const websiteCount = websitePageLabels.length;
+  const externalCount = externalSourceLabels.length;
+
+  let level: "High" | "Moderate" | "Limited";
+  if (websiteCount >= 4 && externalCount >= 2) {
+    level = "High";
+  } else if ((fetchSucceeded || websiteCount >= 1) && externalCount >= 1) {
+    level = "Moderate";
+  } else {
+    level = "Limited";
+  }
+
+  return {
+    level,
+    totalSources: sourcesUsed.length,
+    websitePages: websiteCount,
+    externalSources: externalCount,
+    websitePageLabels,
+    externalSourceLabels,
+  };
+}
+
+function formatSourceLabel(label: string): string {
+  const clean = label.replace(/\s*\([^)]+\)\s*$/, "").trim();
+  if (clean.startsWith("/")) {
+    return (
+      clean.slice(1).replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase()) || "Page"
+    );
+  }
+  return clean;
+}
+
 // ── Main page ──────────────────────────────────────────────
 
 export default function DigitalTwinSnapshotPage() {
@@ -193,7 +256,6 @@ export default function DigitalTwinSnapshotPage() {
   const [emailValue, setEmailValue]       = useState("");
   const [emailName, setEmailName]         = useState("");
   const [emailSent, setEmailSent]         = useState(false);
-  const [screenshotError, setScreenshotError] = useState(false);
   const [displayedPhrase, setDisplayedPhrase] = useState("Starting the analysis...");
   const [phraseVisible, setPhraseVisible]     = useState(true);
   const resultsRef                        = useRef<HTMLDivElement>(null);
@@ -212,7 +274,6 @@ export default function DigitalTwinSnapshotPage() {
     setSnapshot(null);
     setErrorMessage(null);
     setEmailSent(false);
-    setScreenshotError(false);
     setDisplayedPhrase("Starting the analysis...");
     setPhraseVisible(true);
 
@@ -489,7 +550,14 @@ export default function DigitalTwinSnapshotPage() {
                 )}
               </div>
 
-              <p className="mt-8 text-xs text-[#ccc]">This typically takes 20–40 seconds</p>
+              <div className="mt-8 rounded-xl border border-black/[0.07] bg-white px-4 py-3">
+                <div className="flex items-start gap-2.5">
+                  <Info className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#ccc]" />
+                  <p className="text-xs leading-relaxed text-[#aaa]">
+                    Reviewing public signals, market context, and strategic patterns. Most analyses are ready in about a minute.
+                  </p>
+                </div>
+              </div>
             </div>
           </section>
         </>
@@ -502,35 +570,17 @@ export default function DigitalTwinSnapshotPage() {
           {/* Header */}
           <section className="border-b border-black/[0.05] bg-[#f8fafc] px-4 pb-14 pt-28 sm:px-6 sm:pb-16 sm:pt-32 lg:px-8">
             <div className="mx-auto max-w-5xl">
-              <div className="flex items-start gap-6">
-                {!screenshotError && (
-                  <div className="hidden shrink-0 overflow-hidden rounded-xl border border-black/[0.07] shadow-sm sm:block">
-                    <img
-                      src={`https://image.thum.io/get/width/400/crop/250/${encodeURIComponent(url)}`}
-                      alt={`Screenshot of ${url}`}
-                      width={160}
-                      height={100}
-                      className="block h-[100px] w-[160px] object-cover"
-                      onError={() => setScreenshotError(true)}
-                    />
-                  </div>
-                )}
+              <div className="flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
+                {/* Left: identity */}
                 <div className="min-w-0 flex-1">
-                  <div className="flex flex-wrap items-center gap-3">
-                    <div className="inline-flex items-center gap-2 rounded-full border border-black/[0.07] bg-white px-3 py-1 text-xs font-medium text-[#777] shadow-sm">
-                      <Sparkles className="h-3 w-3 text-[#ca3726]" />
-                      Strategic Snapshot
-                    </div>
-                    {snapshot.sourcesUsed && (
-                      <span className="text-xs text-[#bbb]">
-                        {snapshot.sourcesUsed.length} sources analyzed
-                      </span>
-                    )}
+                  <div className="inline-flex items-center gap-2 rounded-full border border-black/[0.07] bg-white px-3 py-1 text-xs font-medium text-[#777] shadow-sm">
+                    <Sparkles className="h-3 w-3 text-[#ca3726]" />
+                    Strategic Snapshot
                   </div>
                   <h2 className="mt-4 text-2xl font-semibold leading-tight tracking-tighter text-[#111] sm:text-3xl lg:text-[2.4rem]">
-                    {snapshot.snapshotTitle}
+                    {snapshot.snapshotTitle.replace(/^Strategic Snapshot:\s*/i, "") || snapshot.snapshotTitle}
                   </h2>
-                  <p className="mt-1.5 text-sm text-[#aaa]">{url}</p>
+                  <p className="mt-2 text-sm text-[#aaa]">Analysis based on publicly available information</p>
                   {!fetchSucceeded && (
                     <div className="mt-5 rounded-xl border border-[#ca3726]/15 bg-[#ca3726]/[0.04] px-5 py-4">
                       <p className="text-sm leading-relaxed text-[#ca3726]/80">
@@ -539,6 +589,8 @@ export default function DigitalTwinSnapshotPage() {
                     </div>
                   )}
                 </div>
+                {/* Right: Evidence Quality card */}
+                <EvidenceQualityCard sources={snapshot.sourcesUsed} fetchSucceeded={fetchSucceeded} />
               </div>
             </div>
           </section>
@@ -576,19 +628,10 @@ export default function DigitalTwinSnapshotPage() {
                 </h3>
 
                 <div className="mt-8 space-y-7">
-                  <div>
-                    <p className="mb-2 text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-[#bbb]">
-                      What the evidence suggests
-                    </p>
-                    <p className="text-base leading-relaxed text-[#444] sm:text-lg">
-                      {snapshot.throughTheLensOfYourQuestion.whatPublicDataSuggests}
-                    </p>
-                  </div>
-
                   {(snapshot.throughTheLensOfYourQuestion.relevantEvidence ?? []).length > 0 && (
                     <div>
                       <p className="mb-3 text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-[#bbb]">
-                        Relevant observations
+                        Relevant Signals
                       </p>
                       <ul className="space-y-2.5">
                         {(snapshot.throughTheLensOfYourQuestion.relevantEvidence ?? []).map((e, i) => (
@@ -604,7 +647,7 @@ export default function DigitalTwinSnapshotPage() {
                   {(snapshot.throughTheLensOfYourQuestion.embeddedAssumptions ?? []).length > 0 && (
                     <div>
                       <p className="mb-3 text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-[#bbb]">
-                        Assumptions worth examining
+                        Potential Assumptions
                       </p>
                       <ul className="space-y-2.5">
                         {(snapshot.throughTheLensOfYourQuestion.embeddedAssumptions ?? []).map((a, i) => (
@@ -617,9 +660,18 @@ export default function DigitalTwinSnapshotPage() {
                     </div>
                   )}
 
+                  <div>
+                    <p className="mb-2 text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-[#bbb]">
+                      What the Evidence Suggests
+                    </p>
+                    <p className="text-base leading-relaxed text-[#444] sm:text-lg">
+                      {snapshot.throughTheLensOfYourQuestion.whatPublicDataSuggests}
+                    </p>
+                  </div>
+
                   <div className="rounded-xl border border-[#ca3726]/15 bg-[#ca3726]/[0.04] px-5 py-4">
                     <p className="mb-1.5 text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-[#ca3726]/60">
-                      What this cannot answer
+                      What Cannot Be Determined
                     </p>
                     <p className="text-sm leading-relaxed text-[#555]">
                       {snapshot.throughTheLensOfYourQuestion.whatRequiresInternalAccess}
@@ -888,11 +940,8 @@ export default function DigitalTwinSnapshotPage() {
             <div className="mx-auto max-w-5xl">
               {(snapshot.investigateFurther ?? []).length > 0 && (
                 <div className="mb-8 rounded-2xl border border-black/[0.07] bg-[#f8fafc] px-6 py-6">
-                  <p className="mb-1 text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-[#bbb]">
-                    To go further
-                  </p>
                   <p className="mb-5 text-base font-semibold leading-snug text-[#111]">
-                    These questions cannot be answered from public information alone
+                    To validate these hypotheses, we would want to understand:
                   </p>
                   <ul className="space-y-4">
                     {(snapshot.investigateFurther ?? []).slice(0, 3).map((item, i) => (
@@ -905,6 +954,12 @@ export default function DigitalTwinSnapshotPage() {
                       </li>
                     ))}
                   </ul>
+                  <p className="mt-5 text-sm text-[#666]">
+                    These questions cannot be answered through public information alone.
+                  </p>
+                  <p className="mt-1.5 text-sm leading-relaxed text-[#999]">
+                    They require internal interviews, operational review, leadership conversations, and organizational context.
+                  </p>
                 </div>
               )}
 
@@ -1022,5 +1077,84 @@ function ReportSection({
         <div className="mt-7">{children}</div>
       </div>
     </section>
+  );
+}
+
+// ── Evidence Quality card ──────────────────────────────────
+
+function EvidenceQualityCard({
+  sources,
+  fetchSucceeded,
+}: {
+  sources: string[] | undefined;
+  fetchSucceeded: boolean;
+}) {
+  const [expanded, setExpanded] = useState(false);
+  const quality = calculateEvidenceQuality(sources, fetchSucceeded);
+
+  return (
+    <div className="shrink-0 rounded-xl border border-black/[0.08] bg-white px-5 py-4 sm:w-52">
+      <p className="text-[0.6rem] font-semibold uppercase tracking-[0.18em] text-[#aaa]">
+        Evidence Quality
+      </p>
+      <p className="mt-1.5 text-base font-semibold text-[#111]">{quality.level}</p>
+      <div className="mt-3 space-y-1 border-t border-black/[0.05] pt-3">
+        <p className="text-xs text-[#888]">{quality.totalSources} Sources</p>
+        <p className="text-xs text-[#888]">{quality.websitePages} Website Pages</p>
+        <p className="text-xs text-[#888]">{quality.externalSources} External Sources</p>
+      </div>
+      {sources && sources.length > 0 && (
+        <>
+          <button
+            type="button"
+            onClick={() => setExpanded(!expanded)}
+            className="mt-3 flex items-center gap-1 text-[0.65rem] font-medium text-[#aaa] transition-colors hover:text-[#777]"
+          >
+            {expanded ? "Hide Sources" : "View Sources"}
+            {expanded ? (
+              <ChevronUp className="h-3 w-3" />
+            ) : (
+              <ChevronDown className="h-3 w-3" />
+            )}
+          </button>
+          {expanded && (
+            <div className="mt-3 space-y-3 border-t border-black/[0.05] pt-3">
+              {quality.websitePageLabels.length > 0 && (
+                <div>
+                  <p className="mb-1.5 text-[0.6rem] font-semibold uppercase tracking-[0.15em] text-[#bbb]">
+                    Website Pages
+                  </p>
+                  <ul className="space-y-1">
+                    {quality.websitePageLabels.map((label, i) => (
+                      <li key={i} className="flex items-start gap-1.5">
+                        <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-[#ddd]" />
+                        <span className="text-[0.7rem] leading-snug text-[#888]">
+                          {formatSourceLabel(label)}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+              {quality.externalSourceLabels.length > 0 && (
+                <div>
+                  <p className="mb-1.5 text-[0.6rem] font-semibold uppercase tracking-[0.15em] text-[#bbb]">
+                    External Research
+                  </p>
+                  <ul className="space-y-1">
+                    {quality.externalSourceLabels.map((label, i) => (
+                      <li key={i} className="flex items-start gap-1.5">
+                        <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-[#ddd]" />
+                        <span className="text-[0.7rem] leading-snug text-[#888]">{label}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
+          )}
+        </>
+      )}
+    </div>
   );
 }

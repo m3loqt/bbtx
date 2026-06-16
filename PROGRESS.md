@@ -210,6 +210,23 @@ Each includes: hero, process overview, benefits/deliverables, service-specific F
 
 ---
 
+## Digital Twin Snapshot — UX Notes
+
+### Current loading experience
+Research phase (page fetch + web searches) runs first and completes fast. The Claude API call is the single long bottleneck (~15–20 seconds, full JSON at once). Current flow: loading screen → result render.
+
+### Implemented
+- Loading screen with animated phrases + step-by-step progress log
+- When "Generating strategic analysis" step fires (all research done), loading screen transitions to:
+  - Real report header (org name + skeleton Evidence Quality card)
+  - Skeleton section placeholders for all 7 report sections
+- When JSON arrives, full report replaces skeletons instantly
+
+### Long-term fix (not yet implemented)
+**Stream sections progressively.** Instead of waiting for one large JSON blob, restructure the API to emit individual sections as they complete (Claude streaming + partial JSON parsing, or section-by-section prompts). This eliminates the "wait then pop" pattern entirely — each section renders as it finishes. Requires significant API refactor.
+
+---
+
 ## Known Gaps for Next Steps
 
 ### High Priority

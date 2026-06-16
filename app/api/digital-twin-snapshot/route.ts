@@ -400,7 +400,7 @@ VOICE:
 
         const message = await anthropic.messages.create({
           model: MODEL,
-          max_tokens: 6000,
+          max_tokens: 8000,
           messages: [{ role: "user", content: prompt }],
         });
 

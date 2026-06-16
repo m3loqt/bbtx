@@ -175,9 +175,9 @@ export default function OrganizationalAssessmentPage() {
       <Nav />
 
       {/* 1. Hero */}
-      <section className="relative z-[1] flex min-h-[calc(100vh-3.5rem)] w-full flex-col bg-[#f7f7f7] pt-14 sm:min-h-screen sm:pt-20">
+      <section className="relative z-[1] w-full bg-[#f7f7f7]">
         <div className="pointer-events-none absolute inset-0 z-0 opacity-60" style={gridBg} aria-hidden />
-        <div className="relative z-[1] flex flex-1 flex-col justify-end px-4 pb-10 pt-6 sm:px-6 sm:pt-0 lg:px-8 lg:pb-14">
+        <div className="relative z-[1] px-4 pb-10 pt-28 sm:px-6 sm:pt-32 lg:px-8 lg:pb-14">
           <p className="mb-6 text-xs font-semibold uppercase tracking-[0.22em] text-[#555555]/60 sm:text-sm">
             Organizational Assessment & Analysis
           </p>
@@ -216,8 +216,10 @@ export default function OrganizationalAssessmentPage() {
           </div>
         </div>
 
-        <div className="relative z-[1] h-[32vh] w-full overflow-hidden sm:h-[38vh]">
-          <img src="/serv1.png" alt="" className="h-full w-full object-cover object-top" />
+        <div className="relative z-[1] px-4 pb-8 sm:px-6 lg:px-8 lg:pb-10">
+          <div className="h-[58vh] w-full overflow-hidden rounded-2xl sm:h-[75vh]">
+            <img src="/serv1.png" alt="" className="h-full w-full object-cover object-top" />
+          </div>
         </div>
       </section>
 

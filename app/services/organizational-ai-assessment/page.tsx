@@ -76,9 +76,9 @@ export default function OrganizationalAIAssessmentPage() {
       <Nav />
 
       {/* 1. Hero — light top with headline + grid, full-width image bottom half */}
-      <section className="relative z-[1] flex min-h-[calc(100vh-3.5rem)] w-full flex-col bg-[#f7f7f7] pt-14 sm:min-h-screen sm:pt-20">
+      <section className="relative z-[1] w-full bg-[#f7f7f7]">
         <div className="pointer-events-none absolute inset-0 z-0 opacity-60" style={gridBg} aria-hidden />
-        <div className="relative z-[1] flex flex-1 flex-col justify-end px-4 pb-10 pt-6 sm:pt-0 sm:px-6 lg:px-8 lg:pb-14">
+        <div className="relative z-[1] px-4 pb-10 pt-28 sm:px-6 sm:pt-32 lg:px-8 lg:pb-14">
           <p className="mb-6 text-xs font-semibold uppercase tracking-[0.22em] text-[#555555]/60 sm:text-sm">
             Organizational AI Assessment
           </p>
@@ -92,7 +92,7 @@ export default function OrganizationalAIAssessmentPage() {
             Across most small and mid-size organizations, AI is being used across departments, functions, and teams, informally, inconsistently, and without oversight. Before you build a strategy, you need a clear picture of what's already in motion.
           </p>
         </div>
-        <div className="relative z-[1] h-[32vh] w-full overflow-hidden sm:h-[38vh]">
+        <div className="relative z-[1] h-[58vh] w-full overflow-hidden sm:h-[75vh]">
           <img src="/service.png" alt="" className="h-full w-full object-cover" />
         </div>
       </section>
