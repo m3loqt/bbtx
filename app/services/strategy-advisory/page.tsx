@@ -178,8 +178,8 @@ export default function StrategyAdvisoryPage() {
           </div>
         </div>
         <div className="relative z-[1] px-4 pb-8 pt-8 sm:px-6 lg:px-8 lg:pb-10">
-          <div className="h-[50vh] w-full overflow-hidden rounded-2xl border border-black/[0.06] shadow-[0_2px_18px_rgba(0,0,0,0.04)] sm:h-[60vh]">
-            <img src="/serv2.png" alt="" className="h-full w-full object-cover object-top" />
+          <div className="relative h-[50vh] w-full overflow-hidden rounded-2xl border border-black/[0.06] shadow-[0_2px_18px_rgba(0,0,0,0.04)] sm:h-[60vh]">
+            <Image src="/serv2.png" alt="" fill sizes="100vw" className="object-cover object-top" />
           </div>
         </div>
       </section>
@@ -371,7 +371,7 @@ export default function StrategyAdvisoryPage() {
       <section className="relative z-[1] bg-[#f7f7f7]">
         <div className="relative z-[1] w-full px-4 py-8 sm:px-6 lg:px-8 lg:py-10">
           <div className="relative w-full overflow-hidden rounded-xl border border-white/20 bg-[#ca3726] shadow-[0_4px_24px_rgba(202,55,38,0.25)] sm:rounded-2xl">
-            <img src="/servicce.png" alt="" className="absolute inset-0 h-full w-full object-cover" aria-hidden />
+            <Image src="/servicce.png" alt="" fill sizes="100vw" className="object-cover" aria-hidden />
             <div className="pointer-events-none absolute inset-0 z-0 bg-[#ca3726]/40" aria-hidden />
             <div className="relative z-[1] w-full px-6 py-16 text-center sm:px-10 sm:py-20 lg:px-16 lg:py-24">
               <h2 className="text-4xl font-medium leading-tight tracking-tight text-white sm:text-[2.75rem] md:text-5xl lg:text-5xl xl:text-6xl 2xl:text-[4rem]">
