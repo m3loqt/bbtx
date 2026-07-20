@@ -2,7 +2,6 @@
 
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
-import { createBrowserClient } from '@supabase/ssr'
 import {
   LayoutDashboard,
   FileText,
@@ -56,13 +55,8 @@ export function AdminSidebar() {
   const pathname = usePathname()
   const router = useRouter()
 
-  const supabase = createBrowserClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  )
-
   async function handleSignOut() {
-    await supabase.auth.signOut()
+    await fetch('/api/admin/logout', { method: 'POST' })
     router.push('/admin/login')
     router.refresh()
   }
@@ -76,7 +70,7 @@ export function AdminSidebar() {
     <Sidebar>
       <SidebarHeader className="p-4">
         <div className="flex items-center gap-2">
-          <span className="font-bold text-lg tracking-tight">BBTX</span>
+          <span className="font-bold text-lg tracking-normal">BBTX</span>
           <span className="text-xs font-medium px-1.5 py-0.5 rounded bg-secondary text-secondary-foreground">
             Admin
           </span>

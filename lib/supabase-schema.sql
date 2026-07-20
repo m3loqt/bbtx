@@ -1,3 +1,9 @@
+-- SUPERSEDED — kept for historical reference only.
+-- The app migrated from Supabase to Neon; see lib/neon-schema.sql for the
+-- current, live-verified schema. This file was also found to be stale
+-- relative to the real Supabase database at migration time (missing several
+-- assessment_submissions columns, missing the event_counters table entirely).
+--
 -- Run this SQL in your Supabase project dashboard under SQL Editor
 -- Create these tables before deploying Phase 2
 

@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import { createBrowserClient } from '@supabase/ssr'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -32,18 +31,14 @@ export default function AdminLoginPage() {
     resolver: zodResolver(loginSchema),
   })
 
-  const supabase = createBrowserClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  )
-
   async function onSubmit(values: LoginForm) {
     setServerError(null)
-    const { error } = await supabase.auth.signInWithPassword({
-      email: values.email,
-      password: values.password,
+    const res = await fetch('/api/admin/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(values),
     })
-    if (error) {
+    if (!res.ok) {
       setServerError('Invalid email or password')
       return
     }
@@ -58,7 +53,7 @@ export default function AdminLoginPage() {
           <CardHeader className="space-y-4 pb-4 pt-2">
             <div className="flex justify-center">
               <div className="flex items-center gap-2">
-                <span className="font-bold text-2xl tracking-tight">BBTX</span>
+                <span className="font-bold text-2xl tracking-normal">BBTX</span>
                 <span className="text-muted-foreground text-sm font-medium px-2 py-0.5 rounded-md bg-secondary">
                   Admin
                 </span>

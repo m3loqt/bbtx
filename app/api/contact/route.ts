@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
-import { supabase } from '@/lib/supabase'
+import { sql } from '@/lib/db'
 import { getResend } from '@/lib/resend'
 import { buildContactEmail } from '@/lib/emails/contact-notification'
 
@@ -58,18 +58,14 @@ export async function POST(req: NextRequest) {
 
     const inquiryValue = inquiry_type && inquiry_type.trim().length > 0 ? inquiry_type.trim() : null
 
-    // Insert into Supabase
-    const { error: dbError } = await supabase.from('contact_submissions').insert({
-      full_name: full_name.trim(),
-      email: email.trim().toLowerCase(),
-      inquiry_type: inquiryValue,
-      message: message.trim(),
-      status: 'new',
-      ip_address: ipAddress,
-    })
-
-    if (dbError) {
-      console.error('[contact] Supabase insert error:', dbError)
+    // Insert into the database
+    try {
+      await sql`
+        INSERT INTO contact_submissions (full_name, email, inquiry_type, message, status, ip_address)
+        VALUES (${full_name.trim()}, ${email.trim().toLowerCase()}, ${inquiryValue}, ${message.trim()}, 'new', ${ipAddress})
+      `
+    } catch (dbError) {
+      console.error('[contact] Database insert error:', dbError)
       return NextResponse.json(
         { error: 'Something went wrong. Please try again.' },
         { status: 500 }

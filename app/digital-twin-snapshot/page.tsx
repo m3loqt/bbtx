@@ -472,13 +472,12 @@ export default function DigitalTwinSnapshotPage() {
               BBTx Strategic Analysis
             </div>
 
-            <h1 className="text-[2.2rem] font-semibold leading-[1.06] tracking-tighter text-[#111] sm:text-[3.2rem] lg:text-[4rem]">
+            <h1 className="text-[2.2rem] font-semibold leading-[1.06] tracking-tight text-[#111] sm:text-[3.2rem] lg:text-[4rem]">
               See your organization
               <br className="hidden sm:block" />
               {" "}the way the market{" "}
               <span
-                className="font-normal italic text-[#ca3726]"
-                style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}
+                className="italic text-[#ca3726]"
               >
                 already does
               </span>
@@ -621,12 +620,11 @@ export default function DigitalTwinSnapshotPage() {
               BBTx Strategic Analysis
             </div>
 
-            <h1 className="text-[2.2rem] font-semibold leading-[1.06] tracking-tighter text-[#111] sm:text-[3.2rem] lg:text-[4rem]">
+            <h1 className="text-[2.2rem] font-semibold leading-[1.06] tracking-tight text-[#111] sm:text-[3.2rem] lg:text-[4rem]">
               Strategic Snapshot is at capacity
               <br className="hidden sm:block" />
               {" "}<span
-                className="font-normal italic text-[#ca3726]"
-                style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}
+                className="italic text-[#ca3726]"
               >
                 for today&apos;s event
               </span>
@@ -761,7 +759,7 @@ export default function DigitalTwinSnapshotPage() {
                     <Sparkles className="h-3 w-3 text-[#ca3726]" />
                     Strategic Snapshot
                   </div>
-                  <h2 className="mt-4 text-2xl font-semibold leading-tight tracking-tighter text-[#111] sm:text-3xl lg:text-[2.4rem]">
+                  <h2 className="mt-4 text-2xl font-semibold leading-tight tracking-tight text-[#111] sm:text-3xl lg:text-[2.4rem]">
                     {snapshot.snapshotTitle.replace(/^Strategic Snapshot:\s*/i, "") || snapshot.snapshotTitle}
                   </h2>
                   <p className="mt-2 text-sm text-[#aaa]">Analysis based on publicly available information</p>
@@ -807,7 +805,7 @@ export default function DigitalTwinSnapshotPage() {
                 <p className="mb-3 text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#ca3726]/50">
                   Through the Lens of Your Question
                 </p>
-                <h3 className="text-2xl font-semibold leading-tight tracking-tighter text-[#111] sm:text-3xl">
+                <h3 className="text-2xl font-semibold leading-tight tracking-tight text-[#111] sm:text-3xl">
                   &ldquo;{snapshot.throughTheLensOfYourQuestion.question}&rdquo;
                 </h3>
 
@@ -1029,7 +1027,7 @@ export default function DigitalTwinSnapshotPage() {
                 <p className="mb-3 text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-white/30">
                   Section 07
                 </p>
-                <h3 className="text-2xl font-semibold leading-tight tracking-tighter text-white sm:text-3xl">
+                <h3 className="text-2xl font-semibold leading-tight tracking-tight text-white sm:text-3xl">
                   If We Had To Bet
                 </h3>
                 <p className="mt-2 text-sm text-white/35">
@@ -1076,7 +1074,7 @@ export default function DigitalTwinSnapshotPage() {
               <p className="mb-3 text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#bbb]">
                 Section 08
               </p>
-              <h3 className="text-2xl font-semibold leading-tight tracking-tighter text-[#111] sm:text-3xl">
+              <h3 className="text-2xl font-semibold leading-tight tracking-tight text-[#111] sm:text-3xl">
                 What This Analysis Cannot See
               </h3>
               <p className="mt-3 max-w-2xl text-sm leading-relaxed text-[#aaa]">
@@ -1107,7 +1105,7 @@ export default function DigitalTwinSnapshotPage() {
               <p className="mb-3 text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#bbb]">
                 Section 09
               </p>
-              <h3 className="text-2xl font-semibold leading-tight tracking-tighter text-[#111] sm:text-3xl">
+              <h3 className="text-2xl font-semibold leading-tight tracking-tight text-[#111] sm:text-3xl">
                 A Suggested Next Step
               </h3>
               <p className="mt-5 max-w-2xl text-xl leading-relaxed text-[#444] sm:text-2xl">
@@ -1155,7 +1153,7 @@ export default function DigitalTwinSnapshotPage() {
                   </p>
                   {!emailSent ? (
                     <>
-                      <p className="mt-3 text-lg font-semibold leading-snug tracking-tight text-[#111]">
+                      <p className="mt-3 text-lg font-semibold leading-snug tracking-normal text-[#111]">
                         Get a copy of this analysis sent to your inbox
                       </p>
                       <p className="mt-2 text-sm leading-relaxed text-[#777]">
@@ -1200,7 +1198,7 @@ export default function DigitalTwinSnapshotPage() {
                   <p className="text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-white/40">
                     Full Digital Twin Strategy
                   </p>
-                  <p className="mt-3 text-lg font-semibold leading-snug tracking-tight text-white">
+                  <p className="mt-3 text-lg font-semibold leading-snug tracking-normal text-white">
                     This analysis surfaces what is visible from the outside
                   </p>
                   <p className="mt-3 flex-1 text-sm leading-relaxed text-white/55">
@@ -1255,7 +1253,7 @@ function ReportSection({
         <p className="mb-3 text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#bbb]">
           Section {number}
         </p>
-        <h3 className="text-2xl font-semibold leading-tight tracking-tighter text-[#111] sm:text-3xl">
+        <h3 className="text-2xl font-semibold leading-tight tracking-tight text-[#111] sm:text-3xl">
           {title}
         </h3>
         <div className="mt-7">{children}</div>

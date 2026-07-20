@@ -1,137 +1,192 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
-import { ArrowUpRight } from "@/app/components/ArrowIcon";
+import { SubscribeModal } from "@/app/components/SubscribeModal";
 
-const FOOTER_NAV = [
-  {
-    heading: "SERVICES",
-    links: [
-      { label: "AI Strategy and Roadmap", href: "/services/strategy-roadmap" },
-      { label: "Organizational AI Assessment", href: "/services/organizational-ai-assessment" },
-      { label: "AI Organizational Model", href: "/services/ai-organizational-model" },
-    ],
-  },
-  {
-    heading: "COMPANY",
-    links: [
-      { label: "About BBTx", href: "/about" },
-      { label: "Articles", href: "/blog" },
-      { label: "Community", href: "/community" },
-    ],
-  },
-  {
-    heading: "GET STARTED",
-    links: [
-      { label: "AI Readiness Assessment", href: "/assessment" },
-      { label: "Contact Us", href: "#" },
-      { label: "Privacy Policy", href: "#" },
-    ],
-  },
+const USEFUL_LINKS = [
+  { label: "About Us", href: "/about" },
+  { label: "Contact Us", action: "contact" as const },
+  { label: "FAQs", href: "/#faq" },
+  { label: "Terms of Service", href: "/terms" },
+  { label: "Privacy Policy", href: "/privacy" },
 ];
 
-export function Footer() {
+const SERVICES_LINKS = [
+  { label: "Organizational Assessment & Analysis", href: "/services/organizational-assessment" },
+  { label: "Strategy & Advisory Services", href: "/services/strategy-advisory" },
+  { label: "Leadership & Team Development", href: "/services/leadership-development" },
+  { label: "AI Integration & Innovation", href: "/services/ai-integration" },
+  { label: "Implementation & Change Support", href: "/services/implementation-support" },
+];
+
+const RESOURCES_LINKS = [
+  { label: "Digital Twin Snapshot", href: "/digital-twin-snapshot" },
+  { label: "Whitepapers", href: "/whitepapers" },
+  { label: "1:1 Coaching", href: "/coaching" },
+  { label: "Courses", href: "https://chaoticconfluence.gumroad.com/", external: true },
+  { label: "Articles", href: "https://chaoticconfluence.substack.com", external: true },
+  { label: "Subscribe", action: "subscribe" as const },
+];
+
+const SOCIAL_LINKS = [
+  { label: "Medium", href: "https://rgranttate.medium.com/" },
+  { label: "Substack", href: "https://chaoticconfluence.substack.com" },
+  { label: "LinkedIn", href: "https://linkedin.com/in/granttate" },
+];
+
+const ALL_LINKS_HREF = "/links";
+
+function FooterLinkGroup({
+  heading,
+  links,
+  onAction,
+}: {
+  heading: string;
+  links: { label: string; href?: string; external?: boolean; action?: "contact" | "subscribe" }[];
+  onAction: (action: "contact" | "subscribe") => void;
+}) {
   return (
-    <footer className="bg-[#222222] text-[#e8e8e8]">
-      <div className="w-full px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
-        {/* Top: logo + newsletter (left 60%), nav columns (right 40%) */}
-        <div className="grid gap-10 sm:grid-cols-1 lg:grid-cols-[6fr_4fr] lg:gap-16">
-          <div className="space-y-6">
-            <a href="/" className="flex items-center gap-2">
-              <Image
-                src="/node.png"
-                alt=""
-                width={32}
-                height={32}
-                className="h-8 w-8 object-contain opacity-90"
-              />
-              <span className="text-lg font-semibold tracking-tight text-white">
-                BBTx Consulting
-              </span>
-            </a>
-            <div>
-              <h3 className="text-xs font-semibold uppercase tracking-wider text-[#e8e8e8]">
-                Subscribe for our newsletter
-              </h3>
-              <form
-                className="mt-3 flex w-full max-w-[408px] items-center gap-2 sm:max-w-sm"
-                onSubmit={(e) => e.preventDefault()}
+    <div className="flex flex-col gap-2 lg:flex-row lg:gap-4">
+      <h3 className="shrink-0 text-[15px] font-semibold text-[#222222]">{heading}</h3>
+      <ul className="space-y-2.5">
+        {links.map((link) =>
+          link.action ? (
+            <li key={link.label}>
+              <button
+                type="button"
+                onClick={() => onAction(link.action!)}
+                className="text-left text-sm text-[#777777] transition-colors hover:text-[#222222]"
               >
-                <input
-                  type="email"
-                  placeholder="Email"
-                  className="min-w-0 flex-1 rounded-lg border border-[#444] bg-[#1a1a1a] px-4 py-3 text-sm text-white placeholder:text-[#888] focus:outline-none focus:ring-0"
-                  aria-label="Email for newsletter"
-                />
-                <button
-                  type="submit"
-                  className="flex h-11 w-11 shrink-0 items-center justify-center rounded-md bg-white text-[#222222] transition-opacity hover:opacity-90 sm:h-12 sm:w-12"
-                  aria-label="Subscribe"
-                >
-                  <ArrowUpRight className="h-5 w-5 sm:h-6 sm:w-6" />
-                </button>
-              </form>
-              <p className="mt-2 text-xs text-[#999]">
-                Your information is never disclosed to third parties.
-              </p>
-            </div>
-          </div>
-          <div className="grid grid-cols-2 gap-8 sm:grid-cols-3">
-            {FOOTER_NAV.map((col) => (
-              <div key={col.heading} className="text-left sm:text-right">
-                <h3 className="text-xs font-normal uppercase tracking-wider text-[#e8e8e8]">
-                  {col.heading}
-                </h3>
-                <ul className="mt-4 space-y-2">
-                  {col.links.map((link) => (
-                    <li key={link.label}>
-                      <a
-                        href={link.href}
-                        className="text-sm text-[#b8b8b8] transition-colors hover:text-white"
-                      >
-                        {link.label}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
+                {link.label}
+              </button>
+            </li>
+          ) : (
+            <li key={link.label}>
+              <a
+                href={link.href}
+                target={link.external ? "_blank" : undefined}
+                rel={link.external ? "noopener noreferrer" : undefined}
+                className="text-sm text-[#777777] transition-colors hover:text-[#222222]"
+              >
+                {link.label}
+              </a>
+            </li>
+          )
+        )}
+      </ul>
+    </div>
+  );
+}
+
+export function Footer() {
+  const [subscribeOpen, setSubscribeOpen] = useState(false);
+
+  const handleAction = (action: "contact" | "subscribe") => {
+    if (action === "contact") {
+      window.dispatchEvent(new Event("openContact"));
+    } else {
+      setSubscribeOpen(true);
+    }
+  };
+
+  return (
+    <footer className="bg-white text-[#222222]">
+      <div className="w-full px-4 py-20 sm:px-6 sm:py-24 lg:px-8 lg:py-32">
+        {/* Nav columns + subscribe */}
+        <div className="grid grid-cols-1 gap-14 sm:grid-cols-2 sm:gap-y-16 lg:grid-cols-4 lg:gap-10">
+          <FooterLinkGroup heading="Useful Links" links={USEFUL_LINKS} onAction={handleAction} />
+          <FooterLinkGroup heading="Services" links={SERVICES_LINKS} onAction={handleAction} />
+          <FooterLinkGroup heading="Resources" links={RESOURCES_LINKS} onAction={handleAction} />
+
+          <div>
+            <h3 className="text-[15px] font-semibold text-[#222222]">Subscribe</h3>
+            <p className="mt-2 text-sm text-[#777777]">Join our community to receive updates</p>
+            <form
+              className="mt-4 flex w-full max-w-sm items-center gap-2"
+              onSubmit={(e) => e.preventDefault()}
+            >
+              <input
+                type="email"
+                placeholder="Enter your email"
+                className="min-w-0 flex-1 rounded-full border border-black/10 bg-[#f7f7f7] px-4 py-2.5 text-sm text-[#222222] placeholder:text-[#999] focus:outline-none focus:ring-0"
+                aria-label="Email for newsletter"
+              />
+              <button
+                type="submit"
+                className="shrink-0 rounded-full bg-[#ca3726] px-4 py-2.5 text-sm font-medium text-white transition-opacity hover:opacity-95"
+              >
+                Subscribe
+              </button>
+            </form>
+            <p className="mt-2 text-xs text-[#999]">
+              By subscribing, you agree to our Privacy Policy.
+            </p>
           </div>
         </div>
 
-        {/* Bottom: copyright left, social links right; then legal; then design credit */}
-        <div className="mt-12 border-t border-[#333] pt-8 lg:mt-16 lg:pt-10">
-          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-            <span className="text-sm text-[#888]">
-              © BBTx Consulting {new Date().getFullYear()}, All Rights Reserved
+        {/* Divider */}
+        <div className="mt-16 border-t border-black/[0.08] lg:mt-20" />
+
+        {/* Wordmark + social logos */}
+        <div className="flex flex-col gap-6 pt-10 sm:flex-row sm:items-center sm:justify-between lg:pt-12">
+          <a href="/" className="flex items-center gap-2">
+            <Image
+              src="/oglogo.webp"
+              alt=""
+              width={32}
+              height={32}
+              className="h-8 w-8 object-contain"
+            />
+            <span className="text-lg font-semibold tracking-normal text-[#222222]">
+              BBTx Consulting
             </span>
-            <div className="flex items-center gap-3">
+          </a>
+          <div className="flex items-center gap-4">
+            {SOCIAL_LINKS.map((social) => (
               <a
-                href="#"
-                className="flex h-9 w-9 items-center justify-center rounded-full border border-[#555] text-[#b8b8b8] transition-colors hover:border-[#e8e8e8] hover:text-white"
-                aria-label="Facebook"
+                key={social.label}
+                href={social.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm font-medium text-[#777777] transition-colors hover:text-[#222222]"
               >
-                <span className="text-sm font-semibold">f</span>
+                {social.label}
               </a>
-              <a
-                href="#"
-                className="flex h-9 w-9 items-center justify-center rounded-full border border-[#555] text-[#b8b8b8] transition-colors hover:border-[#e8e8e8] hover:text-white"
-                aria-label="Instagram"
-              >
-                <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
-                  <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
-                </svg>
-              </a>
-            </div>
-          </div>
-          <div className="mt-6 flex flex-col gap-3 border-t border-[#333] pt-6 sm:flex-row sm:items-center sm:justify-between">
-            <p className="text-xs leading-relaxed text-[#888]">
-              We help organizations assess AI readiness, build strategy, and scale implementation for long-term value.
-            </p>
-            <p className="text-xs text-[#888] sm:text-sm sm:shrink-0">Designed by BBTx</p>
+            ))}
+            <a
+              href={ALL_LINKS_HREF}
+              className="text-sm font-medium text-[#ca3726] transition-colors hover:text-[#222222]"
+            >
+              All Links
+            </a>
           </div>
         </div>
+
+        {/* Divider */}
+        <div className="mt-10 border-t border-black/[0.08] lg:mt-12" />
+
+        {/* Legal links + copyright */}
+        <div className="flex flex-col gap-4 pt-8 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
+            <a href="/privacy" className="text-sm text-[#777777] transition-colors hover:text-[#222222]">
+              Privacy Policy
+            </a>
+            <a href="/terms" className="text-sm text-[#777777] transition-colors hover:text-[#222222]">
+              Terms of Service
+            </a>
+            <a href="/cookies" className="text-sm text-[#777777] transition-colors hover:text-[#222222]">
+              Cookie Policy
+            </a>
+          </div>
+          <span className="text-sm text-[#999999]">
+            © {new Date().getFullYear()} BBTx Consulting. All rights reserved.
+          </span>
+        </div>
       </div>
+
+      {/* "Contact Us" dispatches the global openContact event, handled by Nav's ContactModal */}
+      <SubscribeModal open={subscribeOpen} onClose={() => setSubscribeOpen(false)} />
     </footer>
   );
 }

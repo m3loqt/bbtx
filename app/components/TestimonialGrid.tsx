@@ -25,7 +25,7 @@ export function TestimonialGrid({
           key={t.name + t.company}
           className="flex flex-col rounded-xl border border-black/[0.06] bg-white p-5 shadow-[0_2px_12px_rgba(0,0,0,0.01)] sm:min-h-[300px] sm:p-6 lg:p-8"
         >
-          <blockquote className="text-lg font-normal leading-snug tracking-tight text-[#222222] sm:text-xl lg:text-2xl">
+          <blockquote className="text-lg font-normal leading-snug tracking-normal text-[#222222] sm:text-xl lg:text-2xl">
             &ldquo;{t.quote}&rdquo;
           </blockquote>
           <div className="mt-auto flex items-end gap-4 pt-6">

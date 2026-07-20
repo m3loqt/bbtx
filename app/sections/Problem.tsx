@@ -1,25 +1,21 @@
-import { AlertTriangle } from "lucide-react";
-
 export function Problem() {
   return (
     <section className="relative z-[1] w-full bg-white">
       <div className="relative z-[1] flex flex-col items-center justify-center px-4 py-20 text-center sm:px-6 sm:py-28 lg:px-8 lg:min-h-screen lg:py-32">
         <div className="w-full">
-          <p className="flex items-center justify-center gap-2 text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#555555]/60">
-            <AlertTriangle className="h-4 w-4 text-[#ca3726]" />
+          <p className="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#555555]/60">
             The Challenge We Solve
           </p>
-          <h2 className="mt-6 text-[2.2rem] font-medium leading-[1.1] tracking-tighter text-[#222222] sm:text-[3rem] lg:text-[3.6rem] xl:text-[4.4rem]">
+          <h2 className="mt-6 text-[2.2rem] font-medium leading-[1.1] tracking-tight text-[#222222] sm:text-[3rem] lg:text-[3.6rem] xl:text-[4.4rem]">
             AI is moving fast.
             <br />
             <span
-              className="font-normal italic"
-              style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}
+              className="italic"
             >
               Most organizations are still catching up.
             </span>
           </h2>
-          <p className="mx-auto mt-8 max-w-5xl text-xl leading-relaxed tracking-tight text-[#222222]/80 sm:max-w-6xl sm:text-2xl">
+          <p className="mx-auto mt-8 max-w-5xl text-xl leading-relaxed tracking-normal text-[#222222]/80 sm:max-w-6xl sm:text-2xl">
             The result is scattered initiatives, misaligned investments, and a workforce that&apos;s either
             overwhelmed or left behind. It&apos;s not a technology problem. It&apos;s a leadership and strategy
             problem.
@@ -57,7 +53,7 @@ export function Problem() {
                   />
                 </div>
                 <div className="flex flex-col gap-4 p-6 sm:p-7 lg:p-8">
-                  <h3 className="text-base font-semibold tracking-tight text-[#222222] sm:text-lg lg:text-xl">
+                  <h3 className="text-base font-semibold tracking-normal text-[#222222] sm:text-lg lg:text-xl">
                     {item.title}
                   </h3>
                   <p className="text-[15px] leading-relaxed text-[#4b5563] sm:text-[16px] lg:text-[16px]">

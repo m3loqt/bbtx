@@ -1,25 +1,14 @@
 import type { Metadata } from "next";
 import {
-  Inter,
-  Playfair_Display,
+  Familjen_Grotesk,
   Space_Mono,
   Fraunces,
-  DM_Sans, Geist } from "next/font/google";
+} from "next/font/google";
 import "./globals.css";
 
-const geist = Geist({subsets:['latin'],variable:'--font-sans'});
-
-const inter = Inter({
-  variable: "--font-inter",
+const familjenGrotesk = Familjen_Grotesk({
+  variable: "--font-sans",
   subsets: ["latin"],
-  display: "swap",
-});
-
-const playfair = Playfair_Display({
-  variable: "--font-playfair",
-  subsets: ["latin"],
-  weight: ["400"],
-  style: ["italic"],
   display: "swap",
 });
 
@@ -33,12 +22,8 @@ const spaceMono = Space_Mono({
 const fraunces = Fraunces({
   variable: "--font-fraunces",
   subsets: ["latin"],
-  display: "swap",
-});
-
-const dmSans = DM_Sans({
-  variable: "--font-dm-sans",
-  subsets: ["latin"],
+  weight: ["400"],
+  style: ["italic"],
   display: "swap",
 });
 
@@ -74,7 +59,7 @@ export const metadata: Metadata = {
       "BBTx helps leaders and organizations integrate AI with strategy, clarity, and confidence. AI consulting, organizational assessment, and implementation support.",
     images: [
       {
-        url: "/bbtxlog.png",
+        url: "/oglogo.webp",
         width: 1200,
         height: 630,
         alt: "BBTx AI Business Consulting",
@@ -86,7 +71,7 @@ export const metadata: Metadata = {
     title: "BBTx | AI Business Consulting",
     description:
       "Helping leaders and organizations integrate AI with strategy, clarity, and confidence.",
-    images: ["/bbtxlog.png"],
+    images: ["/oglogo.webp"],
   },
   icons: {
     icon: "/icon.png",
@@ -112,13 +97,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   const htmlClassName = [
-    inter.variable,
-    playfair.variable,
+    familjenGrotesk.variable,
     spaceMono.variable,
     fraunces.variable,
-    dmSans.variable,
     "font-sans",
-    geist.variable,
   ]
     .filter(Boolean)
     .join(" ")

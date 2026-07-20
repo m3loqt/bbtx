@@ -22,6 +22,8 @@ const CONTACT_PHONE = "+1 (434) 466-4655";
 type ContactModalProps = {
   open: boolean;
   onClose: () => void;
+  /** Pre-selects the inquiry type, e.g. when opened from a specific service page. */
+  defaultInquiry?: string;
 };
 
 type ContactFormData = {
@@ -41,28 +43,33 @@ const INQUIRY_OPTIONS = [
   "General Inquiry",
 ] as const;
 
-export function ContactModal({ open, onClose }: ContactModalProps) {
+export function ContactModal({ open, onClose, defaultInquiry }: ContactModalProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [inquiryType, setInquiryType] = useState<string>(INQUIRY_OPTIONS[0]);
+  const [inquiryType, setInquiryType] = useState<string>(defaultInquiry ?? INQUIRY_OPTIONS[0]);
 
   useEffect(() => {
     if (open) {
       document.body.style.overflow = "hidden";
+      // Pick up whichever inquiry type this particular open() was triggered with.
+      setInquiryType(
+        defaultInquiry && (INQUIRY_OPTIONS as readonly string[]).includes(defaultInquiry)
+          ? defaultInquiry
+          : INQUIRY_OPTIONS[0]
+      );
       return () => {
         document.body.style.overflow = "";
       };
     }
-  }, [open]);
+  }, [open, defaultInquiry]);
 
-  // Reset form state when modal closes
+  // Reset transient form state when modal closes
   useEffect(() => {
     if (!open) {
       setIsLoading(false);
       setIsSuccess(false);
       setError(null);
-      setInquiryType(INQUIRY_OPTIONS[0]);
     }
   }, [open]);
 
@@ -136,7 +143,7 @@ export function ContactModal({ open, onClose }: ContactModalProps) {
               <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between sm:gap-6">
                 <h2
                   id="contact-modal-title"
-                  className="text-2xl font-normal tracking-tighter text-[#222222] sm:mb-[15px] sm:text-4xl"
+                  className="text-2xl font-normal tracking-tight text-[#222222] sm:mb-[15px] sm:text-4xl"
                 >
                   Send us a message
                 </h2>

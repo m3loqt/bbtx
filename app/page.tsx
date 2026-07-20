@@ -2,21 +2,18 @@ import type { Metadata } from "next";
 import { AnimateSection } from "@/app/components/AnimateSection";
 import { Footer } from "@/app/components/Footer";
 import { Nav } from "@/app/components/Nav";
+import { Advantage } from "@/app/sections/Advantage";
 import { CTA } from "@/app/sections/CTA";
 import { FAQ } from "@/app/sections/FAQ";
 import { Hero } from "@/app/sections/Hero";
-// import { Pricing } from "@/app/sections/Pricing";
-import { Differentiation } from "@/app/sections/Differentiation";
-import { Process } from "@/app/sections/Process";
 import { Results } from "@/app/sections/Results";
 import { Services } from "@/app/sections/Services";
 import { Testimonials } from "@/app/sections/Testimonials";
-import { Problem } from "@/app/sections/Problem";
 
 export const metadata: Metadata = {
   title: "BBTx | AI Business Consulting for Leaders and Organizations",
   description:
-    "BBTx helps leaders and organizations integrate AI with strategy, clarity, and confidence. 100+ organizations served across 20+ years of consulting experience.",
+    "BBTx helps leaders and organizations integrate AI with strategy, clarity, and confidence. 100+ organizations served across 40+ years of consulting experience.",
   alternates: {
     canonical: "https://bbtx.ai",
   },
@@ -51,7 +48,7 @@ const jsonLd = {
       url: "https://bbtx.ai",
       logo: {
         "@type": "ImageObject",
-        url: "https://bbtx.ai/bbtxlog.png",
+        url: "https://bbtx.ai/oglogo.webp",
       },
       description:
         "BBTx helps leaders and organizations integrate AI with strategy, clarity, and confidence.",
@@ -84,16 +81,10 @@ export default function Home() {
         <Results />
       </AnimateSection>
       <AnimateSection>
-        <Problem />
-      </AnimateSection>
-      <AnimateSection>
         <Services />
       </AnimateSection>
       <AnimateSection>
-        <Process />
-      </AnimateSection>
-      <AnimateSection>
-        <Differentiation />
+        <Advantage />
       </AnimateSection>
       <AnimateSection>
         <Testimonials />

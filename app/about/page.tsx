@@ -1,8 +1,58 @@
 "use client";
 
+import Image from "next/image";
+import { useEffect, useState } from "react";
+import { AnimatePresence, motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { Nav } from "@/app/components/Nav";
 import { Footer } from "@/app/components/Footer";
 import { CTA } from "@/app/sections/CTA";
+
+const PHOTO_STRIP = [
+  { src: "/about/one.jpg", width: 1376, height: 977 },
+  { src: "/about/two.png", width: 1448, height: 1086 },
+  { src: "/about/three.png", width: 1537, height: 1023 },
+  { src: "/about/four.jpg", width: 1370, height: 2048 },
+  { src: "/about/five.png", width: 1537, height: 1023 },
+  { src: "/about/six.jpg", width: 1684, height: 2048 },
+];
+
+const TIMELINE_ENTRIES = [
+  {
+    year: "1981",
+    image: "/history1.png",
+    title: "The Personal Computer Changes Everything",
+    description:
+      "Grant managed the IBM PC's introduction into Europe and Canada, his first front-row seat to a world-changing technology. The lesson that stayed with him: transformative technology only matters when leaders know how to bring their organizations with them.",
+  },
+  {
+    year: "1993",
+    image: "/history2.png",
+    title: "Building Across Borders",
+    description:
+      "Co-founded a consulting practice in the Netherlands, helping organizations navigate change across Europe.",
+  },
+  {
+    year: "2000",
+    image: "/history3.png",
+    title: "A Practice Built on Real Organizations",
+    description:
+      "Built a U.S. practice around organizational development and strategy for two decades.",
+  },
+  {
+    year: "2022",
+    image: "/history4.png",
+    title: "A Familiar Pattern, A New Technology",
+    description:
+      "When ChatGPT launched, Grant recognized the shape of it immediately. He'd watched leaders navigate this kind of disruption before, in the '80s and in the '90s. He began helping leaders think clearly about AI, not chase it.",
+  },
+  {
+    year: "2024",
+    image: "/history5.png",
+    title: "BBTx.AI: The Next Chapter",
+    description:
+      "Grant launched BBTx.AI to bring 40+ years of leadership judgment to how organizations navigate AI. Not a pivot into a new industry, the same work, applied to whatever technology leaders are wrestling with next.",
+  },
+];
 
 const VALUES = [
   {
@@ -15,7 +65,7 @@ const VALUES = [
     num: "02",
     title: "Clarity over complexity",
     description:
-      "AI is complicated enough. Our job is to cut through the noise and give you a clear, honest picture of where you stand and exactly what to do next.",
+      "I've sat in enough meetings where the smartest person in the room made things more complicated, not less. My job is to cut through that, tell you plainly where you stand and what to do next.",
   },
   {
     num: "03",
@@ -27,52 +77,16 @@ const VALUES = [
     num: "04",
     title: "Capacity over dependency",
     description:
-      "We are not here to make ourselves indispensable. We are here to build your organization's ability to lead with AI long after our engagement ends.",
+      "I've watched too many consultants build a business on being needed forever. I'd rather work myself out of a job, your team should be able to lead without me in the room.",
   },
 ];
 
-const STORY_ENTRIES = [
-  {
-    year: "1981",
-    title: "The Personal Computer Changes Everything",
-    description:
-      "Grant managed the IBM PC's introduction into Europe and Canada, his first front-row seat to a world-changing technology. The lesson that stayed with him: transformative technology only matters when leaders know how to bring their organizations with them.",
-    side: "right",
-  },
-  {
-    year: "1993",
-    title: "Building Across Borders",
-    description:
-      "After IBM, Grant co-founded Bridgewater Innovation Group in the Netherlands, securing European Commission contracts and helping organizations navigate technology-driven change across the continent. The consulting practice that would become BBTx began to take shape here.",
-    side: "left",
-  },
-  {
-    year: "2000",
-    title: "A Practice Built on Real Organizations",
-    description:
-      "Back in the U.S., Grant founded his consulting practice focused on organizational development, strategy, and growth. Over two decades he worked with construction firms, high-tech companies, and government contractors across Virginia. People, strategy, and real organizational change.",
-    side: "right",
-  },
-  {
-    year: "2022",
-    title: "A New Technology, A Familiar Pattern",
-    description:
-      "When ChatGPT launched, Grant recognized the moment immediately. He had seen it before. He began helping leaders understand AI and co-founded Chaotic Confluence to bring practical AI thinking to professionals navigating the shift.",
-    side: "left",
-  },
-  {
-    year: "2024",
-    title: "BBTx.AI Is Born",
-    description:
-      "Grant launched BBTx.AI to help organizations navigate AI with strategy, clarity, and confidence. Not as a technology project. As a leadership imperative.",
-    side: "right",
-  },
-];
+const VALUE_ROWS = [VALUES.slice(0, 2), VALUES.slice(2, 4)];
 
 const PEOPLE = [
   {
     name: "Grant Tate",
-    image: "/grant.png",
+    image: "/grantt.jpg",
     email: "grant@bbtx.com",
     linkedin: "https://linkedin.com/in/granttate",
     description: [
@@ -83,7 +97,7 @@ const PEOPLE = [
   },
   {
     name: "Kaye Monroe",
-    image: "/kaye.png",
+    image: "/about/kaye.jpeg",
     email: "kaye@bbtx.com",
     linkedin: "https://linkedin.com/in/kayemonroe",
     description: [
@@ -94,7 +108,7 @@ const PEOPLE = [
   },
   {
     name: "Mel Angelo Cortes",
-    image: "/mel.png",
+    image: "/about/MEL.png",
     email: "mel@bbtx.com",
     linkedin: "https://linkedin.com/in/melangelocortes",
     description: [
@@ -106,344 +120,211 @@ const PEOPLE = [
 ];
 
 export default function AboutPage() {
+  const [canHover, setCanHover] = useState(false);
+  const [hoveredYear, setHoveredYear] = useState<string | null>(null);
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  const springX = useSpring(mouseX, { stiffness: 260, damping: 28, mass: 0.6 });
+  const springY = useSpring(mouseY, { stiffness: 260, damping: 28, mass: 0.6 });
+  // Offset the floating panel above-right of the cursor (panel is h-64 w-80) so it never sits under the pointer.
+  const panelX = useTransform(springX, (v) => v + 28);
+  const panelY = useTransform(springY, (v) => v - 284);
+
+  useEffect(() => {
+    setCanHover(window.matchMedia("(hover: hover) and (pointer: fine)").matches);
+  }, []);
+
+  const hoveredEntry = TIMELINE_ENTRIES.find((entry) => entry.year === hoveredYear) ?? null;
+
   return (
     <div className="min-h-screen">
-      <Nav />
-      {/* Purpose: big pull quote style */}
-      <section className="relative z-[1] w-full overflow-hidden pt-14 sm:pt-20">
-        {/* Background image */}
-        <img
-          src="/grant.jpg"
-          alt=""
-          className="pointer-events-none absolute inset-0 z-0 h-full w-full object-cover"
-          aria-hidden
-        />
-        {/* Black overlay fading from bottom to top */}
+      <Nav heroTheme="light" />
+
+      {/* Header: title + one-line subhead in Grant's voice */}
+      <section id="hero" className="relative z-[1] flex min-h-[38vh] w-full flex-col justify-end overflow-hidden bg-white pb-10 pt-20 sm:min-h-[42vh] sm:pb-12 lg:min-h-[46vh] lg:pb-16">
         <div
-          className="pointer-events-none absolute inset-0 z-[1]"
+          className="pointer-events-none absolute inset-0 opacity-[0.55]"
           style={{
-            background: "linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0.25) 100%)",
+            backgroundImage:
+              "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.28'/%3E%3C/svg%3E\")",
           }}
-          aria-hidden
+          aria-hidden="true"
         />
-        {/* Grain texture overlay */}
-        <div
-          className="pointer-events-none absolute inset-0 z-[2] opacity-15"
-          style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E")`,
-          }}
-          aria-hidden
-        />
-        <div className="relative z-[3] flex h-[calc(100vh-3.5rem)] flex-col justify-end px-4 pb-0 pt-16 sm:h-[calc(100vh-5rem)] sm:px-6 lg:px-8">
-          <p className="mb-4 text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-white/40 sm:mb-8">Purpose</p>
-          <h2 className="max-w-[95%] text-[1.7rem] font-medium leading-[1.1] tracking-tighter text-white sm:max-w-[88%] sm:text-[2.6rem] md:text-[3.1rem] lg:text-[3.8rem] xl:text-[4.4rem]">
-            We exist to help leaders and organizations use AI with{" "}
-            <span
-              className="font-normal italic"
-              style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}
-            >
-              clarity and intent
-            </span>
-            , turning complex decisions into confident ones.
-          </h2>
-          {/* Marquee at bottom — bleed to section edges; no horizontal clip */}
-          <div className="mt-8 -mx-4 border-t border-b border-white/10 py-4 sm:-mx-6 sm:mt-16 sm:py-5 lg:-mx-8">
-            <div className="flex animate-[marquee_20s_linear_infinite] whitespace-nowrap">
-              {Array.from({ length: 8 }).map((_, i) => (
-                <span
-                  key={i}
-                  className="mx-8 text-sm font-semibold uppercase tracking-[0.3em] text-white/20"
-                >
-                  Strategy &nbsp;·&nbsp; Implementation &nbsp;·&nbsp; Measurement
-                  &nbsp;·&nbsp; Scale
-                </span>
-              ))}
-            </div>
-          </div>
+        <div className="relative px-4 text-center sm:px-6 lg:px-8">
+          <h1 className="text-4xl font-medium tracking-tight text-[#222222] sm:text-6xl lg:text-7xl">
+            Our story
+          </h1>
+          <p className="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-[#555555] sm:text-xl">
+            Four decades of watching technology change how leaders lead, and learning what
+            actually helps them adapt.
+          </p>
         </div>
       </section>
 
-      {/* Our story: timeline */}
-      <section className="relative z-[1] w-full bg-[#f7f7f7]">
+      {/* Photo strip: full-bleed looping carousel of real Grant photos */}
+      <section className="relative z-[1] w-full overflow-hidden bg-white pb-16 sm:pb-20 lg:pb-24">
         <div
-          className="pointer-events-none absolute inset-0 z-0 opacity-60"
+          className="relative left-1/2 w-screen max-w-[100vw] -translate-x-1/2"
           style={{
-            backgroundImage: `
-              linear-gradient(to right, rgba(0,0,0,0.04) 1px, transparent 1px),
-              linear-gradient(to bottom, rgba(0,0,0,0.04) 1px, transparent 1px)
-            `,
-            backgroundSize: "48px 48px",
+            maskImage: "linear-gradient(to right, transparent, black 8%, black 92%, transparent)",
+            WebkitMaskImage: "linear-gradient(to right, transparent, black 8%, black 92%, transparent)",
           }}
-          aria-hidden
-        />
-        <div className="relative z-[1] px-4 py-12 sm:px-6 sm:py-20 lg:px-12 lg:py-28 xl:px-16">
-          <h2 className="mb-10 text-center text-3xl font-medium tracking-tighter text-[#222222] sm:mb-16 sm:text-5xl lg:mb-20 lg:text-6xl xl:text-7xl">
-            Our{" "}
-            <span
-              className="font-normal italic"
-              style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}
-            >
-              story
-            </span>
-          </h2>
-
-          <div className="relative mx-auto max-w-7xl xl:max-w-[110rem]">
-            {/* Vertical line */}
-            <div
-              className="absolute left-1/2 top-0 hidden min-h-full w-px -translate-x-1/2 bg-black/[0.08] lg:block"
-              style={{ height: "calc(100% + 2rem)" }}
-              aria-hidden
-            />
-            <div className="flex flex-col gap-10 sm:gap-16 lg:gap-20">
-              {STORY_ENTRIES.map((entry, index) => (
-                <div
-                  key={entry.year}
-                  className="relative grid grid-cols-1 lg:grid-cols-[1fr_auto_1fr] lg:items-start lg:gap-12"
-                >
-                  {/* Left column */}
-                  <div className={entry.side === "left" ? "order-2 pl-6 lg:order-1 lg:pl-0 lg:pr-12" : "order-2 lg:order-1"}>
-                    {entry.side === "left" && (
-                      <>
-                        <p className="text-xl font-semibold tracking-tight text-[#222222] sm:text-3xl lg:text-4xl">
-                          {entry.year} — {entry.title}
-                        </p>
-                        <p className="mt-2 text-sm leading-relaxed text-[#555555] sm:mt-3 sm:text-lg lg:text-xl">
-                          {entry.description}
-                        </p>
-                        {index === 1 ? (
-                          <img
-                            src="/history2.png"
-                            alt=""
-                            className="mt-3 aspect-[16/10] w-full max-w-2xl border border-black/[0.06] object-cover lg:ml-auto xl:max-w-[64rem]"
-                          />
-                        ) : index === 3 ? (
-                          <img
-                            src="/history4.png"
-                            alt=""
-                            className="mt-3 aspect-[16/10] w-full max-w-2xl border border-black/[0.06] object-cover lg:ml-auto xl:max-w-[64rem]"
-                          />
-                        ) : (
-                          <div className="mt-3 aspect-[16/10] w-full max-w-2xl border border-black/[0.06] bg-black/[0.04] lg:ml-auto xl:max-w-[64rem]" aria-hidden />
-                        )}
-                      </>
-                    )}
-                  </div>
-                  {/* Center: dot */}
-                  <div className="absolute left-0 top-6 flex justify-center lg:relative lg:left-0 lg:top-1 lg:col-start-2">
-                    <div className="h-3 w-3 shrink-0 rounded-full bg-[#222222]/25" aria-hidden />
-                  </div>
-                  {/* Right column */}
-                  <div className={entry.side === "right" ? "order-2 pl-6 lg:order-3 lg:pl-12 lg:text-left" : "order-2 lg:order-3"}>
-                    {entry.side === "right" && (
-                      <>
-                        <p className="text-xl font-semibold tracking-tight text-[#222222] sm:text-3xl lg:text-4xl">
-                          {entry.year} — {entry.title}
-                        </p>
-                        <p className="mt-2 text-sm leading-relaxed text-[#555555] sm:mt-3 sm:text-lg lg:text-xl">
-                          {entry.description}
-                        </p>
-                        {index === 0 ? (
-                          <img
-                            src="/history1.png"
-                            alt=""
-                            className="mt-3 aspect-[16/10] w-full max-w-2xl border border-black/[0.06] object-cover xl:max-w-[64rem]"
-                          />
-                        ) : index === 2 ? (
-                          <img
-                            src="/history3.png"
-                            alt=""
-                            className="mt-3 aspect-[16/10] w-full max-w-2xl border border-black/[0.06] object-cover xl:max-w-[64rem]"
-                          />
-                        ) : index === 4 ? (
-                          <img
-                            src="/history5.png"
-                            alt=""
-                            className="mt-3 aspect-[16/10] w-full max-w-2xl border border-black/[0.06] object-cover xl:max-w-[64rem]"
-                          />
-                        ) : (
-                          <div className="mt-3 aspect-[16/10] w-full max-w-2xl border border-black/[0.06] bg-black/[0.04] xl:max-w-[64rem]" aria-hidden />
-                        )}
-                      </>
-                    )}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* By the numbers: four metric cards (half-page) */}
-      <section className="relative z-[1] w-full bg-white">
-        <div className="relative z-[1] flex min-h-[50vh] flex-col justify-center px-4 py-12 sm:px-6 sm:py-20 lg:px-8 lg:py-24">
-          <div className="w-full">
-            <p className="mb-4 text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#555555]/60">
-              By the numbers
-            </p>
-            <h2 className="text-3xl font-medium leading-tight tracking-tighter text-[#222222] sm:text-5xl lg:text-6xl 2xl:text-[4rem]">
-              What{" "}
-              <span
-                className="font-normal italic"
-                style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}
-              >
-                our work
-              </span>{" "}
-              looks like in numbers.
-            </h2>
-          </div>
-          <div className="mt-6 grid w-full grid-cols-2 gap-3 sm:mt-12 sm:grid-cols-2 sm:gap-4 lg:mt-14 lg:grid-cols-4 lg:gap-5">
-            {[
-              {
-                stat: "100+",
-                label: "Organizations served",
-                context:
-                  "Across industries, from high-growth startups to enterprises navigating complex change.",
-              },
-              {
-                stat: "50+",
-                label: "Leaders coached",
-                context:
-                  "Through some of the most consequential decisions and transformations of their careers.",
-              },
-              {
-                stat: "200%",
-                label: "Average productivity impact",
-                context:
-                  "Reported by organizations that committed fully to the strategy and implementation process.",
-              },
-              {
-                stat: "12 weeks",
-                label: "Average time to results",
-                context:
-                  "From kickoff to measurable organizational change in how your team operates and performs.",
-              },
-            ].map((item) => (
-              <article
-                key={item.label}
-                className="flex flex-col rounded-2xl border border-black/[0.06] bg-[#fafafa] p-4 shadow-[0_2px_12px_rgba(0,0,0,0.02)] sm:min-h-[230px] sm:p-6 lg:p-7"
-              >
-                <p className="text-2xl font-semibold tracking-tight text-[#222222] sm:text-4xl lg:text-5xl xl:text-6xl">
-                  {item.stat}
-                </p>
-                <div className="mt-3 sm:mt-auto sm:pt-4">
-                  <p className="text-xs font-medium text-[#222222] sm:text-base">
-                    {item.label}
-                  </p>
-                  <p className="mt-1 hidden text-sm leading-relaxed text-[#555555] sm:block sm:text-[15px]">
-                    {item.context}
-                  </p>
-                </div>
-              </article>
+        >
+          <div
+            className="flex w-max gap-3 sm:gap-4"
+            style={{
+              animation: "logo-scroll 40s linear infinite",
+              willChange: "transform",
+              backfaceVisibility: "hidden",
+            }}
+          >
+            {[...PHOTO_STRIP, ...PHOTO_STRIP].map((photo, i) => (
+              <Image
+                key={`${photo.src}-${i}`}
+                src={photo.src}
+                alt=""
+                width={photo.width}
+                height={photo.height}
+                className="h-72 w-auto shrink-0 object-cover sm:h-96 lg:h-[480px]"
+              />
             ))}
           </div>
         </div>
       </section>
 
-      {/* Values: oversized numbered list */}
-      <section className="relative z-[1] w-full bg-[#222222]">
-        <div className="px-4 py-12 sm:px-6 sm:py-24 lg:px-8 lg:py-32">
-          <div className="mb-10 flex items-end justify-between sm:mb-16 lg:mb-20">
-            <div>
-              <p className="mb-4 text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-white/40">Values</p>
-              <h2 className="text-3xl font-medium tracking-tighter text-white sm:text-5xl lg:text-6xl">
-                What{" "}
-                <span
-                  className="font-normal italic"
-                  style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}
-                >
-                  drives
-                </span>{" "}
-                us
-              </h2>
-            </div>
-          </div>
-          <div className="space-y-0 divide-y divide-white/10">
-            {VALUES.map((v) => (
+      {/* Timeline: numbered horizontal rows, strict chronological order */}
+      <section className="relative z-[1] w-full bg-white">
+        <div className="px-4 py-16 sm:px-6 sm:py-24 lg:px-8 lg:py-32">
+          <p className="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#555555]/60">
+            Our timeline
+          </p>
+          <h2 className="mt-3 max-w-4xl text-3xl font-medium tracking-tight text-[#222222] sm:text-5xl lg:text-6xl">
+            Four decades, <span className="italic">one thread</span>
+          </h2>
+
+          <div
+            className="mt-12 divide-y divide-black/[0.08] border-y border-black/[0.08] sm:mt-16"
+            onMouseMove={(e) => {
+              if (!canHover) return;
+              mouseX.set(e.clientX);
+              mouseY.set(e.clientY);
+            }}
+          >
+            {TIMELINE_ENTRIES.map((entry) => (
               <div
-                key={v.num}
-                className="grid gap-2 py-6 sm:gap-4 sm:py-12 lg:grid-cols-[260px_0.9fr_1.3fr] lg:items-center lg:gap-10"
+                key={entry.year}
+                onMouseEnter={() => canHover && setHoveredYear(entry.year)}
+                onMouseLeave={() => canHover && setHoveredYear(null)}
+                className="grid grid-cols-1 gap-2 py-5 sm:gap-3 sm:py-6 lg:grid-cols-[280px_0.85fr_1.15fr] lg:items-baseline lg:gap-x-20 lg:gap-y-0 lg:py-8"
               >
-                <span
-                  className="block text-[3.5rem] font-bold leading-none tracking-tighter sm:text-[5rem] lg:text-[6rem]"
-                  style={{
-                    background: "linear-gradient(to bottom, #ca3726 0%, rgba(202,55,38,0.35) 100%)",
-                    WebkitBackgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
-                    backgroundClip: "text",
-                  }}
-                >
-                  {v.num}
-                </span>
-                <h3 className="pl-0 text-lg font-semibold tracking-tight text-white sm:text-3xl lg:pl-8 lg:text-4xl">
-                  {v.title}
+                <p className="text-4xl font-semibold tracking-normal text-[#ca3726] sm:text-5xl lg:text-6xl">
+                  {entry.year}
+                </p>
+                <h3 className="text-xl font-semibold tracking-normal text-[#222222] sm:text-2xl">
+                  {entry.title}
                 </h3>
-                <p className="text-sm leading-relaxed text-white/60 sm:text-lg lg:text-xl">
-                  {v.description}
+                <p className="text-sm leading-relaxed text-[#555555] sm:text-base lg:max-w-2xl lg:pl-10">
+                  {entry.description}
                 </p>
               </div>
             ))}
           </div>
+
+          {/* Cursor-follow image — desktop hover only, never affects layout */}
+          {canHover && (
+            <motion.div
+              className="pointer-events-none fixed left-0 top-0 z-[200] hidden h-64 w-80 overflow-hidden rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.25)] lg:block"
+              style={{ x: panelX, y: panelY }}
+              animate={{ opacity: hoveredEntry ? 1 : 0 }}
+              transition={{ duration: 0.2, ease: "easeOut" }}
+            >
+              <AnimatePresence mode="sync">
+                {hoveredEntry && (
+                  <motion.div
+                    key={hoveredEntry.year}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.25, ease: "easeOut" }}
+                    className="absolute inset-0"
+                  >
+                    <Image
+                      src={hoveredEntry.image}
+                      alt=""
+                      fill
+                      sizes="320px"
+                      className="object-cover"
+                    />
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </motion.div>
+          )}
         </div>
       </section>
 
-      {/* Testimony: full-bleed red */}
-      <section className="relative z-[1] w-full overflow-hidden bg-[#ca3726]">
+      {/* What drives us: photo left, numbered 2x2 grid right */}
+      <section className="relative z-[1] w-full overflow-hidden bg-white">
         <div
-          className="pointer-events-none absolute inset-0 z-0 opacity-[0.12]"
+          className="pointer-events-none absolute inset-0 opacity-[0.55]"
           style={{
-            backgroundImage: `radial-gradient(circle, rgba(255,255,255,0.4) 1px, transparent 1px)`,
-            backgroundSize: "24px 24px",
+            backgroundImage:
+              "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.28'/%3E%3C/svg%3E\")",
           }}
-          aria-hidden
+          aria-hidden="true"
         />
-        <div className="relative z-[1] flex min-h-[50vh] flex-col items-center justify-center px-4 py-14 text-center sm:min-h-[70vh] sm:px-6 sm:py-24 lg:px-8 lg:py-32">
-          <svg
-            className="mb-6 h-10 w-10 text-white/30 sm:mb-8 sm:h-16 sm:w-16"
-            viewBox="0 0 24 24"
-            fill="currentColor"
-            aria-hidden
-          >
-            <path d="M4.583 17.321C3.553 16.227 3 15 3 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311C9.591 11.69 11 13.2 11 15c0 1.82-1.343 3.317-3.182 3.317-1.08 0-2.169-.48-3.235-1.996zM14.583 17.321C13.553 16.227 13 15 13 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311C19.591 11.69 21 13.2 21 15c0 1.82-1.343 3.317-3.182 3.317-1.08 0-2.169-.48-3.235-1.996z" />
-          </svg>
-          <blockquote className="max-w-4xl text-xl font-medium leading-snug tracking-tight text-white sm:text-3xl lg:text-[2.5rem] lg:leading-snug">
-            BBTx helped us move from experimentation to measurable results in a
-            matter of months. They didn&apos;t just advise, they
-            built alongside us and stayed accountable for outcomes.
-          </blockquote>
-          <div className="mt-10 flex items-center gap-4">
-            <div className="h-px w-8 bg-white/40" />
-            <p className="text-sm font-semibold uppercase tracking-wider text-white/80">
-              Reza Schott &nbsp;·&nbsp; Head of Marketing, OPP
-            </p>
-            <div className="h-px w-8 bg-white/40" />
+        <div className="relative px-4 py-16 sm:px-6 sm:py-24 lg:px-8 lg:py-32">
+          <p className="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#555555]/60">
+            What drives us
+          </p>
+          <h2 className="mt-3 max-w-4xl text-3xl font-medium tracking-tight text-[#222222] sm:text-5xl lg:text-6xl">
+            The judgment behind{" "}
+            <span className="italic">the work</span>
+          </h2>
+
+          <div className="mt-12 grid grid-cols-1 gap-8 sm:mt-16 lg:grid-cols-[0.85fr_1.15fr] lg:gap-14">
+            {/* Left: photo — stretches to match the grid's height at lg */}
+            <div className="relative aspect-[4/5] w-full overflow-hidden rounded-2xl sm:aspect-[16/11] lg:aspect-auto lg:h-full">
+              <Image
+                src="/grant.jpg"
+                alt=""
+                fill
+                sizes="(min-width: 1024px) 40vw, 100vw"
+                className="object-cover"
+                style={{ objectPosition: "70% 20%" }}
+              />
+            </div>
+
+            {/* Right: numbered 2x2 grid with dividers */}
+            <div className="divide-y divide-black/[0.08] border-y border-black/[0.08]">
+              {VALUE_ROWS.map((row, ri) => (
+                <div key={ri} className="grid gap-x-10 gap-y-8 py-8 sm:grid-cols-2 sm:py-10">
+                  {row.map((v) => (
+                    <div key={v.num}>
+                      <p className="text-xs font-semibold tracking-wide text-[#ca3726]">{v.num}</p>
+                      <h3 className="mt-3 text-xl font-semibold tracking-normal text-[#222222] sm:text-2xl">
+                        {v.title}
+                      </h3>
+                      <p className="mt-3 text-sm leading-relaxed text-[#555555] sm:text-base">
+                        {v.description}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
-      {/* ━━━ People ━━━ */}
+      {/* Team grid */}
       <section className="relative z-[1] w-full bg-[#f7f7f7]">
-        <div
-          className="pointer-events-none absolute inset-0 z-0 opacity-60"
-          style={{
-            backgroundImage: `
-              linear-gradient(to right, rgba(0,0,0,0.04) 1px, transparent 1px),
-              linear-gradient(to bottom, rgba(0,0,0,0.04) 1px, transparent 1px)
-            `,
-            backgroundSize: "48px 48px",
-          }}
-          aria-hidden
-        />
         <div className="relative z-[1] px-4 py-12 sm:px-6 sm:py-24 lg:px-8 lg:py-32">
           <div className="mb-10 text-center sm:mb-16 lg:mb-20">
             <p className="mb-4 text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#555555]/60">People</p>
-            <h2 className="text-3xl font-medium tracking-tighter text-[#222222] sm:text-5xl lg:text-6xl">
+            <h2 className="text-3xl font-medium tracking-tight text-[#222222] sm:text-5xl lg:text-6xl">
               The team behind{" "}
-              <span
-                className="font-normal italic"
-                style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}
-              >
-                BBTx
-              </span>
+              <span className="italic">BBTx</span>
             </h2>
           </div>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
@@ -457,14 +338,14 @@ export default function AboutPage() {
                   alt={p.name}
                   className="absolute inset-0 h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
                 />
-                {/* Dark overlay on hover */}
+                {/* Dark overlay, behind the glass panel */}
                 <div
-                  className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-100 transition-opacity duration-300 sm:opacity-0 sm:group-hover:opacity-100"
+                  className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent"
                   aria-hidden
                 />
-                {/* Content at bottom, always visible on mobile, hover on desktop */}
-                <div className="absolute inset-x-0 bottom-0 flex flex-col p-5 opacity-100 transition-all duration-300 sm:opacity-0 sm:group-hover:opacity-100 sm:p-6">
-                  <h3 className="text-lg font-semibold tracking-tight text-white sm:text-xl">
+                {/* Glass panel — inset from the card edges, always visible, holds name/socials/description */}
+                <div className="absolute inset-x-3 bottom-3 flex flex-col rounded-lg border border-white/10 bg-black/25 p-4 backdrop-blur-sm transition-all duration-300 sm:inset-x-4 sm:bottom-4 sm:p-5">
+                  <h3 className="text-lg font-semibold tracking-normal text-white sm:text-xl">
                     {p.name}
                   </h3>
                   <div className="mt-2 flex items-center gap-2">

@@ -3,7 +3,7 @@
 import { useRef } from "react";
 import Image from "next/image";
 
-type Testimonial = {
+export type Testimonial = {
   quote: string;
   author: string;
   role: string;
@@ -18,7 +18,7 @@ function initialsFromName(name: string): string {
   return `${parts[0]![0] ?? ""}${parts[parts.length - 1]![0] ?? ""}`.toUpperCase();
 }
 
-const TESTIMONIALS: Testimonial[] = [
+export const TESTIMONIALS: Testimonial[] = [
   {
     quote:
       "Grant has a rare ability to help leaders see the underlying dynamics shaping their organizations and decisions. Our conversations consistently helped me think more clearly about strategy, leadership, and how emerging technologies like AI will reshape the way we work. He is an exceptional coach and thought partner.",
@@ -82,22 +82,21 @@ export function Testimonials() {
   };
 
   return (
-    <section className="relative z-[1] w-full bg-[#f7f7f7]">
+    <section className="relative z-[1] w-full border-t border-black/[0.06] bg-[#f7f7f7]">
       <div className="px-4 py-12 sm:px-6 sm:py-24 lg:px-8 lg:py-32">
         {/* Header row */}
         <div className="grid gap-6 md:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] md:items-end md:gap-16">
-          <h2 className="max-w-3xl text-3xl font-medium leading-[1.05] tracking-tighter text-[#222222] sm:text-5xl lg:text-6xl xl:text-7xl 2xl:text-[4.25rem]">
+          <h2 className="max-w-3xl text-3xl font-medium leading-[1.05] tracking-tight text-[#222222] sm:text-5xl lg:text-6xl xl:text-7xl 2xl:text-[4.25rem]">
             What{" "}
             <span
-              className="font-normal italic"
-              style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}
+              className="italic"
             >
               leaders say
             </span>{" "}
             after working with us
           </h2>
-          <p className="max-w-2xl text-base leading-relaxed tracking-tight text-[#555555] sm:text-2xl md:pb-1">
-          Results from real engagements with leaders and organizations who trusted BBTX to help them think clearly, move decisively, and navigate AI with confidence.
+          <p className="max-w-2xl text-base leading-relaxed tracking-normal text-[#555555] sm:text-2xl md:pb-1">
+          Results from real engagements with leaders who trusted BBTx to help them think clearly, decide well, and lead their organizations through change
           </p>
         </div>
 
@@ -145,7 +144,7 @@ export function Testimonials() {
                   <p className="mt-0 mb-4 text-lg font-semibold leading-snug text-[#111827] sm:text-xl lg:text-2xl">
                     <span
                       className="mr-1 inline-block translate-y-px text-[1.2em] font-normal leading-none text-[#ca3726] sm:mr-1.5"
-                      style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}
+                      style={{ fontFamily: "var(--font-fraunces), Georgia, serif" }}
                       aria-hidden
                     >
                       &ldquo;
@@ -153,7 +152,7 @@ export function Testimonials() {
                     {t.quote}
                     <span
                       className="ml-1 inline-block translate-y-px text-[1.2em] font-normal leading-none text-[#ca3726] sm:ml-1.5"
-                      style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}
+                      style={{ fontFamily: "var(--font-fraunces), Georgia, serif" }}
                       aria-hidden
                     >
                       &rdquo;
@@ -164,7 +163,7 @@ export function Testimonials() {
                       {t.image ? (
                         <Image src={t.image} alt="" fill sizes="48px" className="h-full w-full object-cover" />
                       ) : (
-                        <span className="text-sm font-semibold tracking-tight text-[#6b7280]" aria-hidden>
+                        <span className="text-sm font-semibold tracking-normal text-[#6b7280]" aria-hidden>
                           {initialsFromName(t.author)}
                         </span>
                       )}

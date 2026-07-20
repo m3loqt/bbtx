@@ -13,7 +13,6 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
-import { createBrowserClient } from '@supabase/ssr'
 
 const pageTitles: Record<string, string> = {
   '/admin': 'Dashboard',
@@ -30,13 +29,8 @@ export function AdminHeader() {
   const router = useRouter()
   const title = pageTitles[pathname] ?? 'Admin'
 
-  const supabase = createBrowserClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  )
-
   async function handleSignOut() {
-    await supabase.auth.signOut()
+    await fetch('/api/admin/logout', { method: 'POST' })
     router.push('/admin/login')
     router.refresh()
   }

@@ -1,9 +1,12 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { Nav } from "@/app/components/Nav";
 import { Footer } from "@/app/components/Footer";
 import { ArrowUpRight } from "@/app/components/ArrowIcon";
+import { TESTIMONIALS } from "@/app/sections/Testimonials";
+import Link from "next/link";
 
 const gridBg = {
   backgroundImage: `
@@ -81,48 +84,26 @@ const STEPS = [
   },
 ];
 
-const OUTCOMES = [
-  "A clearer picture of organizational reality.",
-  "Shared understanding across the leadership team.",
-  "Prioritized risks and opportunities.",
-  "Practical next steps leaders can act on.",
-  "Greater confidence in future decisions.",
-];
-
 const ENGAGEMENTS = [
   {
     name: "Organizational Health Assessment",
-    description:
-      "A broad review of culture, leadership, communication, trust, and performance.",
+    description: "A broad review of culture, leadership, communication, trust, and performance.",
   },
   {
     name: "Leadership Team Assessment",
-    description:
-      "A focused look at alignment, decision-making, accountability, and collective effectiveness.",
+    description: "A focused look at alignment, decision-making, accountability, and collective effectiveness.",
   },
   {
     name: "Culture & Trust Assessment",
-    description:
-      "An examination of how culture supports or undermines performance.",
+    description: "An examination of how culture supports or undermines performance.",
   },
   {
     name: "AI Readiness Assessment",
-    description:
-      "A practical review of leadership capability, workforce readiness, governance, and preparedness for AI adoption.",
-  },
-  {
-    name: "Change Readiness Assessment",
-    description:
-      "A clear view of whether people, systems, and leaders are prepared for major change.",
+    description: "A practical review of leadership capability, workforce readiness, governance, and preparedness for AI adoption.",
   },
 ];
 
 const FAQ_ITEMS = [
-  {
-    question: "How long does an assessment take?",
-    answer:
-      "Most engagements range from several weeks to a few months depending on organizational size and scope. We'll give you a clear timeline before anything begins.",
-  },
   {
     question: "Is this just a survey?",
     answer:
@@ -143,7 +124,14 @@ const FAQ_ITEMS = [
     answer:
       "Yes. Some assessments examine the whole organization. Others focus on leadership, culture, communication, trust, change readiness, or AI readiness.",
   },
+  {
+    question: "What does this cost?",
+    answer:
+      "Every engagement is scoped to your organization's size and needs — there's no generic package price. We'll give you clear, specific numbers before anything begins.",
+  },
 ];
+
+const testimonial = TESTIMONIALS.find((t) => t.author === "Jerry Hogan")!;
 
 function FaqMinusIcon({ className }: { className?: string }) {
   return (
@@ -167,32 +155,32 @@ function FaqPlusIcon({ className }: { className?: string }) {
   );
 }
 
+function openContact(inquiry: string) {
+  window.dispatchEvent(new CustomEvent("openContact", { detail: { inquiry } }));
+}
+
 export default function OrganizationalAssessmentPage() {
   const [faqOpenIndex, setFaqOpenIndex] = useState<number | null>(0);
+  const INQUIRY = "Organizational Assessment & Analysis";
 
   return (
     <div className="min-h-screen">
       <Nav />
 
-      {/* 1. Hero */}
+      {/* 1. Hero + image, one section */}
       <section className="relative z-[1] w-full bg-[#f7f7f7]">
         <div className="pointer-events-none absolute inset-0 z-0 opacity-60" style={gridBg} aria-hidden />
-        <div className="relative z-[1] px-4 pb-10 pt-28 sm:px-6 sm:pt-32 lg:px-8 lg:pb-14">
+        <div className="relative z-[1] px-4 pb-10 pt-28 sm:px-6 sm:pt-32 lg:px-8 lg:pb-10">
           <p className="mb-6 text-xs font-semibold uppercase tracking-[0.22em] text-[#555555]/60 sm:text-sm">
             Organizational Assessment & Analysis
           </p>
 
-          <h1 className="text-[2.5rem] font-medium leading-[1.06] tracking-tighter text-[#222222] sm:text-[3.2rem] md:text-[3.8rem] lg:text-[4.8rem] xl:text-[5.6rem]">
+          <h1 className="text-[2.5rem] font-medium leading-[1.06] tracking-tight text-[#222222] sm:text-[3.2rem] md:text-[3.8rem] lg:text-[4.8rem] xl:text-[5.6rem]">
             Most organizations are operating on assumptions{" "}
-            <span
-              className="font-normal italic"
-              style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}
-            >
-              that haven't been tested in years.
-            </span>
+            <span className="italic">that haven't been tested in years.</span>
           </h1>
 
-          <p className="mt-5 max-w-4xl text-base leading-relaxed tracking-tight text-[#555555] sm:mt-6 sm:text-xl">
+          <p className="mt-5 max-w-4xl text-base leading-relaxed tracking-normal text-[#555555] sm:mt-6 sm:text-xl">
             We help leaders see what is actually happening beneath performance metrics,
             assumptions, and anecdotes — so they can make decisions based on reality.
           </p>
@@ -200,7 +188,7 @@ export default function OrganizationalAssessmentPage() {
           <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
             <button
               type="button"
-              onClick={() => window.dispatchEvent(new Event("openContact"))}
+              onClick={() => openContact(INQUIRY)}
               className="inline-flex w-fit items-center gap-2 rounded-lg bg-[#222222] px-5 py-3 text-[15px] font-medium text-white transition-opacity hover:opacity-80"
             >
               Start a Conversation
@@ -216,31 +204,33 @@ export default function OrganizationalAssessmentPage() {
           </div>
         </div>
 
-        <div className="relative z-[1] px-4 pb-8 sm:px-6 lg:px-8 lg:pb-10">
-          <div className="h-[58vh] w-full overflow-hidden rounded-2xl sm:h-[75vh]">
+        <div className="relative z-[1] px-4 pb-8 pt-8 sm:px-6 lg:px-8 lg:pb-10">
+          <div className="h-[50vh] w-full overflow-hidden rounded-2xl sm:h-[60vh]">
             <img src="/serv1.png" alt="" className="h-full w-full object-cover object-top" />
           </div>
         </div>
       </section>
 
-      {/* 2. Reality We See */}
+      {/* 2. The Reality We See — signature device */}
       <section className="relative z-[1] w-full bg-[#222222]">
         <div className="pointer-events-none absolute inset-0 z-0" style={darkGridBg} aria-hidden />
-        <div className="relative z-[1] px-4 py-16 sm:px-6 sm:py-24 lg:px-8 lg:py-32">
+        <div className="relative z-[1] px-4 py-16 sm:px-6 sm:py-24 lg:px-8 lg:py-28">
           <div className="mx-auto max-w-6xl">
             <p className="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-white/40">
               The Reality We See
             </p>
 
-            <h2 className="mt-8 max-w-4xl text-[2rem] font-medium leading-[1.08] tracking-tighter text-white sm:text-[3rem] lg:text-[4rem]">
-              What leaders see are{" "}
-              <span className="text-[#ca3726]">symptoms</span>. What matters are the conditions creating them.
+            <h2 className="mt-6 max-w-4xl text-[2rem] font-medium leading-[1.08] tracking-tight text-white sm:text-[3rem] lg:text-[4rem]">
+              What leaders see are <span className="text-[#ca3726]">symptoms</span>. What matters are the conditions creating them.
             </h2>
+            <p className="mt-5 max-w-3xl text-lg leading-relaxed text-white/50 sm:text-xl">
+              Most performance problems aren't caused by a lack of effort or intelligence — they're caused by leaders making decisions from incomplete pictures of reality.
+            </p>
 
-            <div className="mt-12 grid grid-cols-1 gap-px bg-white/[0.08] sm:grid-cols-2 lg:mt-16">
+            <div className="mt-12 grid grid-cols-1 gap-px bg-white/[0.08] sm:grid-cols-2 lg:mt-14">
               {OBSERVATIONS.map((obs) => (
                 <div key={obs.claim} className="bg-[#222222] p-6 sm:p-8 lg:p-10">
-                  <p className="text-xl font-medium leading-snug tracking-tight text-white sm:text-2xl">
+                  <p className="text-xl font-medium leading-snug tracking-normal text-white sm:text-2xl">
                     {obs.claim}
                   </p>
                   <p className="mt-4 text-base leading-relaxed text-white/45 sm:text-lg">
@@ -253,41 +243,17 @@ export default function OrganizationalAssessmentPage() {
         </div>
       </section>
 
-      {/* 3. Why Assessment Matters */}
-      <section className="relative z-[1] w-full bg-white px-4 py-14 sm:px-6 sm:py-24 lg:px-8 lg:py-32">
-        <div className="grid gap-6 lg:grid-cols-[3fr_7fr] lg:items-start lg:gap-12">
-          <p className="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#555555]/60">
-            Why It Matters
-          </p>
-
-          <div>
-            <h2 className="max-w-4xl text-3xl font-medium leading-tight tracking-tighter text-[#222222] sm:text-4xl lg:text-[2.8rem]">
-              Most performance problems are not caused by a lack of effort, intelligence, or commitment.
-            </h2>
-            <p className="mt-6 max-w-3xl text-lg leading-relaxed text-[#555555] sm:text-xl">
-              They are caused by leaders making decisions from incomplete pictures of reality.
-              Assessment work exists to reduce that gap.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* 4. Who This Is For */}
-      <section className="relative z-[1] w-full bg-[#f7f7f7] px-4 py-14 sm:px-6 sm:py-24 lg:px-8 lg:py-32">
+      {/* 3. Who This Is For */}
+      <section className="relative z-[1] w-full bg-[#f7f7f7] px-4 py-14 sm:px-6 sm:py-24 lg:px-8 lg:py-28">
         <div className="grid gap-6 lg:grid-cols-[3fr_7fr] lg:items-start lg:gap-12">
           <p className="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#555555]/60">
             Who This Is For
           </p>
 
           <div>
-            <h2 className="max-w-4xl text-3xl font-medium leading-tight tracking-tighter text-[#222222] sm:text-4xl lg:text-[2.8rem]">
+            <h2 className="max-w-4xl text-3xl font-medium leading-tight tracking-tight text-[#222222] sm:text-4xl lg:text-[2.8rem]">
               This work is most valuable when leaders know something isn't working{" "}
-              <span
-                className="font-normal italic"
-                style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}
-              >
-                but don't yet have a clear picture of why.
-              </span>
+              <span className="italic">but don't yet have a clear picture of why.</span>
             </h2>
 
             <div className="mt-8 space-y-0 border-l-2 border-black/[0.08] pl-6">
@@ -304,23 +270,18 @@ export default function OrganizationalAssessmentPage() {
         </div>
       </section>
 
-      {/* 5. How We Work */}
+      {/* 4. How We Work */}
       <section id="how-we-work" className="relative z-[1] w-full bg-white">
-        <div className="px-4 py-14 sm:px-6 sm:py-24 lg:px-8 lg:py-32">
+        <div className="px-4 py-14 sm:px-6 sm:py-24 lg:px-8 lg:py-28">
           <div className="grid gap-6 lg:grid-cols-[3fr_7fr] lg:items-start lg:gap-12">
             <p className="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#555555]/60">
               How We Work
             </p>
 
             <div className="pr-0 lg:pr-[10%]">
-              <h2 className="max-w-4xl text-3xl font-medium leading-tight tracking-tighter text-[#222222] sm:text-4xl lg:text-[2.8rem]">
+              <h2 className="max-w-4xl text-3xl font-medium leading-tight tracking-tight text-[#222222] sm:text-4xl lg:text-[2.8rem]">
                 Not a framework applied to your situation.{" "}
-                <span
-                  className="font-normal italic"
-                  style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}
-                >
-                  Your situation examined without a predetermined answer.
-                </span>
+                <span className="italic">Your situation examined without a predetermined answer.</span>
               </h2>
 
               <div className="mt-10 grid grid-cols-1 gap-1 sm:grid-cols-2 lg:mt-14 lg:gap-1.5">
@@ -331,10 +292,10 @@ export default function OrganizationalAssessmentPage() {
                       step.full ? "sm:col-span-2" : ""
                     }`}
                   >
-                    <span className="text-[3rem] font-bold leading-none tracking-tighter text-[#222222]/10 sm:text-[4.5rem]">
+                    <span className="text-[3rem] font-bold leading-none tracking-tight text-[#222222]/10 sm:text-[4.5rem]">
                       {step.number}
                     </span>
-                    <h3 className="mt-2 text-lg font-semibold tracking-tight text-[#222222] sm:text-2xl">
+                    <h3 className="mt-2 text-lg font-semibold tracking-normal text-[#222222] sm:text-2xl">
                       {step.name}
                     </h3>
                     <p className="mt-4 text-sm leading-relaxed text-[#555555] sm:text-lg">
@@ -348,98 +309,68 @@ export default function OrganizationalAssessmentPage() {
         </div>
       </section>
 
-      {/* 6. What Leaders Leave With */}
-      <section className="relative z-[1] w-full bg-[#f7f7f7] px-4 py-14 sm:px-6 sm:py-24 lg:px-8 lg:py-32">
-        <div className="grid gap-6 lg:grid-cols-[3fr_7fr] lg:items-start lg:gap-12">
-          <p className="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#555555]/60">
-            What Leaders Leave With
-          </p>
-
-          <div>
-            <h2 className="max-w-4xl text-3xl font-medium leading-tight tracking-tighter text-[#222222] sm:text-4xl lg:text-[2.8rem]">
-              The product is not the assessment.{" "}
-              <span
-                className="font-normal italic"
-                style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}
-              >
-                The product is better leadership decisions.
-              </span>
-            </h2>
-
-            <div className="mt-8 grid grid-cols-1 gap-px bg-black/[0.06] sm:grid-cols-2">
-              {OUTCOMES.map((outcome) => (
-                <div key={outcome} className="bg-[#f7f7f7] p-6 sm:p-8">
-                  <p className="text-lg font-medium leading-snug tracking-tight text-[#222222] sm:text-xl">
-                    {outcome}
-                  </p>
-                </div>
-              ))}
+      {/* 5. Proof & Engagements, combined */}
+      <section className="relative z-[1] w-full bg-[#f7f7f7]">
+        <div className="px-4 py-14 sm:px-6 sm:py-24 lg:px-8 lg:py-28">
+          <div className="grid gap-10 lg:grid-cols-2 lg:gap-16">
+            <div>
+              <p className="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#555555]/60">
+                Why Leaders Trust This
+              </p>
+              <blockquote className="mt-5 text-xl font-medium leading-snug tracking-normal text-[#222222] sm:text-2xl">
+                <span
+                  className="mr-1 text-[#ca3726]"
+                  style={{ fontFamily: "var(--font-fraunces), Georgia, serif" }}
+                  aria-hidden
+                >
+                  &ldquo;
+                </span>
+                {testimonial.quote}
+                <span
+                  className="ml-1 text-[#ca3726]"
+                  style={{ fontFamily: "var(--font-fraunces), Georgia, serif" }}
+                  aria-hidden
+                >
+                  &rdquo;
+                </span>
+              </blockquote>
+              <div className="mt-6 flex items-center gap-3">
+                {testimonial.image && (
+                  <div className="relative h-11 w-11 shrink-0 overflow-hidden rounded-full">
+                    <Image src={testimonial.image} alt="" fill sizes="44px" className="object-cover" />
+                  </div>
+                )}
+                <p className="font-semibold text-[#222222]">{testimonial.author}</p>
+              </div>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 7. Typical Engagements */}
-      <section className="relative z-[1] overflow-hidden bg-[#222222]">
-        <div className="pointer-events-none absolute inset-0 z-0" style={darkGridBg} aria-hidden />
-        <div className="relative z-[1] px-4 py-14 sm:px-6 sm:py-24 lg:px-8 lg:py-32">
-          <div className="grid gap-6 lg:grid-cols-[3fr_7fr] lg:items-start lg:gap-12">
-            <p className="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-white/40">
-              Typical Engagements
-            </p>
 
             <div>
-              <h2 className="max-w-4xl text-3xl font-medium leading-tight tracking-tighter text-white sm:text-4xl lg:text-[2.8rem]">
-                Not every assessment needs to examine the entire organization.
-              </h2>
-
-              <p className="mt-6 max-w-3xl text-lg leading-relaxed text-white/50 sm:text-xl">
-                Sometimes the challenge is leadership alignment. Sometimes it is culture.
-                Sometimes it is readiness for AI. The scope depends on what leaders need to
-                understand before making their next decision.
+              <p className="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#555555]/60">
+                Typical Engagements
               </p>
-
-              <div className="mt-8 space-y-0 border-l-2 border-white/10 pl-6">
+              <div className="mt-5 divide-y divide-black/[0.08] border-t border-black/[0.08]">
                 {ENGAGEMENTS.map((eng) => (
-                  <div key={eng.name} className="border-b border-white/[0.06] py-5 last:border-b-0">
-                    <p className="text-base font-semibold text-white/85 sm:text-lg">
-                      {eng.name}
-                    </p>
-                    <p className="mt-1 text-[15px] leading-relaxed text-white/45 sm:text-base">
+                  <div key={eng.name} className="py-4">
+                    <p className="text-base font-semibold text-[#222222] sm:text-lg">{eng.name}</p>
+                    <p className="mt-1 text-sm leading-relaxed text-[#555555] sm:text-[15px]">
                       {eng.description}
                     </p>
                   </div>
                 ))}
               </div>
-
-              <button
-                type="button"
-                onClick={() => window.dispatchEvent(new Event("openContact"))}
-                className="mt-10 inline-flex items-center gap-2 rounded-lg border border-white/20 bg-white/[0.06] px-5 py-3 text-[15px] font-medium text-white transition-opacity hover:opacity-80"
-              >
-                Talk to Us About Your Situation
-                <ArrowUpRight className="h-4 w-4 sm:h-[18px] sm:w-[18px]" />
-              </button>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 8. FAQ */}
-      <section className="relative z-[1] w-full border-t border-black/[0.06] bg-[#f7f7f7] px-4 py-14 sm:px-6 sm:py-24 lg:px-8 lg:py-32">
+      {/* 6. FAQ */}
+      <section className="relative z-[1] w-full border-t border-black/[0.06] bg-white px-4 py-14 sm:px-6 sm:py-24 lg:px-8 lg:py-28">
         <div className="mx-auto w-full max-w-4xl text-center">
           <p className="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#555555]/60">
             What Leaders Ask Us
           </p>
-
-          <h2 className="mt-4 text-3xl font-medium leading-tight tracking-tighter text-[#222222] sm:mt-5 sm:text-4xl lg:text-[2.8rem]">
-            Frequently Asked{" "}
-            <span
-              className="font-normal italic"
-              style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}
-            >
-              Questions
-            </span>
+          <h2 className="mt-4 text-3xl font-medium leading-tight tracking-tight text-[#222222] sm:mt-5 sm:text-4xl lg:text-[2.8rem]">
+            Frequently Asked <span className="italic">Questions</span>
           </h2>
 
           <ul className="mt-8 flex flex-col gap-3 text-left sm:mt-16 sm:gap-4">
@@ -447,19 +378,18 @@ export default function OrganizationalAssessmentPage() {
               const isOpen = faqOpenIndex === index;
               return (
                 <li key={item.question}>
-                  <article className="overflow-hidden rounded-xl border border-black/[0.06] bg-white shadow-[0_2px_10px_rgba(0,0,0,0.02)]">
+                  <article className="overflow-hidden rounded-xl border border-black/[0.06] bg-[#f7f7f7] shadow-[0_2px_10px_rgba(0,0,0,0.02)]">
                     <button
                       type="button"
                       onClick={() => setFaqOpenIndex(isOpen ? null : index)}
                       className="flex w-full items-center gap-4 px-6 py-5 text-left sm:px-8 sm:py-6"
                       aria-expanded={isOpen}
                     >
-                      <h3 className="flex-1 text-lg font-semibold tracking-tight text-[#222222] sm:text-xl">
+                      <h3 className="flex-1 text-lg font-semibold tracking-normal text-[#222222] sm:text-xl">
                         {item.question}
                       </h3>
                       {isOpen ? <FaqMinusIcon /> : <FaqPlusIcon />}
                     </button>
-
                     <div
                       className={`grid transition-[grid-template-rows] duration-300 ease-out ${
                         isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
@@ -479,41 +409,40 @@ export default function OrganizationalAssessmentPage() {
         </div>
       </section>
 
-      {/* 9. CTA */}
+      {/* 7. CTA */}
       <section className="relative z-[1] bg-[#f7f7f7]">
         <div className="relative z-[1] w-full px-4 py-8 sm:px-6 lg:px-8 lg:py-10">
           <div className="relative w-full overflow-hidden rounded-xl border border-white/20 bg-[#ca3726] shadow-[0_4px_24px_rgba(202,55,38,0.25)] sm:rounded-2xl">
-            <img
-              src="/cta.png"
-              alt=""
-              className="absolute inset-0 h-full w-full object-cover"
-              aria-hidden
-            />
+            <img src="/cta.png" alt="" className="absolute inset-0 h-full w-full object-cover" aria-hidden />
             <div className="pointer-events-none absolute inset-0 z-0 bg-[#ca3726]/40" aria-hidden />
 
             <div className="relative z-[1] w-full px-6 py-16 text-center sm:px-10 sm:py-20 lg:px-16 lg:py-24">
-              <h2 className="text-4xl font-medium leading-tight tracking-tighter text-white sm:text-5xl lg:text-5xl xl:text-6xl 2xl:text-[4rem]">
+              <h2 className="text-4xl font-medium leading-tight tracking-tight text-white sm:text-[2.75rem] md:text-5xl lg:text-5xl xl:text-6xl 2xl:text-[4rem]">
                 Better decisions start with{" "}
-                <span
-                  className="font-normal italic"
-                  style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}
-                >
-                  a clearer picture of reality.
-                </span>
+                <span className="italic">a clearer picture of reality.</span>
               </h2>
 
-              <p className="mx-auto mt-8 max-w-2xl text-xl leading-relaxed tracking-tight text-white/95 sm:text-2xl lg:mt-10">
+              <p className="mx-auto mt-8 max-w-2xl text-xl leading-relaxed tracking-normal text-white/95 sm:text-2xl lg:mt-10">
                 The most expensive organizational problems are often the ones leaders cannot yet see.
               </p>
 
-              <button
-                type="button"
-                onClick={() => window.dispatchEvent(new Event("openContact"))}
-                className="mt-12 inline-flex items-center gap-2 rounded-lg bg-white px-5 py-3 text-[15px] font-medium text-[#222222] transition-opacity hover:opacity-95 lg:mt-14"
-              >
-                Start a Conversation
-                <ArrowUpRight className="h-4 w-4 sm:h-[18px] sm:w-[18px]" />
-              </button>
+              <div className="mt-12 flex flex-wrap items-center justify-center gap-3 lg:mt-14">
+                <button
+                  type="button"
+                  onClick={() => openContact(INQUIRY)}
+                  className="inline-flex items-center gap-2 rounded-lg bg-white px-5 py-3 text-[15px] font-medium text-[#222222] transition-opacity hover:opacity-95"
+                >
+                  Start a Conversation
+                  <ArrowUpRight className="h-4 w-4 sm:h-[18px] sm:w-[18px]" />
+                </button>
+                <Link
+                  href="/digital-twin-snapshot"
+                  className="inline-flex items-center gap-2 rounded-lg border border-white/40 px-5 py-3 text-[15px] font-medium text-white transition-colors hover:bg-white/10"
+                >
+                  Try the Free Digital Twin Snapshot
+                  <ArrowUpRight className="h-4 w-4 sm:h-[18px] sm:w-[18px]" />
+                </Link>
+              </div>
             </div>
           </div>
         </div>

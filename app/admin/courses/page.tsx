@@ -24,7 +24,6 @@ import {
 import {
   DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { supabaseAdmin } from '@/lib/admin/supabase-admin'
 import { Plus, MoreHorizontal, Trash2, Edit, Loader2, Award, UploadCloud, Star, CheckCircle2 } from 'lucide-react'
 import { ArrowUpRight } from '@/app/components/ArrowIcon'
 
@@ -317,7 +316,7 @@ function CoursesPageInner() {
 
                 <div className="flex flex-1 flex-col p-6 sm:p-7">
                   <div className="flex items-start justify-between gap-4">
-                    <h3 className="text-lg font-semibold tracking-tight text-[#111827] sm:text-xl">
+                    <h3 className="text-lg font-semibold tracking-normal text-[#111827] sm:text-xl">
                       {course.title}
                     </h3>
 

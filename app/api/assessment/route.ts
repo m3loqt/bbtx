@@ -1,14 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
-import { createClient } from '@supabase/supabase-js'
+import { sql } from '@/lib/db'
 import { getResend } from '@/lib/resend'
 import { buildAssessmentEmail } from '@/lib/emails/assessment-notification'
 import { buildWorkshopEmail } from '@/lib/emails/workshop-notification'
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-)
 
 // In-memory rate limit store: IP → array of timestamps
 const rateStore = new Map<string, number[]>()
@@ -85,32 +80,27 @@ export async function POST(req: NextRequest) {
 
     const toStr = (v: string | undefined) => (v && v.trim().length > 0 ? v.trim() : null)
 
-    // Insert into Supabase
-    const { error: dbError } = await supabase.from('assessment_submissions').insert({
-      full_name: data.full_name.trim(),
-      email: data.email.trim().toLowerCase(),
-      role: toStr(data.role),
-      organization_name: toStr(data.organization_name),
-      industry: toStr(data.industry),
-      organization_size: toStr(data.organization_size),
-      currently_using_ai: toStr(data.currently_using_ai),
-      ai_usage_visibility: toStr(data.ai_usage_visibility),
-      ai_guidelines_status: toStr(data.ai_guidelines_status),
-      leadership_ai_training: toStr(data.leadership_ai_training),
-      ai_strategy_owner: toStr(data.ai_strategy_owner),
-      ai_strategy_status: toStr(data.ai_strategy_status),
-      has_strategic_plan: toStr(data.has_strategic_plan),
-      biggest_challenges: data.biggest_challenges ?? [],
-      other_challenge: toStr(data.other_challenge),
-      primary_need: toStr(data.primary_need),
-      timeline: toStr(data.timeline),
-      wants_orientation_workshop: data.wants_orientation_workshop ?? false,
-      status: 'new',
-      ip_address: ip,
-    })
-
-    if (dbError) {
-      console.error('[assessment] Supabase insert error:', dbError)
+    // Insert into the database
+    try {
+      await sql`
+        INSERT INTO assessment_submissions (
+          full_name, email, role, organization_name, industry, organization_size,
+          currently_using_ai, ai_usage_visibility, ai_guidelines_status, leadership_ai_training,
+          ai_strategy_owner, ai_strategy_status, has_strategic_plan,
+          biggest_challenges, other_challenge, primary_need, timeline,
+          wants_orientation_workshop, status, ip_address
+        ) VALUES (
+          ${data.full_name.trim()}, ${data.email.trim().toLowerCase()}, ${toStr(data.role)},
+          ${toStr(data.organization_name)}, ${toStr(data.industry)}, ${toStr(data.organization_size)},
+          ${toStr(data.currently_using_ai)}, ${toStr(data.ai_usage_visibility)}, ${toStr(data.ai_guidelines_status)},
+          ${toStr(data.leadership_ai_training)}, ${toStr(data.ai_strategy_owner)}, ${toStr(data.ai_strategy_status)},
+          ${toStr(data.has_strategic_plan)}, ${data.biggest_challenges ?? []}, ${toStr(data.other_challenge)},
+          ${toStr(data.primary_need)}, ${toStr(data.timeline)}, ${data.wants_orientation_workshop ?? false},
+          'new', ${ip}
+        )
+      `
+    } catch (dbError) {
+      console.error('[assessment] Database insert error:', dbError)
       return NextResponse.json(
         { error: 'Something went wrong. Please try again.' },
         { status: 500 }

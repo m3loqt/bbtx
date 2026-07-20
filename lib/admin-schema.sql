@@ -1,3 +1,10 @@
+-- SUPERSEDED — kept for historical reference only.
+-- The app migrated from Supabase to Neon; see lib/neon-schema.sql for the
+-- current, live-verified schema. At migration time, blogs/podcast_episodes/
+-- courses defined here had never actually been created in the live Supabase
+-- database, and events was missing max_seats/seats_remaining that the admin
+-- UI already expected.
+--
 -- Run this SQL in your Supabase project dashboard under SQL Editor
 -- Required additions for the BBTX Admin CMS
 -- Run AFTER the existing schema in lib/supabase-schema.sql

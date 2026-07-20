@@ -1,7 +1,6 @@
 "use client";
 
-import { useState } from "react";
-import { CircleHelp } from "lucide-react";
+import { useState, type ReactNode } from "react";
 
 const FAQ_ITEMS = [
   {
@@ -12,7 +11,7 @@ const FAQ_ITEMS = [
   {
     question: "Where do we start if we don't know what we need?",
     answer:
-      "That's exactly what the Organizational AI Assessment is for. It gives us a clear picture of where your organization stands today and what the right next steps are. Most engagements begin there.",
+      "That's exactly what the Digital Twin Snapshot is for. It gives us a clear picture of where your organization stands today and what the right next steps are. Most engagements begin there.",
   },
   {
     question: "How long does a typical engagement take?",
@@ -32,7 +31,7 @@ const FAQ_ITEMS = [
   {
     question: "How do we get started?",
     answer:
-      "Start with the assessment. It takes less than five minutes and gives us the context we need to make your first conversation as focused and useful as possible.",
+      "Start with the Digital Twin Snapshot. Give us your website and we'll show you what we see, then use that as the starting point for your first conversation.",
   },
 ];
 
@@ -58,24 +57,36 @@ function FaqPlusIcon({ className }: { className?: string }) {
   );
 }
 
-export function FAQ() {
+type FaqItem = { question: string; answer: string };
+
+export function FAQ({
+  items = FAQ_ITEMS,
+  eyebrow = "What Leaders Ask Us",
+  heading = (
+    <>
+      Frequently Asked <span className="italic">Questions</span>
+    </>
+  ),
+  closingNote,
+}: {
+  items?: FaqItem[];
+  eyebrow?: string;
+  heading?: ReactNode;
+  closingNote?: ReactNode;
+} = {}) {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
-    <section className="relative z-[1] w-full border-t border-black/[0.06] bg-white px-4 py-16 sm:px-6 sm:py-24 lg:px-8 lg:py-32">
+    <section id="faq" className="relative z-[1] w-full border-t border-black/[0.06] bg-white px-4 py-16 sm:px-6 sm:py-24 lg:px-8 lg:py-32">
       <div className="mx-auto w-full max-w-4xl text-center">
-        <p className="flex items-center justify-center gap-2 text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#555555]/60">
-          <CircleHelp className="h-4 w-4 text-[#ca3726]" />
-          What Leaders Ask Us
+        <p className="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#555555]/60">
+          {eyebrow}
         </p>
-        <h2 className="mt-5 text-4xl font-medium leading-tight tracking-tighter text-[#222222] sm:text-5xl lg:text-5xl xl:text-6xl 2xl:text-[4rem]">
-          Frequently Asked{" "}
-          <span className="font-normal italic" style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}>
-            Questions
-          </span>
+        <h2 className="mt-5 text-4xl font-medium leading-tight tracking-tight text-[#222222] sm:text-[2.75rem] md:text-5xl lg:text-5xl xl:text-6xl 2xl:text-[4rem]">
+          {heading}
         </h2>
         <ul className="mt-10 flex flex-col gap-3 text-left sm:mt-12 sm:gap-4">
-          {FAQ_ITEMS.map((item, index) => {
+          {items.map((item, index) => {
             const isOpen = openIndex === index;
             return (
               <li key={item.question}>
@@ -86,7 +97,7 @@ export function FAQ() {
                     className="flex w-full items-center gap-4 px-6 py-5 text-left sm:px-8 sm:py-6"
                     aria-expanded={isOpen}
                   >
-                    <h3 className="flex-1 text-lg font-semibold tracking-tight text-[#222222] sm:text-xl">
+                    <h3 className="flex-1 text-lg font-semibold tracking-normal text-[#222222] sm:text-xl">
                       {item.question}
                     </h3>
                     {isOpen ? <FaqMinusIcon /> : <FaqPlusIcon />}
@@ -107,6 +118,7 @@ export function FAQ() {
             );
           })}
         </ul>
+        {closingNote ? <div className="mt-8 text-center sm:mt-10">{closingNote}</div> : null}
       </div>
     </section>
   );
