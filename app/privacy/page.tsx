@@ -4,6 +4,14 @@ import { LegalPageLayout } from "@/app/components/LegalPageLayout";
 export const metadata: Metadata = {
   title: "BBTx | Privacy Policy",
   description: "How BBTx collects, uses, and protects your information.",
+  openGraph: {
+    title: "Privacy Policy | BBTx",
+    description: "How BBTx collects, uses, and protects your information.",
+    url: "https://bbtx.ai/privacy",
+  },
+  alternates: {
+    canonical: "https://bbtx.ai/privacy",
+  },
 };
 
 export default function PrivacyPolicyPage() {
@@ -11,7 +19,7 @@ export default function PrivacyPolicyPage() {
     <LegalPageLayout
       eyebrow="Legal"
       title="Privacy Policy"
-      lastUpdated="July 19, 2026"
+      lastUpdated="July 28, 2026"
       intro={
         <>
           <p>
@@ -141,9 +149,9 @@ export default function PrivacyPolicyPage() {
           heading: "Cookies and Tracking Technologies",
           body: (
             <p>
-              bbtx.ai uses only essential cookies required for the Site to function properly; we
-              do not currently use advertising cookies or third-party analytics. Details are
-              available in our{" "}
+              bbtx.ai uses essential cookies required for the Site to function properly, and
+              Google Analytics (GA4) to understand how visitors use the Site in aggregate. We do
+              not use advertising or retargeting cookies. Details are available in our{" "}
               <a href="/cookies" className="font-medium text-[#222222] underline underline-offset-2 hover:text-[#ca3726]">
                 Cookie Policy
               </a>

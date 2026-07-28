@@ -4,6 +4,14 @@ import { LegalPageLayout } from "@/app/components/LegalPageLayout";
 export const metadata: Metadata = {
   title: "BBTx | Cookie Policy",
   description: "How bbtx.ai uses cookies.",
+  openGraph: {
+    title: "Cookie Policy | BBTx",
+    description: "How bbtx.ai uses cookies.",
+    url: "https://bbtx.ai/cookies",
+  },
+  alternates: {
+    canonical: "https://bbtx.ai/cookies",
+  },
 };
 
 export default function CookiePolicyPage() {
@@ -11,7 +19,7 @@ export default function CookiePolicyPage() {
     <LegalPageLayout
       eyebrow="Legal"
       title="Cookie Policy"
-      lastUpdated="July 19, 2026"
+      lastUpdated="July 28, 2026"
       intro={
         <p>
           This Cookie Policy explains how BBTx Consulting (&quot;BBTx,&quot; &quot;we,&quot;
@@ -49,9 +57,21 @@ export default function CookiePolicyPage() {
                 are not used to identify or track visitors browsing the public Site.
               </p>
               <p>
-                <span className="font-medium text-[#222222]">Analytics cookies.</span> We do not
-                currently use analytics cookies or any third-party analytics service on this
-                Site.
+                <span className="font-medium text-[#222222]">Analytics cookies.</span> We use
+                Google Analytics (GA4) to understand how visitors use this Site, such as which
+                pages are viewed and how visitors found us. Google Analytics may set cookies and
+                collect information such as your IP address, browser, device, and pages visited.
+                This data is used in aggregate to improve the Site and is not used to identify
+                you personally. You can opt out using the{" "}
+                <a
+                  href="https://tools.google.com/dlpage/gaoptout"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-medium text-[#222222] underline underline-offset-2 hover:text-[#ca3726]"
+                >
+                  Google Analytics Opt-out Browser Add-on
+                </a>
+                .
               </p>
               <p>
                 <span className="font-medium text-[#222222]">Advertising cookies.</span> We do

@@ -5,6 +5,7 @@ import {
   Fraunces,
 } from "next/font/google";
 import "./globals.css";
+import { GoogleAnalytics } from "@/app/components/GoogleAnalytics";
 
 const familjenGrotesk = Familjen_Grotesk({
   variable: "--font-sans",
@@ -108,6 +109,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={htmlClassName} suppressHydrationWarning>
       <body className="antialiased relative z-[1]" suppressHydrationWarning>
+        <GoogleAnalytics />
         {children}
       </body>
     </html>
