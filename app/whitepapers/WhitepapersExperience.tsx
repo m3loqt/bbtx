@@ -226,12 +226,12 @@ export function WhitepapersExperience({ whitepapers }: { whitepapers: PublicWhit
       <Footer />
 
       <SubscribeModal
-        key={subscribeOpen ? "open" : "closed"}
+        key={subscribeOpen ? "subscribe-open" : "subscribe-closed"}
         open={subscribeOpen}
         onClose={() => setSubscribeOpen(false)}
       />
       <WhitepaperDownloadModal
-        key={downloadTarget?.id ?? "closed"}
+        key={downloadTarget ? `download-${downloadTarget.id}` : "download-closed"}
         paper={downloadTarget}
         onClose={() => setDownloadTarget(null)}
       />
