@@ -15,10 +15,50 @@ export const metadata: Metadata = {
   },
 };
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Service",
+  name: "Strategy & Advisory Services",
+  description:
+    "Create strategic clarity, strengthen alignment, and improve decision-making discipline.",
+  provider: {
+    "@type": "Organization",
+    "@id": "https://bbtx.ai/#organization",
+  },
+  url: "https://bbtx.ai/services/strategy-advisory",
+};
+
+const breadcrumbJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Home", item: "https://bbtx.ai" },
+    { "@type": "ListItem", position: 2, name: "Services", item: "https://bbtx.ai/services" },
+    {
+      "@type": "ListItem",
+      position: 3,
+      name: "Strategy & Advisory",
+      item: "https://bbtx.ai/services/strategy-advisory",
+    },
+  ],
+};
+
 export default function StrategyAdvisoryLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return <>{children}</>;
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+      {children}
+    </>
+  );
 }

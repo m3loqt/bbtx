@@ -44,6 +44,8 @@ export default function ChaoticConfluenceLayout({ children }: { children: React.
   // Only exposes the font CSS variables — deliberately doesn't set a page-wide
   // font-family, so the shared Nav/CTA/Footer keep the site's usual Familjen
   // Grotesk. ChaoticConfluenceExperience applies Inter to just its own content.
+  // Breadcrumb JSON-LD lives in page.tsx (hub) and [slug]/page.tsx (posts)
+  // individually, not here, so post pages don't emit a duplicate hub-level one.
   return (
     <div className={`${inter.variable} ${interTight.variable} ${fraunces.variable}`}>
       {children}

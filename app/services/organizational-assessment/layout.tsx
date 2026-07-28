@@ -15,10 +15,50 @@ export const metadata: Metadata = {
   },
 };
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Service",
+  name: "Organizational Assessment & Analysis",
+  description:
+    "Reveal organizational realities, identify risks, and uncover opportunities for improvement.",
+  provider: {
+    "@type": "Organization",
+    "@id": "https://bbtx.ai/#organization",
+  },
+  url: "https://bbtx.ai/services/organizational-assessment",
+};
+
+const breadcrumbJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Home", item: "https://bbtx.ai" },
+    { "@type": "ListItem", position: 2, name: "Services", item: "https://bbtx.ai/services" },
+    {
+      "@type": "ListItem",
+      position: 3,
+      name: "Organizational Assessment",
+      item: "https://bbtx.ai/services/organizational-assessment",
+    },
+  ],
+};
+
 export default function OrganizationalAssessmentLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return <>{children}</>;
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+      {children}
+    </>
+  );
 }

@@ -3,6 +3,20 @@ import { ChaoticConfluenceExperience, type PublicBlogPost } from "./ChaoticConfl
 
 export const dynamic = "force-dynamic";
 
+const breadcrumbJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Home", item: "https://bbtx.ai" },
+    {
+      "@type": "ListItem",
+      position: 2,
+      name: "Chaotic Confluence",
+      item: "https://bbtx.ai/chaotic-confluence",
+    },
+  ],
+};
+
 export default async function ChaoticConfluencePage() {
   const blogs = await getPublishedBlogs();
   // The editor requires a slug before a post can be saved, but filter defensively
@@ -19,5 +33,13 @@ export default async function ChaoticConfluencePage() {
       published_date: b.published_date,
     }));
 
-  return <ChaoticConfluenceExperience posts={posts} />;
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+      <ChaoticConfluenceExperience posts={posts} />
+    </>
+  );
 }

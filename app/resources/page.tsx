@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { Nav } from "@/app/components/Nav";
 import { Footer } from "@/app/components/Footer";
@@ -21,9 +22,17 @@ const RESOURCES = [
   },
 ];
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "Resources",
   description: "Everything BBTx publishes for leaders navigating AI — strategic snapshots, whitepapers, and Chaotic Confluence.",
+  openGraph: {
+    title: "Resources | BBTx",
+    description: "Everything BBTx publishes for leaders navigating AI — strategic snapshots, whitepapers, and Chaotic Confluence.",
+    url: "https://bbtx.ai/resources",
+  },
+  alternates: {
+    canonical: "https://bbtx.ai/resources",
+  },
 };
 
 export default function ResourcesPage() {

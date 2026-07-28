@@ -70,11 +70,30 @@ export default async function BlogPostPage({
     mainEntityOfPage: url,
   };
 
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: "https://bbtx.ai" },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Chaotic Confluence",
+        item: "https://bbtx.ai/chaotic-confluence",
+      },
+      { "@type": "ListItem", position: 3, name: post.title, item: url },
+    ],
+  };
+
   return (
     <div className="min-h-screen bg-white">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
 
       <Nav heroTheme="light" instantFloat />

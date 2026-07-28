@@ -6,6 +6,14 @@ import { Calendar, FileText, GraduationCap, Linkedin, Rss } from "lucide-react";
 export const metadata: Metadata = {
   title: "BBTx | Links",
   description: "Every BBTx and Grant Tate platform in one place.",
+  openGraph: {
+    title: "Links | BBTx",
+    description: "Every BBTx and Grant Tate platform in one place.",
+    url: "https://bbtx.ai/links",
+  },
+  alternates: {
+    canonical: "https://bbtx.ai/links",
+  },
 };
 
 const PLATFORMS = [

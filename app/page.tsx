@@ -9,6 +9,7 @@ import { Hero } from "@/app/sections/Hero";
 import { Results } from "@/app/sections/Results";
 import { Services } from "@/app/sections/Services";
 import { Testimonials } from "@/app/sections/Testimonials";
+import { FAQ_ITEMS } from "@/app/sections/faq-data";
 
 export const metadata: Metadata = {
   title: "BBTx | AI Business Consulting for Leaders and Organizations",
@@ -32,14 +33,6 @@ const jsonLd = {
       publisher: {
         "@id": "https://bbtx.ai/#organization",
       },
-      potentialAction: {
-        "@type": "SearchAction",
-        target: {
-          "@type": "EntryPoint",
-          urlTemplate: "https://bbtx.ai/?s={search_term_string}",
-        },
-        "query-input": "required name=search_term_string",
-      },
     },
     {
       "@type": "Organization",
@@ -55,13 +48,15 @@ const jsonLd = {
       sameAs: [],
     },
     {
-      "@type": "SiteLinksSearchBox",
-      url: "https://bbtx.ai",
-      potentialAction: {
-        "@type": "SearchAction",
-        target: "https://bbtx.ai/?s={search_term_string}",
-        "query-input": "required name=search_term_string",
-      },
+      "@type": "FAQPage",
+      mainEntity: FAQ_ITEMS.map((item) => ({
+        "@type": "Question",
+        name: item.question,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: item.answer,
+        },
+      })),
     },
   ],
 };

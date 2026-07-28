@@ -15,10 +15,50 @@ export const metadata: Metadata = {
   },
 };
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Service",
+  name: "AI Integration & Innovation",
+  description:
+    "Apply AI responsibly, improve performance, and build organizational capability.",
+  provider: {
+    "@type": "Organization",
+    "@id": "https://bbtx.ai/#organization",
+  },
+  url: "https://bbtx.ai/services/ai-integration",
+};
+
+const breadcrumbJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Home", item: "https://bbtx.ai" },
+    { "@type": "ListItem", position: 2, name: "Services", item: "https://bbtx.ai/services" },
+    {
+      "@type": "ListItem",
+      position: 3,
+      name: "AI Integration & Innovation",
+      item: "https://bbtx.ai/services/ai-integration",
+    },
+  ],
+};
+
 export default function AiIntegrationLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return <>{children}</>;
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+      {children}
+    </>
+  );
 }
