@@ -258,6 +258,12 @@ async function DashboardContent() {
                 Add Blog Article
               </Button>
             </Link>
+            <Link href="/admin/whitepapers?new=true">
+              <Button variant="outline" size="sm" className="gap-2">
+                <Plus className="h-4 w-4" />
+                Add Whitepaper
+              </Button>
+            </Link>
             <Link href="/admin/courses?new=true">
               <Button variant="outline" size="sm" className="gap-2">
                 <Plus className="h-4 w-4" />

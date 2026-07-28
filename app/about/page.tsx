@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { Nav } from "@/app/components/Nav";
@@ -89,6 +90,7 @@ const PEOPLE = [
     image: "/grantt.jpg",
     email: "grant@bbtx.com",
     linkedin: "https://linkedin.com/in/granttate",
+    href: "/team/grant",
     description: [
       "Grant Tate is the CEO of Bridge Business Transformations, a coach, consultant, and author who helps leaders thrive in complex environments.",
       "He explores how AI is shaping people, organizations, and society, and how leaders can respond with clarity.",
@@ -100,6 +102,7 @@ const PEOPLE = [
     image: "/about/kaye.jpeg",
     email: "kaye@bbtx.com",
     linkedin: "https://linkedin.com/in/kayemonroe",
+    href: "/team/kaye",
     description: [
       "Kaye Monroe leads KDM Coaching and Associates, supporting leaders and individuals as they define goals and follow through.",
       "She is a founder and key force behind the Minority Business Council, building community and opportunity for minority entrepreneurs.",
@@ -111,6 +114,7 @@ const PEOPLE = [
     image: "/about/MEL.png",
     email: "mel@bbtx.com",
     linkedin: "https://linkedin.com/in/melangelocortes",
+    href: "/team/mel",
     description: [
       "Mel Angelo Cortes supports BBTx AI across operations, systems, and execution, helping turn ideas into clear deliverables.",
       "He builds the workflows, content, and digital assets that support BBTx AI's programs and community.",
@@ -161,19 +165,15 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Photo strip: full-bleed looping carousel of real Grant photos */}
-      <section className="relative z-[1] w-full overflow-hidden bg-white pb-16 sm:pb-20 lg:pb-24">
-        <div
-          className="relative left-1/2 w-screen max-w-[100vw] -translate-x-1/2"
-          style={{
-            maskImage: "linear-gradient(to right, transparent, black 8%, black 92%, transparent)",
-            WebkitMaskImage: "linear-gradient(to right, transparent, black 8%, black 92%, transparent)",
-          }}
-        >
+      {/* Photo strip: full-bleed looping carousel of real Grant photos.
+          Height complements the hero's min-h above it so the two sections
+          together fill exactly one viewport on load. */}
+      <section className="relative z-[1] h-[62vh] w-full overflow-hidden bg-white sm:h-[58vh] lg:h-[54vh]">
+        <div className="relative left-1/2 h-full w-screen max-w-[100vw] -translate-x-1/2">
           <div
-            className="flex w-max gap-3 sm:gap-4"
+            className="flex h-full w-max gap-3 sm:gap-4"
             style={{
-              animation: "logo-scroll 40s linear infinite",
+              animation: "logo-scroll 80s linear infinite",
               willChange: "transform",
               backfaceVisibility: "hidden",
             }}
@@ -185,7 +185,7 @@ export default function AboutPage() {
                 alt=""
                 width={photo.width}
                 height={photo.height}
-                className="h-72 w-auto shrink-0 object-cover sm:h-96 lg:h-[480px]"
+                className="h-full w-auto shrink-0 object-cover"
               />
             ))}
           </div>
@@ -329,8 +329,9 @@ export default function AboutPage() {
           </div>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
             {PEOPLE.map((p) => (
-              <div
+              <Link
                 key={p.name}
+                href={p.href}
                 className="group relative aspect-[4/5] w-full overflow-hidden rounded-2xl border border-black/[0.06] bg-white transition-shadow hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)]"
               >
                 <Image
@@ -351,8 +352,13 @@ export default function AboutPage() {
                     {p.name}
                   </h3>
                   <div className="mt-2 flex items-center gap-2">
-                    <a
-                      href={`mailto:${p.email}`}
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        window.location.href = `mailto:${p.email}`;
+                      }}
                       className="flex h-8 w-8 items-center justify-center rounded-full border border-white/40 text-white transition-colors hover:border-white hover:bg-white/10"
                       aria-label={`Email ${p.name}`}
                     >
@@ -360,18 +366,21 @@ export default function AboutPage() {
                         <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
                         <path d="m22 6-10 7L2 6" />
                       </svg>
-                    </a>
-                    <a
-                      href={p.linkedin}
-                      target="_blank"
-                      rel="noopener noreferrer"
+                    </button>
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        window.open(p.linkedin, "_blank", "noopener,noreferrer");
+                      }}
                       className="flex h-8 w-8 items-center justify-center rounded-full border border-white/40 text-white transition-colors hover:border-white hover:bg-white/10"
                       aria-label={`${p.name} on LinkedIn`}
                     >
                       <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
                         <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
                       </svg>
-                    </a>
+                    </button>
                   </div>
                   <div className="mt-3 space-y-1">
                     {p.description.map((line, i) => (
@@ -381,7 +390,7 @@ export default function AboutPage() {
                     ))}
                   </div>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         </div>

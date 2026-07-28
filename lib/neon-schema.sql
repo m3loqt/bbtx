@@ -156,3 +156,106 @@ CREATE TABLE courses (
     is_published boolean DEFAULT false,
     sort_order integer DEFAULT 0
 );
+
+-- ─── digital_twin_snapshots ─────────────────────────────────────────────────
+-- Added 2026-07 as part of the Digital Twin Snapshot Tier-1 pass (adaptive
+-- research triage, Opus 4.8 synthesis via structured outputs, Haiku critic
+-- pass, persistence). One row per generation that successfully produced a
+-- snapshot. Applied standalone against the live DATABASE_URL — do NOT re-run
+-- this whole file (see header above); this CREATE TABLE has its own
+-- IF NOT EXISTS as cheap insurance against re-running just this block twice.
+-- ─── whitepapers ────────────────────────────────────────────────────────────
+-- Added 2026-07 for the whitepapers content hub. Downloads are gated behind
+-- an email capture (see whitepaper_downloads below) rather than linked out
+-- to a third party, so the PDF itself lives in Blob storage.
+CREATE TABLE IF NOT EXISTS whitepapers (
+    id                 uuid DEFAULT gen_random_uuid() PRIMARY KEY,
+    created_at         timestamp with time zone DEFAULT now(),
+    updated_at         timestamp with time zone DEFAULT now(),
+    title              text NOT NULL,
+    excerpt            text,
+    category           text,
+    cover_image_url    text,
+    pdf_url            text NOT NULL,
+    pdf_size_bytes     integer,
+    read_time_minutes  integer,
+    published_date     date,
+    is_featured        boolean NOT NULL DEFAULT false,
+    is_published       boolean NOT NULL DEFAULT false,
+    sort_order         integer NOT NULL DEFAULT 0,
+    download_count     integer NOT NULL DEFAULT 0
+);
+
+-- ─── whitepaper_downloads ───────────────────────────────────────────────────
+-- One row per email-gated download. Separate from newsletter_signups so we
+-- keep the per-paper lead trail even though the API route also upserts the
+-- email into newsletter_signups (source = 'whitepaper').
+CREATE TABLE IF NOT EXISTS whitepaper_downloads (
+    id             uuid DEFAULT gen_random_uuid() PRIMARY KEY,
+    created_at     timestamp with time zone DEFAULT now(),
+    whitepaper_id  uuid NOT NULL REFERENCES whitepapers(id) ON DELETE CASCADE,
+    full_name      text,
+    email          text NOT NULL,
+    ip_address     text
+);
+
+CREATE TABLE IF NOT EXISTS digital_twin_snapshots (
+    id                  uuid DEFAULT gen_random_uuid() PRIMARY KEY,
+    created_at          timestamp with time zone DEFAULT now(),
+    website_url         text NOT NULL,
+    organization_name   text,
+    industry            text,
+    competitors         text,
+    strategic_question  text,
+    sources_used        text[],
+    fetch_succeeded     boolean NOT NULL DEFAULT false,
+    snapshot            jsonb NOT NULL,
+    synthesis_model     text NOT NULL,
+    critic_revisions    integer NOT NULL DEFAULT 0,
+    token_usage         jsonb,
+    estimated_cost_usd  numeric(10,4),
+    ip_address          text,
+    email               text,
+    contact_name        text,
+    emailed_at          timestamp with time zone
+);
+
+-- ─── blogs: in-house authoring ──────────────────────────────────────────────
+-- Added 2026-07 to move blog posts from "card that links out to Substack" to
+-- actually hosting the article body on bbtx.ai, so fresh posts get indexed by
+-- Google under our own domain instead of Substack's. Applied standalone
+-- against the live DATABASE_URL — do NOT re-run this whole file.
+-- substack_url drops NOT NULL since in-house posts don't require a cross-post.
+ALTER TABLE blogs ALTER COLUMN substack_url DROP NOT NULL;
+ALTER TABLE blogs ADD COLUMN IF NOT EXISTS slug text;
+ALTER TABLE blogs ADD COLUMN IF NOT EXISTS content text;
+CREATE UNIQUE INDEX IF NOT EXISTS blogs_slug_unique_idx ON blogs (slug) WHERE slug IS NOT NULL;
+
+-- ─── blogs: reader engagement (hearts + comments) ───────────────────────────
+-- Added 2026-07-28. No auth/user system for readers, so identity is a random
+-- id the client generates once and keeps in localStorage ("fingerprint"), not
+-- an account. heart_count is a denormalized counter on the blogs row for fast
+-- reads; blog_hearts is the dedupe table so a given fingerprint can't push it
+-- above 1 for the same post (clearing localStorage defeats this, which is an
+-- accepted tradeoff of not having real auth). Applied standalone against the
+-- live DATABASE_URL — do NOT re-run this whole file.
+ALTER TABLE blogs ADD COLUMN IF NOT EXISTS heart_count integer NOT NULL DEFAULT 0;
+
+CREATE TABLE IF NOT EXISTS blog_hearts (
+    id          uuid DEFAULT gen_random_uuid() PRIMARY KEY,
+    created_at  timestamp with time zone DEFAULT now(),
+    blog_id     uuid NOT NULL REFERENCES blogs(id) ON DELETE CASCADE,
+    fingerprint text NOT NULL,
+    UNIQUE (blog_id, fingerprint)
+);
+
+CREATE TABLE IF NOT EXISTS blog_comments (
+    id          uuid DEFAULT gen_random_uuid() PRIMARY KEY,
+    created_at  timestamp with time zone DEFAULT now(),
+    blog_id     uuid NOT NULL REFERENCES blogs(id) ON DELETE CASCADE,
+    nickname    text NOT NULL,
+    content     text NOT NULL,
+    ip_address  text,
+    is_hidden   boolean NOT NULL DEFAULT false
+);
+CREATE INDEX IF NOT EXISTS blog_comments_blog_id_idx ON blog_comments (blog_id, created_at);

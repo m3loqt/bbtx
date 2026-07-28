@@ -81,6 +81,8 @@ function FooterLinkGroup({
 
 export function Footer() {
   const [subscribeOpen, setSubscribeOpen] = useState(false);
+  const [footerEmail, setFooterEmail] = useState("");
+  const [footerStatus, setFooterStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
 
   const handleAction = (action: "contact" | "subscribe") => {
     if (action === "contact") {
@@ -89,6 +91,30 @@ export function Footer() {
       setSubscribeOpen(true);
     }
   };
+
+  async function handleFooterSubscribe(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setFooterStatus("submitting");
+
+    try {
+      const res = await fetch("/api/newsletter", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: footerEmail, source: "footer" }),
+      });
+      const json = (await res.json()) as { success?: boolean };
+
+      if (!res.ok || !json.success) {
+        setFooterStatus("error");
+        return;
+      }
+
+      setFooterStatus("success");
+      setFooterEmail("");
+    } catch {
+      setFooterStatus("error");
+    }
+  }
 
   return (
     <footer className="bg-white text-[#222222]">
@@ -101,24 +127,34 @@ export function Footer() {
 
           <div>
             <h3 className="text-[15px] font-semibold text-[#222222]">Subscribe</h3>
-            <p className="mt-2 text-sm text-[#777777]">Join our community to receive updates</p>
-            <form
-              className="mt-4 flex w-full max-w-sm items-center gap-2"
-              onSubmit={(e) => e.preventDefault()}
-            >
-              <input
-                type="email"
-                placeholder="Enter your email"
-                className="min-w-0 flex-1 rounded-full border border-black/10 bg-[#f7f7f7] px-4 py-2.5 text-sm text-[#222222] placeholder:text-[#999] focus:outline-none focus:ring-0"
-                aria-label="Email for newsletter"
-              />
-              <button
-                type="submit"
-                className="shrink-0 rounded-full bg-[#ca3726] px-4 py-2.5 text-sm font-medium text-white transition-opacity hover:opacity-95"
-              >
-                Subscribe
-              </button>
-            </form>
+            {footerStatus === "success" ? (
+              <p className="mt-2 text-sm text-[#777777]">You&apos;re subscribed — thanks for joining.</p>
+            ) : (
+              <>
+                <p className="mt-2 text-sm text-[#777777]">Join our community to receive updates</p>
+                <form className="mt-4 flex w-full max-w-sm items-center gap-2" onSubmit={handleFooterSubscribe}>
+                  <input
+                    type="email"
+                    required
+                    value={footerEmail}
+                    onChange={(e) => setFooterEmail(e.target.value)}
+                    placeholder="Enter your email"
+                    className="min-w-0 flex-1 rounded-full border border-black/10 bg-[#f7f7f7] px-4 py-2.5 text-sm text-[#222222] placeholder:text-[#999] focus:outline-none focus:ring-0"
+                    aria-label="Email for newsletter"
+                  />
+                  <button
+                    type="submit"
+                    disabled={footerStatus === "submitting"}
+                    className="shrink-0 rounded-full bg-[#ca3726] px-4 py-2.5 text-sm font-medium text-white transition-opacity hover:opacity-95 disabled:opacity-70"
+                  >
+                    {footerStatus === "submitting" ? "..." : "Subscribe"}
+                  </button>
+                </form>
+                {footerStatus === "error" && (
+                  <p className="mt-2 text-xs text-[#ca3726]">Something went wrong. Please try again.</p>
+                )}
+              </>
+            )}
             <p className="mt-2 text-xs text-[#999]">
               By subscribing, you agree to our Privacy Policy.
             </p>
@@ -186,7 +222,11 @@ export function Footer() {
       </div>
 
       {/* "Contact Us" dispatches the global openContact event, handled by Nav's ContactModal */}
-      <SubscribeModal open={subscribeOpen} onClose={() => setSubscribeOpen(false)} />
+      <SubscribeModal
+        key={subscribeOpen ? "open" : "closed"}
+        open={subscribeOpen}
+        onClose={() => setSubscribeOpen(false)}
+      />
     </footer>
   );
 }

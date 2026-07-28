@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { renderToBuffer } from "@react-pdf/renderer";
 import React from "react";
 import { getResend } from "@/lib/resend";
+import { sql } from "@/lib/db";
 import { SnapshotPDF, type SnapshotForPDF } from "@/lib/emails/snapshot-pdf";
 import { buildSnapshotUserEmail } from "@/lib/emails/snapshot-user-email";
 
@@ -36,12 +37,11 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const { email, name, websiteUrl, timestamp, snapshot } = (await req.json()) as {
+    const { email, name, snapshotId, timestamp } = (await req.json()) as {
       email?: string;
       name?: string;
-      websiteUrl?: string;
+      snapshotId?: string | null;
       timestamp?: string;
-      snapshot?: SnapshotForPDF;
     };
 
     if (!email || typeof email !== "string" || email.length > 320 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
@@ -56,9 +56,27 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ success: true });
     }
 
+    // ── Look up the stored generation server-side — never trust
+    // client-supplied content for what gets emailed.
+    let snapshot: SnapshotForPDF | null = null;
+    let websiteUrl = "";
+    if (snapshotId && typeof snapshotId === "string") {
+      try {
+        const [row] = await sql`
+          SELECT snapshot, website_url FROM digital_twin_snapshots WHERE id = ${snapshotId}
+        `;
+        if (row) {
+          snapshot = row.snapshot as SnapshotForPDF;
+          websiteUrl = (row.website_url as string) ?? "";
+        }
+      } catch (err) {
+        console.error("[digital-twin-email] snapshot lookup failed:", String(err));
+      }
+    }
+
     const orgName = snapshot
       ? snapshot.snapshotTitle.replace(/^Strategic Snapshot:\s*/i, "") || snapshot.snapshotTitle
-      : (websiteUrl ?? "Your Organization");
+      : (websiteUrl || "Your Organization");
 
     const generatedAt = timestamp
       ? new Date(timestamp).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })
@@ -72,7 +90,7 @@ export async function POST(req: NextRequest) {
       const pdfBuffer = await renderToBuffer(
         React.createElement(SnapshotPDF, {
           snapshot,
-          websiteUrl: websiteUrl ?? "",
+          websiteUrl,
           generatedAt,
         }) as any
       );
@@ -84,7 +102,7 @@ export async function POST(req: NextRequest) {
         from: notifyFrom,
         to: email,
         subject: `Your Strategic Snapshot — ${orgName}`,
-        html: buildSnapshotUserEmail({ name, orgName, websiteUrl: websiteUrl ?? "" }),
+        html: buildSnapshotUserEmail({ name, orgName, websiteUrl }),
         attachments: [
           {
             filename,
@@ -92,12 +110,23 @@ export async function POST(req: NextRequest) {
           },
         ],
       });
+
+      // Best-effort — never let a logging failure block the response.
+      try {
+        await sql`
+          UPDATE digital_twin_snapshots
+          SET email = ${email}, contact_name = ${name ?? null}, emailed_at = now()
+          WHERE id = ${snapshotId}
+        `;
+      } catch (err) {
+        console.error("[digital-twin-email] failed to record email capture:", String(err));
+      }
     }
 
     // ── Notify Grant ─────────────────────────────────────
     if (notifyTo) {
       const displayName = name ? `${name} (${email})` : email;
-      const analyzedUrl = websiteUrl ?? "not provided";
+      const analyzedUrl = websiteUrl || "not provided";
 
       await resend.emails.send({
         from: notifyFrom,

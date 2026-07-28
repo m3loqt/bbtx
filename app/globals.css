@@ -327,3 +327,98 @@ body::before {
   max-width: none !important;
   margin: 0 !important;
 }
+
+/* Blog article body — shared between the TipTap admin editor and the public
+   /chaotic-confluence/[slug] page, so drafts render exactly as published. */
+.article-prose {
+  color: #1a1a1a;
+  font-size: 1.0625rem;
+  line-height: 1.75;
+}
+
+.article-prose > * + * {
+  margin-top: 1.4em;
+}
+
+/* Scene-break dividers (from Substack's "---") arrive wrapped in an empty
+   <div>, and Tailwind's preflight zeroes out hr's default margin/border —
+   without this, they render as a bare flush line with no visual weight,
+   barely distinguishable from the paragraph rhythm. */
+.article-prose hr {
+  margin: 2em 0;
+  border: none;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.article-prose h2 {
+  margin-top: 1.75em;
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  color: #111111;
+}
+
+.article-prose h3 {
+  margin-top: 1.5em;
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.35;
+  color: #111111;
+}
+
+.article-prose ul,
+.article-prose ol {
+  padding-left: 1.25em;
+}
+
+.article-prose ul {
+  list-style: disc;
+}
+
+.article-prose ol {
+  list-style: decimal;
+}
+
+.article-prose li + li {
+  margin-top: 0.4em;
+}
+
+.article-prose blockquote {
+  border-left: 3px solid #ca3726;
+  padding-left: 1em;
+  font-style: italic;
+  color: #444444;
+}
+
+.article-prose a {
+  color: #ca3726;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.article-prose img {
+  border-radius: 0.5rem;
+  max-width: 100%;
+  height: auto;
+}
+
+.article-prose strong {
+  font-weight: 600;
+}
+
+.article-prose code {
+  background: #f3f4f6;
+  padding: 0.15em 0.4em;
+  border-radius: 0.25rem;
+  font-size: 0.9em;
+}
+
+/* TipTap Placeholder extension requires this exact selector to render its hint. */
+.article-prose p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  color: #9ca3af;
+  float: left;
+  height: 0;
+  pointer-events: none;
+}

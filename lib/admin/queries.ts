@@ -3,8 +3,10 @@
 import { sql } from '@/lib/db'
 import type {
   Blog,
+  BlogComment,
   PodcastEpisode,
   Course,
+  Whitepaper,
   Event,
   ContactSubmission,
   AssessmentSubmission,
@@ -112,11 +114,35 @@ export async function getBlogs(): Promise<Blog[]> {
   return rows as unknown as Blog[]
 }
 
+// Public-facing: only what's actually published, newest first.
+export async function getPublishedBlogs(): Promise<Blog[]> {
+  const rows = await sql`
+    SELECT * FROM blogs
+    WHERE is_published = true
+    ORDER BY sort_order ASC, published_date DESC NULLS LAST, created_at DESC
+  `
+  return rows as unknown as Blog[]
+}
+
+// Admin only — fetches a single post regardless of published status, for the editor.
+export async function getBlogById(id: string): Promise<Blog | null> {
+  const [row] = await sql`SELECT * FROM blogs WHERE id = ${id}`
+  return (row as unknown as Blog) ?? null
+}
+
+// Public — only published posts, looked up the way visitors hit the URL.
+export async function getPublishedBlogBySlug(slug: string): Promise<Blog | null> {
+  const [row] = await sql`SELECT * FROM blogs WHERE slug = ${slug} AND is_published = true`
+  return (row as unknown as Blog) ?? null
+}
+
 export async function upsertBlog(data: Partial<Blog>): Promise<Blog> {
   if (data.id) {
     const [result] = await sql`
       UPDATE blogs SET
         title             = COALESCE(${data.title ?? null}, title),
+        slug              = COALESCE(${data.slug ?? null}, slug),
+        content           = COALESCE(${data.content ?? null}, content),
         excerpt           = COALESCE(${data.excerpt ?? null}, excerpt),
         cover_image_url   = COALESCE(${data.cover_image_url ?? null}, cover_image_url),
         substack_url      = COALESCE(${data.substack_url ?? null}, substack_url),
@@ -136,9 +162,9 @@ export async function upsertBlog(data: Partial<Blog>): Promise<Blog> {
 
   const [result] = await sql`
     INSERT INTO blogs
-      (title, excerpt, cover_image_url, substack_url, category, published_date, read_time_minutes, is_featured, is_published, sort_order)
+      (title, slug, content, excerpt, cover_image_url, substack_url, category, published_date, read_time_minutes, is_featured, is_published, sort_order)
     VALUES
-      (${data.title}, ${data.excerpt ?? null}, ${data.cover_image_url ?? null}, ${data.substack_url},
+      (${data.title}, ${data.slug ?? null}, ${data.content ?? null}, ${data.excerpt ?? null}, ${data.cover_image_url ?? null}, ${data.substack_url ?? null},
        ${data.category ?? null}, ${data.published_date ?? null}, ${data.read_time_minutes ?? null},
        ${data.is_featured ?? false}, ${data.is_published ?? false}, ${data.sort_order ?? 0})
     RETURNING *
@@ -152,6 +178,78 @@ export async function deleteBlog(id: string): Promise<void> {
 
 export async function toggleBlogPublished(id: string, value: boolean): Promise<void> {
   await sql`UPDATE blogs SET is_published = ${value}, updated_at = now() WHERE id = ${id}`
+}
+
+// ─── Blog comments ──────────────────────────────────────────────────────────
+// No reader accounts — commenters are identified only by a client-chosen
+// nickname, so there's nothing here to tie a comment back to a person beyond
+// the IP address kept for spam triage.
+
+// Public — only what visitors should see, oldest first like a normal thread.
+export async function getVisibleCommentsForBlog(blogId: string): Promise<BlogComment[]> {
+  const rows = await sql`
+    SELECT * FROM blog_comments
+    WHERE blog_id = ${blogId} AND is_hidden = false
+    ORDER BY created_at ASC
+  `
+  return rows as unknown as BlogComment[]
+}
+
+export async function createBlogComment(data: {
+  blog_id: string
+  nickname: string
+  content: string
+  ip_address: string | null
+}): Promise<BlogComment> {
+  const [result] = await sql`
+    INSERT INTO blog_comments (blog_id, nickname, content, ip_address)
+    VALUES (${data.blog_id}, ${data.nickname}, ${data.content}, ${data.ip_address})
+    RETURNING *
+  `
+  return result as unknown as BlogComment
+}
+
+// Admin only — everything including already-hidden comments, for moderation.
+export async function getAllCommentsForBlog(blogId: string): Promise<BlogComment[]> {
+  const rows = await sql`
+    SELECT * FROM blog_comments
+    WHERE blog_id = ${blogId}
+    ORDER BY created_at DESC
+  `
+  return rows as unknown as BlogComment[]
+}
+
+export async function deleteBlogComment(id: string): Promise<void> {
+  await sql`DELETE FROM blog_comments WHERE id = ${id}`
+}
+
+// ─── Blog hearts ────────────────────────────────────────────────────────────
+// Toggles a (blog_id, fingerprint) row — fingerprint is a random id the
+// client generates and keeps in localStorage, standing in for an account.
+// heart_count on the blogs row is a denormalized counter kept in sync here.
+export async function toggleBlogHeart(
+  blogId: string,
+  fingerprint: string
+): Promise<{ heart_count: number; hearted: boolean }> {
+  const [existing] = await sql`
+    SELECT id FROM blog_hearts WHERE blog_id = ${blogId} AND fingerprint = ${fingerprint}
+  `
+
+  if (existing) {
+    await sql`DELETE FROM blog_hearts WHERE id = ${existing.id}`
+    const [row] = await sql`
+      UPDATE blogs SET heart_count = GREATEST(heart_count - 1, 0) WHERE id = ${blogId}
+      RETURNING heart_count
+    `
+    return { heart_count: row.heart_count as number, hearted: false }
+  }
+
+  await sql`INSERT INTO blog_hearts (blog_id, fingerprint) VALUES (${blogId}, ${fingerprint})`
+  const [row] = await sql`
+    UPDATE blogs SET heart_count = heart_count + 1 WHERE id = ${blogId}
+    RETURNING heart_count
+  `
+  return { heart_count: row.heart_count as number, hearted: true }
 }
 
 // ─── Podcasts ─────────────────────────────────────────────────────────────────
@@ -251,6 +349,66 @@ export async function deleteCourse(id: string): Promise<void> {
 
 export async function toggleCoursePublished(id: string, value: boolean): Promise<void> {
   await sql`UPDATE courses SET is_published = ${value}, updated_at = now() WHERE id = ${id}`
+}
+
+// ─── Whitepapers ────────────────────────────────────────────────────────────
+
+export async function getWhitepapers(): Promise<Whitepaper[]> {
+  const rows = await sql`SELECT * FROM whitepapers ORDER BY sort_order ASC, created_at DESC`
+  return rows as unknown as Whitepaper[]
+}
+
+// Public-facing: only what's actually published, in display order.
+export async function getPublishedWhitepapers(): Promise<Whitepaper[]> {
+  const rows = await sql`
+    SELECT * FROM whitepapers
+    WHERE is_published = true
+    ORDER BY sort_order ASC, published_date DESC NULLS LAST, created_at DESC
+  `
+  return rows as unknown as Whitepaper[]
+}
+
+export async function upsertWhitepaper(data: Partial<Whitepaper>): Promise<Whitepaper> {
+  if (data.id) {
+    const [result] = await sql`
+      UPDATE whitepapers SET
+        title              = COALESCE(${data.title ?? null}, title),
+        excerpt            = COALESCE(${data.excerpt ?? null}, excerpt),
+        category           = COALESCE(${data.category ?? null}, category),
+        cover_image_url    = COALESCE(${data.cover_image_url ?? null}, cover_image_url),
+        pdf_url            = COALESCE(${data.pdf_url ?? null}, pdf_url),
+        pdf_size_bytes     = COALESCE(${data.pdf_size_bytes ?? null}, pdf_size_bytes),
+        read_time_minutes  = COALESCE(${data.read_time_minutes ?? null}, read_time_minutes),
+        published_date     = COALESCE(${data.published_date ?? null}, published_date),
+        is_featured        = COALESCE(${data.is_featured ?? null}, is_featured),
+        is_published       = COALESCE(${data.is_published ?? null}, is_published),
+        sort_order         = COALESCE(${data.sort_order ?? null}, sort_order),
+        updated_at         = now()
+      WHERE id = ${data.id}
+      RETURNING *
+    `
+    if (!result) throw new Error('Whitepaper not found')
+    return result as unknown as Whitepaper
+  }
+
+  const [result] = await sql`
+    INSERT INTO whitepapers
+      (title, excerpt, category, cover_image_url, pdf_url, pdf_size_bytes, read_time_minutes, published_date, is_featured, is_published, sort_order)
+    VALUES
+      (${data.title}, ${data.excerpt ?? null}, ${data.category ?? null}, ${data.cover_image_url ?? null},
+       ${data.pdf_url}, ${data.pdf_size_bytes ?? null}, ${data.read_time_minutes ?? null}, ${data.published_date ?? null},
+       ${data.is_featured ?? false}, ${data.is_published ?? false}, ${data.sort_order ?? 0})
+    RETURNING *
+  `
+  return result as unknown as Whitepaper
+}
+
+export async function deleteWhitepaper(id: string): Promise<void> {
+  await sql`DELETE FROM whitepapers WHERE id = ${id}`
+}
+
+export async function toggleWhitepaperPublished(id: string, value: boolean): Promise<void> {
+  await sql`UPDATE whitepapers SET is_published = ${value}, updated_at = now() WHERE id = ${id}`
 }
 
 // ─── Events ───────────────────────────────────────────────────────────────────

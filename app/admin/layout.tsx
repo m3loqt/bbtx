@@ -13,8 +13,14 @@ import { Toaster } from 'sonner'
 export default function AdminLayout({ children }: { children: ReactNode }) {
   const pathname = usePathname()
 
-  // On the login route, render only the auth form (no admin chrome).
-  if (pathname === '/admin/login' || pathname === '/admin/login/') {
+  // On the login route and the full-page blog editor, skip the sidebar chrome —
+  // the editor wants a focused, edge-to-edge writing canvas like Substack's.
+  const isChromeless =
+    pathname === '/admin/login' ||
+    pathname === '/admin/login/' ||
+    pathname.startsWith('/admin/content/blog/')
+
+  if (isChromeless) {
     return (
       <>
         {children}

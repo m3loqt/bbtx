@@ -3,22 +3,24 @@
 export const dynamic = 'force-dynamic'
 
 import React, { Suspense, useState, useEffect, useCallback } from 'react'
-import { useSearchParams } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { toast } from 'sonner'
 import {
   getBlogs,
-  upsertBlog,
   deleteBlog,
   toggleBlogPublished,
+  upsertBlog,
+  getAllCommentsForBlog,
+  deleteBlogComment,
   getPodcastEpisodes,
   upsertPodcastEpisode,
   deletePodcastEpisode,
   togglePodcastPublished,
 } from '@/lib/admin/queries'
-import type { Blog, PodcastEpisode } from '@/lib/admin/types'
+import type { Blog, BlogComment, PodcastEpisode } from '@/lib/admin/types'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
@@ -56,31 +58,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
-import { Plus, MoreHorizontal, Trash2, Edit, Loader2 } from 'lucide-react'
-
-// ─── Blog Form ────────────────────────────────────────────────────────────────
-
-const blogSchema = z.object({
-  title: z.string().min(1, 'Title is required'),
-  excerpt: z.string().max(300).nullable().optional(),
-  cover_image_url: z.string().url('Must be a valid URL').nullable().optional().or(z.literal('')),
-  substack_url: z.string().url('Must be a valid URL').min(1, 'Substack URL is required'),
-  category: z.string().nullable().optional(),
-  published_date: z.string().nullable().optional(),
-  read_time_minutes: z.coerce.number().nullable().optional(),
-  is_featured: z.boolean().default(false),
-  is_published: z.boolean().default(false),
-  sort_order: z.coerce.number().default(0),
-})
-
-type BlogFormData = z.infer<typeof blogSchema>
+import { Plus, MoreHorizontal, Trash2, Edit, Loader2, MessageCircle } from 'lucide-react'
 
 // ─── Podcast Form ─────────────────────────────────────────────────────────────
 
@@ -101,34 +79,21 @@ const podcastSchema = z.object({
 type PodcastFormData = z.infer<typeof podcastSchema>
 
 // ─── Blog Table ───────────────────────────────────────────────────────────────
+// Writing/editing a post happens on its own full page (/admin/content/blog/[id])
+// — a Substack-style canvas needs more room than a side sheet. This tab is just
+// the list: publish/feature toggles, delete, and links out to that editor.
 
-function BlogTab({ trigger }: { trigger: number }) {
+function BlogTab() {
+  const router = useRouter()
   const [blogs, setBlogs] = useState<Blog[]>([])
   const [loading, setLoading] = useState(true)
-  const [sheetOpen, setSheetOpen] = useState(false)
-  const [editTarget, setEditTarget] = useState<Blog | null>(null)
   const [deleteTarget, setDeleteTarget] = useState<Blog | null>(null)
-  const [saving, setSaving] = useState(false)
   const [deleting, setDeleting] = useState(false)
-  const [coverPreview, setCoverPreview] = useState('')
 
-  const { register, handleSubmit, reset, setValue, watch, formState: { errors } } = useForm<BlogFormData>({
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    resolver: zodResolver(blogSchema) as any,
-    defaultValues: { is_featured: false, is_published: false, sort_order: 0 },
-  })
-
-  const isFeatured = watch('is_featured')
-  const isPublished = watch('is_published')
-  const coverUrl = watch('cover_image_url')
-
-  useEffect(() => {
-    if (typeof coverUrl === 'string' && coverUrl.startsWith('http')) {
-      setCoverPreview(coverUrl)
-    } else {
-      setCoverPreview('')
-    }
-  }, [coverUrl])
+  const [commentsTarget, setCommentsTarget] = useState<Blog | null>(null)
+  const [comments, setComments] = useState<BlogComment[]>([])
+  const [commentsLoading, setCommentsLoading] = useState(false)
+  const [deletingCommentId, setDeletingCommentId] = useState<string | null>(null)
 
   const load = useCallback(async () => {
     try {
@@ -144,58 +109,6 @@ function BlogTab({ trigger }: { trigger: number }) {
 
   useEffect(() => { load() }, [load])
 
-  const prevTrigger = React.useRef(0)
-  useEffect(() => {
-    if (trigger > 0 && trigger !== prevTrigger.current) {
-      prevTrigger.current = trigger
-      openSheet(null)
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [trigger])
-
-  function openSheet(blog: Blog | null) {
-    setEditTarget(blog)
-    if (blog) {
-      reset({
-        title: blog.title,
-        excerpt: blog.excerpt ?? '',
-        cover_image_url: blog.cover_image_url ?? '',
-        substack_url: blog.substack_url,
-        category: blog.category ?? '',
-        published_date: blog.published_date ?? '',
-        read_time_minutes: blog.read_time_minutes ?? undefined,
-        is_featured: blog.is_featured,
-        is_published: blog.is_published,
-        sort_order: blog.sort_order,
-      })
-    } else {
-      reset({ is_featured: false, is_published: false, sort_order: 0 })
-    }
-    setSheetOpen(true)
-  }
-
-  async function onSubmit(data: BlogFormData) {
-    setSaving(true)
-    try {
-      await upsertBlog({
-        ...(editTarget ? { id: editTarget.id } : {}),
-        ...data,
-        excerpt: data.excerpt || null,
-        cover_image_url: data.cover_image_url || null,
-        category: data.category || null,
-        published_date: data.published_date || null,
-        read_time_minutes: data.read_time_minutes ?? null,
-      })
-      toast.success('Article saved')
-      setSheetOpen(false)
-      await load()
-    } catch {
-      toast.error('Failed to save. Please try again.')
-    } finally {
-      setSaving(false)
-    }
-  }
-
   async function handleDelete() {
     if (!deleteTarget) return
     setDeleting(true)
@@ -208,6 +121,33 @@ function BlogTab({ trigger }: { trigger: number }) {
       toast.error('Failed to delete article')
     } finally {
       setDeleting(false)
+    }
+  }
+
+  async function openComments(blog: Blog) {
+    setCommentsTarget(blog)
+    setCommentsLoading(true)
+    try {
+      const data = await getAllCommentsForBlog(blog.id)
+      setComments(data)
+    } catch {
+      toast.error('Failed to load comments')
+    } finally {
+      setCommentsLoading(false)
+    }
+  }
+
+  async function handleDeleteComment(id: string) {
+    setDeletingCommentId(id)
+    const prev = comments
+    setComments((cs) => cs.filter((c) => c.id !== id))
+    try {
+      await deleteBlogComment(id)
+    } catch {
+      setComments(prev)
+      toast.error('Failed to delete comment')
+    } finally {
+      setDeletingCommentId(null)
     }
   }
 
@@ -232,9 +172,9 @@ function BlogTab({ trigger }: { trigger: number }) {
         </div>
       ) : blogs.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-16 text-center">
-          <p className="text-muted-foreground mb-4">No blog articles yet. Add your first article to get started.</p>
-          <Button onClick={() => openSheet(null)} className="gap-2">
-            <Plus className="h-4 w-4" /> Add Article
+          <p className="text-muted-foreground mb-4">No blog articles yet. Write your first post to get started.</p>
+          <Button onClick={() => router.push('/admin/content/blog/new')} className="gap-2">
+            <Plus className="h-4 w-4" /> Write Article
           </Button>
         </div>
       ) : (
@@ -267,7 +207,13 @@ function BlogTab({ trigger }: { trigger: number }) {
                   )}
                 </TableCell>
                 <TableCell className="font-medium max-w-xs">
-                  <p className="truncate">{blog.title}</p>
+                  <button
+                    type="button"
+                    onClick={() => router.push(`/admin/content/blog/${blog.id}`)}
+                    className="truncate text-left hover:underline"
+                  >
+                    {blog.title}
+                  </button>
                   {blog.excerpt && (
                     <p className="text-xs text-muted-foreground truncate">{blog.excerpt}</p>
                   )}
@@ -311,8 +257,11 @@ function BlogTab({ trigger }: { trigger: number }) {
                       <MoreHorizontal className="h-4 w-4" />
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
-                      <DropdownMenuItem onClick={() => openSheet(blog)}>
+                      <DropdownMenuItem onClick={() => router.push(`/admin/content/blog/${blog.id}`)}>
                         <Edit className="mr-2 h-4 w-4" /> Edit
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => openComments(blog)}>
+                        <MessageCircle className="mr-2 h-4 w-4" /> Comments
                       </DropdownMenuItem>
                       <DropdownMenuItem
                         className="text-destructive"
@@ -328,105 +277,6 @@ function BlogTab({ trigger }: { trigger: number }) {
           </TableBody>
         </Table>
       )}
-
-      {/* Edit/Add Sheet */}
-      <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
-        <SheetContent className="w-full sm:max-w-[720px] md:max-w-[840px] overflow-y-auto">
-          <SheetHeader>
-            <SheetTitle>{editTarget ? 'Edit Article' : 'Add Article'}</SheetTitle>
-          </SheetHeader>
-
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-5 py-4 px-4 sm:px-6">
-            <div className="space-y-2">
-              <Label htmlFor="b-title">Title *</Label>
-              <Input id="b-title" {...register('title')} />
-              {errors.title && <p className="text-xs text-destructive">{errors.title.message}</p>}
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="b-excerpt">Excerpt <span className="text-muted-foreground">(max 300)</span></Label>
-              <Textarea id="b-excerpt" rows={3} {...register('excerpt')} />
-              {errors.excerpt && <p className="text-xs text-destructive">{errors.excerpt.message}</p>}
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="b-cover">Cover Image URL</Label>
-              <Input id="b-cover" type="url" placeholder="https://" {...register('cover_image_url')} />
-              {coverPreview && (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img src={coverPreview} alt="Preview" className="h-20 w-auto rounded border object-cover" />
-              )}
-              {errors.cover_image_url && <p className="text-xs text-destructive">{errors.cover_image_url.message}</p>}
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="b-substack">Substack URL *</Label>
-              <Input id="b-substack" type="url" placeholder="https://" {...register('substack_url')} />
-              {errors.substack_url && <p className="text-xs text-destructive">{errors.substack_url.message}</p>}
-            </div>
-
-            <div className="space-y-2">
-              <Label>Category</Label>
-              <Select onValueChange={(v) => setValue('category', v)} defaultValue={editTarget?.category ?? ''}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select category" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="AI Leadership">AI Leadership</SelectItem>
-                  <SelectItem value="Strategy">Strategy</SelectItem>
-                  <SelectItem value="Organization">Organization</SelectItem>
-                  <SelectItem value="Leadership">Leadership</SelectItem>
-                  <SelectItem value="Workforce">Workforce</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="b-date">Published Date</Label>
-                <Input id="b-date" type="date" {...register('published_date')} />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="b-readtime">Read Time (min)</Label>
-                <Input id="b-readtime" type="number" min={1} {...register('read_time_minutes')} />
-              </div>
-            </div>
-
-            <div className="flex items-center justify-between">
-              <Label htmlFor="b-featured">Featured</Label>
-              <Switch
-                id="b-featured"
-                checked={isFeatured}
-                onCheckedChange={(v) => setValue('is_featured', v)}
-              />
-            </div>
-
-            <div className="flex items-center justify-between">
-              <Label htmlFor="b-published">Published</Label>
-              <Switch
-                id="b-published"
-                checked={isPublished}
-                onCheckedChange={(v) => setValue('is_published', v)}
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="b-sort">Sort Order</Label>
-              <Input id="b-sort" type="number" {...register('sort_order')} />
-            </div>
-
-            <SheetFooter className="pt-2">
-              <Button type="button" variant="outline" onClick={() => setSheetOpen(false)}>
-                Cancel
-              </Button>
-              <Button type="submit" disabled={saving}>
-                {saving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                Save Article
-              </Button>
-            </SheetFooter>
-          </form>
-        </SheetContent>
-      </Sheet>
 
       {/* Delete Dialog */}
       <Dialog open={!!deleteTarget} onOpenChange={(o) => !o && setDeleteTarget(null)}>
@@ -444,6 +294,54 @@ function BlogTab({ trigger }: { trigger: number }) {
               Delete
             </Button>
           </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Comments Dialog */}
+      <Dialog open={!!commentsTarget} onOpenChange={(o) => !o && setCommentsTarget(null)}>
+        <DialogContent className="max-h-[80vh] overflow-y-auto sm:max-w-lg">
+          <DialogHeader>
+            <DialogTitle>Comments</DialogTitle>
+            <DialogDescription className="truncate">{commentsTarget?.title}</DialogDescription>
+          </DialogHeader>
+          {commentsLoading ? (
+            <div className="space-y-2">
+              {Array.from({ length: 3 }).map((_, i) => (
+                <Skeleton key={i} className="h-16 w-full" />
+              ))}
+            </div>
+          ) : comments.length === 0 ? (
+            <p className="text-sm text-muted-foreground py-6 text-center">No comments yet.</p>
+          ) : (
+            <div className="space-y-3">
+              {comments.map((comment) => (
+                <div key={comment.id} className="flex items-start justify-between gap-3 rounded-md border p-3">
+                  <div className="min-w-0">
+                    <div className="flex items-center gap-2 text-sm">
+                      <span className="font-medium">{comment.nickname}</span>
+                      <span className="text-xs text-muted-foreground">
+                        {new Date(comment.created_at).toLocaleString()}
+                      </span>
+                    </div>
+                    <p className="mt-1 whitespace-pre-wrap text-sm text-muted-foreground">{comment.content}</p>
+                  </div>
+                  <Button
+                    variant="ghost"
+                    size="icon-sm"
+                    className="shrink-0 text-destructive"
+                    disabled={deletingCommentId === comment.id}
+                    onClick={() => handleDeleteComment(comment.id)}
+                  >
+                    {deletingCommentId === comment.id ? (
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    ) : (
+                      <Trash2 className="h-4 w-4" />
+                    )}
+                  </Button>
+                </div>
+              ))}
+            </div>
+          )}
         </DialogContent>
       </Dialog>
     </>
@@ -776,16 +674,16 @@ function PodcastTab({ trigger }: { trigger: number }) {
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
 function ContentPageInner() {
+  const router = useRouter()
   const searchParams = useSearchParams()
   const newParam = searchParams.get('new')
   const defaultTab = newParam === 'podcast' ? 'podcasts' : 'blogs'
   const [activeTab, setActiveTab] = useState(defaultTab)
-  const [blogTrigger, setBlogTrigger] = useState(0)
   const [podcastTrigger, setPodcastTrigger] = useState(0)
 
   function handleAddClick() {
     if (activeTab === 'blogs') {
-      setBlogTrigger((n) => n + 1)
+      router.push('/admin/content/blog/new')
     } else {
       setPodcastTrigger((n) => n + 1)
     }
@@ -808,12 +706,12 @@ function ContentPageInner() {
           </TabsList>
           <Button className="gap-2" onClick={handleAddClick}>
             <Plus className="h-4 w-4" />
-            {activeTab === 'blogs' ? 'Add Article' : 'Add Episode'}
+            {activeTab === 'blogs' ? 'Write Article' : 'Add Episode'}
           </Button>
         </div>
 
         <TabsContent value="blogs" className="mt-4">
-          <BlogTab trigger={blogTrigger} />
+          <BlogTab />
         </TabsContent>
         <TabsContent value="podcasts" className="mt-4">
           <PodcastTab trigger={podcastTrigger} />

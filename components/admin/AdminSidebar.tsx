@@ -11,6 +11,7 @@ import {
   ClipboardList,
   Bell,
   LogOut,
+  Library,
 } from 'lucide-react'
 import {
   Sidebar,
@@ -37,6 +38,7 @@ const navItems = [
     group: 'Content',
     items: [
       { label: 'Blogs & Podcasts', href: '/admin/content', icon: FileText },
+      { label: 'Whitepapers', href: '/admin/whitepapers', icon: Library },
       { label: 'Courses', href: '/admin/courses', icon: GraduationCap },
       { label: 'Events', href: '/admin/events', icon: Calendar },
     ],

@@ -3,15 +3,28 @@ export interface Blog {
   created_at: string
   updated_at: string
   title: string
+  slug: string | null
+  content: string | null
   excerpt: string | null
   cover_image_url: string | null
-  substack_url: string
+  substack_url: string | null
   category: string | null
   published_date: string | null
   read_time_minutes: number | null
   is_featured: boolean
   is_published: boolean
   sort_order: number
+  heart_count: number
+}
+
+export interface BlogComment {
+  id: string
+  created_at: string
+  blog_id: string
+  nickname: string
+  content: string
+  ip_address: string | null
+  is_hidden: boolean
 }
 
 export interface PodcastEpisode {
@@ -45,6 +58,24 @@ export interface Course {
   is_featured: boolean
   is_published: boolean
   sort_order: number
+}
+
+export interface Whitepaper {
+  id: string
+  created_at: string
+  updated_at: string
+  title: string
+  excerpt: string | null
+  category: string | null
+  cover_image_url: string | null
+  pdf_url: string
+  pdf_size_bytes: number | null
+  read_time_minutes: number | null
+  published_date: string | null
+  is_featured: boolean
+  is_published: boolean
+  sort_order: number
+  download_count: number
 }
 
 export interface Event {

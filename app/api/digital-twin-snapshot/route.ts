@@ -1,10 +1,33 @@
 import Anthropic from "@anthropic-ai/sdk";
+import { zodOutputFormat } from "@anthropic-ai/sdk/helpers/zod";
+import { z } from "zod";
 import { sql } from "@/lib/db";
 import { NextRequest } from "next/server";
+import { SnapshotSchema, CritiqueResultSchema, type Snapshot } from "@/lib/digital-twin/snapshot-schema";
+
+export const maxDuration = 240;
 
 const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
-const MODEL = process.env.ANTHROPIC_MODEL ?? "claude-sonnet-4-6";
+const TRIAGE_MODEL    = "claude-haiku-4-5";
+const SYNTHESIS_MODEL = "claude-opus-4-8";
+const CRITIC_MODEL    = "claude-haiku-4-5";
 const TAVILY_KEY = process.env.TAVILY_API_KEY;
+
+// Confirmed pricing per 1M tokens (2026-06) — used only to populate
+// estimated_cost_usd for analytics; never used in request logic.
+const PRICING: Record<string, { in: number; out: number }> = {
+  "claude-opus-4-8":  { in: 5, out: 25 },
+  "claude-haiku-4-5": { in: 1, out: 5 },
+};
+type TokenUsage = { input_tokens: number; output_tokens: number };
+function estimateCostUsd(usages: { model: string; usage: TokenUsage | null }[]): number {
+  return usages.reduce((sum, { model, usage }) => {
+    if (!usage) return sum;
+    const rate = PRICING[model];
+    if (!rate) return sum;
+    return sum + (usage.input_tokens / 1e6) * rate.in + (usage.output_tokens / 1e6) * rate.out;
+  }, 0);
+}
 
 // ── Event mode ──────────────────────────────────────────────
 // Disable after the event by setting NEXT_PUBLIC_EVENT_MODE=false and redeploying.
@@ -157,6 +180,72 @@ async function discoverSubpages(baseUrl: string): Promise<string[]> {
   );
 }
 
+// ── Adaptive research query planning ───────────────────────
+function fallbackQueries(
+  orgName: string,
+  domain: string,
+  industry?: string,
+  competitors?: string
+): string[] {
+  const queries = [
+    `${orgName} news strategy announcements recent`,
+    `${orgName} CEO leadership executive team founders`,
+    competitors
+      ? `${competitors} strategy messaging positioning`
+      : `${domain} competitors alternatives comparison ${industry || ""}`.trim(),
+  ];
+  if (industry) queries.push(`${industry} strategic trends challenges AI`);
+  return queries;
+}
+
+const ResearchQueriesSchema = z.object({
+  queries: z.array(z.string().min(1)).min(3).max(5),
+});
+
+async function planResearchQueries(
+  homepage: string | null,
+  orgName: string,
+  domain: string,
+  industry?: string,
+  competitors?: string
+): Promise<{ queries: string[]; usage: TokenUsage | null }> {
+  const fallback = () => ({
+    queries: fallbackQueries(orgName, domain, industry, competitors),
+    usage: null,
+  });
+  if (!homepage) return fallback();
+
+  try {
+    const message = await anthropic.messages.create(
+      {
+        model: TRIAGE_MODEL,
+        max_tokens: 1024,
+        messages: [{
+          role: "user",
+          content: `You are preparing web research about ${orgName} (${domain})${industry ? `, in the ${industry} space` : ""}${competitors ? `, competing with ${competitors}` : ""}.
+
+Homepage content already gathered:
+"""
+${homepage.slice(0, 3000)}
+"""
+
+Propose 3-5 specific, high-signal web search queries that would surface strategic context NOT already visible on the homepage — recent news, leadership changes, competitive positioning, funding or M&A activity, industry headwinds. Avoid generic queries a fixed template could have produced. Return each as a plain search string.`,
+        }],
+        output_config: { format: zodOutputFormat(ResearchQueriesSchema) },
+      },
+      { timeout: 8000 }
+    );
+    const textBlock = message.content.find((b) => b.type === "text");
+    if (!textBlock || textBlock.type !== "text") return fallback();
+    const parsed = ResearchQueriesSchema.safeParse(JSON.parse(textBlock.text));
+    if (!parsed.success) return fallback();
+    return { queries: parsed.data.queries, usage: message.usage };
+  } catch (err) {
+    console.warn("[digital-twin-snapshot] triage failed, using fixed queries:", String(err));
+    return fallback();
+  }
+}
+
 // ── JSON parser (robust) ───────────────────────────────────
 function parseJson(text: string): Record<string, unknown> {
   const s = text.trim().replace(/^```(?:json)?\s*/i, "").replace(/\s*```\s*$/i, "").trim();
@@ -164,6 +253,89 @@ function parseJson(text: string): Record<string, unknown> {
   const m = s.match(/\{[\s\S]*\}/);
   if (m) { try { return JSON.parse(m[0]) as Record<string, unknown>; } catch { /* */ } }
   throw new Error("Could not parse JSON from Claude response");
+}
+
+// ── Critic / quality-gate pass ──────────────────────────────
+async function critiqueSnapshot(
+  snapshot: Snapshot,
+  orgName: string,
+  industry?: string
+): Promise<{ snapshot: Snapshot; revisionCount: number; usage: TokenUsage | null }> {
+  try {
+    const message = await anthropic.messages.create(
+      {
+        model: CRITIC_MODEL,
+        max_tokens: 4096,
+        messages: [{
+          role: "user",
+          content: `You are reviewing two sections of a strategic analysis for ${orgName}${industry ? ` (industry: ${industry})` : ""} before it reaches a senior executive. Apply this test to each item: "Could this be said about any company in this industry?" If yes, rewrite it to be specific to ${orgName}, grounded only in evidence already present in that item. Leave items that pass unchanged. Do not soften or generalize anything that already passes.
+
+STRATEGIC TENSIONS:
+${JSON.stringify(snapshot.strategicTensions, null, 2)}
+
+LEADERSHIP QUESTIONS:
+${JSON.stringify(snapshot.leadershipQuestions, null, 2)}
+
+Return the full arrays (corrected items plus unchanged items, same order, same count) and how many you rewrote.`,
+        }],
+        output_config: { format: zodOutputFormat(CritiqueResultSchema) },
+      },
+      { timeout: 15000 }
+    );
+    const textBlock = message.content.find((b) => b.type === "text");
+    if (!textBlock || textBlock.type !== "text") throw new Error("no text in critic response");
+    const parsed = CritiqueResultSchema.safeParse(JSON.parse(textBlock.text));
+    if (!parsed.success) throw new Error("critic schema validation failed");
+    return {
+      snapshot: {
+        ...snapshot,
+        strategicTensions: parsed.data.strategicTensions,
+        leadershipQuestions: parsed.data.leadershipQuestions,
+      },
+      revisionCount: parsed.data.revisionCount,
+      usage: message.usage,
+    };
+  } catch (err) {
+    console.warn("[digital-twin-snapshot] critic pass failed, using uncorrected snapshot:", String(err));
+    return { snapshot, revisionCount: 0, usage: null };
+  }
+}
+
+// ── Persistence ──────────────────────────────────────────────
+async function persistSnapshot(params: {
+  websiteUrl: string;
+  organizationName?: string;
+  industry?: string;
+  competitors?: string;
+  strategicQuestion?: string;
+  sourcesUsed: string[];
+  fetchSucceeded: boolean;
+  snapshot: Snapshot;
+  criticRevisions: number;
+  tokenUsage: Record<string, unknown>;
+  estimatedCostUsd: number;
+  ip: string;
+}): Promise<string | null> {
+  try {
+    const [row] = await sql`
+      INSERT INTO digital_twin_snapshots (
+        website_url, organization_name, industry, competitors, strategic_question,
+        sources_used, fetch_succeeded, snapshot, synthesis_model, critic_revisions,
+        token_usage, estimated_cost_usd, ip_address
+      ) VALUES (
+        ${params.websiteUrl}, ${params.organizationName ?? null}, ${params.industry ?? null},
+        ${params.competitors ?? null}, ${params.strategicQuestion ?? null}, ${params.sourcesUsed},
+        ${params.fetchSucceeded}, ${JSON.stringify(params.snapshot)}::jsonb, ${SYNTHESIS_MODEL},
+        ${params.criticRevisions}, ${JSON.stringify(params.tokenUsage)}::jsonb,
+        ${params.estimatedCostUsd}, ${params.ip}
+      )
+      RETURNING id
+    `;
+    return (row?.id as string) ?? null;
+  } catch (err) {
+    console.error("[digital-twin-snapshot] persistence failed (non-fatal):", String(err));
+    return null;
+  }
 }
 
 // ── SSE handler ────────────────────────────────────────────
@@ -289,26 +461,25 @@ export async function POST(req: NextRequest) {
           });
         }
 
-        // ── Phase 3: Competitive triangulation ────────
-        emit("progress", { step: "Searching for recent news", phase: "search" });
-        const news = await webSearch(`${orgName} news strategy announcements 2024 2025`);
-        if (news) gathered.push({ label: "Recent news and announcements", content: news });
-
-        emit("progress", { step: "Researching leadership and positioning", phase: "search" });
-        const leadership = await webSearch(`${orgName} CEO leadership executive team founders`);
-        if (leadership) gathered.push({ label: "Leadership and team research", content: leadership });
-
-        emit("progress", { step: "Mapping competitive landscape", phase: "search" });
-        const competitorQuery = competitors
-          ? `${competitors} strategy messaging positioning 2024 2025`
-          : `${domain} competitors alternatives comparison ${industry || ""}`.trim();
-        const competitive = await webSearch(competitorQuery);
-        if (competitive) gathered.push({ label: "Competitive landscape research", content: competitive });
-
-        if (industry) {
-          emit("progress", { step: `Researching ${industry} market signals`, phase: "search" });
-          const industrySignals = await webSearch(`${industry} strategic trends challenges AI 2025`);
-          if (industrySignals) gathered.push({ label: "Industry and market signals", content: industrySignals });
+        // ── Phase 3: Adaptive research (parallelized) ──
+        emit("progress", { step: "Planning targeted research", phase: "search" });
+        const { queries: researchQueries, usage: triageUsage } = await planResearchQueries(
+          homepage, orgName, domain, industry, competitors
+        );
+        const searchResults = await Promise.allSettled(researchQueries.map((q) => webSearch(q)));
+        let searchesUsed = 0;
+        for (let i = 0; i < searchResults.length; i++) {
+          const r = searchResults[i];
+          if (r.status === "fulfilled" && r.value) {
+            gathered.push({ label: `Search: ${researchQueries[i]}`, content: r.value });
+            searchesUsed++;
+          }
+        }
+        if (searchesUsed > 0) {
+          emit("progress", {
+            step: `Completed ${searchesUsed} search${searchesUsed > 1 ? "es" : ""}`,
+            phase: "search",
+          });
         }
 
         // ── Phase 4: Analysis ──────────────────────────
@@ -441,19 +612,72 @@ VOICE:
 
         emit("progress", { step: "Generating strategic analysis", phase: "analysis" });
 
-        const message = await anthropic.messages.create({
-          model: MODEL,
-          max_tokens: 8000,
+        // Streaming (required above ~21k max_tokens) with generous headroom —
+        // "max" effort was observed in testing to occasionally let thinking
+        // consume the entire token budget, leaving zero room for the actual
+        // JSON output. "high" is the documented sweet spot for intelligence-
+        // sensitive work and was materially faster and more reliable here.
+        const synthesisStream = anthropic.messages.stream({
+          model: SYNTHESIS_MODEL,
+          max_tokens: 32000,
+          thinking: { type: "adaptive" },
+          output_config: { effort: "high", format: zodOutputFormat(SnapshotSchema) },
           messages: [{ role: "user", content: prompt }],
         });
+        const message = await synthesisStream.finalMessage();
 
         const textBlock = message.content.find((b) => b.type === "text");
-        if (!textBlock || textBlock.type !== "text") throw new Error("No text response");
+        if (!textBlock || textBlock.type !== "text") {
+          console.error("[digital-twin-snapshot] no text block in synthesis response, stop_reason:", message.stop_reason);
+          throw new Error("No text response");
+        }
+
+        let snapshot: Snapshot | null = null;
+        try {
+          const parsed = SnapshotSchema.safeParse(JSON.parse(textBlock.text));
+          if (parsed.success) snapshot = parsed.data;
+        } catch { /* fall through to regex fallback below */ }
+        if (!snapshot) {
+          try {
+            snapshot = parseJson(textBlock.text) as unknown as Snapshot;
+          } catch (err) {
+            console.error("[digital-twin-snapshot] synthesis parse failed, stop_reason:", message.stop_reason);
+            throw err;
+          }
+        }
+
+        emit("progress", { step: "Reviewing for specificity", phase: "analysis" });
+        const critiqued = await critiqueSnapshot(snapshot, orgName, industry);
 
         emit("progress", { step: "Preparing your snapshot", phase: "analysis" });
 
-        const snapshot = parseJson(textBlock.text);
-        emit("result", { snapshot, fetchSucceeded, sourcesCount: gathered.length });
+        const estimatedCostUsd = estimateCostUsd([
+          { model: TRIAGE_MODEL, usage: triageUsage },
+          { model: SYNTHESIS_MODEL, usage: message.usage },
+          { model: CRITIC_MODEL, usage: critiqued.usage },
+        ]);
+
+        const snapshotId = await persistSnapshot({
+          websiteUrl: baseUrl,
+          organizationName,
+          industry,
+          competitors,
+          strategicQuestion,
+          sourcesUsed: gathered.map((g) => g.label),
+          fetchSucceeded,
+          snapshot: critiqued.snapshot,
+          criticRevisions: critiqued.revisionCount,
+          tokenUsage: { triage: triageUsage, synthesis: message.usage, critic: critiqued.usage },
+          estimatedCostUsd,
+          ip,
+        });
+
+        emit("result", {
+          snapshot: critiqued.snapshot,
+          fetchSucceeded,
+          sourcesCount: gathered.length,
+          snapshotId,
+        });
 
       } catch (err) {
         console.error("[digital-twin-snapshot]", err);

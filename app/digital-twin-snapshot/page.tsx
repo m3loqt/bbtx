@@ -251,6 +251,7 @@ export default function DigitalTwinSnapshotPage() {
   const [contextExpanded, setContextExpanded]     = useState(false);
   const [progressSteps, setProgressSteps] = useState<ProgressStep[]>([]);
   const [snapshot, setSnapshot]           = useState<SnapshotResult | null>(null);
+  const [snapshotId, setSnapshotId]       = useState<string | null>(null);
   const [fetchSucceeded, setFetchSucceeded] = useState(true);
   const [errorMessage, setErrorMessage]   = useState<string | null>(null);
   const [emailValue, setEmailValue]       = useState("");
@@ -260,6 +261,7 @@ export default function DigitalTwinSnapshotPage() {
   const [phraseVisible, setPhraseVisible]     = useState(true);
   const [alreadyGenerated, setAlreadyGenerated] = useState(false);
   const [storedSnapshot, setStoredSnapshot]     = useState<SnapshotResult | null>(null);
+  const [storedSnapshotId, setStoredSnapshotId] = useState<string | null>(null);
   const [storedFetchSucceeded, setStoredFetchSucceeded] = useState(true);
   const [capacityEmail, setCapacityEmail]       = useState("");
   const [capacityEmailSent, setCapacityEmailSent] = useState(false);
@@ -320,6 +322,7 @@ export default function DigitalTwinSnapshotPage() {
               phase?: string;
               snapshot?: SnapshotResult;
               fetchSucceeded?: boolean;
+              snapshotId?: string | null;
               message?: string;
             };
 
@@ -330,7 +333,9 @@ export default function DigitalTwinSnapshotPage() {
               ]);
             } else if (event.type === "result" && event.snapshot) {
               const snap = event.snapshot as SnapshotResult;
+              const snapId = event.snapshotId ?? null;
               setSnapshot(snap);
+              setSnapshotId(snapId);
               setFetchSucceeded(event.fetchSucceeded ?? true);
               setPageState("results");
               // Event mode: set browser-level limit
@@ -340,9 +345,11 @@ export default function DigitalTwinSnapshotPage() {
                   snapshot: snap,
                   fetchSucceeded: event.fetchSucceeded ?? true,
                   url: normalized,
+                  id: snapId,
                 }));
                 setAlreadyGenerated(true);
                 setStoredSnapshot(snap);
+                setStoredSnapshotId(snapId);
                 setStoredFetchSucceeded(event.fetchSucceeded ?? true);
               }
               setTimeout(() => {
@@ -373,9 +380,8 @@ export default function DigitalTwinSnapshotPage() {
         body: JSON.stringify({
           email:      emailValue,
           name:       emailName || undefined,
-          websiteUrl: url,
+          snapshotId,
           timestamp:  new Date().toISOString(),
-          snapshot,
         }),
       });
     } catch { /* intentional */ }
@@ -393,6 +399,7 @@ export default function DigitalTwinSnapshotPage() {
   function handleViewExistingReport() {
     if (storedSnapshot) {
       setSnapshot(storedSnapshot);
+      setSnapshotId(storedSnapshotId);
       setFetchSucceeded(storedFetchSucceeded);
       setPageState("results");
       setTimeout(() => {
@@ -429,8 +436,10 @@ export default function DigitalTwinSnapshotPage() {
         snapshot: SnapshotResult;
         fetchSucceeded: boolean;
         url: string;
+        id?: string | null;
       };
       setStoredSnapshot(stored.snapshot);
+      setStoredSnapshotId(stored.id ?? null);
       setStoredFetchSucceeded(stored.fetchSucceeded);
       if (stored.url) setUrl(stored.url);
     } catch { /* stored data malformed */ }

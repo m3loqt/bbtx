@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { ArrowUpRight } from "./ArrowIcon";
-import { CheckCircle } from "lucide-react";
+import { CheckCircle, Loader2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -13,7 +13,9 @@ type SubscribeModalProps = {
 };
 
 export function SubscribeModal({ open, onClose }: SubscribeModalProps) {
-  const [isSuccess, setIsSuccess] = useState(false);
+  const [email, setEmail] = useState("");
+  const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
+  const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
     if (open) {
@@ -24,16 +26,33 @@ export function SubscribeModal({ open, onClose }: SubscribeModalProps) {
     }
   }, [open]);
 
-  useEffect(() => {
-    if (!open) setIsSuccess(false);
-  }, [open]);
-
   if (!open) return null;
 
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    setIsSuccess(true);
-  };
+    setStatus("submitting");
+    setErrorMessage("");
+
+    try {
+      const res = await fetch("/api/newsletter", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, source: "modal" }),
+      });
+      const json = (await res.json()) as { success?: boolean; error?: string };
+
+      if (!res.ok || !json.success) {
+        setStatus("error");
+        setErrorMessage(json.error ?? "Something went wrong. Please try again.");
+        return;
+      }
+
+      setStatus("success");
+    } catch {
+      setStatus("error");
+      setErrorMessage("Something went wrong. Please try again.");
+    }
+  }
 
   return (
     <div
@@ -50,7 +69,7 @@ export function SubscribeModal({ open, onClose }: SubscribeModalProps) {
       />
 
       <div className="relative z-10 w-full max-w-md rounded-lg bg-white p-6 sm:p-8">
-        {isSuccess ? (
+        {status === "success" ? (
           <div className="flex flex-col items-center py-4 text-center">
             <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-[#ca3726]/10">
               <CheckCircle className="h-7 w-7 text-[#ca3726]" />
@@ -78,21 +97,33 @@ export function SubscribeModal({ open, onClose }: SubscribeModalProps) {
                   name="email"
                   type="email"
                   required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   className="h-11 rounded-md border-black/10 bg-[#f2f2f2] text-[15px]"
                 />
               </div>
+              {status === "error" && (
+                <p className="text-sm text-[#ca3726]">{errorMessage}</p>
+              )}
               <Button
                 type="submit"
+                disabled={status === "submitting"}
                 className="inline-flex w-full items-center justify-center gap-2 rounded-md bg-[#ca3726] px-5 py-3 text-sm font-semibold text-white transition-opacity hover:opacity-95"
               >
-                Subscribe
-                <ArrowUpRight className="h-4 w-4" />
+                {status === "submitting" ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <>
+                    Subscribe
+                    <ArrowUpRight className="h-4 w-4" />
+                  </>
+                )}
               </Button>
             </form>
           </>
         )}
 
-        {!isSuccess && (
+        {status !== "success" && (
           <button
             type="button"
             onClick={onClose}

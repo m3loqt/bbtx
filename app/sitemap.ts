@@ -1,8 +1,19 @@
 import type { MetadataRoute } from "next";
+import { getPublishedBlogs } from "@/lib/admin/queries";
 
 const BASE_URL = "https://bbtx.ai";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const blogs = await getPublishedBlogs();
+  const blogEntries: MetadataRoute.Sitemap = blogs
+    .filter((b) => b.slug)
+    .map((b) => ({
+      url: `${BASE_URL}/chaotic-confluence/${b.slug}`,
+      lastModified: new Date(b.updated_at),
+      changeFrequency: "monthly",
+      priority: 0.6,
+    }));
+
   return [
     {
       url: BASE_URL,
@@ -69,6 +80,37 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 0.6,
+    },
+    {
+      url: `${BASE_URL}/chaotic-confluence`,
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.6,
+    },
+    ...blogEntries,
+    {
+      url: `${BASE_URL}/newsletter`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.6,
+    },
+    {
+      url: `${BASE_URL}/team/grant`,
+      lastModified: new Date(),
+      changeFrequency: "yearly",
+      priority: 0.5,
+    },
+    {
+      url: `${BASE_URL}/team/kaye`,
+      lastModified: new Date(),
+      changeFrequency: "yearly",
+      priority: 0.5,
+    },
+    {
+      url: `${BASE_URL}/team/mel`,
+      lastModified: new Date(),
+      changeFrequency: "yearly",
+      priority: 0.5,
     },
     {
       url: `${BASE_URL}/privacy`,

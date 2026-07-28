@@ -3,11 +3,11 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Whitepapers",
   description:
-    "What BBTx is learning across 100+ engagements, written down as it's ready. Sign up to get the first whitepaper as soon as it's published.",
+    "Whitepapers from BBTx — what we're learning across 100+ engagements on AI strategy and leadership, written down as it's ready.",
   openGraph: {
     title: "Whitepapers | BBTx",
     description:
-      "What BBTx is learning across 100+ engagements, written down as it's ready.",
+      "What we're learning across 100+ engagements on AI strategy and leadership, written down as it's ready.",
     url: "https://bbtx.ai/whitepapers",
   },
   alternates: {
