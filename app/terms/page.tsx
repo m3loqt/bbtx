@@ -4,6 +4,14 @@ import { LegalPageLayout } from "@/app/components/LegalPageLayout";
 export const metadata: Metadata = {
   title: "BBTx | Terms of Service",
   description: "The terms that govern your use of bbtx.ai.",
+  openGraph: {
+    title: "Terms of Service | BBTx",
+    description: "The terms that govern your use of bbtx.ai.",
+    url: "https://bbtx.ai/terms",
+  },
+  alternates: {
+    canonical: "https://bbtx.ai/terms",
+  },
 };
 
 export default function TermsPage() {
