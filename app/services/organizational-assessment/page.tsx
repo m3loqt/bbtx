@@ -131,7 +131,7 @@ const FAQ_ITEMS = [
   },
 ];
 
-const testimonial = TESTIMONIALS.find((t) => t.author === "Jerry Hogan")!;
+const testimonial = TESTIMONIALS.find((t) => t.author === "Heather Higgins")!;
 
 function FaqMinusIcon({ className }: { className?: string }) {
   return (
