@@ -9,10 +9,10 @@ export const metadata: Metadata = {
     title: "1:1 Executive Coaching with Grant Tate | BBTx",
     description:
       "You don't have to make your hardest calls alone. Individual coaching or a small live cohort, direct access to Grant, built around your real situation.",
-    url: "https://bbtx.ai/coaching",
+    url: "https://www.bbtx.ai/coaching",
   },
   alternates: {
-    canonical: "https://bbtx.ai/coaching",
+    canonical: "https://www.bbtx.ai/coaching",
   },
 };
 
@@ -20,8 +20,8 @@ const breadcrumbJsonLd = {
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
   itemListElement: [
-    { "@type": "ListItem", position: 1, name: "Home", item: "https://bbtx.ai" },
-    { "@type": "ListItem", position: 2, name: "Coaching", item: "https://bbtx.ai/coaching" },
+    { "@type": "ListItem", position: 1, name: "Home", item: "https://www.bbtx.ai" },
+    { "@type": "ListItem", position: 2, name: "Coaching", item: "https://www.bbtx.ai/coaching" },
   ],
 };
 

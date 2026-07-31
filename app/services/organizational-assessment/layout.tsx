@@ -8,10 +8,10 @@ export const metadata: Metadata = {
     title: "Organizational Assessment & Analysis | BBTx Consulting",
     description:
       "Reveal organizational realities, identify risks, and uncover opportunities for improvement.",
-    url: "https://bbtx.ai/services/organizational-assessment",
+    url: "https://www.bbtx.ai/services/organizational-assessment",
   },
   alternates: {
-    canonical: "https://bbtx.ai/services/organizational-assessment",
+    canonical: "https://www.bbtx.ai/services/organizational-assessment",
   },
 };
 
@@ -23,22 +23,22 @@ const jsonLd = {
     "Reveal organizational realities, identify risks, and uncover opportunities for improvement.",
   provider: {
     "@type": "Organization",
-    "@id": "https://bbtx.ai/#organization",
+    "@id": "https://www.bbtx.ai/#organization",
   },
-  url: "https://bbtx.ai/services/organizational-assessment",
+  url: "https://www.bbtx.ai/services/organizational-assessment",
 };
 
 const breadcrumbJsonLd = {
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
   itemListElement: [
-    { "@type": "ListItem", position: 1, name: "Home", item: "https://bbtx.ai" },
-    { "@type": "ListItem", position: 2, name: "Services", item: "https://bbtx.ai/services" },
+    { "@type": "ListItem", position: 1, name: "Home", item: "https://www.bbtx.ai" },
+    { "@type": "ListItem", position: 2, name: "Services", item: "https://www.bbtx.ai/services" },
     {
       "@type": "ListItem",
       position: 3,
       name: "Organizational Assessment",
-      item: "https://bbtx.ai/services/organizational-assessment",
+      item: "https://www.bbtx.ai/services/organizational-assessment",
     },
   ],
 };

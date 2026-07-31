@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: "/",
       disallow: ["/admin", "/admin/", "/api/"],
     },
-    sitemap: "https://bbtx.ai/sitemap.xml",
+    sitemap: "https://www.bbtx.ai/sitemap.xml",
   };
 }

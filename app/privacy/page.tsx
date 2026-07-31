@@ -7,10 +7,10 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Privacy Policy | BBTx",
     description: "How BBTx collects, uses, and protects your information.",
-    url: "https://bbtx.ai/privacy",
+    url: "https://www.bbtx.ai/privacy",
   },
   alternates: {
-    canonical: "https://bbtx.ai/privacy",
+    canonical: "https://www.bbtx.ai/privacy",
   },
 };
 

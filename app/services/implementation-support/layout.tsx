@@ -8,10 +8,10 @@ export const metadata: Metadata = {
     title: "Implementation & Change Support | BBTx Consulting",
     description:
       "Turn strategic intentions into action, accountability, and lasting results.",
-    url: "https://bbtx.ai/services/implementation-support",
+    url: "https://www.bbtx.ai/services/implementation-support",
   },
   alternates: {
-    canonical: "https://bbtx.ai/services/implementation-support",
+    canonical: "https://www.bbtx.ai/services/implementation-support",
   },
 };
 
@@ -23,22 +23,22 @@ const jsonLd = {
     "Turn strategic intentions into action, accountability, and lasting results.",
   provider: {
     "@type": "Organization",
-    "@id": "https://bbtx.ai/#organization",
+    "@id": "https://www.bbtx.ai/#organization",
   },
-  url: "https://bbtx.ai/services/implementation-support",
+  url: "https://www.bbtx.ai/services/implementation-support",
 };
 
 const breadcrumbJsonLd = {
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
   itemListElement: [
-    { "@type": "ListItem", position: 1, name: "Home", item: "https://bbtx.ai" },
-    { "@type": "ListItem", position: 2, name: "Services", item: "https://bbtx.ai/services" },
+    { "@type": "ListItem", position: 1, name: "Home", item: "https://www.bbtx.ai" },
+    { "@type": "ListItem", position: 2, name: "Services", item: "https://www.bbtx.ai/services" },
     {
       "@type": "ListItem",
       position: 3,
       name: "Implementation & Change Support",
-      item: "https://bbtx.ai/services/implementation-support",
+      item: "https://www.bbtx.ai/services/implementation-support",
     },
   ],
 };

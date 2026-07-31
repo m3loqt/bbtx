@@ -9,10 +9,10 @@ export const metadata: Metadata = {
     title: "Grant Tate | BBTx Consulting",
     description:
       "CEO & Founder, BBTx Consulting. Coach, consultant, and author helping leaders thrive in complex environments.",
-    url: "https://bbtx.ai/team/grant",
+    url: "https://www.bbtx.ai/team/grant",
   },
   alternates: {
-    canonical: "https://bbtx.ai/team/grant",
+    canonical: "https://www.bbtx.ai/team/grant",
   },
 };
 
@@ -23,13 +23,13 @@ const jsonLd = {
   "@type": "Person",
   name: person.name,
   jobTitle: person.role,
-  url: "https://bbtx.ai/team/grant",
-  image: `https://bbtx.ai${person.photo}`,
+  url: "https://www.bbtx.ai/team/grant",
+  image: `https://www.bbtx.ai${person.photo}`,
   sameAs: [person.linkedin],
   description: person.bio.join(" "),
   worksFor: {
     "@type": "Organization",
-    "@id": "https://bbtx.ai/#organization",
+    "@id": "https://www.bbtx.ai/#organization",
   },
   ...(person.location
     ? { homeLocation: { "@type": "Place", name: person.location } }
@@ -40,9 +40,9 @@ const breadcrumbJsonLd = {
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
   itemListElement: [
-    { "@type": "ListItem", position: 1, name: "Home", item: "https://bbtx.ai" },
-    { "@type": "ListItem", position: 2, name: "About", item: "https://bbtx.ai/about" },
-    { "@type": "ListItem", position: 3, name: person.name, item: "https://bbtx.ai/team/grant" },
+    { "@type": "ListItem", position: 1, name: "Home", item: "https://www.bbtx.ai" },
+    { "@type": "ListItem", position: 2, name: "About", item: "https://www.bbtx.ai/about" },
+    { "@type": "ListItem", position: 3, name: person.name, item: "https://www.bbtx.ai/team/grant" },
   ],
 };
 

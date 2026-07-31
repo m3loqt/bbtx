@@ -8,10 +8,10 @@ export const metadata: Metadata = {
     title: "Services | BBTx Consulting",
     description:
       "Twenty years of organizational work. The same core approach: see clearly, decide well, lead at the level the work requires, use AI well, and make it last.",
-    url: "https://bbtx.ai/services",
+    url: "https://www.bbtx.ai/services",
   },
   alternates: {
-    canonical: "https://bbtx.ai/services",
+    canonical: "https://www.bbtx.ai/services",
   },
 };
 
@@ -19,8 +19,8 @@ const breadcrumbJsonLd = {
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
   itemListElement: [
-    { "@type": "ListItem", position: 1, name: "Home", item: "https://bbtx.ai" },
-    { "@type": "ListItem", position: 2, name: "Services", item: "https://bbtx.ai/services" },
+    { "@type": "ListItem", position: 1, name: "Home", item: "https://www.bbtx.ai" },
+    { "@type": "ListItem", position: 2, name: "Services", item: "https://www.bbtx.ai/services" },
   ],
 };
 

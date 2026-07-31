@@ -29,7 +29,7 @@ const fraunces = Fraunces({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://bbtx.ai"),
+  metadataBase: new URL("https://www.bbtx.ai"),
   title: {
     default: "BBTx | AI Business Consulting for Leaders and Organizations",
     template: "%s | BBTx",
@@ -47,13 +47,13 @@ export const metadata: Metadata = {
     "AI leadership consulting",
     "Bridge Business Transformations",
   ],
-  authors: [{ name: "Grant Tate", url: "https://bbtx.ai/about" }],
+  authors: [{ name: "Grant Tate", url: "https://www.bbtx.ai/about" }],
   creator: "BBTx",
   publisher: "BBTx",
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://bbtx.ai",
+    url: "https://www.bbtx.ai",
     siteName: "BBTx",
     title: "BBTx | AI Business Consulting for Leaders and Organizations",
     description:

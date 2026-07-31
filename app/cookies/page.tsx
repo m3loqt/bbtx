@@ -7,10 +7,10 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Cookie Policy | BBTx",
     description: "How bbtx.ai uses cookies.",
-    url: "https://bbtx.ai/cookies",
+    url: "https://www.bbtx.ai/cookies",
   },
   alternates: {
-    canonical: "https://bbtx.ai/cookies",
+    canonical: "https://www.bbtx.ai/cookies",
   },
 };
 

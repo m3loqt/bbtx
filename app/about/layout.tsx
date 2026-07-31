@@ -8,10 +8,10 @@ export const metadata: Metadata = {
     title: "About BBTx | Our Story, Team, and Values",
     description:
       "Meet the team behind BBTx. Led by Grant Tate, we have spent decades helping leaders navigate transformational change across IBM, Bridgewater Innovation Group, and beyond.",
-    url: "https://bbtx.ai/about",
+    url: "https://www.bbtx.ai/about",
   },
   alternates: {
-    canonical: "https://bbtx.ai/about",
+    canonical: "https://www.bbtx.ai/about",
   },
 };
 

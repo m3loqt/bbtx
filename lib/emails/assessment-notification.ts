@@ -120,7 +120,7 @@ export function buildAssessmentEmail(data: AssessmentEmailData): string {
 
                 <div style="text-align:center;margin-top:32px;">
                   <a
-                    href="https://bbtx.ai/admin/assessments"
+                    href="https://www.bbtx.ai/admin/assessments"
                     style="background:#ca3726;color:#ffffff;padding:14px 28px;border-radius:4px;font-size:14px;font-weight:600;text-decoration:none;display:inline-block;"
                   >
                     Review Assessment →

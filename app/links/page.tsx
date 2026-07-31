@@ -9,10 +9,10 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Links | BBTx",
     description: "Every BBTx and Grant Tate platform in one place.",
-    url: "https://bbtx.ai/links",
+    url: "https://www.bbtx.ai/links",
   },
   alternates: {
-    canonical: "https://bbtx.ai/links",
+    canonical: "https://www.bbtx.ai/links",
   },
 };
 

@@ -7,12 +7,12 @@ const breadcrumbJsonLd = {
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
   itemListElement: [
-    { "@type": "ListItem", position: 1, name: "Home", item: "https://bbtx.ai" },
+    { "@type": "ListItem", position: 1, name: "Home", item: "https://www.bbtx.ai" },
     {
       "@type": "ListItem",
       position: 2,
       name: "Chaotic Confluence",
-      item: "https://bbtx.ai/chaotic-confluence",
+      item: "https://www.bbtx.ai/chaotic-confluence",
     },
   ],
 };

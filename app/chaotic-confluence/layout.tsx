@@ -33,10 +33,10 @@ export const metadata: Metadata = {
     title: "Chaotic Confluence | BBTx",
     description:
       "Notes on AI strategy, leadership, and organizations from BBTx, written as it's learned across engagements.",
-    url: "https://bbtx.ai/chaotic-confluence",
+    url: "https://www.bbtx.ai/chaotic-confluence",
   },
   alternates: {
-    canonical: "https://bbtx.ai/chaotic-confluence",
+    canonical: "https://www.bbtx.ai/chaotic-confluence",
   },
 };
 

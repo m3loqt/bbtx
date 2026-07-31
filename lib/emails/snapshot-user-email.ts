@@ -82,7 +82,7 @@ export function buildSnapshotUserEmail({
                   This snapshot is a starting point. The questions it surfaces — about strategic tension, competitive positioning, and internal assumptions — can only be answered through internal access: leadership conversations, operational review, and organizational context.
                 </p>
                 <p style="font-size:13px;color:#888888;line-height:1.7;margin:0;">
-                  If any of what you read prompts a conversation, you can reach us at <a href="https://bbtx.ai" style="color:#ca3726;text-decoration:none;">bbtx.ai</a>.
+                  If any of what you read prompts a conversation, you can reach us at <a href="https://www.bbtx.ai" style="color:#ca3726;text-decoration:none;">bbtx.ai</a>.
                 </p>
               </td>
             </tr>
@@ -91,7 +91,7 @@ export function buildSnapshotUserEmail({
             <tr>
               <td style="background:#f7f7f7;padding:20px 40px;border-radius:0 0 8px 8px;border:1px solid #eeeeee;border-top:none;">
                 <p style="font-size:11px;color:#bbbbbb;line-height:1.6;margin:0;">
-                  BBTx Consulting · <a href="https://bbtx.ai" style="color:#bbbbbb;text-decoration:none;">bbtx.ai</a><br />
+                  BBTx Consulting · <a href="https://www.bbtx.ai" style="color:#bbbbbb;text-decoration:none;">bbtx.ai</a><br />
                   This analysis was generated based on publicly available information and is intended for strategic exploration only.
                 </p>
               </td>

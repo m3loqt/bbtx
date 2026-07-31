@@ -7,10 +7,10 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Terms of Service | BBTx",
     description: "The terms that govern your use of bbtx.ai.",
-    url: "https://bbtx.ai/terms",
+    url: "https://www.bbtx.ai/terms",
   },
   alternates: {
-    canonical: "https://bbtx.ai/terms",
+    canonical: "https://www.bbtx.ai/terms",
   },
 };
 

@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   description:
     "BBTx helps leaders and organizations integrate AI with strategy, clarity, and confidence. 100+ organizations served across 40+ years of consulting experience.",
   alternates: {
-    canonical: "https://bbtx.ai",
+    canonical: "https://www.bbtx.ai",
   },
 };
 
@@ -25,23 +25,23 @@ const jsonLd = {
   "@graph": [
     {
       "@type": "WebSite",
-      "@id": "https://bbtx.ai/#website",
-      url: "https://bbtx.ai",
+      "@id": "https://www.bbtx.ai/#website",
+      url: "https://www.bbtx.ai",
       name: "BBTx",
       description:
         "AI business consulting for leaders and organizations. Strategy, assessment, and implementation.",
       publisher: {
-        "@id": "https://bbtx.ai/#organization",
+        "@id": "https://www.bbtx.ai/#organization",
       },
     },
     {
       "@type": "Organization",
-      "@id": "https://bbtx.ai/#organization",
+      "@id": "https://www.bbtx.ai/#organization",
       name: "BBTx",
-      url: "https://bbtx.ai",
+      url: "https://www.bbtx.ai",
       logo: {
         "@type": "ImageObject",
-        url: "https://bbtx.ai/oglogo.webp",
+        url: "https://www.bbtx.ai/oglogo.webp",
       },
       description:
         "BBTx helps leaders and organizations integrate AI with strategy, clarity, and confidence.",

@@ -8,10 +8,10 @@ export const metadata: Metadata = {
     title: "Strategic Digital Twin Snapshot | BBTx Consulting",
     description:
       "See what your public presence reveals about your strategy, positioning, and AI opportunity.",
-    url: "https://bbtx.ai/digital-twin-snapshot",
+    url: "https://www.bbtx.ai/digital-twin-snapshot",
   },
   alternates: {
-    canonical: "https://bbtx.ai/digital-twin-snapshot",
+    canonical: "https://www.bbtx.ai/digital-twin-snapshot",
   },
 };
 

@@ -8,10 +8,10 @@ export const metadata: Metadata = {
     title: "AI Integration & Innovation | BBTx Consulting",
     description:
       "Apply AI responsibly, improve performance, and build organizational capability.",
-    url: "https://bbtx.ai/services/ai-integration",
+    url: "https://www.bbtx.ai/services/ai-integration",
   },
   alternates: {
-    canonical: "https://bbtx.ai/services/ai-integration",
+    canonical: "https://www.bbtx.ai/services/ai-integration",
   },
 };
 
@@ -23,22 +23,22 @@ const jsonLd = {
     "Apply AI responsibly, improve performance, and build organizational capability.",
   provider: {
     "@type": "Organization",
-    "@id": "https://bbtx.ai/#organization",
+    "@id": "https://www.bbtx.ai/#organization",
   },
-  url: "https://bbtx.ai/services/ai-integration",
+  url: "https://www.bbtx.ai/services/ai-integration",
 };
 
 const breadcrumbJsonLd = {
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
   itemListElement: [
-    { "@type": "ListItem", position: 1, name: "Home", item: "https://bbtx.ai" },
-    { "@type": "ListItem", position: 2, name: "Services", item: "https://bbtx.ai/services" },
+    { "@type": "ListItem", position: 1, name: "Home", item: "https://www.bbtx.ai" },
+    { "@type": "ListItem", position: 2, name: "Services", item: "https://www.bbtx.ai/services" },
     {
       "@type": "ListItem",
       position: 3,
       name: "AI Integration & Innovation",
-      item: "https://bbtx.ai/services/ai-integration",
+      item: "https://www.bbtx.ai/services/ai-integration",
     },
   ],
 };

@@ -8,10 +8,10 @@ export const metadata: Metadata = {
     title: "Newsletter | BBTx",
     description:
       "Get occasional updates on AI strategy, leadership, and what we're learning.",
-    url: "https://bbtx.ai/newsletter",
+    url: "https://www.bbtx.ai/newsletter",
   },
   alternates: {
-    canonical: "https://bbtx.ai/newsletter",
+    canonical: "https://www.bbtx.ai/newsletter",
   },
 };
 

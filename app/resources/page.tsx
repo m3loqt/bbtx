@@ -28,10 +28,10 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Resources | BBTx",
     description: "Everything BBTx publishes for leaders navigating AI — strategic snapshots, whitepapers, and Chaotic Confluence.",
-    url: "https://bbtx.ai/resources",
+    url: "https://www.bbtx.ai/resources",
   },
   alternates: {
-    canonical: "https://bbtx.ai/resources",
+    canonical: "https://www.bbtx.ai/resources",
   },
 };
 

@@ -67,7 +67,7 @@ export function buildWhitepaperDownloadEmail({
             <tr>
               <td style="background:#f7f7f7;padding:20px 40px;border-radius:0 0 8px 8px;border:1px solid #eeeeee;border-top:none;">
                 <p style="font-size:11px;color:#bbbbbb;line-height:1.6;margin:0;">
-                  BBTx Consulting · <a href="https://bbtx.ai" style="color:#bbbbbb;text-decoration:none;">bbtx.ai</a>
+                  BBTx Consulting · <a href="https://www.bbtx.ai" style="color:#bbbbbb;text-decoration:none;">bbtx.ai</a>
                 </p>
               </td>
             </tr>

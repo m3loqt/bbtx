@@ -24,7 +24,7 @@ export async function generateMetadata({
   const post = await getPublishedBlogBySlug(slug);
   if (!post) return {};
 
-  const url = `https://bbtx.ai/chaotic-confluence/${slug}`;
+  const url = `https://www.bbtx.ai/chaotic-confluence/${slug}`;
   const description = post.excerpt ?? undefined;
 
   return {
@@ -54,7 +54,7 @@ export default async function BlogPostPage({
   if (!post) notFound();
 
   const date = formatDate(post.published_date);
-  const url = `https://bbtx.ai/chaotic-confluence/${slug}`;
+  const url = `https://www.bbtx.ai/chaotic-confluence/${slug}`;
   const comments = await getVisibleCommentsForBlog(post.id);
 
   const jsonLd = {
@@ -74,12 +74,12 @@ export default async function BlogPostPage({
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Home", item: "https://bbtx.ai" },
+      { "@type": "ListItem", position: 1, name: "Home", item: "https://www.bbtx.ai" },
       {
         "@type": "ListItem",
         position: 2,
         name: "Chaotic Confluence",
-        item: "https://bbtx.ai/chaotic-confluence",
+        item: "https://www.bbtx.ai/chaotic-confluence",
       },
       { "@type": "ListItem", position: 3, name: post.title, item: url },
     ],

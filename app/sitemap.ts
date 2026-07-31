@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 import { getPublishedBlogs } from "@/lib/admin/queries";
 
-const BASE_URL = "https://bbtx.ai";
+const BASE_URL = "https://www.bbtx.ai";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const blogs = await getPublishedBlogs();
