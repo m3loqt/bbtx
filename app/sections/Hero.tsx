@@ -22,6 +22,7 @@ export function Hero() {
           style={{ objectPosition: "60% 20%" }}
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-black/5 to-black/45" />
+        <div className="absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-black/50 to-transparent sm:h-36 lg:h-44" />
       </div>
 
       {/* Top half — just the photo showing through */}

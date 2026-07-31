@@ -53,7 +53,7 @@ const GRID_POSITION = [
 
 export function Services() {
   return (
-    <section className="relative z-[1] bg-[#ffffff]">
+    <section className="relative z-[1] bg-[#f7f7f7]">
       <div className="relative z-[1] px-4 py-16 sm:px-6 lg:px-8 lg:py-20 xl:px-16 2xl:px-24">
         {/* Header block, full width to match the Results/Hero sections above */}
         <div className="w-full text-center">
@@ -86,9 +86,9 @@ export function Services() {
                 className={`group flex flex-col rounded-xl border border-black/[0.06] bg-white p-5 shadow-[0_2px_12px_rgba(0,0,0,0.01)] transition-shadow hover:shadow-[0_6px_18px_rgba(0,0,0,0.06)] sm:p-6 lg:p-7 ${GRID_POSITION[i]}`}
               >
                 <service.icon className="h-7 w-7 text-[#ca3726]" strokeWidth={1.75} />
-                <p className="mt-5 text-lg font-semibold tracking-normal text-[#222222] sm:text-xl">
+                <h3 className="mt-5 text-lg font-semibold tracking-normal text-[#222222] sm:text-xl">
                   {service.title}
-                </p>
+                </h3>
                 <p className="mt-3 text-sm leading-relaxed text-[#555555] sm:text-[15px]">
                   {service.description}
                 </p>
@@ -117,9 +117,9 @@ export function Services() {
 
               {/* Bottom half — glass panel with text, inset so it doesn't sit flush against the card edges */}
               <div className="relative z-10 mx-3 mb-3 flex flex-col justify-center rounded-lg border border-white/10 bg-black/25 p-6 backdrop-blur-sm sm:mx-4 sm:mb-4 sm:p-7 lg:p-9">
-                <p className="text-2xl font-medium tracking-normal text-white sm:text-3xl">
+                <h3 className="text-2xl font-medium tracking-normal text-white sm:text-3xl">
                   {FEATURED.title}
-                </p>
+                </h3>
                 <p className="mt-5 text-base leading-relaxed text-white/60 sm:text-lg">
                   {FEATURED.description}
                 </p>

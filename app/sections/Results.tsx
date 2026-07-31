@@ -47,7 +47,6 @@ function LogoRow({ logos, direction }: { logos: string[]; direction: "normal" | 
             width={400}
             height={160}
             className="h-full w-auto max-w-[240px] object-contain opacity-70 grayscale sm:max-w-[320px] lg:max-w-[360px]"
-            unoptimized
           />
         </div>
       ))}
@@ -73,8 +72,6 @@ export function Results() {
         <LogoRow logos={ROW_ONE} direction="normal" />
         <LogoRow logos={ROW_TWO} direction="reverse" />
       </div>
-
-      <div className="mt-10 w-full border-t border-black/[0.06] sm:mt-12" />
     </section>
   );
 }
