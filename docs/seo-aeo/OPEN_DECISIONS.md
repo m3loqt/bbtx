@@ -16,10 +16,22 @@ This resolves the report's central strategic question (report pp. 2, 20, 33). It
 
 ## OPEN-001 — Exact "100+ organizations" claim wording and evidence (H-005)
 
-The homepage (`app/sections/Hero.tsx`, `app/sections/Results.tsx`) and homepage metadata (`app/page.tsx`) currently state "100+ organizations" served and "100+ companies" trusted, tied to "AI-powered initiatives." The report explicitly flags this as unverified and recommends separating total organizations served (historical, all consulting work) from AI-specific engagement counts (report p. 11, p. 32).
+**Scope corrected 2026-07-31** — this claim is live in far more places than originally logged here. Full current count, confirmed by repo-wide search:
 
-- **Recommended default:** do not change the number without evidence; separate it into two claims — one for total career client relationships, one (smaller, precise) for AI-enabled engagements — once Grant confirms the real counts.
-- **Consequence of inaction:** the claim ships in POS-002/homepage rewrite without correction, carrying legal/credibility risk the report specifically calls out.
+- `app/page.tsx` (homepage meta description)
+- `app/sections/Hero.tsx` (homepage H1-adjacent subhead)
+- `app/sections/Results.tsx` (homepage trust line)
+- `app/components/Nav.tsx` (Resources dropdown description — renders on **every** page, not homepage-only)
+- `app/whitepapers/layout.tsx` (meta description + OG description)
+- `app/whitepapers/WhitepapersExperience.tsx` (visible page copy)
+- `app/resources/page.tsx` (meta description)
+- `app/services/page.tsx` ("More than 100+ organizations" — also just awkward doubled-up phrasing independent of the verification question)
+- `app/services/implementation-support/page.tsx` (visible page copy)
+
+The report explicitly flags this as unverified and recommends separating total organizations served (historical, all consulting work) from AI-specific engagement counts (report p. 11, p. 32).
+
+- **Recommended default:** do not change the number without evidence; separate it into two claims — one for total career client relationships, one (smaller, precise) for AI-enabled engagements — once Grant confirms the real counts. When the correction ships, it needs to ship across all 9 files above, not just Hero/Results.
+- **Consequence of inaction:** the claim ships in POS-002/homepage rewrite without correction, carrying legal/credibility risk the report specifically calls out — and the more places it's copy-pasted, the more places a future correction has to touch.
 - **Owner:** Grant + Mel.
 - **Blocks:** POS-002 (homepage rewrite), any Grant authority page proof section, GBP description (GBP-002).
 
@@ -52,11 +64,13 @@ There is currently **no analytics implementation of any kind** in the repo — n
 
 ## OPEN-005 — Chamber, LinkedIn, and GBP ownership/access status (H-008 / H-009)
 
-Not yet verified from inside this session (no account access available to Claude Code). The report describes the Chamber profile as using an obsolete "AI Explorers Circle" checkout URL and AI-first description (report p. 12, p. 22–23), and the LinkedIn company tagline as "Exploring AI for Professionals" (report p. 11). These could not be confirmed or refuted by reading the repo, since they're external profiles.
+**GBP: partially resolved, 2026-07-30.** Mel confirmed the Google Business Profile listing exists and sits under Grant's account. Mel emailed Grant the same day requesting manager access (or a joint working session) so GBP-001 can proceed. Any category/description/service changes still need Grant's approval as business owner (H-009) regardless of who has UI access.
 
-- **Recommended default:** Mel/Grant confirm current login access to Chamber, LinkedIn company page, Grant's personal LinkedIn, and Google Business Profile before ENT-002/ENT-003/GBP-001 begin.
+Chamber and LinkedIn ownership/access are still **not verified** from inside this session (no account access available to Claude Code). The report describes the Chamber profile as using an obsolete "AI Explorers Circle" checkout URL and AI-first description (report p. 12, p. 22–23), and the LinkedIn company tagline as "Exploring AI for Professionals" (report p. 11). These could not be confirmed or refuted by reading the repo, since they're external profiles.
+
+- **Recommended default:** Mel/Grant confirm current login access to Chamber, LinkedIn company page, and Grant's personal LinkedIn before ENT-002/ENT-003 begin.
 - **Owner:** Mel + Grant.
-- **Blocks:** ENT-002, ENT-003, GBP-001, GBP-002.
+- **Blocks:** ENT-002, ENT-003. (GBP-001/GBP-002 unblocked pending Grant's response on manager access.)
 
 ## OPEN-006 — Calendly as the long-term booking asset
 
@@ -73,3 +87,30 @@ The site's only consultation CTA (`"Schedule a Consultation"`, 7 call sites) lin
 - **Recommended default:** leave as-is for now; revisit for deletion in a general code-cleanup pass, not an SEO/AEO task.
 - **Owner:** Mel.
 - **Blocks:** nothing — informational only.
+
+## OPEN-008 — GSC property predates the documented "greenfield" assumption
+
+`IMPLEMENTATION_STATUS.md` (DAT-001, written 2026-07-28) and `OPEN-004` both stated no GA4/GSC property existed yet. Mel's manual Search Console export (Coverage report, pulled 2026-07-30) shows index-coverage data going back to **2026-04-30** — three months before that note was written, and before this SEO/AEO project started. A verified GSC property must already have existed by then.
+
+- **Recommended default:** don't assume continuity or correctness of that property without confirming. Ask Mel who set it up, when, and whether it's the same property to keep using going forward (vs. re-verifying a fresh one).
+- **Consequence of inaction:** DAT-001/DAT-003 status notes stay wrong, and any future baseline work might second-guess data that's actually valid.
+- **Owner:** Mel.
+- **Blocks:** Nothing hard — informational, but should be resolved before DAT-003 is marked DONE. See `BASELINE_2026-07-30.md`.
+
+## OPEN-009 — Canonical domain mismatch: `bbtx.ai` (code) vs `www.bbtx.ai` (live)
+
+**Status: RESOLVED** (Mel, 2026-07-31) — confirmed `www.bbtx.ai` as the long-term canonical domain, matching Vercel's actual production URL. Every hardcoded `https://bbtx.ai` reference across the repo (29 files: `metadataBase`, sitemap, robots, every route's canonical/OG, all JSON-LD `@id`s, transactional email templates) has been updated to `https://www.bbtx.ai`. Not yet committed/deployed — see `IMPLEMENTATION_STATUS.md` TECH-002. Once deployed, monitor Search Console for index consolidation onto www (a short-lived ranking dip during consolidation is possible per the original analysis below).
+
+Every canonical/sitemap/OG reference in the repo (`app/layout.tsx` `metadataBase`, `app/sitemap.ts` `BASE_URL`, `app/robots.ts` sitemap URL) declares `https://bbtx.ai` (apex, no www) as the site's identity. But Vercel's project config (`vercel project ls`, confirmed 2026-07-30) shows the actual **Production URL is `https://www.bbtx.ai`**, and live redirect behavior confirms it:
+
+- `https://bbtx.ai/*` → 307 → `https://www.bbtx.ai/*`
+- `http://bbtx.ai/*` → 308 → `https://bbtx.ai/*` (then 307 again to www)
+- `http://www.bbtx.ai/*` → 308 → `https://www.bbtx.ai/*`
+- `https://www.bbtx.ai/*` → 200 (this is the only URL that doesn't redirect)
+
+Search Console's Coverage report shows this has already split the index: top pages (`/`, `/about`, `/services/organizational-ai-assessment`, `/blog`) are indexed under the **apex** (no-www) URL and earn nearly all clicks/impressions, while many other pages are indexed under the **www** URL earning far less. This is almost certainly the source of the 4 "Alternate page with proper canonical tag" + 2 "Page with redirect" issues in the same report (see `BASELINE_2026-07-30.md`).
+
+- **Recommended default:** update the code to declare `https://www.bbtx.ai` as canonical everywhere (metadataBase, sitemap, robots.txt, OG url, any hardcoded `https://bbtx.ai` references), matching Vercel's actual production domain — rather than flipping Vercel's primary domain setting. This is the lower-risk direction: it's a normal reviewable code diff instead of a live production domain/routing change, and it doesn't touch DNS.
+- **Open question this doesn't resolve on its own:** Google is currently ranking the apex versions of the top pages best. Switching canonical to www should make Google consolidate onto www over time, but there's a real (if usually short-lived) risk of a temporary ranking dip during consolidation. Mel/Grant should confirm they're fine with `www.bbtx.ai` as the long-term brand domain before this ships — if not, the alternative is changing the Vercel primary domain to apex instead, which is a Mel-only action Claude can't perform.
+- **Owner:** Mel (domain/brand call), Claude (implementation once decided).
+- **Blocks:** TECH-002.

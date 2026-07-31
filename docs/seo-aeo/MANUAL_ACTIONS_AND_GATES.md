@@ -28,8 +28,8 @@ Never store secret values in this file.
 | Repository | | | | Local files/Git | |
 | Deployment | | | | CLI/API if configured | |
 | DNS/Cloudflare | | | | API only if explicitly authorized | |
-| GA4 | | | | UI, Admin API, Data API | |
-| Search Console | | | | UI, Search Console API, Site Verification API | |
+| GA4 | Measurement ID `G-WX6WWDEBB6` (public, embedded in page source — not a secret) | Mel | Wired in code (DAT-001); Data API OAuth access pending (DAT-005) | UI, Admin API, Data API | Need numeric GA4 Property ID (different from measurement ID) for Data API calls |
+| Search Console | bbtx.ai (exact property type — domain vs URL-prefix — unconfirmed) | Mel | Live, verified, index data since 2026-04-30 (predates project — see OPEN-008); Search Console API OAuth access pending (DAT-005) | UI, Search Console API, Site Verification API | Confirm property type/URL for `GSC_SITE_URL` env var; clarify OPEN-008 |
 | Google Business Profile | | | | UI or approved GBP API/OAuth | |
 | Calendly/booking | | | | Webhook/API if plan permits | |
 | Contact form | | | | Repository/backend | |

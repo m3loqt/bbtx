@@ -9,11 +9,13 @@ Repository-specific version of `MASTER_IMPLEMENTATION_BACKLOG.md`, reconciled ag
 | GOV-001 | Import SEO/AEO rules into root `CLAUDE.md` | A | Claude | None | **DONE** | `CLAUDE.md` created, imports `docs/seo-aeo/CLAUDE_SEO_AEO_ADDENDUM.md` |
 | GOV-002 | Current-state audit + report traceability matrix | A | Claude + Mel | GOV-001 | **DONE** | This session's output |
 | DEC-001 | Approve primary positioning statement | C | Grant + Mel | None | **DONE** | See `OPEN_DECISIONS.md` |
-| DAT-001 | Inventory GSC, GA4, GBP, Calendly/form, CRM, deployment, DNS access | B | Mel | None | NOT STARTED | No analytics property exists yet — this is account creation, not just an inventory (OPEN-004) |
+| DAT-001 | Inventory GSC, GA4, GBP, Calendly/form, CRM, deployment, DNS access | B | Mel | None | **IN PROGRESS** | GA4 property live (`G-WX6WWDEBB6`). GSC property confirmed live with index data back to 2026-04-30 — predates this project; origin unconfirmed, see OPEN-008 |
 | DAT-002 | Define qualified lead, source taxonomy, UTM convention, conversion events | B/C | Grant + Mel | DAT-001 | NOT STARTED | Blocks CON-002 |
-| DAT-003 | Export/segment 12 months of GSC/GA4 baseline data | B | Mel + Claude | DAT-001 | BLOCKED | No property exists yet to export from |
+| DAT-003 | Export/segment 12 months of GSC/GA4 baseline data | B | Mel + Claude | DAT-001 | **IN PROGRESS** | Manual 3-month GSC export pulled and reviewed 2026-07-30 — see `BASELINE_2026-07-30.md`. Full 12-16 month range and recurring pulls pending DAT-005 (API access) |
 | DAT-004 | Audit current analytics code and consent behavior | A | Claude | Repo access | **DONE** | Confirmed zero analytics/consent implementation exists — see `CURRENT_STATE_AUDIT.md` |
+| DAT-005 | GSC verification meta tag + GA4 Data API/GSC API OAuth integration for internal reporting | A/B | Claude + Mel | GCP OAuth client setup (Mel) | **IN PROGRESS** | Manual GCP checklist handed to Mel 2026-07-30; scaffolding not yet started |
 | TECH-001 | Technical SEO quick wins: missing canonical/OG, sitemap gaps, `Service`/`Person`/`BreadcrumbList`/`FAQPage` schema | A | Claude | None | **IN PROGRESS** (this session) | Zero judgment calls — markup mirrors existing visible content only; see acceptance criteria below |
+| TECH-002 | Fix canonical domain mismatch: code declares `bbtx.ai`, Vercel production/live redirects resolve to `www.bbtx.ai` | A | Claude | OPEN-009 (Mel decision) | **BLOCKED - HUMAN GATE** | Discovered via 2026-07-30 GSC baseline review; likely cause of the Coverage report's 6 canonical/redirect issues. See OPEN-009 |
 
 **TECH-001 acceptance criteria:** `/privacy`, `/terms`, `/cookies`, `/resources`, `/links` have canonical + OpenGraph; `/resources` and `/links` appear in `app/sitemap.ts`; each of the 5 service pages has valid `Service` JSON-LD matching its own visible copy; each of the 3 team pages has valid `Person` JSON-LD matching its own visible bio; `BreadcrumbList` present on services/team/whitepapers/blog pages; `FAQPage` JSON-LD generated from the same array that renders `app/sections/FAQ.tsx`. `npm run build` and `npm run lint` pass. No copy, claims, or `Organization.sameAs`/`LocalBusiness` schema touched (those need ENT-001/H-002 first).
 **Rollback:** revert the single commit; no data migrations, no external state changed.
@@ -34,7 +36,7 @@ Repository-specific version of `MASTER_IMPLEMENTATION_BACKLOG.md`, reconciled ag
 
 | ID | Task | Class | Owner | Dependencies | Status | Notes |
 |---|---|---:|---|---|---|---|
-| AUT-001 | Interview Grant using career-evidence guide | C/B | Grant + Mel | DEC-001 | NOT STARTED | `/about` timeline is a useful starting draft, not a substitute for the interview |
+| AUT-001 | Confirm/correct researched career facts with Grant (replaces blind interview) | C/B | Grant + Mel | DEC-001 | **IN PROGRESS** | Public-footprint research done 2026-07-30 (`AUT-001_RESEARCH_BRIEF.md`, sourced) — CATEC engagement, Project Rebound, Chamber committee seat, two books, and Chaotic Confluence all confirmed public. 5 factual conflicts need Grant's direct answer (company name, founder/co-founder, Strategic vs. Chaotic Confluence, Role Map format, unverified education claim). Email updated and drafted to Grant; discovery guide (`AUT-001_INTERVIEW_GUIDE.md`) kept as fallback for remaining gaps |
 | AUT-002 | Build/expand Grant authority page | A/B | Claude + Mel | AUT-001, ENT-001 | NOT STARTED | Recommend expanding `/team/grant` in place (OPEN-002) rather than a new `/grant-tate` route |
 | SER-001 | Optimize strategic planning/advisory page | A/B | Claude + Mel | DEC-001, AUT-002 | PARTIAL | `/services/strategy-advisory` already reframed; needs a full definition-of-done review, not assumed complete |
 | SER-002 | Optimize organizational assessment page | A/B | Claude + Mel | DEC-001, AUT-002 | PARTIAL | Same as above, at `/services/organizational-assessment` |
@@ -57,7 +59,7 @@ Repository-specific version of `MASTER_IMPLEMENTATION_BACKLOG.md`, reconciled ag
 
 | ID | Task | Class | Owner | Dependencies | Status | Notes |
 |---|---|---:|---|---|---|---|
-| GBP-001 | Audit live Google Business Profile | B/C | Mel | DAT-001, ENT-001 | NOT STARTED | Not visible from repo |
+| GBP-001 | Audit live Google Business Profile | B/C | Mel | DAT-001, ENT-001 | **IN PROGRESS** | Listing confirmed to exist under Grant's account (OPEN-005 partially resolved). Email sent to Grant 2026-07-30 requesting manager access |
 | GBP-002 | Correct GBP categories/services/description/links/media/tracking | B/C | Mel + Grant | GBP-001 | NOT STARTED | — |
 | REV-001 | Ethical review workflow | B/C | Grant + Mel | GBP-001 | NOT STARTED | No review-request tooling exists in repo |
 | LOC-001 | Local citation/mention inventory | A/B | Claude + Mel | ENT-001 | NOT STARTED | — |
@@ -90,4 +92,6 @@ Repository-specific version of `MASTER_IMPLEMENTATION_BACKLOG.md`, reconciled ag
 - **Service pages (SER-001..004) are marked PARTIAL, not NOT STARTED** — they already lead with the right framing, but haven't had a full definition-of-done review against the report's checklist.
 - **URL-001 is resolved as "keep current slugs"** rather than left open, since a migration isn't needed — the existing routes already match the report's intent well enough that a rename would only cost redirect risk for no positioning benefit.
 - **TECH-001 is a new task**, not in the master backlog: purely technical schema/metadata/sitemap fixes that don't require any human gate, added because they were unblocked and low-risk.
+- **TECH-002 is a new task**, not in the master backlog: a canonical-domain mismatch (code says `bbtx.ai`, Vercel's live production domain is `www.bbtx.ai`) surfaced by reviewing the 2026-07-30 GSC baseline export, not by the report. Blocked on a Mel decision (OPEN-009) since it affects which domain search engines consolidate onto.
+- **DAT-005 is a new task**, not in the master backlog: GSC HTML verification + OAuth-based GA4 Data API/Search Console API access for internal reporting, requested by Mel 2026-07-30.
 - **DAT-004 is DONE**, not just audited — this session's `CURRENT_STATE_AUDIT.md` constitutes the analytics audit the master backlog called for, and the finding (zero existing analytics) is itself the deliverable.
