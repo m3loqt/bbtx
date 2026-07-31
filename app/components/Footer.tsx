@@ -166,18 +166,21 @@ export function Footer() {
 
         {/* Wordmark + social logos */}
         <div className="flex flex-col gap-6 pt-10 sm:flex-row sm:items-center sm:justify-between lg:pt-12">
-          <a href="/" className="flex items-center gap-2">
-            <Image
-              src="/oglogo.webp"
-              alt=""
-              width={32}
-              height={32}
-              className="h-8 w-8 object-contain"
-            />
-            <span className="text-lg font-semibold tracking-normal text-[#222222]">
-              BBTx Consulting
-            </span>
-          </a>
+          <div className="flex flex-col gap-1">
+            <a href="/" className="flex items-center gap-2">
+              <Image
+                src="/oglogo.webp"
+                alt=""
+                width={32}
+                height={32}
+                className="h-8 w-8 object-contain"
+              />
+              <span className="text-lg font-semibold tracking-normal text-[#222222]">
+                BBTx Consulting
+              </span>
+            </a>
+            <span className="text-sm text-[#999999]">Charlottesville, VA, USA</span>
+          </div>
           <div className="flex items-center gap-4">
             {SOCIAL_LINKS.map((social) => (
               <a

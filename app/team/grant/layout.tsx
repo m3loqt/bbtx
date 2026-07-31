@@ -21,6 +21,7 @@ const person = TEAM.grant;
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "Person",
+  "@id": "https://www.bbtx.ai/team/grant#person",
   name: person.name,
   jobTitle: person.role,
   url: "https://www.bbtx.ai/team/grant",

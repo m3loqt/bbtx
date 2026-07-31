@@ -45,7 +45,20 @@ const jsonLd = {
       },
       description:
         "BBTx helps leaders and organizations integrate AI with strategy, clarity, and confidence.",
-      sameAs: [],
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: "Charlottesville",
+        addressRegion: "VA",
+        addressCountry: "US",
+      },
+      founder: {
+        "@id": "https://www.bbtx.ai/team/grant#person",
+      },
+      sameAs: [
+        "https://linkedin.com/in/granttate",
+        "https://chaoticconfluence.substack.com",
+        "https://rgranttate.medium.com/",
+      ],
     },
     {
       "@type": "FAQPage",
