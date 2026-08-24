@@ -12,6 +12,7 @@ import {
   Bell,
   LogOut,
   Library,
+  Quote,
 } from 'lucide-react'
 import {
   Sidebar,
@@ -48,6 +49,7 @@ const navItems = [
     items: [
       { label: 'Contact', href: '/admin/contact', icon: Mail },
       { label: 'Assessments', href: '/admin/assessments', icon: ClipboardList },
+      { label: 'Testimonials', href: '/admin/testimonials', icon: Quote },
       { label: 'Newsletter', href: '/admin/newsletter', icon: Bell },
     ],
   },

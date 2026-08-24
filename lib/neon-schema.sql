@@ -259,3 +259,26 @@ CREATE TABLE IF NOT EXISTS blog_comments (
     is_hidden   boolean NOT NULL DEFAULT false
 );
 CREATE INDEX IF NOT EXISTS blog_comments_blog_id_idx ON blog_comments (blog_id, created_at);
+
+-- ─── testimonial_submissions ────────────────────────────────────────────────
+-- Added 2026-08-20 for the client testimonial submission flow (Grant's idea,
+-- forwarded via Mel). The 6 (now 7) testimonials rendered on the site still
+-- live as a hand-curated array in app/sections/Testimonials.tsx — this table
+-- is only the intake/moderation queue behind the public submission form.
+-- Approving a row here does not auto-publish it; Grant/Mel still fold the
+-- text into that array by hand, then flip status to 'published' so it isn't
+-- reprocessed. Applied standalone against the live DATABASE_URL — do NOT
+-- re-run this whole file.
+CREATE TABLE IF NOT EXISTS testimonial_submissions (
+    id                     uuid DEFAULT gen_random_uuid() PRIMARY KEY,
+    created_at             timestamp with time zone DEFAULT now(),
+    full_name              text NOT NULL,
+    role_company           text,
+    testimonial            text NOT NULL,
+    photo_url              text,
+    permission_to_publish  boolean NOT NULL DEFAULT false,
+    status                 text NOT NULL DEFAULT 'new',
+    ip_address             text,
+    grant_notes            text
+);
+CREATE INDEX IF NOT EXISTS testimonial_submissions_status_idx ON testimonial_submissions (status, created_at);

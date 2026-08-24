@@ -10,6 +10,7 @@ import type {
   Event,
   ContactSubmission,
   AssessmentSubmission,
+  TestimonialSubmission,
   NewsletterSignup,
   DashboardStats,
   SubmissionChartPoint,
@@ -505,6 +506,21 @@ export async function updateAssessmentStatus(id: string, status: string): Promis
 
 export async function updateAssessmentNotes(id: string, notes: string): Promise<void> {
   await sql`UPDATE assessment_submissions SET grant_notes = ${notes} WHERE id = ${id}`
+}
+
+// ─── Testimonial Submissions ────────────────────────────────────────────────
+
+export async function getTestimonialSubmissions(): Promise<TestimonialSubmission[]> {
+  const rows = await sql`SELECT * FROM testimonial_submissions ORDER BY created_at DESC`
+  return rows as unknown as TestimonialSubmission[]
+}
+
+export async function updateTestimonialStatus(id: string, status: string): Promise<void> {
+  await sql`UPDATE testimonial_submissions SET status = ${status} WHERE id = ${id}`
+}
+
+export async function updateTestimonialNotes(id: string, notes: string): Promise<void> {
+  await sql`UPDATE testimonial_submissions SET grant_notes = ${notes} WHERE id = ${id}`
 }
 
 // ─── Newsletter ───────────────────────────────────────────────────────────────

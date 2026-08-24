@@ -138,6 +138,19 @@ export interface AssessmentSubmission {
   grant_notes: string | null
 }
 
+export interface TestimonialSubmission {
+  id: string
+  created_at: string
+  full_name: string
+  role_company: string | null
+  testimonial: string
+  photo_url: string | null
+  permission_to_publish: boolean
+  status: string
+  ip_address: string | null
+  grant_notes: string | null
+}
+
 export interface NewsletterSignup {
   id: string
   created_at: string
