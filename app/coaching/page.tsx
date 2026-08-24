@@ -1,10 +1,12 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import { Nav } from "@/app/components/Nav";
 import { Footer } from "@/app/components/Footer";
 import { FAQ } from "@/app/sections/FAQ";
 import { ArrowUpRight } from "@/app/components/ArrowIcon";
+import { WaitlistModal } from "@/app/components/WaitlistModal";
 import { COACHING_FAQ_ITEMS } from "@/app/coaching/coaching-faq-data";
 
 const WHY_CARDS = [
@@ -68,6 +70,7 @@ const PLANS: Plan[] = [
     ctaVariant: "solid",
   },
   {
+    tag: "Coming Soon",
     title: "Group Cohort",
     price: "$999",
     priceNote: "per person",
@@ -79,9 +82,9 @@ const PLANS: Plan[] = [
       "Structured curriculum plus your questions",
       "Peer discussion with fellow participants",
     ],
-    note: "Cohorts run once enough people reserve a spot, and you'll be notified as soon as the next one is confirmed.",
-    cta: "Reserve your spot",
-    ctaHref: "https://chaoticconfluence.gumroad.com/l/erqvm",
+    note: "Not scheduled yet — join the waitlist and you'll be first to know when a cohort is confirmed.",
+    cta: "Join the Waitlist",
+    ctaHref: "",
     ctaVariant: "outline",
     glass: true,
   },
@@ -110,6 +113,8 @@ function CheckIcon({ className }: { className?: string }) {
 }
 
 export default function CoachingPage() {
+  const [waitlistOpen, setWaitlistOpen] = useState(false);
+
   return (
     <div className="min-h-screen">
       <Nav />
@@ -328,19 +333,30 @@ export default function CoachingPage() {
                   ) : (
                     <span />
                   )}
-                  <a
-                    href={plan.ctaHref}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={`inline-flex w-fit shrink-0 items-center justify-center gap-2 rounded-lg px-7 py-3.5 text-sm font-medium transition-colors ${
-                      plan.ctaVariant === "solid"
-                        ? "bg-[#ca3726] text-white hover:opacity-90"
-                        : "border border-[#ca3726] text-[#ca3726] hover:bg-[#ca3726]/5"
-                    }`}
-                  >
-                    {plan.cta}
-                    <ArrowUpRight className="h-4 w-4" />
-                  </a>
+                  {plan.title === "Group Cohort" ? (
+                    <button
+                      type="button"
+                      onClick={() => setWaitlistOpen(true)}
+                      className="inline-flex w-fit shrink-0 items-center justify-center gap-2 rounded-lg border border-[#ca3726] px-7 py-3.5 text-sm font-medium text-[#ca3726] transition-colors hover:bg-[#ca3726]/5"
+                    >
+                      {plan.cta}
+                      <ArrowUpRight className="h-4 w-4" />
+                    </button>
+                  ) : (
+                    <a
+                      href={plan.ctaHref}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`inline-flex w-fit shrink-0 items-center justify-center gap-2 rounded-lg px-7 py-3.5 text-sm font-medium transition-colors ${
+                        plan.ctaVariant === "solid"
+                          ? "bg-[#ca3726] text-white hover:opacity-90"
+                          : "border border-[#ca3726] text-[#ca3726] hover:bg-[#ca3726]/5"
+                      }`}
+                    >
+                      {plan.cta}
+                      <ArrowUpRight className="h-4 w-4" />
+                    </a>
+                  )}
                 </div>
               </div>
             </div>
@@ -371,6 +387,8 @@ export default function CoachingPage() {
       />
 
       <Footer />
+
+      <WaitlistModal open={waitlistOpen} onClose={() => setWaitlistOpen(false)} />
     </div>
   );
 }

@@ -44,6 +44,11 @@ const DROPDOWNS: Record<
 > = {
   Resources: [
     {
+      title: "Courses",
+      description: "Making Modern Managers and five AI courses, built from the same frameworks we use with clients.",
+      href: "/courses",
+    },
+    {
       title: "Digital Twin Snapshot",
       description: "See your organization the way the market already does: a strategic analysis from your public footprint.",
       href: "/digital-twin-snapshot",
@@ -84,6 +89,11 @@ const DROPDOWNS: Record<
       title: "Implementation & Change Support",
       description: "Turn strategic intentions into action, accountability, and lasting results.",
       href: "/services/implementation-support",
+    },
+    {
+      title: "Executive Recruitment Assessment",
+      description: "A disciplined, independent way to evaluate finalists for your next executive search.",
+      href: "/services/executive-recruitment",
     },
   ],
 };
@@ -392,9 +402,10 @@ export function Nav({
                       </a>
                     ))}
                   </div>
-                  {/* Row 2: 2 columns spanning full width */}
+                  {/* Row 2: mirrors row 1's column count so 6 items form a clean 3x2 grid
+                      instead of wrapping the last item onto a lonely third row. */}
                   {dropdownItems.length > firstRowCount && (
-                    <div className="grid grid-cols-2 gap-2 sm:gap-3">
+                    <div className={`grid gap-2 sm:gap-3 ${firstRowCount < 3 ? "grid-cols-2" : "grid-cols-3"}`}>
                       {dropdownItems.slice(firstRowCount).map((item) => (
                         <a
                           key={item.title}

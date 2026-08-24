@@ -24,7 +24,7 @@ const RESOURCES_LINKS = [
   { label: "Digital Twin Snapshot", href: "/digital-twin-snapshot" },
   { label: "Whitepapers", href: "/whitepapers" },
   { label: "1:1 Coaching", href: "/coaching" },
-  { label: "Courses", href: "https://chaoticconfluence.gumroad.com/", external: true },
+  { label: "Courses", href: "/courses" },
   { label: "Articles", href: "https://chaoticconfluence.substack.com", external: true },
   { label: "Subscribe", action: "subscribe" as const },
 ];
