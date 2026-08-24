@@ -177,7 +177,7 @@ export default function OrganizationalAssessmentPage() {
 
           <h1 className="text-[2.5rem] font-medium leading-[1.06] tracking-tight text-[#222222] sm:text-[3.2rem] md:text-[3.8rem] lg:text-[4.8rem] xl:text-[5.6rem]">
             Most organizations are operating on assumptions{" "}
-            <span className="italic">that haven't been tested in years.</span>
+            <span className="italic">that haven't been tested in years</span>
           </h1>
 
           <p className="mt-5 max-w-4xl text-base leading-relaxed tracking-normal text-[#555555] sm:mt-6 sm:text-xl">
@@ -189,7 +189,7 @@ export default function OrganizationalAssessmentPage() {
             <button
               type="button"
               onClick={() => openContact(INQUIRY)}
-              className="inline-flex w-fit items-center gap-2 rounded-lg bg-[#222222] px-5 py-3 text-[15px] font-medium text-white transition-opacity hover:opacity-80"
+              className="inline-flex w-fit items-center gap-2 rounded-lg bg-[#ca3726] px-5 py-3 text-[15px] font-medium text-white transition-opacity hover:opacity-95"
             >
               Start a Conversation
               <ArrowUpRight className="h-4 w-4 sm:h-[18px] sm:w-[18px]" />
@@ -221,7 +221,7 @@ export default function OrganizationalAssessmentPage() {
             </p>
 
             <h2 className="mt-6 max-w-4xl text-[2rem] font-medium leading-[1.08] tracking-tight text-white sm:text-[3rem] lg:text-[4rem]">
-              What leaders see are <span className="text-[#ca3726]">symptoms</span>. What matters are the conditions creating them.
+              What leaders see are <span className="text-[#ca3726]">symptoms</span>. What matters are the conditions creating them
             </h2>
             <p className="mt-5 max-w-3xl text-lg leading-relaxed text-white/50 sm:text-xl">
               Most performance problems aren't caused by a lack of effort or intelligence — they're caused by leaders making decisions from incomplete pictures of reality.
@@ -253,7 +253,7 @@ export default function OrganizationalAssessmentPage() {
           <div>
             <h2 className="max-w-4xl text-3xl font-medium leading-tight tracking-tight text-[#222222] sm:text-4xl lg:text-[2.8rem]">
               This work is most valuable when leaders know something isn't working{" "}
-              <span className="italic">but don't yet have a clear picture of why.</span>
+              <span className="italic">but don't yet have a clear picture of why</span>
             </h2>
 
             <div className="mt-8 space-y-0 border-l-2 border-black/[0.08] pl-6">
@@ -281,7 +281,7 @@ export default function OrganizationalAssessmentPage() {
             <div className="pr-0 lg:pr-[10%]">
               <h2 className="max-w-4xl text-3xl font-medium leading-tight tracking-tight text-[#222222] sm:text-4xl lg:text-[2.8rem]">
                 Not a framework applied to your situation.{" "}
-                <span className="italic">Your situation examined without a predetermined answer.</span>
+                <span className="italic">Your situation examined without a predetermined answer</span>
               </h2>
 
               <div className="mt-10 grid grid-cols-1 gap-1 sm:grid-cols-2 lg:mt-14 lg:gap-1.5">
@@ -419,7 +419,7 @@ export default function OrganizationalAssessmentPage() {
             <div className="relative z-[1] w-full px-6 py-16 text-center sm:px-10 sm:py-20 lg:px-16 lg:py-24">
               <h2 className="text-4xl font-medium leading-tight tracking-tight text-white sm:text-[2.75rem] md:text-5xl lg:text-5xl xl:text-6xl 2xl:text-[4rem]">
                 Better decisions start with{" "}
-                <span className="italic">a clearer picture of reality.</span>
+                <span className="italic">a clearer picture of reality</span>
               </h2>
 
               <p className="mx-auto mt-8 max-w-2xl text-xl leading-relaxed tracking-normal text-white/95 sm:text-2xl lg:mt-10">

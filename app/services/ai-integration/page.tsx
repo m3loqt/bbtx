@@ -125,7 +125,7 @@ export default function AiIntegrationPage() {
             <button
               type="button"
               onClick={() => openContact(INQUIRY)}
-              className="inline-flex w-fit items-center gap-2 rounded-lg bg-[#222222] px-5 py-3 text-[15px] font-medium text-white transition-opacity hover:opacity-80"
+              className="inline-flex w-fit items-center gap-2 rounded-lg bg-[#ca3726] px-5 py-3 text-[15px] font-medium text-white transition-opacity hover:opacity-95"
             >
               Start a Conversation
               <ArrowUpRight className="h-4 w-4 sm:h-[18px] sm:w-[18px]" />
