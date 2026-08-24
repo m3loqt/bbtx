@@ -114,3 +114,17 @@ Search Console's Coverage report shows this has already split the index: top pag
 - **Open question this doesn't resolve on its own:** Google is currently ranking the apex versions of the top pages best. Switching canonical to www should make Google consolidate onto www over time, but there's a real (if usually short-lived) risk of a temporary ranking dip during consolidation. Mel/Grant should confirm they're fine with `www.bbtx.ai` as the long-term brand domain before this ships — if not, the alternative is changing the Vercel primary domain to apex instead, which is a Mel-only action Claude can't perform.
 - **Owner:** Mel (domain/brand call), Claude (implementation once decided).
 - **Blocks:** TECH-002.
+
+## OPEN-010 — Gumroad listing content bugs (not fixable from this repo)
+
+While researching real course copy for the new `/courses` page (CRS-001, 2026-08-08), two content-accuracy bugs were found on the live Gumroad listings themselves (`chaoticconfluence.gumroad.com`), not in this repo:
+
+1. The "Making Modern Managers — Self-Paced Learning" ($499, `/l/gjwijk`) and "— Group Cohort" ($999, `/l/erqvm`) product pages both carry body copy duplicated verbatim from the "— Individual Coaching" ($3,500) page — wrongly describing "six one-on-one coaching sessions with Grant" and "you'll receive a link to book your first session," which isn't part of either of those two tiers.
+2. Three of the five AI-course Gumroad pages (`AI for Leadership and Organizational Transformation`, `AI Implementation for Business Value`, `AI-Empowered Coaching & Consulting`) cross-sell two course titles — "Introduction to Generative AI ($99)" and "Mastering Prompt Patterns ($99)" — that don't match any of the 5 real, currently-listed AI course names. Likely stale copy from an earlier naming pass.
+
+Neither is being reproduced on bbtx.ai (`/courses` gets fresh, accurate copy for the Self-Paced tier; the AI-course cross-sell references are dropped). Claude Code has read access to these listings via an authenticated browser session but is not authorized to edit them.
+
+- **Recommended default:** Grant/Mel correct the Self-Paced and Group Cohort page bodies on Gumroad directly (shortest fix: replace with tier-appropriate copy — no coaching sessions, self-paced access to the same 17-chapter program), and update or remove the two stale cross-sell references.
+- **Consequence of inaction:** Gumroad checkout pages keep describing the wrong product to buyers who click through from bbtx.ai — a real buyer-facing accuracy problem, independent of anything in this repo.
+- **Owner:** Grant (Gumroad account access).
+- **Blocks:** Nothing in this repo — informational, flagged so bbtx.ai copy isn't drafted from the broken source.
