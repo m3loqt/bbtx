@@ -6,10 +6,10 @@ import { FAQ_ITEMS } from "@/app/sections/faq-data";
 function FaqMinusIcon({ className }: { className?: string }) {
   return (
     <span
-      className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-[#222222] text-white sm:h-9 sm:w-9 ${className ?? ""}`}
+      className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-md border border-black/[0.1] bg-white sm:h-9 sm:w-9 ${className ?? ""}`}
       aria-hidden
     >
-      <span className="block h-[2px] w-2.5 rounded-full bg-white" />
+      <span className="block h-[2px] w-2.5 rounded-full bg-[#6b7280]" />
     </span>
   );
 }
