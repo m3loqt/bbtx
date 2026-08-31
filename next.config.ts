@@ -11,6 +11,16 @@ const nextConfig: NextConfig = {
         destination: "/digital-twin-snapshot",
         permanent: true,
       },
+      {
+        source: "/blog",
+        destination: "/chaotic-confluence",
+        permanent: true,
+      },
+      {
+        source: "/services/ai-organizational-model",
+        destination: "/services/ai-integration",
+        permanent: true,
+      },
     ];
   },
 };

@@ -1,8 +1,18 @@
 import { NextResponse, type NextRequest } from 'next/server'
 import { verifySessionToken, SESSION_COOKIE_NAME } from '@/lib/admin/session'
 
+// Matches junk paths like /companies-nobg/lum.png-3 or /companies/g-4 — a
+// trailing "-<digits>" suffix that no real file in either folder ever has.
+// These 404 today; serving 410 instead tells Google they're permanently gone
+// rather than something to keep periodically re-crawling.
+const JUNK_COMPANY_ASSET = /^\/companies(-nobg)?\/.+-\d+$/
+
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
+
+  if (JUNK_COMPANY_ASSET.test(pathname)) {
+    return new NextResponse('Gone', { status: 410 })
+  }
 
   if (!pathname.startsWith('/admin')) {
     return NextResponse.next()
@@ -28,5 +38,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/admin/:path*'],
+  matcher: ['/admin/:path*', '/companies/:path*', '/companies-nobg/:path*'],
 }
