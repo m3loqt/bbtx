@@ -329,7 +329,7 @@ export default function AboutPage() {
 
       {/* Team grid */}
       <section className="relative z-[1] w-full bg-[#f7f7f7]">
-        <div className="relative z-[1] px-4 py-12 sm:px-6 sm:py-24 lg:px-8 lg:py-32">
+        <div className="relative z-[1] mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-24 lg:px-8 lg:py-32">
           <div className="mb-10 text-center sm:mb-16 lg:mb-20">
             <p className="mb-4 text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#555555]/60">People</p>
             <h2 className="text-3xl font-medium tracking-tight text-[#222222] sm:text-5xl lg:text-6xl">
