@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowUpRight, ChevronDown } from "./ArrowIcon";
 import { ContactModal } from "./ContactModal";
@@ -109,7 +109,6 @@ export function Nav({
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);
   const [overHero, setOverHero] = useState(false);
-  const closeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // "dark" = render the transparent-over-hero state with light text (photo/dark hero behind it).
   // When heroTheme is "light" (e.g. a white hero), the transparent state keeps dark text instead —
@@ -148,11 +147,11 @@ export function Nav({
   }, [instantFloat]);
 
   const handleEnter = (label: string, hasDropdown: boolean) => {
-    if (!hasDropdown) return;
-    if (closeTimeoutRef.current) {
-      clearTimeout(closeTimeoutRef.current);
-      closeTimeoutRef.current = null;
-    }
+    // Re-entering the trigger of the already-open dropdown must be a no-op —
+    // otherwise setPanelVisible(false) fires but setActiveDropdown(label) is a
+    // no-op (same value), so the [activeDropdown] effect never re-runs and the
+    // panel is stuck hidden until a *different* dropdown is hovered.
+    if (!hasDropdown || label === activeDropdown) return;
     setActiveDropdown(label);
     setPanelVisible(false);
   };
@@ -160,10 +159,6 @@ export function Nav({
   const handleLeave = () => {
     setPanelVisible(false);
     setActiveDropdown(null);
-    if (closeTimeoutRef.current) {
-      clearTimeout(closeTimeoutRef.current);
-      closeTimeoutRef.current = null;
-    }
   };
 
   useEffect(() => {
@@ -171,12 +166,6 @@ export function Nav({
     const id = requestAnimationFrame(() => setPanelVisible(true));
     return () => cancelAnimationFrame(id);
   }, [activeDropdown]);
-
-  useEffect(() => {
-    return () => {
-      if (closeTimeoutRef.current) clearTimeout(closeTimeoutRef.current);
-    };
-  }, []);
 
   // Lock background scroll while the full-screen mobile menu is open, using
   // the "freeze body in place" technique rather than `overflow: hidden`.

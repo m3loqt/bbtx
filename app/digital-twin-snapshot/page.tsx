@@ -460,11 +460,11 @@ export default function DigitalTwinSnapshotPage() {
     <div className="min-h-screen bg-white">
 
       {/* Nav hidden during loading and capacity (capacity has its own full-screen layout) */}
-      {pageState !== "loading" && <Nav />}
+      {pageState !== "loading" && <Nav heroTheme="light" />}
 
       {/* ── Hero + Form ─────────────────────────────────── */}
       {(pageState === "idle" || pageState === "error") && (
-        <section className="relative flex min-h-screen flex-col overflow-hidden">
+        <section id="hero" className="relative flex min-h-screen flex-col overflow-hidden">
           <div className="absolute inset-0 z-0 overflow-hidden">
             <InteractiveGridPattern
               width={56}
