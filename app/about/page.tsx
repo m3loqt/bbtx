@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { ArrowUpRight } from "@/app/components/ArrowIcon";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { Nav } from "@/app/components/Nav";
@@ -87,39 +88,27 @@ const VALUE_ROWS = [VALUES.slice(0, 2), VALUES.slice(2, 4)];
 const PEOPLE = [
   {
     name: "Grant Tate",
+    role: "CEO & Founder",
     image: "/grantt.jpg",
-    email: "grant@bbtx.com",
+    email: "grant@bbtx.ai",
     linkedin: "https://linkedin.com/in/granttate",
     href: "/team/grant",
-    description: [
-      "Grant Tate is the CEO of Bridge Business Transformations, a coach, consultant, and author who helps leaders thrive in complex environments.",
-      "He explores how AI is shaping people, organizations, and society, and how leaders can respond with clarity.",
-      "He wrote Hand on the Shoulder, sharing lessons from his life and career on leadership and personal growth.",
-    ],
   },
   {
     name: "Kaye Monroe",
+    role: "Executive Coach & Community Builder",
     image: "/about/kaye.jpeg",
     email: "kaye@bbtx.com",
     linkedin: "https://linkedin.com/in/kayemonroe",
     href: "/team/kaye",
-    description: [
-      "Kaye Monroe leads KDM Coaching and Associates, supporting leaders and individuals as they define goals and follow through.",
-      "She is a founder and key force behind the Minority Business Council, building community and opportunity for minority entrepreneurs.",
-      "She's known in the Charlottesville region for her vision, diplomacy, and steady leadership.",
-    ],
   },
   {
     name: "Mel Angelo Cortes",
+    role: "Operations & Execution",
     image: "/about/MEL.png",
-    email: "mel@bbtx.com",
+    email: "mel@bbtx.ai",
     linkedin: "https://linkedin.com/in/melangelocortes",
     href: "/team/mel",
-    description: [
-      "Mel Angelo Cortes supports BBTx AI across operations, systems, and execution, helping turn ideas into clear deliverables.",
-      "He builds the workflows, content, and digital assets that support BBTx AI's programs and community.",
-      "He focuses on making AI practical for leaders through structured implementation and simple, usable guidance.",
-    ],
   },
 ];
 
@@ -328,8 +317,8 @@ export default function AboutPage() {
       </section>
 
       {/* Team grid */}
-      <section className="relative z-[1] w-full bg-[#f7f7f7]">
-        <div className="relative z-[1] mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-24 lg:px-8 lg:py-32">
+      <section className="relative z-[1] w-full bg-white">
+        <div className="relative z-[1] mx-auto max-w-[90rem] px-4 py-12 sm:px-6 sm:py-24 lg:px-8 lg:py-32">
           <div className="mb-10 text-center sm:mb-16 lg:mb-20">
             <p className="mb-4 text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#555555]/60">People</p>
             <h2 className="text-3xl font-medium tracking-tight text-[#222222] sm:text-5xl lg:text-6xl">
@@ -342,62 +331,62 @@ export default function AboutPage() {
               <Link
                 key={p.name}
                 href={p.href}
-                className="group relative aspect-[4/5] w-full overflow-hidden rounded-2xl border border-black/[0.06] bg-white transition-shadow hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)]"
+                className="group relative flex aspect-[4/5] w-full flex-col justify-end overflow-hidden rounded-2xl bg-[#1a1a1a] shadow-[0_4px_24px_rgba(0,0,0,0.05)] transition-shadow duration-300 hover:shadow-[0_16px_44px_rgba(0,0,0,0.13)]"
               >
                 <Image
                   src={p.image}
                   alt={p.name}
                   fill
                   sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-                  className="object-cover transition-transform duration-300 group-hover:scale-[1.02]"
+                  className="object-cover object-[50%_22%] transition-transform duration-500 group-hover:scale-[1.03]"
                 />
-                {/* Dark overlay, behind the glass panel */}
+                {/* Bottom scrim — strong enough to unify three different photos and carry the text */}
                 <div
-                  className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent"
+                  className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black via-black/55 to-transparent"
                   aria-hidden
                 />
-                {/* Glass panel — inset from the card edges, always visible, holds name/socials/description */}
-                <div className="absolute inset-x-3 bottom-3 flex flex-col rounded-lg border border-white/10 bg-black/25 p-4 backdrop-blur-sm transition-all duration-300 sm:inset-x-4 sm:bottom-4 sm:p-5">
-                  <h3 className="text-lg font-semibold tracking-normal text-white sm:text-xl">
+                {/* Info — sits directly on the scrim, no box */}
+                <div className="relative p-5 sm:p-6">
+                  <h3 className="text-xl font-semibold tracking-tight text-white sm:text-2xl">
                     {p.name}
                   </h3>
-                  <div className="mt-2 flex items-center gap-2">
-                    <button
-                      type="button"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        window.location.href = `mailto:${p.email}`;
-                      }}
-                      className="flex h-8 w-8 items-center justify-center rounded-full border border-white/40 text-white transition-colors hover:border-white hover:bg-white/10"
-                      aria-label={`Email ${p.name}`}
-                    >
-                      <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
-                        <path d="m22 6-10 7L2 6" />
-                      </svg>
-                    </button>
-                    <button
-                      type="button"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        window.open(p.linkedin, "_blank", "noopener,noreferrer");
-                      }}
-                      className="flex h-8 w-8 items-center justify-center rounded-full border border-white/40 text-white transition-colors hover:border-white hover:bg-white/10"
-                      aria-label={`${p.name} on LinkedIn`}
-                    >
-                      <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
-                        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
-                      </svg>
-                    </button>
-                  </div>
-                  <div className="mt-3 space-y-1">
-                    {p.description.map((line, i) => (
-                      <p key={i} className="text-sm leading-snug text-white/90 sm:text-base">
-                        {line}
-                      </p>
-                    ))}
+                  <p className="mt-1.5 text-lg text-white/70">{p.role}</p>
+                  <div className="mt-4 flex items-center justify-between gap-3">
+                    <div className="flex items-center gap-2">
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          window.location.href = `mailto:${p.email}`;
+                        }}
+                        className="flex h-8 w-8 items-center justify-center rounded-full border border-white/40 text-white transition-colors hover:border-white hover:bg-white/10"
+                        aria-label={`Email ${p.name}`}
+                      >
+                        <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                          <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                          <path d="m22 6-10 7L2 6" />
+                        </svg>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          window.open(p.linkedin, "_blank", "noopener,noreferrer");
+                        }}
+                        className="flex h-8 w-8 items-center justify-center rounded-full border border-white/40 text-white transition-colors hover:border-white hover:bg-white/10"
+                        aria-label={`${p.name} on LinkedIn`}
+                      >
+                        <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+                          <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+                        </svg>
+                      </button>
+                    </div>
+                    <span className="inline-flex shrink-0 items-center gap-1.5 border-b border-white/40 pb-0.5 text-sm font-medium text-white transition-colors group-hover:border-white">
+                      Read more
+                      <ArrowUpRight className="h-3.5 w-3.5" />
+                    </span>
                   </div>
                 </div>
               </Link>
