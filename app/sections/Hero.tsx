@@ -44,8 +44,9 @@ export function Hero() {
           {/* Right: subhead + CTA */}
           <div className="flex min-w-0 max-w-[39rem] flex-col md:ml-8 lg:ml-20">
             <p className="text-lg leading-relaxed tracking-normal text-white/85 sm:text-xl">
-              We&apos;ve helped 100+ organizations plan and implement AI-powered initiatives that improve operations,
-              decision-making, and long-term value, with measurable results in as little as 12 weeks.
+              We&apos;ve helped 100+ organizations plan and implement strategy, leadership, and AI initiatives that
+              improve operations, decision-making, and long-term value, with measurable results in as little
+              as 12 weeks.
             </p>
             <div className="mt-6">
               <a
