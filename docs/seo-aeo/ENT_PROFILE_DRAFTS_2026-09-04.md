@@ -58,7 +58,16 @@ There is also a second, un-editable auto-directory entry at `business.cvillecham
 
 ## 2. LinkedIn company page (ENT-003)
 
-`CONFIRM` current state — the company page content wasn't retrievable (auth wall). Draft assumes a from-scratch rewrite.
+**Found 2026-09-04:** the page is `https://www.linkedin.com/company/bridgebusinesstransformations/` — 37 followers, industry "Business Consulting and Services", location Charlottesville VA, "R. Grant works here". Name is **already "BBTx Consulting"** but the URL slug, tagline ("Exploring AI for Professionals"), and cover image ("Explorations in AI") are the old AI-first branding.
+
+**Access:** Grant is **not** an admin. The likely admin is a lost/dormant Grant account ("R. Grant"). Mel filed a LinkedIn admin-access request 2026-09-04. Fastest paths: (a) recover the old account, add current accounts as admins; (b) the pending request — succeeds far more easily if Grant's personal profile lists "BBTx Consulting" as a **current** position linked to this page (LinkedIn uses employment as claim proof); (c) LinkedIn support for an unmanaged page, same employment-proof requirement.
+
+**Do not create a new company page** — this one has the followers and the existing Google cross-reference.
+
+**Once admin:**
+- Change the public URL → `linkedin.com/company/bbtx-consulting` (LinkedIn redirects the old one; 37 followers = negligible risk)
+- Replace the cover image (drop "Explorations in AI")
+- Apply the tagline / About below
 
 - **Tagline (≤120 char) →**
   > Strategy, leadership, and organizational development consulting — led directly by Grant Tate. Charlottesville & beyond.
@@ -111,16 +120,30 @@ Grant should review and adjust anything about his own history; `CONFIRM` marks t
 
 ## 3. Google Business Profile (GBP-002)
 
-Blocked on manager access (GBP-001, OPEN-005). Draft for when it lands.
+Mel has manager access (GBP-001 resolved). Worked 2026-09-04.
 
-- **Name →** BBTx Consulting (`CONFIRM` — must match real-world name exactly; **do not** append keywords)
-- **Primary category →** `CONFIRM in dashboard` — test "Management consultant" / "Business management consultant" first (report guidance)
-- **Secondary categories (only accurate ones that exist) →** Business development service · Consultant · Executive coach *(do **not** set an "AI consultant" category as primary; secondary at most)*
-- **Description (≤750 char; first ~250 show before "more") →**
-  > BBTx Consulting is a Charlottesville-based practice led by Grant Tate. We help leadership teams set strategy, understand what's really happening inside their organization, strengthen how they lead, and carry change through to implementation. Every engagement is led directly by Grant, drawing on four decades of executive and organizational experience. We serve organizations across Central Virginia and work nationally.
+**Applied 2026-09-04:**
+- **Description** — replaced the keyword-stuffed original with the version below.
+- **Primary category** — `Business management consultant`; **secondary** `Business development service` added.
+- **Social profiles** — added the LinkedIn company URL (`linkedin.com/company/bridgebusinesstransformations/`); pending Google review.
 
-  *(No URLs, no phone, no promotional superlatives — per GBP content rules. AI deliberately omitted from the description; it goes in Services only.)*
-- **Address / service area →** `CONFIRM` — GBP needs either a real address customers can visit (staffed during stated hours) **or** a service-area business with a hidden address. Decide which. `184 Brookwood Dr` appears in directories — is it a real office or a home address?
+**Still open (recommended, confirm whether applied):**
+- **Website** — change `http://www.bbtx.ai/` → `https://www.bbtx.ai`
+- **Social profiles** — remove `facebook.com/thebridgeltd` and `x.com/@thebridgeltd` (old entity name)
+- **Service area** — change from "United States" to: Charlottesville · Albemarle · Fluvanna · Greene · Louisa · Nelson · Orange counties. **Hide the `184 Brookwood Dr` address** (service-area business — "Onsite services not available", appointment-only, residential-looking address).
+- **Hours** — change "Open 24 hours" (Mon–Fri) → Mon–Fri 9:00 AM–5:00 PM.
+- **Veteran-owned / women-owned attributes** — both set; `CONFIRM with Grant` and remove either that isn't literally true.
+- Ignore: accessibility / amenities / parking / languages — auto-generated noise for a business with no walk-in location.
+
+**Reference spec:**
+
+- **Name →** BBTx Consulting (must match real-world name; **do not** append keywords)
+- **Primary category →** `Business management consultant`
+- **Secondary categories (only accurate ones that exist) →** Business development service · Consultant · Executive coach *(never "AI consultant" as primary)*
+- **Description →**
+  > BBTx Consulting is a Charlottesville-based management consulting practice led by Grant Tate. We work with leadership teams on strategic planning, organizational assessment, leadership and team development, and change implementation — helping leaders make better decisions, align their people, and carry strategy through to results. Every engagement is led directly by Grant, drawing on four decades of executive and organizational experience. Serving Charlottesville, Central Virginia, and organizations nationally.
+
+  *(No URLs, no phone, no promotional superlatives — per GBP content rules. AI deliberately omitted; it goes in Services only.)*
 - **Website →** `https://www.bbtx.ai` + UTM (`?utm_source=google&utm_medium=organic&utm_campaign=gbp`) once CON-002 lands a UTM convention
 - **Services (add each with the one-line description from the site):**
   | Service | Description |
@@ -154,11 +177,23 @@ Once Chamber / LinkedIn company / GBP / Cvillepedia are consistent and live, upd
 
 ---
 
-## The gate — Grant must confirm before anything goes live
+## The gate — Grant must confirm
 
 1. **Exact business name** — "BBTx Consulting" everywhere? Legal entity / DBA situation? Is "The Bridge LTD" still registered?
 2. **Phone** — is (434) 466-4655 current and right for public listings?
-3. **Address** — usable business address for GBP, or service-area only? Is 184 Brookwood Dr an office?
-4. **paradigmassociates.us** — update, request removal, or leave?
-5. **Founder vs. co-founder** (AUT-001 conflict; Cvillepedia says co-founder).
-6. **Sign-off on the standard short description wording** above.
+3. **Address** — is 184 Brookwood Dr an office or a home? (drives the GBP hide-address call — see §3)
+4. **Veteran-owned / women-owned** — are the GBP attributes literally true? Remove any that aren't.
+5. **paradigmassociates.us** — update, request removal, or leave?
+6. **Founder vs. co-founder** (AUT-001 conflict; Cvillepedia says co-founder).
+7. **IBM PC / Europe line** in Grant's LinkedIn About (§2a) — confirm the specifics.
+
+## Status (2026-09-04)
+
+| Profile | State |
+|---|---|
+| **GBP** | Description + categories + LinkedIn link **applied**. 4 quick fixes still open (website https, remove old-entity socials, service area, hours) + veteran/women-owned to verify — see §3. |
+| **LinkedIn company** | Page found (`.../company/bridgebusinesstransformations/`). Admin-access request filed; not yet editable. Rewrite queued — see §2. |
+| **Grant's personal LinkedIn** | Draft ready (§2a); needs Grant to apply + confirm the `CONFIRM` items. Adding "BBTx Consulting" as current experience also speeds the company-page admin claim. |
+| **Chamber** | Not started — needs the member-dashboard login. Highest-impact remaining fix (wrong URL, dead AI-Explorers checkout). |
+| **paradigmassociates.us** | Grant decision pending. |
+| **Reviews (REV-001)** | Not started — Grant names clients, asks. The real GBP visibility lever. |
