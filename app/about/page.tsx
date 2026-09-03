@@ -230,6 +230,16 @@ export default function AboutPage() {
             ))}
           </div>
 
+          <div className="mt-10 flex justify-end sm:mt-12">
+            <Link
+              href="/team/grant"
+              className="inline-flex items-center gap-1.5 text-sm font-medium text-[#ca3726] transition-colors hover:text-[#222222] sm:text-base"
+            >
+              Read Grant Tate&apos;s full background
+              <span aria-hidden>&rarr;</span>
+            </Link>
+          </div>
+
           {/* Cursor-follow image — desktop hover only, never affects layout */}
           {canHover && (
             <motion.div

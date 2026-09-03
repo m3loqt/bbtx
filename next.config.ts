@@ -21,6 +21,13 @@ const nextConfig: NextConfig = {
         destination: "/services/ai-integration",
         permanent: true,
       },
+      {
+        // Legacy pre-redesign slug, still indexed and drawing impressions
+        // (~#35 for "organizational ai assessment"). Closest living page.
+        source: "/services/organizational-ai-assessment",
+        destination: "/services/organizational-assessment",
+        permanent: true,
+      },
     ];
   },
 };

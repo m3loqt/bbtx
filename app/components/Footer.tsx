@@ -6,6 +6,7 @@ import { SubscribeModal } from "@/app/components/SubscribeModal";
 
 const USEFUL_LINKS = [
   { label: "About Us", href: "/about" },
+  { label: "Grant Tate", href: "/team/grant" },
   { label: "Contact Us", action: "contact" as const },
   { label: "FAQs", href: "/#faq" },
   { label: "Terms of Service", href: "/terms" },
