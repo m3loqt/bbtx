@@ -218,12 +218,17 @@ export function Nav({
   };
 
   const dropdownItems = activeDropdown ? DROPDOWNS[activeDropdown] : null;
-  // 4 items reads better as two even rows than a lonely single card on row 2.
-  const firstRowCount = dropdownItems
-    ? dropdownItems.length === 4
-      ? 2
-      : Math.min(3, dropdownItems.length)
-    : 0;
+  const itemCount = dropdownItems?.length ?? 0;
+  // Up to 4 items sit in a single row; 5-6 split into two rows of 3.
+  const firstRowCount = itemCount <= 4 ? itemCount : Math.min(3, itemCount);
+  const dropdownColsClass =
+    firstRowCount >= 4
+      ? "grid-cols-4"
+      : firstRowCount === 3
+        ? "grid-cols-3"
+        : firstRowCount === 2
+          ? "grid-cols-2"
+          : "grid-cols-1";
 
   return (
     <div className="fixed left-0 right-0 top-0 z-50 w-full px-3 pt-2.5 sm:px-6 sm:pt-[18px] lg:px-8">
@@ -374,8 +379,8 @@ export function Nav({
                 } ${panelVisible ? "translate-y-0 opacity-100" : "translate-y-[-8px] opacity-0"}`}
               >
                 <div className="space-y-2 p-3 sm:space-y-3 sm:p-4">
-                  {/* Row 1: 2 or 3 columns depending on item count */}
-                  <div className={`grid gap-2 sm:gap-3 ${firstRowCount < 3 ? "grid-cols-2" : "grid-cols-3"}`}>
+                  {/* Row 1: one column per item up to 4, else 3 (with a second row) */}
+                  <div className={`grid gap-2 sm:gap-3 ${dropdownColsClass}`}>
                     {dropdownItems.slice(0, firstRowCount).map((item) => (
                       <a
                         key={item.title}
@@ -405,7 +410,7 @@ export function Nav({
                   {/* Row 2: mirrors row 1's column count so 6 items form a clean 3x2 grid
                       instead of wrapping the last item onto a lonely third row. */}
                   {dropdownItems.length > firstRowCount && (
-                    <div className={`grid gap-2 sm:gap-3 ${firstRowCount < 3 ? "grid-cols-2" : "grid-cols-3"}`}>
+                    <div className={`grid gap-2 sm:gap-3 ${dropdownColsClass}`}>
                       {dropdownItems.slice(firstRowCount).map((item) => (
                         <a
                           key={item.title}
