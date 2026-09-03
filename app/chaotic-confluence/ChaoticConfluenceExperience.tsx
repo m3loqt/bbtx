@@ -38,7 +38,6 @@ export function ChaoticConfluenceExperience({ posts }: { posts: PublicBlogPost[]
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
   const [subscribeOpen, setSubscribeOpen] = useState(false);
 
-  const visible = posts.slice(0, visibleCount);
   const hasMore = visibleCount < posts.length;
 
   return (
@@ -86,15 +85,20 @@ export function ChaoticConfluenceExperience({ posts }: { posts: PublicBlogPost[]
           </div>
 
           <div className="flex flex-col gap-10 sm:gap-12">
-            {visible.map((post, i) => {
+            {posts.map((post, i) => {
               const tone = PLACEHOLDER_TONES[i % PLACEHOLDER_TONES.length];
               const date = formatDate(post.published_date);
+              // Render a real <Link> for every post so crawlers can reach it;
+              // posts past the current page are visually hidden until "Load more".
+              const collapsed = i >= visibleCount;
 
               return (
                 <Link
                   key={post.id}
                   href={`/chaotic-confluence/${post.slug}`}
-                  className="group flex flex-col gap-5 sm:flex-row sm:items-start sm:gap-8"
+                  className={`group flex-col gap-5 sm:flex-row sm:items-start sm:gap-8 ${
+                    collapsed ? "hidden" : "flex"
+                  }`}
                 >
                   <div
                     className={`aspect-[4/3] w-full shrink-0 overflow-hidden rounded-md sm:w-2/5 lg:w-3/5 lg:max-w-[588px] ${tone}`}
