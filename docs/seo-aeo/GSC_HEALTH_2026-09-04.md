@@ -70,7 +70,7 @@ Core pages are crawled every 2–6 weeks; `/services` and `/services/ai-integrat
 - Resubmit the sitemap after deploy.
 
 ### Vercel (Mel)
-- Set the apex `bbtx.ai` → `www.bbtx.ai` redirect to **308 permanent** (currently 307). Project → Settings → Domains. This is what will clear the 14-URL "Page with redirect" report fastest; consolidation is otherwise already working.
+- ~~Set the apex `bbtx.ai` → `www.bbtx.ai` redirect to **308 permanent** (currently 307).~~ **Done 2026-09-04** — live-verified (`curl -sI https://bbtx.ai/` → `308` → `https://www.bbtx.ai/`). Should clear the 14-URL "Page with redirect" report on its own now; no further action.
 
 ### Content (AUT-002 pass, not technical SEO)
 - `/about` `PEOPLE` data: Grant's email shows `grant@bbtx.com` (should be `.ai`); his `/about` bio still says "CEO of Bridge Business Transformations" (unresolved AUT-001 naming conflict) and leads with AI framing.

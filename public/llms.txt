@@ -1,0 +1,32 @@
+# BBTx Consulting
+
+> BBTx Consulting helps leaders and organizations make better decisions, align their people, and turn strategy into sustained execution — guided directly by Dr. Grant Tate's decades of executive leadership, organizational transformation, and coaching experience. AI is an enabling capability, not the category.
+
+BBTx is a Charlottesville, Virginia-based consulting practice led by Dr. Grant Tate. Work spans strategy and advisory, organizational assessment, leadership and team development, implementation and change support, AI integration, and executive recruitment assessment — delivered directly by Grant, not a junior team.
+
+## Services
+
+- [Strategy & Advisory](https://www.bbtx.ai/services/strategy-advisory): Helping leadership teams create the clarity, alignment, and discipline required to turn priorities into action.
+- [Organizational Assessment & Analysis](https://www.bbtx.ai/services/organizational-assessment): Seeing the organization as it actually is, and understanding what to do about it.
+- [Leadership & Team Development](https://www.bbtx.ai/services/leadership-development): Building the capability leaders and teams need to navigate complexity, strengthen trust, and improve performance.
+- [Implementation & Change Support](https://www.bbtx.ai/services/implementation-support): Moving from planning to implementation through accountability, communication, reinforcement, and execution support.
+- [AI Integration & Innovation](https://www.bbtx.ai/services/ai-integration): Integrating AI in ways that improve performance and build organizational capability — addressing the organizational reasons most AI initiatives fail, not just the technical ones.
+- [Executive Recruitment Assessment Services](https://www.bbtx.ai/services/executive-recruitment): An independent way for search committees to evaluate executive finalists against the actual requirements of the position.
+- [All Services](https://www.bbtx.ai/services): Overview of BBTx's full engagement model.
+
+## Programs
+
+- [1:1 Executive Coaching](https://www.bbtx.ai/coaching): Individual coaching and a live group cohort with Grant Tate, built around real decisions rather than a generic curriculum.
+- [Courses](https://www.bbtx.ai/courses): The Making Modern Managers program plus focused AI courses for leaders, consultants, and coaches.
+- [Strategic Digital Twin Snapshot](https://www.bbtx.ai/digital-twin-snapshot): A free, surface-level first look at an organization's public positioning, visible strengths, and possible blind spots.
+
+## Learn more
+
+- [About BBTx](https://www.bbtx.ai/about): The practice's story and team.
+- [Grant Tate](https://www.bbtx.ai/team/grant): Background and experience of BBTx's founder.
+- [Chaotic Confluence](https://www.bbtx.ai/chaotic-confluence): Notes on AI strategy, leadership, and organizations from BBTx, written as it's learned across engagements.
+- [Whitepapers](https://www.bbtx.ai/whitepapers): Longer-form writing on AI strategy and leadership.
+
+## Contact
+
+- [Schedule a Consultation](https://www.calendly.com/granttate)

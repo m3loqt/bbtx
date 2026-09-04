@@ -62,15 +62,21 @@ There is currently **no analytics implementation of any kind** in the repo — n
 - **Owner:** Mel (account creation/authorization).
 - **Blocks:** DAT-001 through DAT-004, CON-002, AEO-003, and all of Phase 6's KPI review.
 
+**Update, 2026-09-03 — Mel clarified account structure:** the GSC property sits under Mel's Google Workspace domain account; Grant is the owner. **Google Cloud Console access is prohibited** on that account (Workspace admin policy — scope not yet confirmed: unclear whether this blocks Cloud Console only for accounts inside that Workspace org, or more broadly). This rules out the plan floated the same session (create an OAuth client directly in that account's GCP project for a Search Console MCP server).
+
+**Update, 2026-09-04 — GSC half RESOLVED.** Read access to Search Console is live via a Search Console MCP server, authenticated as `devmelo2003@gmail.com` (`siteRestrictedUser` scope) on `sc-domain:bbtx.ai` — an account outside the restricted Workspace org, so the Cloud Console block never came into play; no OAuth client was created inside Mel/Grant's Workspace account. First API-based pull performed the same day (`GSC_HEALTH_2026-09-04.md`), which also resolved OPEN-008. This unblocks DAT-005's GSC half, TECH-005, and ongoing GSC-based audits (AEO-001). **Still open:** GA4 Data API access for internal reporting — untouched this session, no account/scope established. `siteRestrictedUser` is read-only, so anything requiring GSC write access (sitemap submission via API, URL removal requests) would need a separate, higher-scoped grant.
+
 ## OPEN-005 — Chamber, LinkedIn, and GBP ownership/access status (H-008 / H-009)
 
-**GBP: partially resolved, 2026-07-30.** Mel confirmed the Google Business Profile listing exists and sits under Grant's account. Mel emailed Grant the same day requesting manager access (or a joint working session) so GBP-001 can proceed. Any category/description/service changes still need Grant's approval as business owner (H-009) regardless of who has UI access.
+**GBP: RESOLVED, 2026-09-04.** Mel confirmed manager access is working and applied live corrections to the listing the same day (description, primary/secondary category, LinkedIn social link — see `IMPLEMENTATION_STATUS.md` GBP-001/GBP-002). Remaining GBP-002 items (website protocol, old-entity social removal, service area, hours, veteran/women-owned confirmation) are execution detail, not an access question anymore.
 
-Chamber and LinkedIn ownership/access are still **not verified** from inside this session (no account access available to Claude Code). The report describes the Chamber profile as using an obsolete "AI Explorers Circle" checkout URL and AI-first description (report p. 12, p. 22–23), and the LinkedIn company tagline as "Exploring AI for Professionals" (report p. 11). These could not be confirmed or refuted by reading the repo, since they're external profiles.
+**LinkedIn: partially resolved, 2026-09-04.** The company page was located — `linkedin.com/company/bridgebusinesstransformations/` (37 followers, already named "BBTx Consulting," old AI-first tagline/cover image/URL slug). Grant is **not** an admin; the likely admin is a dormant "R. Grant" account. Mel filed a LinkedIn admin-access request 2026-09-04. Corrected copy for both the company page and Grant's personal profile is fully drafted (`ENT_PROFILE_DRAFTS_2026-09-04.md` §2/§2a) and ready to apply the moment access lands. Do not create a new company page — this one carries the followers and Google's existing cross-reference to it.
 
-- **Recommended default:** Mel/Grant confirm current login access to Chamber, LinkedIn company page, and Grant's personal LinkedIn before ENT-002/ENT-003 begin.
+**Chamber: still not verified** — no account access available to Claude Code, and Mel/Grant haven't logged into the member dashboard yet. The 2026-09-04 AEO baseline confirmed the report's concern is current and worse than described: the live profile links to a Circle.so community (not bbtx.ai) and carries an active "AI Explorers" membership checkout in its header, on top of the AI-first description and obsolete category list (report p. 12, p. 22–23). Corrected copy is fully drafted and paste-ready (`ENT_PROFILE_DRAFTS_2026-09-04.md` §1) — the only remaining blocker is the login.
+
+- **Recommended default:** Mel/Grant get Chamber member-dashboard login and LinkedIn admin access; both corrections are pre-written and ready to paste in.
 - **Owner:** Mel + Grant.
-- **Blocks:** ENT-002, ENT-003. (GBP-001/GBP-002 unblocked pending Grant's response on manager access.)
+- **Blocks:** ENT-002 (Chamber login), ENT-003 (LinkedIn admin access).
 
 ## OPEN-006 — Calendly as the long-term booking asset
 
@@ -90,12 +96,29 @@ The site's only consultation CTA (`"Schedule a Consultation"`, 7 call sites) lin
 
 ## OPEN-008 — GSC property predates the documented "greenfield" assumption
 
+**Status: RESOLVED** (2026-09-04, via the first API-based GSC pull — `GSC_HEALTH_2026-09-04.md`).
+
+`sc-domain:bbtx.ai` is a **Domain property** covering www/apex/http in one. The API confirms search-performance history begins **2026-03-22** and the sitemap was first submitted **2026-03-23** — a normal pre-project sitemap submission, not an unexplained earlier property or a second account. No further action needed; the property is the correct one to keep using.
+
 `IMPLEMENTATION_STATUS.md` (DAT-001, written 2026-07-28) and `OPEN-004` both stated no GA4/GSC property existed yet. Mel's manual Search Console export (Coverage report, pulled 2026-07-30) shows index-coverage data going back to **2026-04-30** — three months before that note was written, and before this SEO/AEO project started. A verified GSC property must already have existed by then.
 
-- **Recommended default:** don't assume continuity or correctness of that property without confirming. Ask Mel who set it up, when, and whether it's the same property to keep using going forward (vs. re-verifying a fresh one).
-- **Consequence of inaction:** DAT-001/DAT-003 status notes stay wrong, and any future baseline work might second-guess data that's actually valid.
-- **Owner:** Mel.
-- **Blocks:** Nothing hard — informational, but should be resolved before DAT-003 is marked DONE. See `BASELINE_2026-07-30.md`.
+- **Owner:** Resolved — no further owner needed.
+- **Blocks:** Nothing further. See `BASELINE_2026-07-30.md` and `GSC_HEALTH_2026-09-04.md`.
+
+## OPEN-011 — Off-site entity/profile correction gate (facts only Grant can confirm)
+
+Raised by the 2026-09-04 entity-correction drafting pass (`ENT_PROFILE_DRAFTS_2026-09-04.md`, prompted by the AEO baseline showing the practice under 6 different names — see `AEO_BASELINE_2026-09-04.md`). All corrected copy for Chamber/LinkedIn/GBP is written and paste-ready; these are the remaining fact gates before any of it ships. (Founder-vs-co-founder and the IBM PC/Europe career details are the same open conflicts already tracked under AUT-001 — not duplicated here.)
+
+1. **Exact business name** — "BBTx Consulting" everywhere? Legal entity/DBA situation — is "The Bridge, Ltd" still the registered entity behind it?
+2. **Phone** — is (434) 466-4655 current and correct for public listings?
+3. **Address** — is 184 Brookwood Dr an office or a home address? Drives the GBP hide-address call (service-area business vs. a listed storefront).
+4. **Veteran-owned / women-owned** — the GBP attributes are currently both set. Remove any that aren't literally true.
+5. **paradigmassociates.us** — a competitor's domain (`paradigmassociates.us/about-us/our-team/grant-tate`) hosts a full Grant Tate profile naming "Bridge Business Transformations (BBx)" and "Bridgewater Research Group (BRG)," with no mention of BBTx and no link to bbtx.ai, and it ranks for "Grant Tate consultant." Update it to name BBTx Consulting and link bbtx.ai (if the relationship with Paradigm is active), request removal (if dormant), or explicitly accept the entity split. Doing nothing is not recommended — it's currently splitting Grant's entity onto someone else's site.
+
+- **Recommended default:** none — these are factual/ownership calls only Grant can make. Nothing in `ENT_PROFILE_DRAFTS_2026-09-04.md` ships until he confirms.
+- **Consequence of inaction:** the paste-ready Chamber/LinkedIn/GBP corrections stay in draft indefinitely, and the entity fragmentation the AEO baseline found (0/8 non-branded discovery prompts naming BBTx) doesn't improve.
+- **Owner:** Grant (with Mel relaying).
+- **Blocks:** ENT-001 (canonical entity record finalization), the remaining GBP-002 items, and publishing the ENT-002/ENT-003 drafts once account access exists.
 
 ## OPEN-009 — Canonical domain mismatch: `bbtx.ai` (code) vs `www.bbtx.ai` (live)
 
