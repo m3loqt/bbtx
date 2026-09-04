@@ -24,7 +24,7 @@ Desk research only, compiled 2026-07-30. This is **not approved copy** and nothi
 2. **Founder vs. co-founder**: Cvillepedia says co-founder and CEO; Paradigm Associates says Founder and CEO.
 3. **Strategic Confluence vs. Chaotic Confluence**: same framework, renamed, or genuinely different? (see above)
 4. **"The Role Map"**: the report labels this a "Publication Source" (I03), but the only public hit describes "role maps" as one exercise within a customized workshop for an unnamed client — not a standalone publication. Is there an actual publication, or is the report's label imprecise?
-5. **Education/doctorate — do not use without confirmation.** One aggregator source (Prabook) attributes a UVA BS (1957), Syracuse MS (1965), and a Pace University Doctor of Professional Studies (1982) to a "Raymond Grant Tate, b. Nov 7 1935" — plausible given "R. Grant Tate" is a confirmed author byline, but the page couldn't be directly verified (blocked the fetch) and this is a single, unverified, third-party aggregator. This would explain the "Dr." honorific used in Chamber materials, but needs Grant's direct confirmation before it goes anywhere near a `Person` schema or the site.
+5. **Education/doctorate — RESOLVED, 2026-09-05: Grant confirmed he holds a doctorate.** The Prabook aggregator's specifics (Pace University Doctor of Professional Studies, 1982) are still unconfirmed in detail — only the underlying fact ("holds a doctorate") has been confirmed, not that exact institution/degree/year. Safe to use "Dr." where it already appears (e.g., the Chamber listing); using the specific Pace University detail anywhere (e.g., a `Person` schema `alumniOf`, an authority-page bio) would need that separate confirmation.
 
 ## Not found / not usable yet
 
