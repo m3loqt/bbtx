@@ -32,7 +32,7 @@ Strategic planning & advisory · Organizational assessment & analysis · Leaders
 
 ## 1. Charlottesville Regional Chamber (ENT-002)
 
-**Current state** (fetched 2026-09-04, `cvillechamber.chambermaster.com/list/member/bbtx-consulting-12801`):
+**Current state** (fetched 2026-09-04, re-confirmed live 2026-09-05, `cvillechamber.chambermaster.com/list/member/bbtx-consulting-12801`):
 
 | Field | Current (wrong) |
 |---|---|
@@ -40,17 +40,22 @@ Strategic planning & advisory · Organizational assessment & analysis · Leaders
 | Description | "We are experienced business coaches with deep experience in developing successful organizations with focus on transforming organizations through visionary leadership and AI applications." |
 | Header link | "Learn How to Get Real Results from AI" → `ai_explorers.circle.so/checkout/ai-explorer-full-membership` |
 | Categories (8) | Consultants · Coaching - Business · Coaching - Personal & Professional Success · Consultancy & Development · Consultant: Strategic Planning · Consultants: Business & Information Technology · Consultants: Business Performance Improvement · Consultants: Educational |
+| **Primary Contact** | **"Dr. Grant Tate, CEO/Managing Director"** — new finding, 2026-09-05 |
+| Social links | LinkedIn (`granttate`), Facebook (`author.grant.tate`) |
+| Address | 184 Brookwood Dr., Charlottesville, VA 22902 (same address flagged in OPEN-011 item 3) |
 
 **Corrections:**
 
 - **Website →** `https://www.bbtx.ai`
 - **Remove entirely:** the "AI Explorers" checkout link and the "Learn How to Get Real Results from AI" header CTA. Also the "Join our webinars & classes" membership link.
+- **Primary Contact title →** "Grant Tate, Founder" — drop **"Dr."** (the doctorate is unverified, AUT-001 conflict #5; bbtx.ai deliberately uses no honorific — this listing is the one place that currently doesn't match) and drop "CEO/Managing Director" (doesn't match "Founder" everywhere else, and sidesteps rather than resolves the founder-vs-co-founder question). This is the single most important line-item fix here — it's a live, public unverified-credential claim, exactly what the project rules exist to prevent.
 - **Description →**
   > BBTx Consulting is a Charlottesville-based practice led by Grant Tate. We help leadership teams set strategy, assess what's really happening inside the organization, develop leaders and teams, and carry change through to implementation — with more than 40 years of executive and organizational experience behind every engagement. Serving Central Virginia and beyond.
 - **Categories — keep only:** Consultant: Strategic Planning · Consultants · Consultancy & Development · Coaching - Business
 - **Categories — drop:** Consultants: Business & Information Technology · Consultants: Educational · Consultants: Business Performance Improvement · Coaching - Personal & Professional Success *(each narrows or misdescribes the practice)*
 - **Categories — add if the Chamber offers them** (`CONFIRM` available list in the member dashboard): Consultants: Management · Consultants: Organizational Development · Consultants: Leadership Development
 - **CTA buttons →** "Schedule a consultation" (→ bbtx.ai or the Calendly link) and "Explore our services" (→ `https://www.bbtx.ai/services`)
+- **Social links →** confirm `linkedin.com/in/granttate` is Grant's actual current personal profile (not a dormant duplicate) before leaving it linked — worth checking against the ENT-003 "dormant R. Grant account" question, since the handle matches. Facebook (`author.grant.tate`) looks intentional (memoir/author persona) — probably fine as-is, Grant's call.
 
 There is also a second, un-editable auto-directory entry at `business.cvillechamber.com` — updating the member profile should propagate; verify after.
 
