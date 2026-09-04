@@ -178,11 +178,9 @@ Mel has manager access (GBP-001 resolved). Worked 2026-09-04.
 > Email: author.grant.tate@gmail.com · Phone: 434-466-4655 · Location: Charlottesville, VA 22902
 > Memoir *Hand on the Shoulder* (2022), linked at handontheshoulder.com
 
-**Recommended edit — safe to make now:**
+**Applied and live-verified 2026-09-05.** Mel made the edit; fetched the live page to confirm — current text reads "He is the founder of [BBTx Consulting](https://www.bbtx.ai/), a company that helps businesses thrive in the 21st century, and Bridgewater Research Group (BRG)...". Link confirmed pointing to `https://www.bbtx.ai/`. One minor observation, not flagged as a problem: the phrase "a company that helps businesses thrive in the 21st century" reads as generic filler — unclear if it's new or was already there and lost in the first fetch's summarization; low stakes either way since it's third-party copy, not bbtx.ai's own, so the addendum's copy rules don't directly govern it. Mention to Mel only as a "worth a glance" item, not a fix.
 
-- **"founder and CEO of Bridge Business Transformations (BBx)"** → **"founder of BBTx Consulting"**, hyperlinked to `https://www.bbtx.ai`. "Bridge Business Transformations (BBx)" is the practice's prior name — BBx → BBTx Consulting is already the established rename across every other corrected profile in this doc, so this isn't a new claim, just consistency. Used "founder" (not "founder and CEO") to match every other draft in this doc — see the founder-vs-co-founder note below.
-- Phone (434-466-4655) matches BBTx's own listed number independently — corroborating, not a conflict.
-- Leave everything else as-is.
+Phone (434-466-4655) on that page matches BBTx's own listed number independently — corroborating, not a conflict. BRG line and everything else left untouched, as recommended.
 
 **Do NOT touch without asking Grant first — two things here I can't verify or safely assume:**
 
@@ -193,6 +191,17 @@ Mel has manager access (GBP-001 resolved). Worked 2026-09-04.
 - **Owner:** Grant (facts above), Mel (has access to execute once Grant confirms #1 and #2).
 
 ---
+
+## 4a. Cvillepedia (ENT-004) — checked 2026-09-05, not yet actioned
+
+`https://www.cvillepedia.org/Grant_Tate` — a public, community-editable wiki (visible `[edit]` link, no special account ownership implied). Currently reads: "co-founder and CEO of **The Bridge, Ltd**," no link to bbtx.ai or any external site, flagged on the page itself as a stub needing expansion. Only other content: a note on Grant leading CATEC's 2013–14 strategic planning process, with linked PDFs — this corroborates AUT-001's own CATEC research independently.
+
+**Recommended edit — same shape as paradigmassociates.us:**
+- "The Bridge, Ltd" → "BBTx Consulting," linked to `https://www.bbtx.ai`
+- **Do NOT touch "co-founder"** — this is literally the open AUT-001 conflict (Cvillepedia is one of the two sources claiming co-founder, the other being Grant's own memory/records per the research brief). Changing it without Grant's answer would be guessing on the exact fact in dispute, not correcting an error.
+- Everything else (CATEC content, stub-expansion note) can stay — it's accurate and worth leaving.
+
+**Owner:** whoever has (or creates) a Cvillepedia account — unclear if that's Mel, Grant, or needs a new signup. Not yet actioned.
 
 ## 5. Follow-on (Claude, after profiles are corrected)
 

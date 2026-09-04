@@ -32,7 +32,7 @@ Repository-specific version of `MASTER_IMPLEMENTATION_BACKLOG.md`, reconciled ag
 | ENT-001 | Canonical entity record (name, URL, phone, address/service area, founding entity, descriptions, profile links) | B/C | Mel + Grant | DEC-001 | **IN PROGRESS** | Canonical entity block drafted 2026-09-04 (`ENT_PROFILE_DRAFTS_2026-09-04.md` §0); several fields gated on Grant (OPEN-011). Still needed before `Organization.sameAs`/`LocalBusiness` schema can be finalized |
 | ENT-002 | Update Chamber profile + obsolete URL | B | Mel | ENT-001 | NOT STARTED | Corrected copy fully drafted 2026-09-04, paste-ready — blocked only on Chamber login access (OPEN-005) |
 | ENT-003 | Update LinkedIn company page | B | Mel | ENT-001 | **IN PROGRESS** | Company page found 2026-09-04 (`linkedin.com/company/bridgebusinesstransformations/`); admin-access request filed, still pending. "BBTx Consulting" added as current experience on both Grant's and Mel's personal profiles 2026-09-04 (speeds the admin claim). Company-page copy rewrite drafted, queued for access (OPEN-005). **Grant's personal-profile rewrite dropped from scope 2026-09-05** — his own call, not a project deliverable |
-| ENT-004 | Correct legacy records/author profiles/speaker bios | B | Mel | ENT-001 | NOT STARTED | — |
+| ENT-004 | Correct legacy records/author profiles/speaker bios | B | Mel | ENT-001 | **IN PROGRESS** | Cvillepedia checked 2026-09-05, edit drafted (name/link swap only, "co-founder" left untouched pending AUT-001) — see `ENT_PROFILE_DRAFTS_2026-09-04.md` §4a. Not yet actioned |
 
 ## Phase 2 — Founder authority and commercial pages
 
