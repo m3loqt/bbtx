@@ -134,12 +134,14 @@ Mel has manager access (GBP-001 resolved). Worked 2026-09-04.
 - **Primary category** — `Business management consultant`; **secondary** `Business development service` added.
 - **Social profiles** — added the LinkedIn company URL (`linkedin.com/company/bridgebusinesstransformations/`); pending Google review.
 
-**Still open (recommended, confirm whether applied):**
-- **Website** — change `http://www.bbtx.ai/` → `https://www.bbtx.ai`
-- **Social profiles** — remove `facebook.com/thebridgeltd` and `x.com/@thebridgeltd` (old entity name)
-- **Service area** — change from "United States" to: Charlottesville · Albemarle · Fluvanna · Greene · Louisa · Nelson · Orange counties. **Hide the `184 Brookwood Dr` address** (service-area business — "Onsite services not available", appointment-only, residential-looking address).
-- **Hours** — change "Open 24 hours" (Mon–Fri) → Mon–Fri 9:00 AM–5:00 PM.
-- **Veteran-owned / women-owned attributes** — both set; `CONFIRM with Grant` and remove either that isn't literally true.
+**Applied 2026-09-05:**
+- **Website** — changed `http://www.bbtx.ai/` → `https://www.bbtx.ai`
+- **Social profiles** — removed `facebook.com/thebridgeltd` and `x.com/@thebridgeltd` (old entity name)
+- **Hours** — changed "Open 24 hours" → Mon–Fri 9:00 AM–5:00 PM
+
+**Still open:**
+- **Service area** — change from "United States" to: Charlottesville · Albemarle · Fluvanna · Greene · Louisa · Nelson · Orange counties. **Hide the `184 Brookwood Dr` address** (service-area business — "Onsite services not available", appointment-only, residential-looking address). Needs Grant to confirm office-vs-home first (OPEN-011 item 3).
+- **Veteran-owned / women-owned attributes** — both set; `CONFIRM with Grant` and remove either that isn't literally true (OPEN-011 item 4).
 - Ignore: accessibility / amenities / parking / languages — auto-generated noise for a business with no walk-in location.
 
 **Reference spec:**
@@ -224,7 +226,7 @@ Once Chamber / LinkedIn company / GBP / Cvillepedia are consistent and live, upd
 
 | Profile | State |
 |---|---|
-| **GBP** | Description + categories + LinkedIn link **applied**. 4 quick fixes still open (website https, remove old-entity socials, service area, hours) + veteran/women-owned to verify — see §3. |
+| **GBP** | Description + categories + LinkedIn link + website https + old-entity socials + hours **all applied**. Still open: service area/hide-address (needs Grant, office-vs-home) + veteran/women-owned to verify — see §3. |
 | **LinkedIn company** | Page found (`.../company/bridgebusinesstransformations/`). Admin-access request still pending; not yet editable. Rewrite queued — see §2. |
 | **Grant's personal LinkedIn** | Out of scope (2026-09-05) — his own call, not a project deliverable. One fact stays in scope under §2/ENT-003: "BBTx Consulting" was added as current experience on both Grant's and Mel's profiles 2026-09-04, to help the company-page admin claim resolve. |
 | **Chamber** | Not started — needs the member-dashboard login. Highest-impact remaining fix (wrong URL, dead AI-Explorers checkout). |

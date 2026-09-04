@@ -62,7 +62,7 @@ Repository-specific version of `MASTER_IMPLEMENTATION_BACKLOG.md`, reconciled ag
 | ID | Task | Class | Owner | Dependencies | Status | Notes |
 |---|---|---:|---|---|---|---|
 | GBP-001 | Audit live Google Business Profile | B/C | Mel | DAT-001, ENT-001 | **DONE** | Manager access confirmed working 2026-09-04 — Mel edited the live listing directly (OPEN-005 resolved) |
-| GBP-002 | Correct GBP categories/services/description/links/media/tracking | B/C | Mel + Grant | GBP-001 | **IN PROGRESS** | Applied live 2026-09-04: description, primary/secondary category, LinkedIn social link. Still open: website protocol, old-entity social removal, service area, hours, veteran/women-owned confirmation (OPEN-011). Full spec in `ENT_PROFILE_DRAFTS_2026-09-04.md` §3 |
+| GBP-002 | Correct GBP categories/services/description/links/media/tracking | B/C | Mel + Grant | GBP-001 | **IN PROGRESS** | Applied live 2026-09-04: description, primary/secondary category, LinkedIn social link. Applied live 2026-09-05: website https fix, old-entity social removal, hours. Still open: service area/address-hide (needs Grant, OPEN-011 item 3), veteran/women-owned confirmation (OPEN-011 item 4). Full spec in `ENT_PROFILE_DRAFTS_2026-09-04.md` §3 |
 | REV-001 | Ethical review workflow | B/C | Grant + Mel | GBP-001 | NOT STARTED | No review-request tooling exists in repo |
 | LOC-001 | Local citation/mention inventory | A/B | Claude + Mel | ENT-001 | NOT STARTED | — |
 | LOC-002 | Chamber/media/partner/civic/event outreach | C/B | Grant + Mel | LOC-001 | NOT STARTED | Relationship-driven |
