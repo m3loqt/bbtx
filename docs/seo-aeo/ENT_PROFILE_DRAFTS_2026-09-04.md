@@ -167,14 +167,30 @@ Mel has manager access (GBP-001 resolved). Worked 2026-09-04.
 
 ---
 
-## 4. paradigmassociates.us — a decision, not a draft
+## 4. paradigmassociates.us — RESOLVED to "update," 2026-09-05
 
-`https://www.paradigmassociates.us/about-us/our-team/grant-tate` hosts a full Grant Tate profile on **a competitor's domain**. It names "Bridge Business Transformations (BBx)" and "Bridgewater Research Group (BRG)", **does not mention BBTx, and does not link to bbtx.ai** — and it ranks for "Grant Tate consultant." It's splitting Grant's entity onto someone else's site.
+**Status update, 2026-09-05:** Mel has editing access to this site (works there). This resolves OPEN-011 item 5's "update vs. remove vs. leave" question in favor of **update** — no longer a dormant/competitor situation, so removal isn't the right call.
 
-- **Recommended:** if Grant has an ongoing affiliate/associate relationship with Paradigm Associates, ask them to (a) update the profile to name **BBTx Consulting** as his current practice and (b) link `https://www.bbtx.ai`. Converts a liability into a backlink + entity signal.
-- **Alternative:** if the relationship is dormant, request removal.
-- **Do nothing** = accept the entity split. Not recommended.
-- **Owner:** Grant.
+**Current live copy** (fetched 2026-09-05, `https://www.paradigmassociates.us/about-us/our-team/grant-tate`):
+
+> Grant Tate is described as "founder and CEO of Bridge Business Transformations (BBx)" and "Bridgewater Research Group (BRG)," characterized as "a leading provider of distance education in the European Union." He is identified as a "highly experienced business leader and coach" specializing in transforming complex organizations and developing growth-oriented executives in high-tech companies... Prior to founding his own firms, Tate held executive positions at IBM, including Director of Organization for the Systems Products Division and Director of Manufacturing Planning. He has also served as a university faculty member, Executive Director of the Connecticut Institute of Technology, and co-founder of two innovation centers for high-tech startups.
+>
+> Email: author.grant.tate@gmail.com · Phone: 434-466-4655 · Location: Charlottesville, VA 22902
+> Memoir *Hand on the Shoulder* (2022), linked at handontheshoulder.com
+
+**Recommended edit — safe to make now:**
+
+- **"founder and CEO of Bridge Business Transformations (BBx)"** → **"founder of BBTx Consulting"**, hyperlinked to `https://www.bbtx.ai`. "Bridge Business Transformations (BBx)" is the practice's prior name — BBx → BBTx Consulting is already the established rename across every other corrected profile in this doc, so this isn't a new claim, just consistency. Used "founder" (not "founder and CEO") to match every other draft in this doc — see the founder-vs-co-founder note below.
+- Phone (434-466-4655) matches BBTx's own listed number independently — corroborating, not a conflict.
+- Leave everything else as-is.
+
+**Do NOT touch without asking Grant first — two things here I can't verify or safely assume:**
+
+1. **"Bridgewater Research Group (BRG)" / "distance education in the European Union"** — no idea if this is still active, related to BBTx, or a separate business entirely. Don't fold it into BBTx or remove it on a guess.
+2. **"Executive Director of the Connecticut Institute of Technology"** — this doesn't match anything found in `AUT-001_RESEARCH_BRIEF.md`, which documents Grant's CATEC engagement (Charlottesville-Albemarle Technical Education Center, Virginia — a 2013 strategic-planning client, not an executive role, and not in Connecticut). Could be: (a) a genuinely separate, real position Grant held that AUT-001's research simply didn't surface, or (b) an error on Paradigm's part confusing CATEC with a similarly-acronymed Connecticut institution. This is exactly the kind of thing the addendum's non-negotiable content rules forbid guessing on — flagging for Grant, not correcting.
+3. Founder vs. co-founder is still the open AUT-001 conflict (Cvillepedia says "co-founder and CEO of The Bridge, Ltd") — the recommended edit above uses "founder" only because that's what every other draft in this doc already uses, not because it's confirmed.
+
+- **Owner:** Grant (facts above), Mel (has access to execute once Grant confirms #1 and #2).
 
 ---
 
