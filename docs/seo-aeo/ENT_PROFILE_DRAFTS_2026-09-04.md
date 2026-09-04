@@ -192,8 +192,8 @@ Once Chamber / LinkedIn company / GBP / Cvillepedia are consistent and live, upd
 | Profile | State |
 |---|---|
 | **GBP** | Description + categories + LinkedIn link **applied**. 4 quick fixes still open (website https, remove old-entity socials, service area, hours) + veteran/women-owned to verify — see §3. |
-| **LinkedIn company** | Page found (`.../company/bridgebusinesstransformations/`). Admin-access request filed; not yet editable. Rewrite queued — see §2. |
-| **Grant's personal LinkedIn** | Draft ready (§2a); needs Grant to apply + confirm the `CONFIRM` items. Adding "BBTx Consulting" as current experience also speeds the company-page admin claim. |
+| **LinkedIn company** | Page found (`.../company/bridgebusinesstransformations/`). Admin-access request still pending; not yet editable. Rewrite queued — see §2. |
+| **Grant's personal LinkedIn** | **Login access confirmed for both Grant and Mel.** "BBTx Consulting" added as current experience on both profiles (speeds the company-page admin claim, per below). Rest of the §2a draft (headline/About/Featured/etc.) not yet applied — several fields still `CONFIRM`-gated, see `OPEN_DECISIONS.md` OPEN-011. |
 | **Chamber** | Not started — needs the member-dashboard login. Highest-impact remaining fix (wrong URL, dead AI-Explorers checkout). |
 | **paradigmassociates.us** | Grant decision pending. |
 | **Reviews (REV-001)** | Not started — Grant names clients, asks. The real GBP visibility lever. |

@@ -30,7 +30,7 @@ Repository-specific version of `MASTER_IMPLEMENTATION_BACKLOG.md`, reconciled ag
 | CLM-001 | Verify "100+ organizations" / AI-initiative claims | C | Grant + Mel | None | BLOCKED — HUMAN GATE | See OPEN-001 |
 | ENT-001 | Canonical entity record (name, URL, phone, address/service area, founding entity, descriptions, profile links) | B/C | Mel + Grant | DEC-001 | **IN PROGRESS** | Canonical entity block drafted 2026-09-04 (`ENT_PROFILE_DRAFTS_2026-09-04.md` §0); several fields gated on Grant (OPEN-011). Still needed before `Organization.sameAs`/`LocalBusiness` schema can be finalized |
 | ENT-002 | Update Chamber profile + obsolete URL | B | Mel | ENT-001 | NOT STARTED | Corrected copy fully drafted 2026-09-04, paste-ready — blocked only on Chamber login access (OPEN-005) |
-| ENT-003 | Update LinkedIn company + Grant profile | B/C | Mel + Grant | ENT-001 | **IN PROGRESS** | Company page found 2026-09-04 (`linkedin.com/company/bridgebusinesstransformations/`); admin-access request filed. Full rewrite drafted for company + Grant's personal profile, queued for access (OPEN-005) |
+| ENT-003 | Update LinkedIn company + Grant profile | B/C | Mel + Grant | ENT-001 | **IN PROGRESS** | Company page found 2026-09-04 (`linkedin.com/company/bridgebusinesstransformations/`); admin-access request filed, still pending. Personal-profile access confirmed for both Grant and Mel 2026-09-04, and "BBTx Consulting" added as current experience on both (speeds the admin claim). Full rewrite drafted for company + Grant's personal profile, queued for access (OPEN-005) |
 | ENT-004 | Correct legacy records/author profiles/speaker bios | B | Mel | ENT-001 | NOT STARTED | — |
 
 ## Phase 2 — Founder authority and commercial pages
