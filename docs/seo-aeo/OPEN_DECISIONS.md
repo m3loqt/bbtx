@@ -109,16 +109,18 @@ The site's only consultation CTA (`"Schedule a Consultation"`, 7 call sites) lin
 
 Raised by the 2026-09-04 entity-correction drafting pass (`ENT_PROFILE_DRAFTS_2026-09-04.md`, prompted by the AEO baseline showing the practice under 6 different names — see `AEO_BASELINE_2026-09-04.md`). All corrected copy for Chamber/LinkedIn/GBP is written and paste-ready; these are the remaining fact gates before any of it ships. (Founder-vs-co-founder and the IBM PC/Europe career details are the same open conflicts already tracked under AUT-001 — not duplicated here.)
 
-1. **Exact business name** — "BBTx Consulting" everywhere? Legal entity/DBA situation — is "The Bridge, Ltd" still the registered entity behind it?
-2. **Phone** — is (434) 466-4655 current and correct for public listings?
-3. **Address** — is 184 Brookwood Dr an office or a home address? Drives the GBP hide-address call (service-area business vs. a listed storefront).
-4. **Veteran-owned / women-owned** — the GBP attributes are currently both set. Remove any that aren't literally true.
-5. **paradigmassociates.us** — **DONE, 2026-09-05**: Mel applied the edit (BBx → "BBTx Consulting," linked to `https://www.bbtx.ai/`); live-verified. See `ENT_PROFILE_DRAFTS_2026-09-04.md` §4. Two sub-facts on that same page still need Grant before touching: (5a) whether "Bridgewater Research Group (BRG)" — described there as European-Union distance education — is still active/related to BBTx, and (5b) "Executive Director of the Connecticut Institute of Technology" — checked 2026-09-05: the real institution by that name is a University of New Haven hub that launched in 2020, decades after Grant's bio places this role, so it can't be the same thing; a search result that looked like confirmation traced back to the same single source (paradigmassociates.us) rather than independent corroboration. Likely an error, possibly confused with AUT-001's CATEC (Charlottesville, VA). Don't repeat elsewhere until Grant confirms.
+1. **Exact business name — RESOLVED, 2026-09-05.** "BBTx Consulting" everywhere, confirmed. Whether "The Bridge, Ltd" remains the registered legal entity/DBA behind it wasn't explicitly asked — doesn't block public-copy work.
+2. **Phone — RESOLVED, 2026-09-05.** (434) 466-4655 confirmed current and correct.
+3. **Address — RESOLVED, 2026-09-05: it's Grant's home/home office.** Drives the GBP hide-address call — the address should be hidden as a service-area business. **Not yet actioned — Mel asked to pause GBP work for now** (item 4 below), so this stays a known-but-unapplied fact.
+4. **Veteran-owned / women-owned — Mel asked to stop GBP work here, 2026-09-05** ("I did enough work on it"). Not resolved, not being pursued further right now — GBP-002 stays at its current partial state until Mel picks it back up.
+5. **paradigmassociates.us** — **DONE, 2026-09-05**: Mel applied the edit (BBx → "BBTx Consulting," linked to `https://www.bbtx.ai/`); live-verified. See `ENT_PROFILE_DRAFTS_2026-09-04.md` §4. Sub-facts on that same page, now answered:
+   - **(5a) Bridgewater Research Group (BRG) — RESOLVED, 2026-09-05.** Grant's first research group, founded in Europe. Likely no longer active ("I guess not," per Mel — not a firm confirmation either way). Not actioned on paradigmassociates.us — the page currently describes it in present tense ("a leading provider of distance education"), which may now be inaccurate, but no explicit instruction yet to correct or remove it.
+   - **(5b) "Executive Director of the Connecticut Institute of Technology" — RESOLVED, 2026-09-05: "prolly a mixup"** (Mel, not a firm confirmation, but consistent with the earlier finding that the real institution by that name launched in 2020 — decades too late to be the same thing). Not actioned yet; low urgency.
+   - **New, 2026-09-05: "Bridgewater Innovation Group"** — a third name variant found in bbtx.ai's own `/about` page (`about/layout.tsx` OG description). Confirmed by Mel to be the same thing as BRG (5a) — inconsistent naming for one entity, not a separate one or an error. Minor copy-consistency item for later, not urgent.
 
-- **Recommended default:** none — these are factual/ownership calls only Grant can make. Nothing in `ENT_PROFILE_DRAFTS_2026-09-04.md` ships until he confirms.
-- **Consequence of inaction:** the paste-ready Chamber/LinkedIn/GBP corrections stay in draft indefinitely, and the entity fragmentation the AEO baseline found (0/8 non-branded discovery prompts naming BBTx) doesn't improve.
-- **Owner:** Grant (with Mel relaying).
-- **Blocks:** ENT-001 (canonical entity record finalization), the remaining GBP-002 items, and publishing the ENT-002/ENT-003 drafts once account access exists.
+- **Consequence of inaction on veteran/women-owned:** GBP-002 stays permanently partial. Acceptable per Mel's explicit instruction — not a gap to chase without him raising it again.
+- **Owner:** Grant (answered above) / Mel (execution, paused on GBP by his own request).
+- **Blocks:** ENT-001 (canonical entity record — now effectively unblocked on name/founder), the remaining GBP-002 items (address/service-area ready to apply whenever GBP work resumes; veteran/women-owned still genuinely open), and the Cvillepedia/Chamber corrections once access exists.
 
 ## OPEN-009 — Canonical domain mismatch: `bbtx.ai` (code) vs `www.bbtx.ai` (live)
 

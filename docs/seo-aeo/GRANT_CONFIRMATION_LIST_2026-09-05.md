@@ -2,31 +2,33 @@
 
 Every open, Grant-only question from this project in one place, so he only gets asked once instead of piecemeal. Sourced from `AUT-001_RESEARCH_BRIEF.md` (4 of 5 original conflicts, 1 — the doctorate — already resolved), `OPEN_DECISIONS.md` OPEN-011, and `ENT_PROFILE_DRAFTS_2026-09-04.md` §4/§4a. Short answers are fine — most of these are one line or yes/no.
 
-## Ready to send to Grant
+## Answers (2026-09-05, via Mel)
 
-1. **Company name** — Is "BBTx Consulting" the correct name to use everywhere? Is there a formal legal entity/DBA behind it — is "The Bridge, Ltd" still registered?
-2. **Founder or co-founder?** Cvillepedia currently says "co-founder and CEO of The Bridge, Ltd." Which is accurate?
-3. **Phone** — Is (434) 466-4655 still correct for public business listings?
-4. **Address** — Is 184 Brookwood Dr an office, or a home address? (Decides whether GBP can show it publicly or should hide it as a service-area business.)
-5. **GBP attributes** — Google's listing currently has both "veteran-owned" and "women-owned" checked. Are both true? We'll remove any that aren't.
-6. **"Strategic Confluence" vs. "Chaotic Confluence"** — which is the correct/current name for this?
-7. **Role Map** — what's the correct format/description for this framework?
-8. **Bridgewater Research Group (BRG)** — paradigmassociates.us describes this as "a leading provider of distance education in the European Union." Still active? Connected to BBTx?
-9. **Bridgewater Innovation Group** — separately, bbtx.ai's own `/about` page mentions this name in your career history. Same thing as #8, something else, or an error?
-10. **"Executive Director of the Connecticut Institute of Technology"** — paradigmassociates.us lists this. Couldn't verify it — the real institution by that name only launched in 2020, decades after this would've happened. Accurate, or a mix-up (maybe with CATEC)?
+1. **Company name** — ✅ **BBTx Consulting is correct everywhere.**
+2. **Founder or co-founder?** — ✅ **Founder.** (Cvillepedia's "co-founder" is confirmed wrong.)
+3. **Phone** — ✅ **Yes**, (434) 466-4655 is current.
+4. **Address** — ✅ **It's Grant's home/home office.** → drives the GBP hide-address decision. Not yet applied — GBP work paused (see #5).
+5. **GBP attributes (veteran/women-owned)** — ⏸️ **Not answered — Mel asked to stop GBP work for now** ("I did enough work on it"). Not being pursued further until raised again.
+6. **"Strategic Confluence" vs. "Chaotic Confluence"** — ✅ **Chaotic Confluence is the community/Substack** — that's the correct, current name.
+7. **Role Map** — ❓ **"Dunno."** Still open, no answer.
+8. **Bridgewater Research Group (BRG)** — ✅ **Grant's first research group, founded in Europe.** Likely no longer active ("I guess not" — not a firm confirmation). Not yet corrected on paradigmassociates.us.
+9. **Bridgewater Innovation Group** — ✅ **Same as #8** — one entity, inconsistently named across bbtx.ai and paradigmassociates.us, not a separate thing or an error.
+10. **Connecticut Institute of Technology claim** — ✅ **"Prolly a mixup."** Not a firm confirmation, but consistent with the earlier finding it can't be the real (2020-founded) institution. Not yet corrected.
+
+**Still open: #5 (veteran/women-owned) and #7 (Role Map format).**
 
 ## Already resolved — no need to ask
 
 - **Doctorate** — confirmed 2026-09-05. "Dr." is now in use where it already appeared (Chamber listing) and added at first mention on `/about` and `/team/grant`.
 - **paradigmassociates.us company name/link** — Mel has site access, already corrected.
 
-## What's blocked on these answers
+## What's now unblocked vs. still waiting
 
-| Item | Waiting on |
+| Item | Status |
 |---|---|
-| ENT-001 canonical entity record (finalize) | #1, #2 |
-| Chamber listing correction (once login access exists) | #1, #2 (title line) |
-| GBP-002 remaining items | #4, #5 |
-| Cvillepedia correction | #2 (leaving "co-founder" as-is or not) |
-| AUT-002 (Grant's authority page) | #1, #2, #6, #7 |
-| paradigmassociates.us further cleanup | #8, #9, #10 |
+| ENT-001 canonical entity record | Unblocked — READY FOR REVIEW |
+| Chamber listing correction | Copy finalized; still needs member-dashboard login (OPEN-005), not a facts problem anymore |
+| Cvillepedia correction | Unblocked — needs an account to actually edit |
+| paradigmassociates.us BRG/Connecticut lines | Unblocked to correct, not yet actioned (low urgency) |
+| GBP-002 remaining items | Deferred at Mel's request — not blocked, paused |
+| AUT-002 (Grant's authority page build) | Facts mostly unblocked (#1, #2, #6); still needs #7 (Role Map) and the actual page work |

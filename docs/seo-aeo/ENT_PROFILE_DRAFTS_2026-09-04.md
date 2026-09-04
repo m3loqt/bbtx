@@ -12,11 +12,11 @@ Use these exact strings everywhere. Do not paraphrase per-platform.
 
 | Field | Value | Status |
 |---|---|---|
-| Public name | **BBTx Consulting** | `CONFIRM` — is this the exact name to use everywhere? Legal entity vs. DBA vs. "BBTx.AI"? Is "The Bridge LTD" still the registered entity? |
+| Public name | **BBTx Consulting** | `CONFIRMED` 2026-09-05 — the exact name to use everywhere |
 | Website | **https://www.bbtx.ai** | confirmed (canonical, `www`) |
-| Founder / leader | **Grant Tate** (no honorific — the site uses none, and the doctorate is unverified per AUT-001 pt. 5) | `CONFIRM` — founder or co-founder? Cvillepedia says "co-founder and CEO of The Bridge, Ltd" |
-| Phone | (434) 466-4655 | `CONFIRM` — current, and correct for a public listing? |
-| Location | Charlottesville, Virginia | address `CONFIRM` — see GBP section |
+| Founder / leader | **Dr. Grant Tate** — "Founder" (not co-founder), "Dr." confirmed accurate; use "Dr." at first mention per page, plain "Grant Tate" after | `CONFIRMED` 2026-09-05 — Founder, not co-founder; doctorate confirmed separately (AUT-001 pt. 5) |
+| Phone | (434) 466-4655 | `CONFIRMED` 2026-09-05 — current and correct |
+| Location | Charlottesville, Virginia (home/home office — not a public storefront address) | `CONFIRMED` 2026-09-05 — see GBP section for the hide-address implication |
 | Service area | Central Virginia; works nationally | confirmed direction (report p. 20) |
 
 **One-line descriptor:**
@@ -191,11 +191,12 @@ Phone (434-466-4655) on that page matches BBTx's own listed number independently
 
 **Do NOT touch without asking Grant first — two things here I can't verify or safely assume:**
 
-1. **"Bridgewater Research Group (BRG)" / "distance education in the European Union"** — no idea if this is still active, related to BBTx, or a separate business entirely. Don't fold it into BBTx or remove it on a guess.
-2. **"Executive Director of the Connecticut Institute of Technology"** — checked 2026-09-05 via web search. A "Connecticut Institute of Technology" does exist, but it's a University of New Haven cybersecurity/CS/data-science hub that **launched in 2020** — decades after the timeframe this bio places the role in ("prior to starting his own firms"). Can't be the same thing. A second search returning what looked like confirmation traced back to the same single source (paradigmassociates.us itself) — not independent corroboration, just an AI search summary echoing the one unverified page. Likely an error, possibly confused with CATEC (Charlottesville-Albemarle Technical Education Center, VA — the real institution AUT-001's research found, a 2013 strategic-planning client relationship, not an executive role). This doesn't match anything in `AUT-001_RESEARCH_BRIEF.md` either way. Flag for Grant, don't correct or repeat elsewhere until he confirms.
-3. Founder vs. co-founder is still the open AUT-001 conflict (Cvillepedia says "co-founder and CEO of The Bridge, Ltd") — the recommended edit above uses "founder" only because that's what every other draft in this doc already uses, not because it's confirmed.
+1. **"Bridgewater Research Group (BRG)" — ANSWERED 2026-09-05.** Grant's first research group, founded in Europe. Likely no longer active ("I guess not" — Mel, not a firm confirmation). Same entity as `about/layout.tsx`'s "Bridgewater Innovation Group" reference, just inconsistently named — not a third entity or an error. Not yet actioned here: the page still describes it in present tense ("a leading provider of distance education"), which may now be inaccurate given it's likely defunct — worth a light touch (past tense, or drop the activity claim) next time this page is edited, but no explicit instruction yet to do so.
+2. **"Executive Director of the Connecticut Institute of Technology" — ANSWERED 2026-09-05: "prolly a mixup"** (Mel — not a firm confirmation, but consistent with the earlier research finding: the real institution by that name launched in 2020, decades too late to be the same role). Low urgency; still not corrected on the live page.
 
-- **Owner:** Grant (facts above), Mel (has access to execute once Grant confirms #1 and #2).
+Founder vs. co-founder is **resolved** — see §4a and the canonical block in §0. The recommended edit above already uses "founder," now confirmed rather than assumed.
+
+- **Owner:** Grant (answered above), Mel (has access to execute).
 
 ---
 
@@ -203,9 +204,8 @@ Phone (434-466-4655) on that page matches BBTx's own listed number independently
 
 `https://www.cvillepedia.org/Grant_Tate` — a public, community-editable wiki (visible `[edit]` link, no special account ownership implied). Currently reads: "co-founder and CEO of **The Bridge, Ltd**," no link to bbtx.ai or any external site, flagged on the page itself as a stub needing expansion. Only other content: a note on Grant leading CATEC's 2013–14 strategic planning process, with linked PDFs — this corroborates AUT-001's own CATEC research independently.
 
-**Recommended edit — same shape as paradigmassociates.us:**
-- "The Bridge, Ltd" → "BBTx Consulting," linked to `https://www.bbtx.ai`
-- **Do NOT touch "co-founder"** — this is literally the open AUT-001 conflict (Cvillepedia is one of the two sources claiming co-founder, the other being Grant's own memory/records per the research brief). Changing it without Grant's answer would be guessing on the exact fact in dispute, not correcting an error.
+**Recommended edit — updated 2026-09-05, founder-vs-co-founder now resolved:**
+- "co-founder and CEO of The Bridge, Ltd" → **"founder of BBTx Consulting,"** linked to `https://www.bbtx.ai`. Grant confirmed "Founder" (not co-founder) 2026-09-05 — Cvillepedia's "co-founder" is now confirmed incorrect, safe to correct.
 - Everything else (CATEC content, stub-expansion note) can stay — it's accurate and worth leaving.
 
 **Owner:** whoever has (or creates) a Cvillepedia account — unclear if that's Mel, Grant, or needs a new signup. Not yet actioned.
@@ -218,12 +218,14 @@ Once Chamber / LinkedIn company / GBP / Cvillepedia are consistent and live, upd
 
 ## The gate — Grant must confirm
 
-1. **Exact business name** — "BBTx Consulting" everywhere? Legal entity / DBA situation? Is "The Bridge LTD" still registered?
-2. **Phone** — is (434) 466-4655 current and right for public listings?
-3. **Address** — is 184 Brookwood Dr an office or a home? (drives the GBP hide-address call — see §3)
-4. **Veteran-owned / women-owned** — are the GBP attributes literally true? Remove any that aren't.
-5. **paradigmassociates.us** — update, request removal, or leave?
-6. **Founder vs. co-founder** (AUT-001 conflict; Cvillepedia says co-founder). Still relevant to ENT-001/AUT-002 regardless of §2a being out of scope.
+All items answered 2026-09-05 (see `GRANT_CONFIRMATION_LIST_2026-09-05.md` for the full record) — kept here for the paper trail, not because they're still open:
+
+1. ~~**Exact business name**~~ — **RESOLVED: "BBTx Consulting" everywhere.**
+2. ~~**Phone**~~ — **RESOLVED: (434) 466-4655 confirmed current.**
+3. ~~**Address**~~ — **RESOLVED: home/home office.** Drives the GBP hide-address call — not yet applied, Mel paused GBP work (#4).
+4. **Veteran-owned / women-owned** — still open. Mel explicitly asked to stop GBP work for now ("I did enough work on it") — not being pursued further until raised again.
+5. ~~**paradigmassociates.us**~~ — **DONE.** BRG and Connecticut Institute sub-questions also answered — see above.
+6. ~~**Founder vs. co-founder**~~ — **RESOLVED: Founder.**
 
 ~~7. IBM PC / Europe line in Grant's LinkedIn About (§2a) — confirm the specifics.~~ Moot — §2a is out of scope (2026-09-05).
 
@@ -231,7 +233,7 @@ Once Chamber / LinkedIn company / GBP / Cvillepedia are consistent and live, upd
 
 | Profile | State |
 |---|---|
-| **GBP** | Description + categories + LinkedIn link + website https + old-entity socials + hours **all applied**. Still open: service area/hide-address (needs Grant, office-vs-home) + veteran/women-owned to verify — see §3. |
+| **GBP** | Description + categories + LinkedIn link + website https + old-entity socials + hours **all applied**. Address type now known (home/home office — service area + hide-address ready to apply) but **Mel paused further GBP work 2026-09-05**; veteran/women-owned also still unresolved. Picks back up whenever Mel raises it — see §3. |
 | **LinkedIn company** | Page found (`.../company/bridgebusinesstransformations/`). Admin-access request still pending; not yet editable. Rewrite queued — see §2. |
 | **Grant's personal LinkedIn** | Out of scope (2026-09-05) — his own call, not a project deliverable. One fact stays in scope under §2/ENT-003: "BBTx Consulting" was added as current experience on both Grant's and Mel's profiles 2026-09-04, to help the company-page admin claim resolve. |
 | **Chamber** | Not started — needs the member-dashboard login. Highest-impact remaining fix (wrong URL, dead AI-Explorers checkout). |
