@@ -85,7 +85,12 @@ There is also a second, un-editable auto-directory entry at `business.cvillecham
 - **Website →** `https://www.bbtx.ai`
 - **Location →** Charlottesville, Virginia (`CONFIRM` street vs. metro-only)
 
-### 2a. Grant's personal LinkedIn profile — full draft
+### 2a. Grant's personal LinkedIn profile — draft (OUT OF SCOPE, 2026-09-05)
+
+**Dropped from this project 2026-09-05 (Mel's call).** Grant's personal profile is his own decision, not a business listing this project corrects. Kept below only as a reference in case Grant wants it later — untracked, no follow-up. The one piece that *did* ship (adding "BBTx Consulting" as current experience, on both Grant's and Mel's profiles) was about unblocking the company-page admin claim, not rewriting his profile, and stays in scope under §2/ENT-003.
+
+<details>
+<summary>Original draft (reference only)</summary>
 
 Grant should review and adjust anything about his own history; `CONFIRM` marks the AUT-001 open questions.
 
@@ -115,6 +120,8 @@ Grant should review and adjust anything about his own history; `CONFIRM` marks t
 - **Location →** Charlottesville, Virginia, United States
 - **Industry →** Business Consulting and Services
 - **Contact info →** website `https://www.bbtx.ai`; email `CONFIRM` (`grant@bbtx.ai`)
+
+</details>
 
 ---
 
@@ -184,8 +191,9 @@ Once Chamber / LinkedIn company / GBP / Cvillepedia are consistent and live, upd
 3. **Address** — is 184 Brookwood Dr an office or a home? (drives the GBP hide-address call — see §3)
 4. **Veteran-owned / women-owned** — are the GBP attributes literally true? Remove any that aren't.
 5. **paradigmassociates.us** — update, request removal, or leave?
-6. **Founder vs. co-founder** (AUT-001 conflict; Cvillepedia says co-founder).
-7. **IBM PC / Europe line** in Grant's LinkedIn About (§2a) — confirm the specifics.
+6. **Founder vs. co-founder** (AUT-001 conflict; Cvillepedia says co-founder). Still relevant to ENT-001/AUT-002 regardless of §2a being out of scope.
+
+~~7. IBM PC / Europe line in Grant's LinkedIn About (§2a) — confirm the specifics.~~ Moot — §2a is out of scope (2026-09-05).
 
 ## Status (2026-09-04)
 
@@ -193,7 +201,7 @@ Once Chamber / LinkedIn company / GBP / Cvillepedia are consistent and live, upd
 |---|---|
 | **GBP** | Description + categories + LinkedIn link **applied**. 4 quick fixes still open (website https, remove old-entity socials, service area, hours) + veteran/women-owned to verify — see §3. |
 | **LinkedIn company** | Page found (`.../company/bridgebusinesstransformations/`). Admin-access request still pending; not yet editable. Rewrite queued — see §2. |
-| **Grant's personal LinkedIn** | **Login access confirmed for both Grant and Mel.** "BBTx Consulting" added as current experience on both profiles (speeds the company-page admin claim, per below). Rest of the §2a draft (headline/About/Featured/etc.) not yet applied — several fields still `CONFIRM`-gated, see `OPEN_DECISIONS.md` OPEN-011. |
+| **Grant's personal LinkedIn** | Out of scope (2026-09-05) — his own call, not a project deliverable. One fact stays in scope under §2/ENT-003: "BBTx Consulting" was added as current experience on both Grant's and Mel's profiles 2026-09-04, to help the company-page admin claim resolve. |
 | **Chamber** | Not started — needs the member-dashboard login. Highest-impact remaining fix (wrong URL, dead AI-Explorers checkout). |
 | **paradigmassociates.us** | Grant decision pending. |
 | **Reviews (REV-001)** | Not started — Grant names clients, asks. The real GBP visibility lever. |
