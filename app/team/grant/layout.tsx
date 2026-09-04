@@ -4,7 +4,7 @@ import { TEAM } from "@/app/team/team-data";
 export const metadata: Metadata = {
   title: "Grant Tate | BBTx Consulting",
   description:
-    "Grant Tate is the CEO of Bridge Business Transformations, a coach, consultant, and author who helps leaders thrive in complex environments.",
+    "Dr. Grant Tate is the CEO and founder of BBTx Consulting, a coach, consultant, and author who helps leaders thrive in complex environments.",
   openGraph: {
     title: "Grant Tate | BBTx Consulting",
     description:
@@ -23,6 +23,7 @@ const jsonLd = {
   "@type": "Person",
   "@id": "https://www.bbtx.ai/team/grant#person",
   name: person.name,
+  honorificPrefix: "Dr.",
   jobTitle: person.role,
   url: "https://www.bbtx.ai/team/grant",
   image: `https://www.bbtx.ai${person.photo}`,

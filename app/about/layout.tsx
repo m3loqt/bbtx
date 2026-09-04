@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "About BBTx | Our Story, Team, and Values",
     description:
-      "Meet the team behind BBTx. Led by Grant Tate, we have spent decades helping leaders navigate transformational change across IBM, Bridgewater Innovation Group, and beyond.",
+      "Meet the team behind BBTx. Led by Dr. Grant Tate, we have spent decades helping leaders navigate transformational change across IBM, Bridgewater Innovation Group, and beyond.",
     url: "https://www.bbtx.ai/about",
   },
   alternates: {

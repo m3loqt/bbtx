@@ -21,7 +21,7 @@ export const TEAM: Record<"grant" | "kaye" | "mel", TeamMember> = {
     linkedin: "https://linkedin.com/in/granttate",
     photo: "/grantt.jpg",
     bio: [
-      "Grant Tate is the CEO of Bridge Business Transformations, a coach, consultant, and author who helps leaders thrive in complex environments.",
+      "Dr. Grant Tate is the CEO and founder of BBTx Consulting, a coach, consultant, and author who helps leaders thrive in complex environments.",
       "He explores how AI is shaping people, organizations, and society, and how leaders can respond with clarity.",
       "He wrote Hand on the Shoulder, sharing lessons from his life and career on leadership and personal growth.",
     ],
