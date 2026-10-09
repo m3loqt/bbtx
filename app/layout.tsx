@@ -6,6 +6,7 @@ import {
 } from "next/font/google";
 import "./globals.css";
 import { GoogleAnalytics } from "@/app/components/GoogleAnalytics";
+import { VoxwinsWidget } from "@/app/components/VoxwinsWidget";
 
 const familjenGrotesk = Familjen_Grotesk({
   variable: "--font-sans",
@@ -111,6 +112,7 @@ export default function RootLayout({
       <body className="antialiased relative z-[1]" suppressHydrationWarning>
         <GoogleAnalytics />
         {children}
+        <VoxwinsWidget />
       </body>
     </html>
   );
