@@ -19,6 +19,7 @@ const SERVICES_LINKS = [
   { label: "Leadership & Team Development", href: "/services/leadership-development" },
   { label: "AI Integration & Innovation", href: "/services/ai-integration" },
   { label: "Implementation & Change Support", href: "/services/implementation-support" },
+  { label: "Executive Recruitment Assessment", href: "/services/executive-recruitment" },
 ];
 
 const RESOURCES_LINKS = [

@@ -1,8 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useLayoutEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { motion, MotionConfig } from "framer-motion";
 import { ArrowUpRight, ChevronDown } from "./ArrowIcon";
 import { ContactModal } from "./ContactModal";
 import { SiSubstack, SiLinkedin, SiGumroad } from "react-icons/si";
@@ -16,10 +16,13 @@ const NAV_TRANSITION = { duration: 0.6, ease: [0.22, 1, 0.36, 1] as const };
 // (useLayoutEffect is a no-op during SSR, so we fall back to useEffect there.)
 const useIsomorphicLayoutEffect = typeof window !== "undefined" ? useLayoutEffect : useEffect;
 
-const navLinks = [
-  { label: "Services", hasDropdown: true, href: "/services" },
+// Services and Resources are disclosure buttons (click / Enter / Space), not
+// links — their parent pages are reachable from the "All …" link inside each
+// panel. Coaching and About are plain links.
+const navLinks: { label: string; hasDropdown: boolean; href?: string }[] = [
+  { label: "Services", hasDropdown: true },
   { label: "Coaching", hasDropdown: false, href: "/coaching" },
-  { label: "Resources", hasDropdown: true, href: "#" },
+  { label: "Resources", hasDropdown: true },
   { label: "About", hasDropdown: false, href: "/about" },
 ];
 
@@ -38,10 +41,9 @@ const MOBILE_SOCIAL_LINKS = [
   { label: "Gumroad", href: "https://chaoticconfluence.gumroad.com/", Icon: SiGumroad },
 ];
 
-const DROPDOWNS: Record<
-  string,
-  { title: string; description: string; href?: string }[]
-> = {
+type DropdownItem = { title: string; description: string; href: string };
+
+const DROPDOWNS: Record<string, DropdownItem[]> = {
   Resources: [
     {
       title: "Courses",
@@ -98,12 +100,163 @@ const DROPDOWNS: Record<
   ],
 };
 
-export function Nav({
-  heroTheme = "dark",
-  instantFloat = false,
-}: { heroTheme?: "dark" | "light"; instantFloat?: boolean } = {}) {
-  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
-  const [panelVisible, setPanelVisible] = useState(false);
+const MENU_META: Record<string, { panelId: string; allLabel: string; allHref: string }> = {
+  Services: { panelId: "nav-panel-services", allLabel: "All services", allHref: "/services" },
+  Resources: { panelId: "nav-panel-resources", allLabel: "All resources", allHref: "/resources" },
+};
+
+// Up to 4 items sit in a single row; 5-6 split into two rows of 3.
+function firstRowCountFor(itemCount: number) {
+  return itemCount <= 4 ? itemCount : Math.min(3, itemCount);
+}
+
+function colsClassFor(firstRowCount: number) {
+  return firstRowCount >= 4
+    ? "grid-cols-4"
+    : firstRowCount === 3
+      ? "grid-cols-3"
+      : firstRowCount === 2
+        ? "grid-cols-2"
+        : "grid-cols-1";
+}
+
+function MegaCard({
+  item,
+  dark,
+  compact,
+  onNavigate,
+}: {
+  item: DropdownItem;
+  dark: boolean;
+  compact: boolean;
+  onNavigate: () => void;
+}) {
+  return (
+    <a
+      href={item.href}
+      onClick={onNavigate}
+      className={`group flex flex-col justify-between rounded-lg border px-4 py-4 text-left transition-colors focus-visible:outline-2 focus-visible:-outline-offset-2 sm:px-5 sm:py-5 ${
+        compact ? "min-h-[130px] sm:min-h-[150px]" : "min-h-[150px] sm:min-h-[170px]"
+      } ${
+        dark
+          ? "border-white/10 bg-white/5 hover:bg-white/10 focus-visible:outline-white"
+          : "border-black/[0.06] bg-white transition-shadow hover:shadow-[0_6px_18px_rgba(0,0,0,0.06)] focus-visible:outline-[#ca3726]"
+      }`}
+    >
+      <div>
+        <p className={`text-sm font-semibold tracking-normal sm:text-[15px] ${dark ? "text-white" : "text-[#222222]"}`}>
+          {item.title}
+        </p>
+        <p className={`mt-2 text-xs leading-relaxed sm:text-[13px] ${dark ? "text-white/60" : "text-[#555555]"}`}>
+          {item.description}
+        </p>
+      </div>
+      <div className="mt-4 flex justify-end">
+        <span className="flex h-7 w-7 items-center justify-center rounded-md bg-[#ca3726] text-white transition-colors group-hover:bg-[#b02f21]">
+          <ArrowUpRight className="h-3.5 w-3.5" />
+        </span>
+      </div>
+    </a>
+  );
+}
+
+// Every panel is always in the DOM so its links exist in the server-rendered
+// HTML (crawlers don't click). When closed it is `invisible` + `inert`, which
+// removes it from hit-testing, the tab order and the accessibility tree.
+function MegaPanel({
+  label,
+  open,
+  dark,
+  onNavigate,
+  onKeyDown,
+}: {
+  label: string;
+  open: boolean;
+  dark: boolean;
+  onNavigate: () => void;
+  onKeyDown: (e: React.KeyboardEvent<HTMLDivElement>) => void;
+}) {
+  const items = DROPDOWNS[label];
+  const meta = MENU_META[label];
+  const firstRowCount = firstRowCountFor(items.length);
+  const colsClass = colsClassFor(firstRowCount);
+
+  return (
+    <div
+      id={meta.panelId}
+      inert={!open}
+      onKeyDown={onKeyDown}
+      // `visibility` is only in the transition list when closing. A transitioning
+      // visibility reads as `hidden` on the transition's first frame, which makes
+      // a programmatic focus() right after opening silently fail — so opening
+      // flips it to `visible` instantly, and closing delays `hidden` until the
+      // fade-out finishes.
+      className={`absolute left-0 right-0 top-[calc(100%+0.5rem)] overflow-hidden rounded-lg border duration-200 ease-out motion-reduce:transition-none ${
+        dark
+          ? "border-white/10 bg-black/70 shadow-[0_12px_30px_rgba(0,0,0,0.3)] backdrop-blur-xl"
+          : "border-black/[0.06] bg-[#f7f7f7] shadow-[0_12px_30px_rgba(0,0,0,0.08)]"
+      } ${
+        open
+          ? "visible translate-y-0 opacity-100 transition-[opacity,translate]"
+          : "invisible -translate-y-2 opacity-0 transition-[opacity,translate,visibility]"
+      }`}
+    >
+      <div className="space-y-2 p-3 sm:space-y-3 sm:p-4">
+        <div className="flex items-center justify-between px-1">
+          <p className={`text-xs font-semibold uppercase tracking-widest ${dark ? "text-white/70" : "text-[#555555]"}`}>
+            {label}
+          </p>
+          <a
+            href={meta.allHref}
+            onClick={onNavigate}
+            className={`inline-flex items-center gap-1.5 rounded-sm text-[13px] font-medium underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-4 ${
+              dark ? "text-white focus-visible:outline-white" : "text-[#222222] focus-visible:outline-[#ca3726]"
+            }`}
+          >
+            {meta.allLabel}
+            <ArrowUpRight className="h-3.5 w-3.5" />
+          </a>
+        </div>
+        {/* Row 1: one column per item up to 4, else 3 (with a second row) */}
+        <div className={`grid gap-2 sm:gap-3 ${colsClass}`}>
+          {items.slice(0, firstRowCount).map((item) => (
+            <MegaCard key={item.title} item={item} dark={dark} compact={false} onNavigate={onNavigate} />
+          ))}
+        </div>
+        {/* Row 2: mirrors row 1's column count so 6 items form a clean 3x2 grid
+            instead of wrapping the last item onto a lonely third row. */}
+        {items.length > firstRowCount && (
+          <div className={`grid gap-2 sm:gap-3 ${colsClass}`}>
+            {items.slice(firstRowCount).map((item) => (
+              <MegaCard key={item.title} item={item} dark={dark} compact onNavigate={onNavigate} />
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+type NavProps = { heroTheme?: "dark" | "light"; instantFloat?: boolean };
+
+// reducedMotion="user" makes framer-motion skip transform/layout animations
+// (the bar's morph on scroll) for visitors who ask the OS for less motion.
+export function Nav(props: NavProps) {
+  return (
+    <MotionConfig reducedMotion="user">
+      <NavInner {...props} />
+    </MotionConfig>
+  );
+}
+
+function NavInner({ heroTheme = "dark", instantFloat = false }: NavProps) {
+  // Which desktop mega menu is open. Opened/closed by click, Enter or Space on
+  // its trigger button (WAI-ARIA "disclosure navigation" pattern) — never by
+  // hover, so keyboard, touch and pointer users all get the same behavior.
+  const [openMenu, setOpenMenu] = useState<string | null>(null);
+  const navRef = useRef<HTMLDivElement>(null);
+  const triggerRefs = useRef<Record<string, HTMLButtonElement | null>>({});
+  const focusPanelOnOpen = useRef(false);
   const [contactOpen, setContactOpen] = useState(false);
   const [contactInquiry, setContactInquiry] = useState<string | undefined>(undefined);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -146,26 +299,79 @@ export function Nav({
     return () => window.removeEventListener("scroll", handleScroll);
   }, [instantFloat]);
 
-  const handleEnter = (label: string, hasDropdown: boolean) => {
-    // Re-entering the trigger of the already-open dropdown must be a no-op —
-    // otherwise setPanelVisible(false) fires but setActiveDropdown(label) is a
-    // no-op (same value), so the [activeDropdown] effect never re-runs and the
-    // panel is stuck hidden until a *different* dropdown is hovered.
-    if (!hasDropdown || label === activeDropdown) return;
-    setActiveDropdown(label);
-    setPanelVisible(false);
+  const closeMenu = () => setOpenMenu(null);
+
+  const toggleMenu = (label: string, e: React.MouseEvent<HTMLButtonElement>) => {
+    const willOpen = openMenu !== label;
+    // click `detail` is 0 when a button is activated from the keyboard
+    // (Enter/Space) rather than a pointer.
+    focusPanelOnOpen.current = willOpen && e.detail === 0;
+    setOpenMenu(willOpen ? label : null);
   };
 
-  const handleLeave = () => {
-    setPanelVisible(false);
-    setActiveDropdown(null);
+  // The panels sit after the header in DOM order (they're positioned against
+  // the whole bar, so they can't live inside each trigger's list item). To
+  // keep keyboard order sensible, a keyboard-opened menu moves focus to its
+  // first link, and Shift+Tab from that link returns to the trigger.
+  const handlePanelKeyDown = (label: string, e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.key !== "Tab" || !e.shiftKey) return;
+    if (e.target === e.currentTarget.querySelector("a")) {
+      e.preventDefault();
+      triggerRefs.current[label]?.focus();
+    }
+  };
+
+  // Focus leaving the nav entirely (Tab past the last card) closes the menu.
+  // relatedTarget is null for clicks on non-focusable areas — those are
+  // handled by the pointerdown listener below, so ignore them here.
+  const handleNavBlur = (e: React.FocusEvent<HTMLDivElement>) => {
+    const next = e.relatedTarget;
+    if (openMenu && next instanceof Node && !e.currentTarget.contains(next)) {
+      setOpenMenu(null);
+    }
   };
 
   useEffect(() => {
-    if (!activeDropdown) return;
-    const id = requestAnimationFrame(() => setPanelVisible(true));
-    return () => cancelAnimationFrame(id);
-  }, [activeDropdown]);
+    if (!openMenu) return;
+    const panel = document.getElementById(MENU_META[openMenu].panelId);
+
+    let raf = 0;
+    if (focusPanelOnOpen.current) {
+      focusPanelOnOpen.current = false;
+      raf = requestAnimationFrame(() => panel?.querySelector<HTMLElement>("a")?.focus());
+    }
+
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key !== "Escape") return;
+      // Only pull focus back to the trigger if it was inside the panel —
+      // otherwise (e.g. a mouse user on Safari, where clicking a button
+      // doesn't focus it) leave focus where it is.
+      if (panel?.contains(document.activeElement)) triggerRefs.current[openMenu]?.focus();
+      setOpenMenu(null);
+    };
+    const onPointerDown = (e: PointerEvent) => {
+      if (!navRef.current?.contains(e.target as Node)) setOpenMenu(null);
+    };
+
+    document.addEventListener("keydown", onKeyDown);
+    document.addEventListener("pointerdown", onPointerDown);
+    return () => {
+      cancelAnimationFrame(raf);
+      document.removeEventListener("keydown", onKeyDown);
+      document.removeEventListener("pointerdown", onPointerDown);
+    };
+  }, [openMenu]);
+
+  // The desktop menus only exist at lg and up. If the viewport shrinks below
+  // that while one is open, close it so it doesn't reappear when widened.
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 1024px)");
+    const onChange = () => {
+      if (!mq.matches) setOpenMenu(null);
+    };
+    mq.addEventListener("change", onChange);
+    return () => mq.removeEventListener("change", onChange);
+  }, []);
 
   // Lock background scroll while the full-screen mobile menu is open, using
   // the "freeze body in place" technique rather than `overflow: hidden`.
@@ -206,27 +412,18 @@ export function Nav({
     setMobileExpanded(null);
   };
 
-  const dropdownItems = activeDropdown ? DROPDOWNS[activeDropdown] : null;
-  const itemCount = dropdownItems?.length ?? 0;
-  // Up to 4 items sit in a single row; 5-6 split into two rows of 3.
-  const firstRowCount = itemCount <= 4 ? itemCount : Math.min(3, itemCount);
-  const dropdownColsClass =
-    firstRowCount >= 4
-      ? "grid-cols-4"
-      : firstRowCount === 3
-        ? "grid-cols-3"
-        : firstRowCount === 2
-          ? "grid-cols-2"
-          : "grid-cols-1";
+  // Static (non-animated) classes so Tailwind can see the full strings.
+  const triggerFocusRing = dark ? "focus-visible:outline-white" : "focus-visible:outline-[#ca3726]";
 
   return (
     <div className="fixed left-0 right-0 top-0 z-50 w-full px-3 pt-2.5 sm:px-6 sm:pt-[18px] lg:px-8">
       <motion.div
+        ref={navRef}
         initial={false}
         animate={{ maxWidth: overHero ? 1280 : 1160 }}
         transition={NAV_TRANSITION}
-        className={`relative mx-auto ${dropdownItems ? "pb-[500px]" : ""}`}
-        onMouseLeave={handleLeave}
+        className="relative mx-auto"
+        onBlur={handleNavBlur}
       >
         <div className="relative z-50">
           {/* Single nav bar — morphs between transparent-over-hero and floating card */}
@@ -261,20 +458,17 @@ export function Nav({
             </a>
 
             {/* Desktop nav links — one set, position + color morph via layout animation */}
-            <motion.div
+            <motion.nav
               layout
+              aria-label="Main"
               transition={NAV_TRANSITION}
               className={`hidden items-center gap-4 lg:flex lg:gap-5 ${
                 overHero ? "absolute left-1/2 -translate-x-1/2 xl:gap-8" : ""
               }`}
             >
-              {navLinks.map(({ label, hasDropdown, href }) => (
-                <a
-                  key={label}
-                  href={href ?? "#"}
-                  onMouseEnter={() => handleEnter(label, hasDropdown)}
-                  className="relative flex items-center gap-1 text-[15px] font-normal"
-                >
+              {navLinks.map(({ label, hasDropdown, href }) => {
+                const triggerClass = `relative flex items-center gap-1 rounded-sm text-[15px] font-normal focus-visible:outline-2 focus-visible:outline-offset-4 ${triggerFocusRing}`;
+                const labelEl = (
                   <motion.span
                     layout
                     initial={false}
@@ -284,26 +478,43 @@ export function Nav({
                   >
                     {label}
                   </motion.span>
-                  <AnimatePresence initial={false}>
-                    {hasDropdown && (
-                      <motion.span
-                        key="chevron"
-                        initial={{ opacity: 0, scale: 0.6 }}
-                        animate={{
-                          opacity: 1,
-                          scale: 1,
-                          color: dark ? "rgba(255,255,255,0.8)" : "#222222",
-                        }}
-                        exit={{ opacity: 0, scale: 0.6 }}
-                        transition={{ duration: 0.2 }}
-                      >
-                        <ChevronDown />
-                      </motion.span>
-                    )}
-                  </AnimatePresence>
-                </a>
-              ))}
-            </motion.div>
+                );
+
+                if (!hasDropdown) {
+                  return (
+                    <a key={label} href={href} className={triggerClass}>
+                      {labelEl}
+                    </a>
+                  );
+                }
+
+                const open = openMenu === label;
+                return (
+                  <button
+                    key={label}
+                    type="button"
+                    ref={(el) => {
+                      triggerRefs.current[label] = el;
+                    }}
+                    onClick={(e) => toggleMenu(label, e)}
+                    aria-expanded={open}
+                    aria-controls={MENU_META[label].panelId}
+                    className={`${triggerClass} cursor-pointer`}
+                  >
+                    {labelEl}
+                    <motion.span
+                      initial={false}
+                      animate={{ color: dark ? "rgba(255,255,255,0.8)" : "#222222" }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <ChevronDown
+                        className={`transition-transform duration-200 motion-reduce:transition-none ${open ? "rotate-180" : ""}`}
+                      />
+                    </motion.span>
+                  </button>
+                );
+              })}
+            </motion.nav>
 
             {/* Right side: CTA + hamburger — CTA sits left of the toggle, so
                 the open/close control is always the farthest-right element. */}
@@ -357,80 +568,21 @@ export function Nav({
             </div>
           </motion.header>
 
-          {/* Desktop dropdown */}
-          {dropdownItems && (
-            <div className="pointer-events-auto hidden lg:block">
-              <div
-                className={`absolute left-0 right-0 top-[calc(100%+0.5rem)] overflow-hidden rounded-lg border transition-all duration-200 ease-out ${
-                  dark
-                    ? "border-white/10 bg-black/70 shadow-[0_12px_30px_rgba(0,0,0,0.3)] backdrop-blur-xl"
-                    : "border-black/[0.06] bg-[#f7f7f7] shadow-[0_12px_30px_rgba(0,0,0,0.08)]"
-                } ${panelVisible ? "translate-y-0 opacity-100" : "translate-y-[-8px] opacity-0"}`}
-              >
-                <div className="space-y-2 p-3 sm:space-y-3 sm:p-4">
-                  {/* Row 1: one column per item up to 4, else 3 (with a second row) */}
-                  <div className={`grid gap-2 sm:gap-3 ${dropdownColsClass}`}>
-                    {dropdownItems.slice(0, firstRowCount).map((item) => (
-                      <a
-                        key={item.title}
-                        href={item.href ?? "#"}
-                        className={`group flex min-h-[150px] flex-col justify-between rounded-lg border px-4 py-4 text-left transition-colors sm:min-h-[170px] sm:px-5 sm:py-5 ${
-                          dark
-                            ? "border-white/10 bg-white/5 hover:bg-white/10"
-                            : "border-black/[0.06] bg-white transition-shadow hover:shadow-[0_6px_18px_rgba(0,0,0,0.06)]"
-                        }`}
-                      >
-                        <div>
-                          <p className={`text-sm font-semibold tracking-normal sm:text-[15px] ${dark ? "text-white" : "text-[#222222]"}`}>
-                            {item.title}
-                          </p>
-                          <p className={`mt-2 text-xs leading-relaxed sm:text-[13px] ${dark ? "text-white/60" : "text-[#555555]"}`}>
-                            {item.description}
-                          </p>
-                        </div>
-                        <div className="mt-4 flex justify-end">
-                          <span className="flex h-7 w-7 items-center justify-center rounded-md bg-[#ca3726] text-white transition-colors group-hover:bg-[#b02f21]">
-                            <ArrowUpRight className="h-3.5 w-3.5" />
-                          </span>
-                        </div>
-                      </a>
-                    ))}
-                  </div>
-                  {/* Row 2: mirrors row 1's column count so 6 items form a clean 3x2 grid
-                      instead of wrapping the last item onto a lonely third row. */}
-                  {dropdownItems.length > firstRowCount && (
-                    <div className={`grid gap-2 sm:gap-3 ${dropdownColsClass}`}>
-                      {dropdownItems.slice(firstRowCount).map((item) => (
-                        <a
-                          key={item.title}
-                          href={item.href ?? "#"}
-                          className={`group flex min-h-[130px] flex-col justify-between rounded-lg border px-4 py-4 text-left transition-colors sm:min-h-[150px] sm:px-5 sm:py-5 ${
-                            dark
-                              ? "border-white/10 bg-white/5 hover:bg-white/10"
-                              : "border-black/[0.06] bg-white transition-shadow hover:shadow-[0_6px_18px_rgba(0,0,0,0.06)]"
-                          }`}
-                        >
-                          <div>
-                            <p className={`text-sm font-semibold tracking-normal sm:text-[15px] ${dark ? "text-white" : "text-[#222222]"}`}>
-                              {item.title}
-                            </p>
-                            <p className={`mt-2 text-xs leading-relaxed sm:text-[13px] ${dark ? "text-white/60" : "text-[#555555]"}`}>
-                              {item.description}
-                            </p>
-                          </div>
-                          <div className="mt-4 flex justify-end">
-                            <span className="flex h-7 w-7 items-center justify-center rounded-md bg-[#ca3726] text-white transition-colors group-hover:bg-[#b02f21]">
-                              <ArrowUpRight className="h-3.5 w-3.5" />
-                            </span>
-                          </div>
-                        </a>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
-          )}
+          {/* Desktop mega menus — opened by click/Enter/Space on the trigger
+              buttons above. Always rendered (see MegaPanel) so the links are
+              in the HTML for crawlers; hidden + inert while closed. */}
+          <div className="hidden lg:block">
+            {Object.keys(MENU_META).map((label) => (
+              <MegaPanel
+                key={label}
+                label={label}
+                open={openMenu === label}
+                dark={dark}
+                onNavigate={closeMenu}
+                onKeyDown={(e) => handlePanelKeyDown(label, e)}
+              />
+            ))}
+          </div>
 
         </div>
       </motion.div>
@@ -445,7 +597,7 @@ export function Nav({
                 state, so the absolutely-positioned Location/Contacts block
                 below never shifts when a dropdown opens. */}
             <div className="relative min-h-[640px]">
-              <div className="space-y-0.5">
+              <nav aria-label="Mobile" className="space-y-0.5">
                 {MOBILE_NAV_LINKS.map((link) => {
                   if (link.hasDropdown) {
                     const items = DROPDOWNS[link.label] ?? [];
@@ -499,7 +651,7 @@ export function Nav({
                     </a>
                   );
                 })}
-              </div>
+              </nav>
 
               {/* Location + Contacts share one row now instead of stacking,
                   freeing up the vertical space above for the dropdowns. */}

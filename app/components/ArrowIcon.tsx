@@ -112,6 +112,7 @@ export function ChevronDown({ className }: { className?: string }) {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       className={className}
+      aria-hidden="true"
     >
       <path
         d="M3 4.5L6 7.5L9 4.5"
