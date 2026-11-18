@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { trackEvent } from "@/lib/analytics";
 
 const CONTACT_EMAIL = "grant@bbtx.ai";
 const CONTACT_PHONE = "+1 (434) 466-4655";
@@ -94,6 +95,17 @@ export function ContactModal({ open, onClose, defaultInquiry }: ContactModalProp
       }
 
       setIsSuccess(true);
+
+      // Conversion: fires only after the server accepted the submission. The
+      // honeypot field is filled only by bots, so those are never counted.
+      // Only the inquiry type (a fixed dropdown value) is sent, never the
+      // person's name, email, or message.
+      if (!formData.website) {
+        trackEvent("generate_lead", {
+          lead_source: "contact_form",
+          inquiry_type: formData.inquiry_type,
+        });
+      }
     } catch {
       setError("Something went wrong. Please try again or email us directly.");
     } finally {
