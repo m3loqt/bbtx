@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
+import { JsonLd } from "@/app/components/JsonLd";
+import { breadcrumbList } from "@/lib/seo/schema";
 
 export const metadata: Metadata = {
-  title: "Organizational Assessment & Analysis | BBTx Consulting",
+  title: "Organizational & AI Readiness Assessment | BBTx",
   description:
-    "Most organizations are operating on assumptions that haven't been tested in years. BBTx helps leaders see the organization as it actually is — and understand what to do about it.",
+    "BBTx helps leaders examine organizational health and AI readiness, including leadership, governance, culture, and the conditions affecting performance.",
   openGraph: {
-    title: "Organizational Assessment & Analysis | BBTx Consulting",
+    title: "Organizational & AI Readiness Assessment | BBTx",
     description:
       "Reveal organizational realities, identify risks, and uncover opportunities for improvement.",
     url: "https://www.bbtx.ai/services/organizational-assessment",
@@ -28,20 +30,10 @@ const jsonLd = {
   url: "https://www.bbtx.ai/services/organizational-assessment",
 };
 
-const breadcrumbJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  itemListElement: [
-    { "@type": "ListItem", position: 1, name: "Home", item: "https://www.bbtx.ai" },
-    { "@type": "ListItem", position: 2, name: "Services", item: "https://www.bbtx.ai/services" },
-    {
-      "@type": "ListItem",
-      position: 3,
-      name: "Organizational Assessment",
-      item: "https://www.bbtx.ai/services/organizational-assessment",
-    },
-  ],
-};
+const breadcrumbJsonLd = breadcrumbList([
+  { name: "Services", path: "/services" },
+  { name: "Organizational Assessment", path: "/services/organizational-assessment" },
+]);
 
 export default function OrganizationalAssessmentLayout({
   children,
@@ -50,14 +42,8 @@ export default function OrganizationalAssessmentLayout({
 }) {
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
-      />
+      <JsonLd data={jsonLd} />
+      <JsonLd data={breadcrumbJsonLd} />
       {children}
     </>
   );

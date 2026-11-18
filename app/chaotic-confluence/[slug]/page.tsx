@@ -6,14 +6,12 @@ import { Nav } from "@/app/components/Nav";
 import { Footer } from "@/app/components/Footer";
 import { CTA } from "@/app/sections/CTA";
 import { ArrowLeft } from "@/app/components/ArrowIcon";
+import { JsonLd } from "@/app/components/JsonLd";
+import { articleSchema, breadcrumbList } from "@/lib/seo/schema";
+import { formatDisplayDate, toDateOnly, toIsoTimestamp } from "@/lib/seo/dates";
 import { BlogEngagement } from "./BlogEngagement";
 
 export const dynamic = "force-dynamic";
-
-function formatDate(value: string | null): string | null {
-  if (!value) return null;
-  return new Date(value).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
-}
 
 export async function generateMetadata({
   params,
@@ -26,6 +24,10 @@ export async function generateMetadata({
 
   const url = `https://www.bbtx.ai/chaotic-confluence/${slug}`;
   const description = post.excerpt ?? undefined;
+  // published_date is a Postgres `date` and arrives as a JS Date at runtime;
+  // normalise it so the meta tag is "2026-02-26", not "[object Object]".
+  const publishedTime = toDateOnly(post.published_date);
+  const modifiedTime = toIsoTimestamp(post.updated_at);
 
   return {
     title: post.title,
@@ -35,7 +37,8 @@ export async function generateMetadata({
       description,
       url,
       type: "article",
-      ...(post.published_date ? { publishedTime: post.published_date } : {}),
+      ...(publishedTime ? { publishedTime } : {}),
+      ...(modifiedTime ? { modifiedTime } : {}),
       ...(post.cover_image_url ? { images: [{ url: post.cover_image_url }] } : {}),
     },
     alternates: {
@@ -53,48 +56,31 @@ export default async function BlogPostPage({
   const post = await getPublishedBlogBySlug(slug);
   if (!post) notFound();
 
-  const date = formatDate(post.published_date);
+  const date = formatDisplayDate(post.published_date, "long");
   const url = `https://www.bbtx.ai/chaotic-confluence/${slug}`;
   const comments = await getVisibleCommentsForBlog(post.id);
 
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "Article",
+  const jsonLd = articleSchema({
+    url,
     headline: post.title,
-    description: post.excerpt ?? undefined,
-    image: post.cover_image_url ?? undefined,
-    datePublished: post.published_date ?? undefined,
-    dateModified: post.updated_at,
-    author: { "@type": "Organization", name: "BBTx" },
-    publisher: { "@type": "Organization", name: "BBTx" },
-    mainEntityOfPage: url,
-  };
+    description: post.excerpt,
+    image: post.cover_image_url,
+    datePublished: toDateOnly(post.published_date),
+    dateModified: toIsoTimestamp(post.updated_at),
+    // Chaotic Confluence posts have no per-post author field yet, so they are
+    // attributed to the organisation rather than guessing an individual.
+    author: "organization",
+  });
 
-  const breadcrumbJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Home", item: "https://www.bbtx.ai" },
-      {
-        "@type": "ListItem",
-        position: 2,
-        name: "Chaotic Confluence",
-        item: "https://www.bbtx.ai/chaotic-confluence",
-      },
-      { "@type": "ListItem", position: 3, name: post.title, item: url },
-    ],
-  };
+  const breadcrumbJsonLd = breadcrumbList([
+    { name: "Chaotic Confluence", path: "/chaotic-confluence" },
+    { name: post.title || "Article", path: `/chaotic-confluence/${slug}` },
+  ]);
 
   return (
     <div className="min-h-screen bg-white">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
-      />
+      <JsonLd data={jsonLd} />
+      <JsonLd data={breadcrumbJsonLd} />
 
       <Nav heroTheme="light" instantFloat />
 

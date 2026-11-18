@@ -1,8 +1,11 @@
 import type { Metadata } from "next";
+import { JsonLd } from "@/app/components/JsonLd";
+import { breadcrumbList } from "@/lib/seo/schema";
 import { TEAM } from "@/app/team/team-data";
 
 export const metadata: Metadata = {
-  title: "Kaye Monroe | BBTx Consulting",
+  // `absolute` stops the root "%s | BBTx" template from adding a second suffix.
+  title: { absolute: "Kaye Monroe | BBTx Consulting" },
   description:
     "Kaye Monroe leads KDM Coaching and Associates, supporting leaders and individuals as they define goals and follow through.",
   openGraph: {
@@ -36,27 +39,16 @@ const jsonLd = {
     : {}),
 };
 
-const breadcrumbJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  itemListElement: [
-    { "@type": "ListItem", position: 1, name: "Home", item: "https://www.bbtx.ai" },
-    { "@type": "ListItem", position: 2, name: "About", item: "https://www.bbtx.ai/about" },
-    { "@type": "ListItem", position: 3, name: person.name, item: "https://www.bbtx.ai/team/kaye" },
-  ],
-};
+const breadcrumbJsonLd = breadcrumbList([
+  { name: "About", path: "/about" },
+  { name: person.name, path: "/team/kaye" },
+]);
 
 export default function KayeLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
-      />
+      <JsonLd data={jsonLd} />
+      <JsonLd data={breadcrumbJsonLd} />
       {children}
     </>
   );

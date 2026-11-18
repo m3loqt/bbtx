@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { AnimateSection } from "@/app/components/AnimateSection";
 import { Footer } from "@/app/components/Footer";
+import { JsonLd } from "@/app/components/JsonLd";
 import { Nav } from "@/app/components/Nav";
 import { Advantage } from "@/app/sections/Advantage";
 import { CTA } from "@/app/sections/CTA";
@@ -20,67 +21,25 @@ export const metadata: Metadata = {
   },
 };
 
+// WebSite + Organization are emitted once by the root layout (lib/seo/schema.ts);
+// the homepage only adds the FAQ that is visibly rendered on the page.
 const jsonLd = {
   "@context": "https://schema.org",
-  "@graph": [
-    {
-      "@type": "WebSite",
-      "@id": "https://www.bbtx.ai/#website",
-      url: "https://www.bbtx.ai",
-      name: "BBTx",
-      description:
-        "AI business consulting for leaders and organizations. Strategy, assessment, and implementation.",
-      publisher: {
-        "@id": "https://www.bbtx.ai/#organization",
-      },
+  "@type": "FAQPage",
+  mainEntity: FAQ_ITEMS.map((item) => ({
+    "@type": "Question",
+    name: item.question,
+    acceptedAnswer: {
+      "@type": "Answer",
+      text: item.answer,
     },
-    {
-      "@type": "Organization",
-      "@id": "https://www.bbtx.ai/#organization",
-      name: "BBTx",
-      url: "https://www.bbtx.ai",
-      logo: {
-        "@type": "ImageObject",
-        url: "https://www.bbtx.ai/oglogo.webp",
-      },
-      description:
-        "BBTx helps leaders and organizations integrate AI with strategy, clarity, and confidence.",
-      address: {
-        "@type": "PostalAddress",
-        addressLocality: "Charlottesville",
-        addressRegion: "VA",
-        addressCountry: "US",
-      },
-      founder: {
-        "@id": "https://www.bbtx.ai/team/grant#person",
-      },
-      sameAs: [
-        "https://linkedin.com/in/granttate",
-        "https://chaoticconfluence.substack.com",
-        "https://rgranttate.medium.com/",
-      ],
-    },
-    {
-      "@type": "FAQPage",
-      mainEntity: FAQ_ITEMS.map((item) => ({
-        "@type": "Question",
-        name: item.question,
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: item.answer,
-        },
-      })),
-    },
-  ],
+  })),
 };
 
 export default function Home() {
   return (
     <div className="min-h-screen">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+      <JsonLd data={jsonLd} />
       <Nav />
       <AnimateSection noAnimation>
         <Hero />

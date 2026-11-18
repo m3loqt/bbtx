@@ -1,21 +1,14 @@
 import { getPublishedBlogs } from "@/lib/admin/queries";
+import { JsonLd } from "@/app/components/JsonLd";
+import { breadcrumbList } from "@/lib/seo/schema";
+import { toDateOnly } from "@/lib/seo/dates";
 import { ChaoticConfluenceExperience, type PublicBlogPost } from "./ChaoticConfluenceExperience";
 
 export const dynamic = "force-dynamic";
 
-const breadcrumbJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  itemListElement: [
-    { "@type": "ListItem", position: 1, name: "Home", item: "https://www.bbtx.ai" },
-    {
-      "@type": "ListItem",
-      position: 2,
-      name: "Chaotic Confluence",
-      item: "https://www.bbtx.ai/chaotic-confluence",
-    },
-  ],
-};
+const breadcrumbJsonLd = breadcrumbList([
+  { name: "Chaotic Confluence", path: "/chaotic-confluence" },
+]);
 
 export default async function ChaoticConfluencePage() {
   const blogs = await getPublishedBlogs();
@@ -30,15 +23,13 @@ export default async function ChaoticConfluencePage() {
       category: b.category,
       cover_image_url: b.cover_image_url,
       slug: b.slug,
-      published_date: b.published_date,
+      // Normalised on the server so the client formats the same calendar day.
+      published_date: toDateOnly(b.published_date),
     }));
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
-      />
+      <JsonLd data={breadcrumbJsonLd} />
       <ChaoticConfluenceExperience posts={posts} />
     </>
   );

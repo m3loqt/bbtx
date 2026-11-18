@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Services | BBTx Consulting",
+  // `absolute` stops the root "%s | BBTx" template from adding a second suffix.
+  title: { absolute: "Services | BBTx Consulting" },
   description:
     "BBTx works at the intersection of organizational development, leadership, strategy, and AI — helping leadership teams understand why performance problems persist and change the conditions that cause them.",
   openGraph: {
@@ -15,22 +16,14 @@ export const metadata: Metadata = {
   },
 };
 
-const breadcrumbJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  itemListElement: [
-    { "@type": "ListItem", position: 1, name: "Home", item: "https://www.bbtx.ai" },
-    { "@type": "ListItem", position: 2, name: "Services", item: "https://www.bbtx.ai/services" },
-  ],
-};
+// The /services index owns its own breadcrumb (rendered in app/services/page.tsx).
+// It must not live here: this layout wraps every /services/* page, so a list
+// declared here would sit next to each child page's own breadcrumb and give
+// Google two competing BreadcrumbLists.
 
 export default function ServicesLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
-      />
       {children}
     </>
   );

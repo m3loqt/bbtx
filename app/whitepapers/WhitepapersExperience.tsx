@@ -8,6 +8,7 @@ import { SubscribeModal } from "@/app/components/SubscribeModal";
 import { WhitepaperDownloadModal } from "@/app/components/WhitepaperDownloadModal";
 import { ArrowUpRight } from "@/app/components/ArrowIcon";
 import { Search } from "lucide-react";
+import { formatDisplayDate } from "@/lib/seo/dates";
 
 export type PublicWhitepaper = {
   id: string;
@@ -27,18 +28,13 @@ function formatFileSize(bytes: number | null): string | null {
   return mb >= 0.1 ? `${mb.toFixed(1)} MB` : `${Math.max(1, Math.round(bytes / 1024))} KB`;
 }
 
-function formatDate(value: string | null): string | null {
-  if (!value) return null;
-  return new Date(value).toLocaleDateString("en-US", { month: "short", year: "numeric" });
-}
-
 // Meta line shared by the featured lead and each index row — category, read
 // time, date, file size — only the parts that exist, joined with middots.
 function metaParts(paper: PublicWhitepaper): string[] {
   return [
     paper.category,
     paper.read_time_minutes ? `${paper.read_time_minutes} min read` : null,
-    formatDate(paper.published_date),
+    formatDisplayDate(paper.published_date, "monthYear"),
     formatFileSize(paper.pdf_size_bytes),
   ].filter((v): v is string => Boolean(v));
 }

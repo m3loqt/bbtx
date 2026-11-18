@@ -7,6 +7,8 @@ import {
 import "./globals.css";
 import { GoogleAnalytics } from "@/app/components/GoogleAnalytics";
 import { VoxwinsWidget } from "@/app/components/VoxwinsWidget";
+import { JsonLd } from "@/app/components/JsonLd";
+import { siteGraph } from "@/lib/seo/schema";
 
 const familjenGrotesk = Familjen_Grotesk({
   variable: "--font-sans",
@@ -110,6 +112,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={htmlClassName} suppressHydrationWarning>
       <body className="antialiased relative z-[1]" suppressHydrationWarning>
+        <JsonLd data={siteGraph()} />
         <GoogleAnalytics />
         {children}
         <VoxwinsWidget />

@@ -8,6 +8,7 @@ import { CTA } from "@/app/sections/CTA";
 import { SubscribeModal } from "@/app/components/SubscribeModal";
 import { ArrowUpRight } from "@/app/components/ArrowIcon";
 import { PenLine } from "lucide-react";
+import { formatDisplayDate } from "@/lib/seo/dates";
 
 export type PublicBlogPost = {
   id: string;
@@ -29,10 +30,6 @@ const PLACEHOLDER_TONES = [
   "bg-[#f0ebe0]",
 ];
 
-function formatDate(value: string | null): string | null {
-  if (!value) return null;
-  return new Date(value).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
-}
 
 export function ChaoticConfluenceExperience({ posts }: { posts: PublicBlogPost[] }) {
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
@@ -87,7 +84,7 @@ export function ChaoticConfluenceExperience({ posts }: { posts: PublicBlogPost[]
           <div className="flex flex-col gap-10 sm:gap-12">
             {posts.map((post, i) => {
               const tone = PLACEHOLDER_TONES[i % PLACEHOLDER_TONES.length];
-              const date = formatDate(post.published_date);
+              const date = formatDisplayDate(post.published_date, "medium");
               // Render a real <Link> for every post so crawlers can reach it;
               // posts past the current page are visually hidden until "Load more".
               const collapsed = i >= visibleCount;

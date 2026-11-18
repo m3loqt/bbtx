@@ -1,8 +1,17 @@
 import type { Metadata } from "next";
+import { JsonLd } from "@/app/components/JsonLd";
+import {
+  GRANT_PERSON_ID,
+  GRANT_PROFILE_URL,
+  ORGANIZATION_ID,
+  SITE_URL,
+  breadcrumbList,
+} from "@/lib/seo/schema";
 import { TEAM } from "@/app/team/team-data";
 
 export const metadata: Metadata = {
-  title: "Grant Tate | BBTx Consulting",
+  // `absolute` stops the root "%s | BBTx" template from adding a second suffix.
+  title: { absolute: "Grant Tate | BBTx Consulting" },
   description:
     "Dr. Grant Tate is the CEO and founder of BBTx Consulting, a coach, consultant, and author who helps leaders thrive in complex environments.",
   openGraph: {
@@ -21,44 +30,33 @@ const person = TEAM.grant;
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "Person",
-  "@id": "https://www.bbtx.ai/team/grant#person",
+  "@id": GRANT_PERSON_ID,
   name: person.name,
   honorificPrefix: "Dr.",
   jobTitle: person.role,
-  url: "https://www.bbtx.ai/team/grant",
-  image: `https://www.bbtx.ai${person.photo}`,
+  url: GRANT_PROFILE_URL,
+  image: `${SITE_URL}${person.photo}`,
   sameAs: [person.linkedin],
   description: person.bio.join(" "),
   worksFor: {
     "@type": "Organization",
-    "@id": "https://www.bbtx.ai/#organization",
+    "@id": ORGANIZATION_ID,
   },
   ...(person.location
     ? { homeLocation: { "@type": "Place", name: person.location } }
     : {}),
 };
 
-const breadcrumbJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  itemListElement: [
-    { "@type": "ListItem", position: 1, name: "Home", item: "https://www.bbtx.ai" },
-    { "@type": "ListItem", position: 2, name: "About", item: "https://www.bbtx.ai/about" },
-    { "@type": "ListItem", position: 3, name: person.name, item: "https://www.bbtx.ai/team/grant" },
-  ],
-};
+const breadcrumbJsonLd = breadcrumbList([
+  { name: "About", path: "/about" },
+  { name: person.name, path: "/team/grant" },
+]);
 
 export default function GrantLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
-      />
+      <JsonLd data={jsonLd} />
+      <JsonLd data={breadcrumbJsonLd} />
       {children}
     </>
   );

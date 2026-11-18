@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
+import { JsonLd } from "@/app/components/JsonLd";
+import { breadcrumbList } from "@/lib/seo/schema";
 
 export const metadata: Metadata = {
-  title: "AI Integration & Innovation | BBTx Consulting",
+  title: "AI Strategy Consulting & Integration | BBTx Consulting",
   description:
-    "Most AI initiatives fail for organizational reasons, not technical ones. BBTx helps organizations integrate AI in ways that improve performance, strengthen capability, and create lasting value.",
+    "BBTx helps leadership teams build AI strategy, assess readiness, establish governance, and connect AI adoption to practical business outcomes.",
   openGraph: {
-    title: "AI Integration & Innovation | BBTx Consulting",
+    title: "AI Strategy Consulting & Integration | BBTx Consulting",
     description:
       "Apply AI responsibly, improve performance, and build organizational capability.",
     url: "https://www.bbtx.ai/services/ai-integration",
@@ -28,20 +30,10 @@ const jsonLd = {
   url: "https://www.bbtx.ai/services/ai-integration",
 };
 
-const breadcrumbJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  itemListElement: [
-    { "@type": "ListItem", position: 1, name: "Home", item: "https://www.bbtx.ai" },
-    { "@type": "ListItem", position: 2, name: "Services", item: "https://www.bbtx.ai/services" },
-    {
-      "@type": "ListItem",
-      position: 3,
-      name: "AI Integration & Innovation",
-      item: "https://www.bbtx.ai/services/ai-integration",
-    },
-  ],
-};
+const breadcrumbJsonLd = breadcrumbList([
+  { name: "Services", path: "/services" },
+  { name: "AI Integration & Innovation", path: "/services/ai-integration" },
+]);
 
 export default function AiIntegrationLayout({
   children,
@@ -50,14 +42,8 @@ export default function AiIntegrationLayout({
 }) {
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
-      />
+      <JsonLd data={jsonLd} />
+      <JsonLd data={breadcrumbJsonLd} />
       {children}
     </>
   );

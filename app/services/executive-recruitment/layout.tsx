@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { JsonLd } from "@/app/components/JsonLd";
+import { breadcrumbList } from "@/lib/seo/schema";
 
 export const metadata: Metadata = {
   title: "Executive Recruitment Assessment Services | BBTx Consulting",
@@ -28,20 +30,10 @@ const jsonLd = {
   url: "https://www.bbtx.ai/services/executive-recruitment",
 };
 
-const breadcrumbJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  itemListElement: [
-    { "@type": "ListItem", position: 1, name: "Home", item: "https://www.bbtx.ai" },
-    { "@type": "ListItem", position: 2, name: "Services", item: "https://www.bbtx.ai/services" },
-    {
-      "@type": "ListItem",
-      position: 3,
-      name: "Executive Recruitment Assessment Services",
-      item: "https://www.bbtx.ai/services/executive-recruitment",
-    },
-  ],
-};
+const breadcrumbJsonLd = breadcrumbList([
+  { name: "Services", path: "/services" },
+  { name: "Executive Recruitment Assessment Services", path: "/services/executive-recruitment" },
+]);
 
 export default function ExecutiveRecruitmentLayout({
   children,
@@ -50,14 +42,8 @@ export default function ExecutiveRecruitmentLayout({
 }) {
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
-      />
+      <JsonLd data={jsonLd} />
+      <JsonLd data={breadcrumbJsonLd} />
       {children}
     </>
   );

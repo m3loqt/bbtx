@@ -2,6 +2,8 @@
 
 import { Nav } from "@/app/components/Nav";
 import { Footer } from "@/app/components/Footer";
+import { JsonLd } from "@/app/components/JsonLd";
+import { breadcrumbList } from "@/lib/seo/schema";
 import { CTA } from "@/app/sections/CTA";
 import { ArrowUpRight } from "@/app/components/ArrowIcon";
 import Image from "next/image";
@@ -59,9 +61,12 @@ const FIT_SITUATIONS = [
   "Boards and owners who know something is wrong and whose internal teams have a stake in the current answer being the correct one",
 ];
 
+const breadcrumbJsonLd = breadcrumbList([{ name: "Services", path: "/services" }]);
+
 export default function ServicesPage() {
   return (
     <div className="min-h-screen">
+      <JsonLd data={breadcrumbJsonLd} />
       <Nav />
 
       {/* ── Hero ──────────────────────────────────────────────────────── */}
