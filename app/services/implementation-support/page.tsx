@@ -49,7 +49,7 @@ const RHYTHM = [
 const ENGAGEMENTS = [
   { name: "Strategic Initiative Support", description: "Helping organizations sustain momentum after planning and decision-making efforts" },
   { name: "Organizational Change Management", description: "Supporting communication, alignment, adoption, and leadership effectiveness during major transitions" },
-  { name: "AI Adoption & Change Support", description: "Helping leaders and teams integrate AI-enabled ways of working into daily behavior" },
+  { name: "AI Adoption & Change Support", description: "Help leaders translate AI decisions into new workflows, manager expectations, staff capability, and practical accountability so adoption becomes part of daily work" },
   { name: "Transformation Program Support", description: "Ongoing advisory and facilitation support for complex organizational initiatives" },
 ];
 
@@ -64,7 +64,20 @@ const FAQ_ITEMS = [
   },
   {
     question: "Can this support AI implementation",
-    answer: "Yes. AI adoption often requires significant leadership, communication, and behavior change. The technology is rarely the hardest part of making it stick",
+    answer: (
+      <>
+        Yes. AI adoption often requires significant leadership, communication, and behavior change.
+        The technology is rarely the hardest part of making it stick. Our role is the organizational
+        side of adoption. For help deciding how AI fits your organization in the first place, see our{" "}
+        <Link
+          href="/services/ai-integration"
+          className="font-medium text-[#222222] underline decoration-[#ca3726]/50 underline-offset-4 transition-colors hover:decoration-[#ca3726]"
+        >
+          AI Integration &amp; Innovation
+        </Link>{" "}
+        service.
+      </>
+    ),
   },
   {
     question: "What if our initiative has already stalled",

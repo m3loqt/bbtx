@@ -98,7 +98,20 @@ const FAQ_ITEMS = [
   },
   {
     question: "Do you use AI in the strategy process",
-    answer: "When useful, yes. AI can support research, scenario planning, assumption testing, and option generation. It does not replace leadership judgment",
+    answer: (
+      <>
+        When useful, yes. AI can support research, scenario planning, assumption testing, and option
+        generation. It does not replace leadership judgment. For organizations deciding how AI should
+        change decisions, governance, and day-to-day work, our{" "}
+        <Link
+          href="/services/ai-integration"
+          className="font-medium text-[#222222] underline decoration-[#ca3726]/50 underline-offset-4 transition-colors hover:decoration-[#ca3726]"
+        >
+          AI Integration &amp; Innovation
+        </Link>{" "}
+        service addresses the next step.
+      </>
+    ),
   },
   {
     question: "What if we already have a strategic plan",

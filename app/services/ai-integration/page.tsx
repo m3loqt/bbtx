@@ -39,16 +39,32 @@ const SITUATIONS = [
 ];
 
 const STEPS = [
-  { number: "01", name: "Assess Readiness", description: "Understand leadership, governance, workflows, culture, and workforce capability before major decisions are made" },
+  {
+    number: "01",
+    name: "Assess Readiness",
+    description: (
+      <>
+        Understand leadership, governance, workflows, culture, and workforce capability before
+        major decisions are made. A more formal examination is available through our{" "}
+        <Link
+          href="/services/organizational-assessment"
+          className="font-medium text-[#222222] underline decoration-[#ca3726]/50 underline-offset-4 transition-colors hover:decoration-[#ca3726]"
+        >
+          organizational and AI readiness assessment
+        </Link>
+        .
+      </>
+    ),
+  },
   { number: "02", name: "Identify Opportunities", description: "Find where AI can improve decisions, quality, speed, service, or strategic execution" },
   { number: "03", name: "Design Governance", description: "Create practical guardrails that support responsible experimentation and reduce avoidable risk" },
   { number: "04", name: "Enable Adoption", description: "Build the leadership, workflow, and workforce conditions required for AI to be used well" },
 ];
 
 const ENGAGEMENTS = [
-  { name: "Organizational AI Assessment", description: "Understand readiness, risks, opportunities, governance maturity, and workforce capability" },
+  { name: "Organizational AI Assessment", description: "Examine leadership alignment, governance, workflow readiness, workforce capability, and the evidence behind planned AI investments" },
   { name: "AI Organizational Model", description: "Design how AI fits into decision-making, roles, workflows, and operating principles" },
-  { name: "Transformational Strategy & Implementation Plan", description: "Prioritize AI-enabled initiatives and create a practical roadmap with clear ownership" },
+  { name: "Transformational Strategy & Implementation Plan", description: "Prioritize AI opportunities, agree on decision owners and tradeoffs, and develop a realistic roadmap with measures of progress" },
   { name: "AI Governance & Policy Development", description: "Create guardrails that support useful experimentation while managing risk" },
 ];
 
@@ -120,6 +136,11 @@ export default function AiIntegrationPage() {
             AI adoption succeeds when leadership, governance, workflows, and workforce capability
             evolve together. We help organizations move beyond experimentation and build the
             conditions required for sustainable AI-enabled performance
+          </p>
+          <p className="mt-4 max-w-3xl text-base leading-relaxed tracking-normal text-[#555555] sm:text-lg">
+            Our AI strategy consulting starts with the organization, not the software. We help
+            leadership teams decide where AI can create value, what must change to use it
+            responsibly, and how to move from isolated experiments to purposeful adoption.
           </p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
             <button

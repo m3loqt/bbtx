@@ -77,7 +77,38 @@ const ENGAGEMENTS = [
   },
   {
     name: "Leadership for the AI Era",
-    description: "Preparing leaders to guide experimentation, manage risk, and lead effectively in AI-enabled organizations",
+    description: "Helping leaders decide where AI belongs in team decisions, keep human judgment and accountability in place, guide managers through changing workflows, and judge whether adoption is improving performance",
+  },
+];
+
+const AI_ADOPTION_INTRO =
+  "When AI enters a team's work, the manager's job changes before anyone rewrites the job description. Someone has to decide which decisions a person still makes, which a tool can inform, and who answers for the result when the output is wrong. If leaders don't settle those questions, teams settle them informally, and differently from one another.";
+
+const AI_ADOPTION_POINTS = [
+  {
+    name: "Decide where AI belongs in a decision",
+    description:
+      "Not every decision benefits from AI input. Leaders need a clear view of which choices carry enough risk, ambiguity, or human consequence that a person must own them outright, and which a tool can reasonably inform or speed up.",
+  },
+  {
+    name: "Keep judgment and accountability with people",
+    description:
+      "A recommendation from a system becomes the team's decision the moment someone acts on it. Managers need to be explicit about who reviews AI-assisted work, what good enough looks like, and who is accountable when it falls short.",
+  },
+  {
+    name: "Build the habit of challenging the output",
+    description:
+      "Evaluating AI-generated work is a skill, not an instinct. People need to know what a credible answer looks like in their own field, and they need to feel safe saying an output looks wrong, even when senior people trust it.",
+  },
+  {
+    name: "Take uncertainty, trust, and resistance seriously",
+    description:
+      "Hesitation about AI is rarely just reluctance. It can reflect real concern about quality, job security, or being measured against a tool. Leaders who ask about it directly learn more than those who treat it as a readiness problem to be managed.",
+  },
+  {
+    name: "Check whether performance actually improved",
+    description:
+      "Adoption is not improvement. Before a workflow changes, leaders should know what they will measure, whether that is time, quality, error rates, or workload, and be willing to adjust or stop when the evidence does not support the change.",
   },
 ];
 
@@ -96,7 +127,7 @@ const FAQ_ITEMS = [
   },
   {
     question: "Do you address AI leadership challenges",
-    answer: "Yes. Many organizations need leaders who can navigate both human and technological change at the same time",
+    answer: "Yes. Many organizations need leaders who can navigate both human and technological change at the same time. That includes deciding which decisions should involve AI, keeping human judgment and accountability in place, and helping managers guide teams through changing workflows",
   },
   {
     question: "What does this cost",
@@ -314,7 +345,53 @@ export default function LeadershipDevelopmentPage() {
         </div>
       </section>
 
-      {/* 6. FAQ */}
+      {/* 6. Leading Teams Through AI Adoption */}
+      <section
+        id="leading-teams-through-ai-adoption"
+        className="relative z-[1] w-full border-t border-black/[0.06] bg-white px-4 py-14 sm:px-6 sm:py-24 lg:px-8 lg:py-28"
+      >
+        <div className="grid gap-6 lg:grid-cols-[3fr_7fr] lg:items-start lg:gap-12">
+          <p className="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#555555]/60">
+            Leadership for the AI Era
+          </p>
+          <div>
+            <h2 className="max-w-5xl text-3xl font-medium leading-tight tracking-tight text-[#222222] sm:text-4xl lg:text-[3.2rem]">
+              Leading Teams <span className="italic">Through AI Adoption</span>
+            </h2>
+            <p className="mt-6 max-w-3xl text-base leading-relaxed text-[#555555] sm:text-lg">
+              {AI_ADOPTION_INTRO}
+            </p>
+            <div className="mt-10 border-t border-black/[0.08]">
+              {AI_ADOPTION_POINTS.map((point) => (
+                <div key={point.name} className="border-b border-black/[0.08] py-6 lg:py-7">
+                  <h3 className="text-xl font-semibold tracking-normal text-[#222222] sm:text-2xl">
+                    {point.name}
+                  </h3>
+                  <p className="mt-3 max-w-3xl text-base leading-relaxed text-[#555555] sm:text-lg">
+                    {point.description}
+                  </p>
+                </div>
+              ))}
+            </div>
+            <p className="mt-8 max-w-3xl text-base leading-relaxed text-[#555555] sm:text-lg">
+              These are leadership questions before they are technology questions. We work through
+              them with leaders using the coaching, assessment feedback, and team facilitation
+              described above, anchored in the decisions your team is actually facing. When the
+              question is wider than leadership, such as how AI should fit your strategy,
+              governance, and workflows, our{" "}
+              <Link
+                href="/services/ai-integration"
+                className="font-medium text-[#222222] underline decoration-[#ca3726]/50 underline-offset-4 transition-colors hover:decoration-[#ca3726]"
+              >
+                AI integration and innovation service
+              </Link>{" "}
+              addresses it.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* 7. FAQ */}
       <section className="relative z-[1] w-full border-t border-black/[0.06] bg-[#f7f7f7] px-4 py-14 sm:px-6 sm:py-24 lg:px-8 lg:py-28">
         <div className="mx-auto w-full max-w-4xl text-center">
           <p className="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#555555]/60">
@@ -355,7 +432,7 @@ export default function LeadershipDevelopmentPage() {
         </div>
       </section>
 
-      {/* 7. CTA */}
+      {/* 8. CTA */}
       <section className="relative z-[1] bg-white">
         <div className="relative z-[1] w-full px-4 py-8 sm:px-6 lg:px-8 lg:py-10">
           <div className="relative w-full overflow-hidden rounded-xl border border-white/20 bg-[#ca3726] shadow-[0_4px_24px_rgba(202,55,38,0.25)] sm:rounded-2xl">

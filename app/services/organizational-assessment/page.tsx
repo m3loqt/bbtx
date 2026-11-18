@@ -99,7 +99,7 @@ const ENGAGEMENTS = [
   },
   {
     name: "AI Readiness Assessment",
-    description: "A practical review of leadership capability, workforce readiness, governance, and preparedness for AI adoption.",
+    description: "Examine leadership alignment, governance, workforce capability, and how AI would affect actual work. The goal is to identify the gaps that matter before major decisions or investments.",
   },
 ];
 
@@ -358,6 +358,16 @@ export default function OrganizationalAssessmentPage() {
                   </div>
                 ))}
               </div>
+              <p className="mt-6 text-sm leading-relaxed text-[#555555] sm:text-[15px]">
+                Not sure where to begin? Our{" "}
+                <Link
+                  href="/resources/ai-readiness-assessment"
+                  className="font-medium text-[#222222] underline decoration-[#ca3726]/50 underline-offset-4 transition-colors hover:decoration-[#ca3726]"
+                >
+                  12-question AI readiness guide
+                </Link>{" "}
+                gives leadership teams a practical place to start.
+              </p>
             </div>
           </div>
         </div>
