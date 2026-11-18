@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Nav } from "@/app/components/Nav";
 import { Footer } from "@/app/components/Footer";
+import { JsonLd } from "@/app/components/JsonLd";
+import { breadcrumbList } from "@/lib/seo/schema";
 import { ArrowUpRight } from "@/app/components/ArrowIcon";
 
 const RESOURCES = [
@@ -14,6 +16,11 @@ const RESOURCES = [
     title: "Whitepapers",
     description: "What we're learning across 100+ engagements, written down as it's ready.",
     href: "/whitepapers",
+  },
+  {
+    title: "AI Readiness Assessment Guide",
+    description: "Twelve questions for leadership teams to answer before investing in AI, across leadership, governance, workflows, capability, and performance.",
+    href: "/resources/ai-readiness-assessment",
   },
   {
     title: "Chaotic Confluence",
@@ -35,9 +42,12 @@ export const metadata: Metadata = {
   },
 };
 
+const breadcrumbJsonLd = breadcrumbList([{ name: "Resources", path: "/resources" }]);
+
 export default function ResourcesPage() {
   return (
     <div className="min-h-screen bg-white">
+      <JsonLd data={breadcrumbJsonLd} />
       <Nav />
 
       <section className="w-full bg-white px-4 pb-16 pt-28 sm:px-6 sm:pt-32 lg:px-8 lg:pt-36">
