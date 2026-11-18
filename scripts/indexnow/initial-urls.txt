@@ -1,0 +1,16 @@
+# Initial IndexNow submission for the SEO/AEO Batch 1 release.
+# Used only by a manual run with mode=initial (see docs/seo/indexnow.md).
+# One canonical URL per line; blank lines and # comments are ignored.
+
+# New page
+https://www.bbtx.ai/resources/ai-readiness-assessment
+
+# Five service pages updated in Batch 1
+https://www.bbtx.ai/services/leadership-development
+https://www.bbtx.ai/services/ai-integration
+https://www.bbtx.ai/services/organizational-assessment
+https://www.bbtx.ai/services/strategy-advisory
+https://www.bbtx.ai/services/implementation-support
+
+# Resources hub: content changed (new guide card + breadcrumb)
+https://www.bbtx.ai/resources

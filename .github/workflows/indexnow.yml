@@ -1,0 +1,122 @@
+# IndexNow: tell Bing, Yandex, Seznam, Naver and other participating engines
+# which bbtx.ai pages are new, changed or removed. Google does not use IndexNow.
+#
+# Runs ONLY:
+#   - after Vercel reports a *successful Production* deployment, or
+#   - when someone starts it by hand on main.
+# It never runs on push, pull_request, preview deployments or local builds, and
+# it is not part of `npm run build`. See docs/seo/indexnow.md.
+
+name: IndexNow
+
+on:
+  deployment_status:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "changed = diff the live site against the last run. initial = submit scripts/indexnow/initial-urls.txt. urls = submit the list below."
+        type: choice
+        options: [changed, initial, urls]
+        default: changed
+      urls:
+        description: "mode=urls only: canonical URLs separated by spaces or commas (removed pages allowed)."
+        type: string
+        required: false
+      dry_run:
+        description: "Log what would be submitted; submit nothing and keep the baseline."
+        type: boolean
+        default: false
+      force:
+        description: "Allow more than 25 changed URLs in one run."
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+  actions: read # read the previous baseline artifact
+
+# One run at a time so two quick deploys can't race on the baseline.
+concurrency:
+  group: indexnow
+  cancel-in-progress: false
+
+jobs:
+  submit:
+    # deployment_status fires for every status change (pending, in_progress,
+    # success, failure) in every environment, so filter hard. Vercel names its
+    # GitHub environments "Production" and "Preview".
+    if: >-
+      (github.event_name == 'deployment_status' &&
+       github.event.deployment_status.state == 'success' &&
+       github.event.deployment.environment == 'Production') ||
+      (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main')
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      # cheerio (a devDependency) is the only package the script needs.
+      - run: npm ci --ignore-scripts
+
+      - name: Download previous baseline
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p .indexnow/prev
+          id=$(gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts?name=indexnow-manifest&per_page=1" \
+            --jq '.artifacts[0] | select(. != null and .expired == false) | .id')
+          if [ -n "$id" ]; then
+            gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/${id}/zip" > .indexnow/prev.zip
+            unzip -o .indexnow/prev.zip -d .indexnow/prev
+          else
+            echo "No previous baseline artifact (first run, or it expired after 90 days)."
+          fi
+
+      # Vercel reports "success" as the domain is switched over; a short wait
+      # keeps the first fetch from reading a stale edge copy of the old pages.
+      - name: Let the new deployment settle
+        if: github.event_name == 'deployment_status'
+        run: sleep 20
+
+      - name: Submit to IndexNow
+        env:
+          INPUT_MODE: ${{ inputs.mode || 'changed' }}
+          INPUT_URLS: ${{ inputs.urls }}
+          INPUT_DRY_RUN: ${{ inputs.dry_run }}
+          INPUT_FORCE: ${{ inputs.force }}
+        run: |
+          flags=()
+          [ "$INPUT_DRY_RUN" = "true" ] && flags+=(--dry-run)
+          [ "$INPUT_FORCE" = "true" ] && flags+=(--force)
+          node scripts/indexnow/submit.mts \
+            --mode "$INPUT_MODE" \
+            --urls "$INPUT_URLS" \
+            --prev .indexnow/prev/manifest.json \
+            --out .indexnow/out \
+            "${flags[@]}"
+
+      # The full response log is kept for every run, including failures.
+      - name: Upload report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: indexnow-report-${{ github.run_id }}
+          path: .indexnow/out/report.*
+          if-no-files-found: ignore
+          retention-days: 90
+
+      # manifest.json only exists after a live, successful run, so dry runs and
+      # failures never advance the baseline.
+      - name: Save new baseline
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: indexnow-manifest
+          path: .indexnow/out/manifest.json
+          if-no-files-found: ignore
+          retention-days: 90
