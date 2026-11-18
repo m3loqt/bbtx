@@ -146,14 +146,19 @@ function TestimonialCard({ t }: { t: Testimonial }) {
 
 // Same card shell as TestimonialCard (border, radius, background) so it
 // still reads as part of the same system, with a larger, editorial-style
-// interior: a quote-mark accent, bigger type, and a side panel about Grant
-// separated by a divider on desktop (stacks below the quote on small
-// screens instead of a second column).
+// interior: a quote-mark accent and bigger type.
+//
+// On lg+ the card sits in the right half of the section header row and
+// stretches to the height of the heading/description/button column beside
+// it (h-full + the quote pinned top, author pinned bottom). The side blurb
+// about Grant doesn't fit at half width without making the card taller than
+// that column, so it only shows below lg, where the card is full width and
+// the blurb stacks under the quote.
 function FeaturedTestimonialCard({ t }: { t: Testimonial }) {
   return (
-    <article className="rounded-2xl border border-black/[0.06] bg-white p-6 sm:p-8 lg:p-10">
-      <div className="flex flex-col gap-10 lg:flex-row lg:gap-12">
-        <div className="flex gap-4 sm:gap-6 lg:flex-1">
+    <article className="flex h-full flex-col rounded-2xl border border-black/[0.06] bg-white p-6 sm:p-8">
+      <div className="flex flex-1 flex-col gap-10">
+        <div className="flex flex-1 gap-4 sm:gap-6">
           <span
             className="flex-shrink-0 font-serif text-4xl leading-none text-[#ca3726] sm:text-5xl"
             aria-hidden="true"
@@ -161,12 +166,12 @@ function FeaturedTestimonialCard({ t }: { t: Testimonial }) {
             &ldquo;
           </span>
 
-          <div className="min-w-0 flex-1">
-            <p className="text-lg font-medium leading-relaxed text-[#111827] sm:text-xl lg:text-2xl">
+          <div className="flex min-w-0 flex-1 flex-col justify-between gap-8">
+            <p className="text-lg font-medium leading-relaxed text-[#111827] sm:text-xl lg:text-lg xl:text-xl 2xl:text-2xl">
               {t.quote}
             </p>
 
-            <footer className="mt-8 flex items-center gap-4">
+            <footer className="flex items-center gap-4">
               <div className="relative h-14 w-14 flex-shrink-0 overflow-hidden rounded-full bg-[#f3f4f6] sm:h-16 sm:w-16">
                 {t.image ? (
                   <Image src={t.image} alt="" fill sizes="64px" className="h-full w-full object-cover" />
@@ -194,7 +199,7 @@ function FeaturedTestimonialCard({ t }: { t: Testimonial }) {
           </div>
         </div>
 
-        <div className="lg:flex lg:w-64 lg:flex-shrink-0 lg:flex-col lg:justify-center lg:border-l lg:border-black/[0.08] lg:pl-12">
+        <div className="lg:hidden">
           <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[#f7f7f7]">
             <QuoteMarkIcon className="h-4 w-4 text-[#6b7280]" />
           </div>
@@ -213,43 +218,43 @@ export function Testimonials() {
   return (
     <section className="relative z-[1] w-full border-t border-black/[0.06] bg-[#f7f7f7]">
       <div className="px-4 pt-12 pb-12 sm:px-6 sm:pt-24 sm:pb-24 lg:px-8 lg:pt-28 lg:pb-28 xl:px-16 2xl:px-24">
-        {/* Heading stays narrower than the section's full width (matches its
-            original behavior) so the large display type doesn't stretch
-            into awkwardly long lines; the featured card and grid below use
-            the full section width. */}
-        <div className="flex flex-col gap-8 lg:flex-row lg:items-start lg:justify-between lg:gap-12">
-          <h2 className="text-3xl font-medium leading-[1.05] tracking-tight text-[#222222] sm:text-5xl lg:max-w-xl lg:text-6xl xl:max-w-2xl xl:text-7xl 2xl:max-w-3xl 2xl:text-[4.25rem]">
-            What <span className="italic">leaders say</span> after working with us
-          </h2>
-          <div className="flex flex-col items-start gap-4 lg:max-w-2xl lg:flex-shrink-0">
-            <p className="text-xl leading-relaxed tracking-normal text-[#555555] sm:text-2xl">
-              Results from real engagements with leaders who trusted BBTx to help them think clearly, decide well, and lead their organizations through change
-            </p>
-            <button
-              type="button"
-              onClick={() => setSubmissionOpen(true)}
-              className="inline-flex w-fit items-center justify-center gap-2 rounded-lg bg-[#ca3726] px-4 py-2.5 text-[15px] font-medium text-white transition-opacity hover:opacity-95"
-            >
-              Share Your Experience
-              <ArrowUpRight className="h-4 w-4" />
-            </button>
+        {/* Header row. Below lg everything stacks: heading, description +
+            button, then the featured card. From lg up it becomes two equal
+            columns: heading/description/button on the left (heading pinned
+            to the top, description + button pinned to the bottom) and the
+            featured card on the right, stretched to the same height. */}
+        <div className="flex flex-col gap-10 sm:gap-14 lg:grid lg:grid-cols-2 lg:items-stretch lg:gap-12 xl:gap-16">
+          <div className="flex flex-col gap-8 lg:justify-between lg:gap-10">
+            <h2 className="text-3xl font-medium leading-[1.05] tracking-tight text-[#222222] sm:text-5xl xl:text-6xl 2xl:text-[4.25rem]">
+              What <span className="italic">leaders say</span> after working with us
+            </h2>
+            <div className="flex flex-col items-start gap-4">
+              <p className="text-xl leading-relaxed tracking-normal text-[#555555] sm:text-2xl lg:text-xl xl:text-2xl">
+                Results from real engagements with leaders who trusted BBTx to help them think clearly, decide well, and lead their organizations through change
+              </p>
+              <button
+                type="button"
+                onClick={() => setSubmissionOpen(true)}
+                className="inline-flex w-fit items-center justify-center gap-2 rounded-lg bg-[#ca3726] px-4 py-2.5 text-[15px] font-medium text-white transition-opacity hover:opacity-95"
+              >
+                Share Your Experience
+                <ArrowUpRight className="h-4 w-4" />
+              </button>
+            </div>
           </div>
+
+          <FeaturedTestimonialCard t={featured} />
         </div>
 
-        {/* Featured + supporting hierarchy. The supporting grid is a plain
-            responsive CSS grid (not the old ghost-column wall) so it stays
-            elegant at any testimonial count: a trailing card in the final
-            row just left-aligns under the grid instead of needing a
-            centering hack, and align-items: stretch (grid's default) keeps
-            every row's card heights matched with no extra CSS. */}
-        <div className="mt-10 sm:mt-14 lg:mt-16">
-          <FeaturedTestimonialCard t={featured} />
-
-          <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 lg:mt-5 lg:gap-5">
-            {supporting.map((t) => (
-              <TestimonialCard key={t.author} t={t} />
-            ))}
-          </div>
+        {/* Supporting grid: a plain responsive CSS grid (not the old
+            ghost-column wall) so it stays elegant at any testimonial count:
+            a trailing card in the final row just left-aligns under the grid
+            instead of needing a centering hack, and align-items: stretch
+            (grid's default) keeps every row's card heights matched. */}
+        <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2 lg:mt-10 lg:grid-cols-3 lg:gap-5">
+          {supporting.map((t) => (
+            <TestimonialCard key={t.author} t={t} />
+          ))}
         </div>
       </div>
 
