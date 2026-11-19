@@ -7,6 +7,7 @@ import { Nav } from "@/app/components/Nav";
 import { Footer } from "@/app/components/Footer";
 import { ArrowUpRight } from "@/app/components/ArrowIcon";
 import { COMPANY_LOGOS } from "@/app/sections/Results";
+import { altFor, companyLogoAlt } from "@/lib/seo/image-alt";
 
 const gridBg = {
   backgroundImage: `
@@ -153,7 +154,7 @@ export default function ImplementationSupportPage() {
         </div>
         <div className="relative z-[1] px-4 pb-8 pt-8 sm:px-6 lg:px-8 lg:pb-10">
           <div className="relative h-[50vh] w-full overflow-hidden rounded-2xl border border-black/[0.06] shadow-[0_2px_18px_rgba(0,0,0,0.04)] sm:h-[60vh]">
-            <Image src="/serv5.png" alt="" fill sizes="100vw" className="object-cover" />
+            <Image src="/serv5.png" alt={altFor("/serv5.png")} fill sizes="100vw" className="object-cover" />
           </div>
         </div>
       </section>
@@ -267,7 +268,14 @@ export default function ImplementationSupportPage() {
         >
           {[...logos, ...logos].map((src, i) => (
             <div key={`${src}-${i}`} className="relative flex h-16 w-32 shrink-0 items-center justify-center">
-              <Image src={src} alt="" width={200} height={80} className="h-full w-auto max-w-[160px] object-contain opacity-60 grayscale" unoptimized />
+              <Image
+                src={src}
+                alt={i < logos.length ? companyLogoAlt(src) : ""}
+                aria-hidden={i >= logos.length || undefined}
+                width={128}
+                height={128}
+                className="h-full w-auto object-contain opacity-60 grayscale"
+              />
             </div>
           ))}
         </div>

@@ -8,6 +8,7 @@ import { CTA } from "@/app/sections/CTA";
 import { ArrowUpRight } from "@/app/components/ArrowIcon";
 import Image from "next/image";
 import Link from "next/link";
+import { altFor, companyLogoAlt } from "@/lib/seo/image-alt";
 
 const fractalTexture = {
   backgroundImage:
@@ -115,7 +116,7 @@ export default function ServicesPage() {
           <div className="relative h-72 sm:h-96 lg:h-auto">
             <Image
               src="/about/one.jpg"
-              alt=""
+              alt={altFor("/about/one.jpg")}
               fill
               sizes="(min-width: 1024px) 55vw, 100vw"
               className="object-cover"
@@ -328,11 +329,11 @@ export default function ServicesPage() {
                 >
                   <Image
                     src={src}
-                    alt=""
-                    width={320}
+                    alt={i < LOGOS.length ? companyLogoAlt(src) : ""}
+                    aria-hidden={i >= LOGOS.length || undefined}
+                    width={128}
                     height={128}
-                    className="h-20 w-auto max-w-[300px] object-contain opacity-60 sm:h-32 sm:max-w-[400px]"
-                    unoptimized
+                    className="h-20 w-auto object-contain opacity-60 sm:h-32"
                   />
                 </div>
               ))}

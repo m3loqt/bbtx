@@ -7,6 +7,7 @@ import { Nav } from "@/app/components/Nav";
 import { Footer } from "@/app/components/Footer";
 import { ArrowUpRight } from "@/app/components/ArrowIcon";
 import { TESTIMONIALS } from "@/app/sections/Testimonials";
+import { altFor } from "@/lib/seo/image-alt";
 
 const gridBg = {
   backgroundImage: `
@@ -200,7 +201,7 @@ export default function LeadershipDevelopmentPage() {
         </div>
         <div className="relative z-[1] px-4 pb-8 pt-8 sm:px-6 lg:px-8 lg:pb-10">
           <div className="relative h-[50vh] w-full overflow-hidden rounded-2xl border border-black/[0.06] shadow-[0_2px_18px_rgba(0,0,0,0.04)] sm:h-[60vh]">
-            <Image src="/serv3.png" alt="" fill sizes="100vw" className="object-cover object-top" />
+            <Image src="/serv3.png" alt={altFor("/serv3.png")} fill sizes="100vw" className="object-cover object-top" />
           </div>
         </div>
       </section>
@@ -316,7 +317,7 @@ export default function LeadershipDevelopmentPage() {
               <div className="mt-6 flex items-center gap-3">
                 {testimonial.image && (
                   <div className="relative h-11 w-11 shrink-0 overflow-hidden rounded-full">
-                    <Image src={testimonial.image} alt="" fill sizes="44px" className="object-cover" />
+                    <Image src={testimonial.image} alt="" aria-hidden fill sizes="44px" className="object-cover" />
                   </div>
                 )}
                 <div>

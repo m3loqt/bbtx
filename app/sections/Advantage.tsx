@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { Compass, Sparkles, Users } from "lucide-react";
+import { altFor } from "@/lib/seo/image-alt";
 
 const ADVANTAGE_ROWS = [
   {
@@ -35,10 +36,10 @@ export function Advantage() {
           <div className="relative flex h-[420px] flex-col justify-end overflow-hidden rounded-2xl shadow-2xl sm:h-[460px]">
             <Image
               src="/grantt.jpg"
-              alt=""
+              alt={altFor("/grantt.jpg")}
               fill
+              sizes="(min-width: 1024px) 42vw, 100vw"
               className="object-cover"
-              aria-hidden="true"
             />
 
             <div className="relative z-10 mx-3 mb-3 flex flex-col rounded-lg border border-white/10 bg-black/25 p-6 backdrop-blur-sm sm:mx-4 sm:mb-4 sm:p-7">

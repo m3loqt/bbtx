@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { companyLogoAlt } from "@/lib/seo/image-alt";
 
 export const COMPANY_LOGOS = [
   "cha.png",
@@ -41,12 +42,15 @@ function LogoRow({ logos, direction }: { logos: string[]; direction: "normal" | 
           key={`${src}-${i}`}
           className="relative flex h-28 shrink-0 items-center justify-center px-2 sm:h-36 sm:px-3 lg:h-40 lg:px-4"
         >
+          {/* Files are square (1080x1080); declaring the real shape keeps the box the
+              same size before and after load. The second copy only feeds the loop. */}
           <Image
             src={src}
-            alt=""
-            width={400}
+            alt={i < logos.length ? companyLogoAlt(src) : ""}
+            aria-hidden={i >= logos.length || undefined}
+            width={160}
             height={160}
-            className="h-full w-auto max-w-[240px] object-contain opacity-70 grayscale sm:max-w-[320px] lg:max-w-[360px]"
+            className="h-full w-auto object-contain opacity-70 grayscale"
           />
         </div>
       ))}

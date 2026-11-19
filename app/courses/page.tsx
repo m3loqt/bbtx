@@ -10,6 +10,7 @@ import { ArrowUpRight } from "@/app/components/ArrowIcon";
 import { WaitlistModal } from "@/app/components/WaitlistModal";
 import { COURSES_FAQ_ITEMS } from "@/app/courses/courses-faq-data";
 import { Check, BookOpen } from "lucide-react";
+import { altFor } from "@/lib/seo/image-alt";
 
 // ─── Making Modern Managers: one program, three tiers ───────────────────────
 type Tier = {
@@ -167,7 +168,7 @@ export default function CoursesPage() {
         <div className="absolute inset-0 z-0">
           <Image
             src="/about/five.png"
-            alt=""
+            alt={altFor("/about/five.png")}
             fill
             priority
             sizes="100vw"
@@ -284,7 +285,7 @@ export default function CoursesPage() {
                   // Cover images are native 1640x924 (~16:9) — aspect-video matches
                   // that ratio almost exactly so the baked-in title text never crops.
                   <div className="relative aspect-video w-full shrink-0 overflow-hidden rounded-xl sm:w-64">
-                    <Image src={course.coverImage} alt="" fill sizes="(min-width: 640px) 256px, 100vw" className="object-cover" />
+                    <Image src={course.coverImage} alt={`${course.title} course cover`} fill sizes="(min-width: 640px) 256px, 100vw" className="object-cover" />
                   </div>
                 ) : (
                   <div className="flex aspect-video w-full shrink-0 items-center justify-center overflow-hidden rounded-xl bg-[#f7f7f7] sm:w-64">

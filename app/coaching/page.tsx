@@ -8,6 +8,7 @@ import { FAQ } from "@/app/sections/FAQ";
 import { ArrowUpRight } from "@/app/components/ArrowIcon";
 import { WaitlistModal } from "@/app/components/WaitlistModal";
 import { COACHING_FAQ_ITEMS } from "@/app/coaching/coaching-faq-data";
+import { altFor } from "@/lib/seo/image-alt";
 
 const WHY_CARDS = [
   {
@@ -126,7 +127,7 @@ export default function CoachingPage() {
           <div className="absolute inset-0 z-0">
             <Image
               src="/about/two.png"
-              alt=""
+              alt={altFor("/about/two.png")}
               fill
               priority
               sizes="100vw"
@@ -150,7 +151,7 @@ export default function CoachingPage() {
           {/* Testimonial — sits outside the glass panel's flow so it overlaps its height, bottom-aligned with the headline */}
           <article className="absolute bottom-8 right-6 z-20 hidden max-w-[calc(100%-3rem)] items-stretch gap-5 rounded-2xl border border-white/20 bg-white/10 p-7 shadow-[0_20px_60px_rgba(0,0,0,0.3)] backdrop-blur-xl sm:bottom-10 sm:right-10 sm:flex sm:max-w-2xl sm:p-8 lg:right-14">
             <div className="relative w-32 shrink-0 overflow-hidden rounded-xl bg-white/10 sm:w-36">
-              <Image src="/testimonials/golara.jpeg" alt="" fill sizes="144px" className="object-cover" />
+              <Image src="/testimonials/golara.jpeg" alt="" aria-hidden fill sizes="144px" className="object-cover" />
             </div>
             <div>
               <p className="text-base leading-snug text-white sm:text-lg">
@@ -195,7 +196,7 @@ export default function CoachingPage() {
               <div className="relative aspect-[16/11] w-[62%] shrink-0 overflow-hidden rounded-2xl">
                 <Image
                   src="/about/one.jpg"
-                  alt=""
+                  alt={altFor("/about/one.jpg")}
                   fill
                   sizes="(min-width: 1024px) 28vw, 55vw"
                   className="object-cover"
@@ -204,7 +205,7 @@ export default function CoachingPage() {
               <div className="relative flex-1 overflow-hidden rounded-2xl">
                 <Image
                   src="/about/six.jpg"
-                  alt=""
+                  alt={altFor("/about/six.jpg")}
                   fill
                   sizes="(min-width: 1024px) 14vw, 28vw"
                   className="object-cover"
@@ -248,7 +249,7 @@ export default function CoachingPage() {
           <div className="relative mb-5 h-16 w-16 shrink-0 overflow-hidden rounded-full ring-1 ring-black/10 sm:h-20 sm:w-20">
             <Image
               src="/about/six.jpg"
-              alt=""
+              alt={altFor("/about/six.jpg")}
               fill
               sizes="80px"
               className="object-cover"

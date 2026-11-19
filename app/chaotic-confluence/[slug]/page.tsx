@@ -7,6 +7,7 @@ import { Footer } from "@/app/components/Footer";
 import { CTA } from "@/app/sections/CTA";
 import { ArrowLeft } from "@/app/components/ArrowIcon";
 import { JsonLd } from "@/app/components/JsonLd";
+import { RemoteCoverImage } from "@/app/components/RemoteCoverImage";
 import { articleSchema, breadcrumbList } from "@/lib/seo/schema";
 import { formatDisplayDate, toDateOnly, toIsoTimestamp } from "@/lib/seo/dates";
 import { BlogEngagement } from "./BlogEngagement";
@@ -115,12 +116,14 @@ export default async function BlogPostPage({
               )}
 
               {post.cover_image_url && (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={post.cover_image_url}
-                  alt=""
-                  className="mt-8 aspect-[16/9] w-full object-cover"
-                />
+                <div className="relative mt-8 aspect-[16/9] w-full overflow-hidden">
+                  <RemoteCoverImage
+                    src={post.cover_image_url}
+                    alt={post.title}
+                    sizes="(min-width: 768px) 768px, 100vw"
+                    priority
+                  />
+                </div>
               )}
             </div>
           </div>

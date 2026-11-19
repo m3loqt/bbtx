@@ -441,7 +441,7 @@ function NavInner({ heroTheme = "dark", instantFloat = false }: NavProps) {
             <a href="/" className="flex shrink-0 items-center gap-1.5 sm:gap-2">
               <Image
                 src="/oglogo.webp"
-                alt=""
+                alt="" aria-hidden
                 width={48}
                 height={48}
                 className="h-9 w-9 object-contain sm:h-11 sm:w-11"

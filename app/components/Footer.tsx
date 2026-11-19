@@ -172,7 +172,7 @@ export function Footer() {
             <a href="/" className="flex items-center gap-2">
               <Image
                 src="/oglogo.webp"
-                alt=""
+                alt="" aria-hidden
                 width={32}
                 height={32}
                 className="h-8 w-8 object-contain"

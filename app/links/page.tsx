@@ -56,7 +56,7 @@ export default function LinksPage() {
         <div className="relative h-56 w-full overflow-hidden rounded-2xl shadow-xl shadow-black/10 sm:h-64">
           <Image
             src="/service.png"
-            alt=""
+            alt="" aria-hidden
             fill
             sizes="(min-width: 640px) 576px, 100vw"
             className="object-cover"
@@ -104,7 +104,7 @@ export default function LinksPage() {
         >
           <Image
             src="/oglogo.webp"
-            alt=""
+            alt="" aria-hidden
             width={16}
             height={16}
             className="h-4 w-4 object-contain"

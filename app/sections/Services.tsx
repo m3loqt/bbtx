@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight } from "@/app/components/ArrowIcon";
 import { Cpu, Search, TrendingUp, Users, Workflow } from "lucide-react";
+import { altFor } from "@/lib/seo/image-alt";
 
 const SERVICES = [
   {
@@ -104,7 +105,7 @@ export function Services() {
               <div className="absolute inset-0 z-0">
                 <Image
                   src="/serv4.png"
-                  alt=""
+                  alt={altFor("/serv4.png")}
                   fill
                   sizes="(min-width: 1024px) 33vw, 100vw"
                   className="object-cover"

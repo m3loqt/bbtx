@@ -128,7 +128,7 @@ function TestimonialCard({ t }: { t: Testimonial }) {
       <footer className="mt-6 flex items-center gap-3">
         <div className="relative flex h-11 w-11 flex-shrink-0 items-center justify-center overflow-hidden rounded-full bg-[#f3f4f6]">
           {t.image ? (
-            <Image src={t.image} alt="" fill sizes="44px" className="h-full w-full object-cover" />
+            <Image src={t.image} alt="" aria-hidden fill sizes="44px" className="h-full w-full object-cover" />
           ) : (
             <span className="text-sm font-semibold tracking-normal text-[#6b7280]" aria-hidden>
               {initialsFromName(t.author)}
@@ -174,7 +174,7 @@ function FeaturedTestimonialCard({ t }: { t: Testimonial }) {
             <footer className="flex items-center gap-4">
               <div className="relative h-14 w-14 flex-shrink-0 overflow-hidden rounded-full bg-[#f3f4f6] sm:h-16 sm:w-16">
                 {t.image ? (
-                  <Image src={t.image} alt="" fill sizes="64px" className="h-full w-full object-cover" />
+                  <Image src={t.image} alt="" aria-hidden fill sizes="64px" className="h-full w-full object-cover" />
                 ) : (
                   <span
                     className="flex h-full w-full items-center justify-center text-base font-semibold text-[#6b7280]"

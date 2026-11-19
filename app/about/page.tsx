@@ -8,8 +8,9 @@ import { AnimatePresence, motion, useMotionValue, useSpring, useTransform } from
 import { Nav } from "@/app/components/Nav";
 import { Footer } from "@/app/components/Footer";
 import { CTA } from "@/app/sections/CTA";
+import { altFor, type AltKey } from "@/lib/seo/image-alt";
 
-const PHOTO_STRIP = [
+const PHOTO_STRIP: { src: AltKey; width: number; height: number }[] = [
   { src: "/about/one.jpg", width: 1376, height: 977 },
   { src: "/about/two.png", width: 1448, height: 1086 },
   { src: "/about/three.png", width: 1537, height: 1023 },
@@ -17,6 +18,14 @@ const PHOTO_STRIP = [
   { src: "/about/five.png", width: 1537, height: 1023 },
   { src: "/about/six.jpg", width: 1684, height: 2048 },
 ];
+
+// The strip is sized by height (h-[62vh] / sm:58vh / lg:54vh), so its rendered
+// width is height x aspect ratio. Telling the browser that keeps it from
+// fetching a far larger file than it draws.
+function stripSizes({ width, height }: { width: number; height: number }) {
+  const r = (width / height).toFixed(2);
+  return `(min-width: 1024px) calc(54vh * ${r}), (min-width: 640px) calc(58vh * ${r}), calc(62vh * ${r})`;
+}
 
 const TIMELINE_ENTRIES = [
   {
@@ -171,9 +180,11 @@ export default function AboutPage() {
               <Image
                 key={`${photo.src}-${i}`}
                 src={photo.src}
-                alt=""
+                alt={i < PHOTO_STRIP.length ? altFor(photo.src) : ""}
+                aria-hidden={i >= PHOTO_STRIP.length || undefined}
                 width={photo.width}
                 height={photo.height}
+                sizes={stripSizes(photo)}
                 className="h-full w-auto shrink-0 object-cover"
               />
             ))}
@@ -249,7 +260,7 @@ export default function AboutPage() {
                   >
                     <Image
                       src={hoveredEntry.image}
-                      alt=""
+                      alt="" aria-hidden
                       fill
                       sizes="320px"
                       className="object-cover"
@@ -286,7 +297,7 @@ export default function AboutPage() {
             <div className="relative aspect-[4/5] w-full overflow-hidden rounded-2xl sm:aspect-[16/11] lg:aspect-auto lg:h-full">
               <Image
                 src="/grant.jpg"
-                alt=""
+                alt={altFor("/grant.jpg")}
                 fill
                 sizes="(min-width: 1024px) 40vw, 100vw"
                 className="object-cover"

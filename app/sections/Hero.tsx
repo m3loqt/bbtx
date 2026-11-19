@@ -4,6 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import { ArrowUpRight } from "@/app/components/ArrowIcon";
 import { ContactModal } from "@/app/components/ContactModal";
+import { altFor } from "@/lib/seo/image-alt";
 
 export function Hero() {
   const [contactOpen, setContactOpen] = useState(false);
@@ -14,7 +15,7 @@ export function Hero() {
       <div className="absolute inset-0 z-0">
         <Image
           src="/grant.jpg"
-          alt=""
+          alt={altFor("/grant.jpg")}
           fill
           priority
           sizes="100vw"

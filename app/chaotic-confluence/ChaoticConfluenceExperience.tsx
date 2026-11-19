@@ -9,6 +9,7 @@ import { SubscribeModal } from "@/app/components/SubscribeModal";
 import { ArrowUpRight } from "@/app/components/ArrowIcon";
 import { PenLine } from "lucide-react";
 import { formatDisplayDate } from "@/lib/seo/dates";
+import { RemoteCoverImage } from "@/app/components/RemoteCoverImage";
 
 export type PublicBlogPost = {
   id: string;
@@ -98,14 +99,13 @@ export function ChaoticConfluenceExperience({ posts }: { posts: PublicBlogPost[]
                   }`}
                 >
                   <div
-                    className={`aspect-[4/3] w-full shrink-0 overflow-hidden rounded-md sm:w-2/5 lg:w-3/5 lg:max-w-[588px] ${tone}`}
+                    className={`relative aspect-[4/3] w-full shrink-0 overflow-hidden rounded-md sm:w-2/5 lg:w-3/5 lg:max-w-[588px] ${tone}`}
                   >
                     {post.cover_image_url ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img
+                      <RemoteCoverImage
                         src={post.cover_image_url}
-                        alt=""
-                        className="h-full w-full object-cover"
+                        alt={post.title}
+                        sizes="(min-width: 1024px) 588px, (min-width: 640px) 40vw, 100vw"
                       />
                     ) : (
                       <div className="flex h-full w-full items-center justify-center">
