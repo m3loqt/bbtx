@@ -6,7 +6,6 @@ import {
 } from "next/font/google";
 import "./globals.css";
 import { GoogleAnalytics } from "@/app/components/GoogleAnalytics";
-import { VoxwinsWidget } from "@/app/components/VoxwinsWidget";
 import { JsonLd } from "@/app/components/JsonLd";
 import { siteGraph } from "@/lib/seo/schema";
 
@@ -115,7 +114,6 @@ export default function RootLayout({
         <JsonLd data={siteGraph()} />
         <GoogleAnalytics />
         {children}
-        <VoxwinsWidget />
       </body>
     </html>
   );

@@ -97,3 +97,23 @@ Validation: `tsc` exit 0; `npm test` 82 of 82 (the alt-text tests were deliberat
 - The chat widget costs about 116 KB of JavaScript on every page (`shell.js`) plus a 50 KB avatar PNG from the vendor that is not optimized, and the vendor serves them without cache headers. Loading the widget after the page is idle would cut about 230 KiB of unused JavaScript and some of the 2.1 s of main-thread work in the audit. That would change when the launcher appears, so it needs a decision.
 - Accessibility findings on `/cookies`: 10 low-contrast text items (the small uppercase labels and footer links) and "document does not have a main landmark". Worth checking site-wide.
 - `courses` scores 92 on SEO, below the other pages (100).
+
+## 10. Update 2026-11-19: chat widget removed (supersedes sections 2, 3 and 9's widget item)
+
+Mel cancelled the Voxwins subscription and asked for the widget to be removed, so `VoxwinsWidget.tsx` and its guard are deleted (the last version is in git at commit `63cff09`). This also removes the third-party requests behind the audit's largest remaining items: about 240 KiB of unused JavaScript (`shell.js`), a 50 KB avatar PNG, and the vendor's missing cache headers.
+
+What the live Lighthouse re-run showed after the guard shipped (OpenSEO audit `8df26e26-6f4a-47ba-a91d-07d94b6d8641`, same 10 pages):
+
+| | Before | After the guard |
+|---|---|---|
+| CLS, desktop | 1.37 to 1.48 | 0.42 to 0.52 |
+| CLS, mobile | 1.59 to 2.18 | 0.63 |
+| Performance, desktop (avg) | 74 | 79 |
+| Performance, mobile (avg) | 55 | 61 (one run each, noisy) |
+
+The guard removed the first jump (about 0.96) but not the rest. A fresh browser tab reproduced the remainder: on a visitor's first view the widget's greeting bubble made the wrapper return to full screen (about 2.8 s) and animate down to bubble size, again when the bubble dismissed (about 12.8 s), roughly 0.35 per burst. Returning visitors, and Mel's already-open tab, never saw it, which is why a normal browser measured 0 while Lighthouse measured 0.42.
+
+With the widget gone the site has no known remaining layout-shift source; this has to be confirmed by re-running the Lighthouse audit after deploy.
+
+Also noted from the same audit run (info level, not fixed): ten meta descriptions are too short (several blog posts use a one-line subtitle as the description) and five too long; five pages skip a heading level; two titles are over 60 characters; `/links` is thin content (33 words).
+
