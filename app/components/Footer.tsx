@@ -29,6 +29,8 @@ const RESOURCES_LINKS = [
   { label: "1:1 Coaching", href: "/coaching" },
   { label: "Courses", href: "/courses" },
   { label: "Articles", href: "https://chaoticconfluence.substack.com", external: true },
+  // The /newsletter page had no internal link pointing at it (an orphan in the site audit).
+  { label: "Newsletter", href: "/newsletter" },
   { label: "Subscribe", action: "subscribe" as const },
 ];
 
@@ -51,7 +53,8 @@ function FooterLinkGroup({
 }) {
   return (
     <div className="flex flex-col gap-2 lg:flex-row lg:gap-4">
-      <h3 className="shrink-0 text-[15px] font-semibold text-[#222222]">{heading}</h3>
+      {/* h2, not h3: pages without any other h2 (the digital twin tool) would otherwise jump from h1 to h3 */}
+      <h2 className="shrink-0 text-[15px] font-semibold text-[#222222]">{heading}</h2>
       <ul className="space-y-2.5">
         {links.map((link) =>
           link.action ? (
@@ -129,7 +132,7 @@ export function Footer() {
           <FooterLinkGroup heading="Resources" links={RESOURCES_LINKS} onAction={handleAction} />
 
           <div>
-            <h3 className="text-[15px] font-semibold text-[#222222]">Subscribe</h3>
+            <h2 className="text-[15px] font-semibold text-[#222222]">Subscribe</h2>
             {footerStatus === "success" ? (
               <p className="mt-2 text-sm text-[#777777]">You&apos;re subscribed — thanks for joining.</p>
             ) : (
