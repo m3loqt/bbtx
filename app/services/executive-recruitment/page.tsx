@@ -346,7 +346,7 @@ export default function ExecutiveRecruitmentPage() {
       <section className="relative z-[1] bg-[#f7f7f7]">
         <div className="relative z-[1] w-full px-4 py-8 sm:px-6 lg:px-8 lg:py-10">
           <div className="relative w-full overflow-hidden rounded-xl border border-white/20 bg-[#ca3726] shadow-[0_4px_24px_rgba(202,55,38,0.25)] sm:rounded-2xl">
-            <Image src="/cta.png" alt="" fill sizes="100vw" className="object-cover" aria-hidden />
+            <Image src="/cta.png" alt={altFor("/cta.png")} fill sizes="100vw" className="object-cover" aria-hidden />
             <div className="pointer-events-none absolute inset-0 z-0 bg-[#ca3726]/40" aria-hidden />
 
             <div className="relative z-[1] w-full px-6 py-16 text-center sm:px-10 sm:py-20 lg:px-16 lg:py-24">

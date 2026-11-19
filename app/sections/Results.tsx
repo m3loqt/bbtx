@@ -46,7 +46,7 @@ function LogoRow({ logos, direction }: { logos: string[]; direction: "normal" | 
               same size before and after load. The second copy only feeds the loop. */}
           <Image
             src={src}
-            alt={i < logos.length ? companyLogoAlt(src) : ""}
+            alt={companyLogoAlt(src)}
             aria-hidden={i >= logos.length || undefined}
             width={160}
             height={160}

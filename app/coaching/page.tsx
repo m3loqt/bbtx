@@ -7,8 +7,11 @@ import { Footer } from "@/app/components/Footer";
 import { FAQ } from "@/app/sections/FAQ";
 import { ArrowUpRight } from "@/app/components/ArrowIcon";
 import { WaitlistModal } from "@/app/components/WaitlistModal";
+import { TESTIMONIALS } from "@/app/sections/Testimonials";
 import { COACHING_FAQ_ITEMS } from "@/app/coaching/coaching-faq-data";
-import { altFor } from "@/lib/seo/image-alt";
+import { altFor, personAlt } from "@/lib/seo/image-alt";
+
+const GOLARA = TESTIMONIALS.find((t) => t.author === "Golara Haghtalab")!;
 
 const WHY_CARDS = [
   {
@@ -151,7 +154,7 @@ export default function CoachingPage() {
           {/* Testimonial — sits outside the glass panel's flow so it overlaps its height, bottom-aligned with the headline */}
           <article className="absolute bottom-8 right-6 z-20 hidden max-w-[calc(100%-3rem)] items-stretch gap-5 rounded-2xl border border-white/20 bg-white/10 p-7 shadow-[0_20px_60px_rgba(0,0,0,0.3)] backdrop-blur-xl sm:bottom-10 sm:right-10 sm:flex sm:max-w-2xl sm:p-8 lg:right-14">
             <div className="relative w-32 shrink-0 overflow-hidden rounded-xl bg-white/10 sm:w-36">
-              <Image src="/testimonials/golara.jpeg" alt="" aria-hidden fill sizes="144px" className="object-cover" />
+              <Image src="/testimonials/golara.jpeg" alt={personAlt(GOLARA)} aria-hidden fill sizes="144px" className="object-cover" />
             </div>
             <div>
               <p className="text-base leading-snug text-white sm:text-lg">

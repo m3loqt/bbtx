@@ -329,7 +329,7 @@ export default function ServicesPage() {
                 >
                   <Image
                     src={src}
-                    alt={i < LOGOS.length ? companyLogoAlt(src) : ""}
+                    alt={companyLogoAlt(src)}
                     aria-hidden={i >= LOGOS.length || undefined}
                     width={128}
                     height={128}

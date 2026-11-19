@@ -7,7 +7,7 @@ import { Nav } from "@/app/components/Nav";
 import { Footer } from "@/app/components/Footer";
 import { ArrowUpRight } from "@/app/components/ArrowIcon";
 import { TESTIMONIALS } from "@/app/sections/Testimonials";
-import { altFor } from "@/lib/seo/image-alt";
+import { altFor, personAlt } from "@/lib/seo/image-alt";
 
 const gridBg = {
   backgroundImage: `
@@ -287,7 +287,7 @@ export default function AiIntegrationPage() {
               <div className="mt-6 flex items-center gap-3">
                 {testimonial.image && (
                   <div className="relative h-11 w-11 shrink-0 overflow-hidden rounded-full">
-                    <Image src={testimonial.image} alt="" aria-hidden fill sizes="44px" className="object-cover" />
+                    <Image src={testimonial.image} alt={personAlt(testimonial)} aria-hidden fill sizes="44px" className="object-cover" />
                   </div>
                 )}
                 <div>
@@ -361,7 +361,7 @@ export default function AiIntegrationPage() {
       <section className="relative z-[1] bg-[#f7f7f7]">
         <div className="relative z-[1] w-full px-4 py-8 sm:px-6 lg:px-8 lg:py-10">
           <div className="relative w-full overflow-hidden rounded-xl border border-white/20 bg-[#ca3726] shadow-[0_4px_24px_rgba(202,55,38,0.25)] sm:rounded-2xl">
-            <Image src="/cta.png" alt="" fill sizes="100vw" className="object-cover" aria-hidden />
+            <Image src="/cta.png" alt={altFor("/cta.png")} fill sizes="100vw" className="object-cover" aria-hidden />
             <div className="pointer-events-none absolute inset-0 z-0 bg-[#ca3726]/40" aria-hidden />
             <div className="relative z-[1] w-full px-6 py-16 text-center sm:px-10 sm:py-20 lg:px-16 lg:py-24">
               <h2 className="text-4xl font-medium leading-tight tracking-tight text-white sm:text-[2.75rem] md:text-5xl lg:text-5xl xl:text-6xl 2xl:text-[4rem]">

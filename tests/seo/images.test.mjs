@@ -14,6 +14,7 @@ import {
   IMAGE_ALT,
   altFor,
   companyLogoAlt,
+  personAlt,
 } from "../../lib/seo/image-alt.ts";
 
 const ROOT = new URL("../../", import.meta.url).pathname;
@@ -158,14 +159,63 @@ test("every company logo file has alt text and an unknown one fails loudly", () 
   assert.throws(() => companyLogoAlt("/companies-nobg/nope.png"), /No alt text/);
 });
 
-test("decorative images are real files and only those carry an empty alt", () => {
-  for (const src of DECORATIVE_IMAGES) assert.ok(existsSync(join(ROOT, "public", src)), `${src} missing`);
+test("no image anywhere on the public site has an empty alt", () => {
   for (const { rel, el } of IMAGE_ELEMENTS) {
     assert.match(el, /\balt=/, `${rel}: an <Image> has no alt prop: ${el.slice(0, 80)}`);
-    if (/\balt=""/.test(el)) {
-      assert.match(el, /aria-hidden/, `${rel}: empty alt must also be aria-hidden: ${el.slice(0, 80)}`);
+    assert.doesNotMatch(el, /\balt=""/, `${rel}: empty alt: ${el.slice(0, 80)}`);
+    // alt={cond ? name : ""} is an empty alt in disguise (it was how the loop copies used to hide)
+    assert.doesNotMatch(el, /\balt=\{[^}]*""[^}]*\}/, `${rel}: alt falls back to "": ${el.slice(0, 80)}`);
+  }
+  // The two plain <img> tags left: the blog fallback gets its alt from the caller, and the form preview is described.
+  const modal = readFileSync(join(ROOT, "app/components/TestimonialSubmissionModal.tsx"), "utf8");
+  assert.match(modal, /alt="Preview of the photo you selected"/);
+  assert.doesNotMatch(modal, /<img[^>]*\balt=""/s);
+});
+
+test("images that are decoration for assistive tech keep their alt but are aria-hidden", () => {
+  for (const src of DECORATIVE_IMAGES) {
+    assert.ok(existsSync(join(ROOT, "public", src)), `${src} missing`);
+    assert.ok(src in IMAGE_ALT, `${src} needs alt text in image-alt.ts`);
+  }
+  let seen = 0;
+  for (const { rel, el } of IMAGE_ELEMENTS) {
+    const m = el.match(/src="(\/[^"]+)"/);
+    if (m && DECORATIVE_IMAGES.includes(m[1])) {
+      seen++;
+      assert.match(el, /aria-hidden/, `${rel}: ${m[1]} is decorative and must be aria-hidden: ${el.slice(0, 80)}`);
     }
   }
+  assert.ok(seen >= 8, `expected the logo mark and banners to be found, saw ${seen}`);
+});
+
+test("looping strips name every copy but hide the duplicate from screen readers", () => {
+  const strips = IMAGE_ELEMENTS.filter(({ el }) => /companyLogoAlt\(|altFor\(photo\.src\)/.test(el));
+  assert.equal(strips.length, 4, "three logo strips and the About photo strip");
+  for (const { rel, el } of strips) {
+    assert.match(el, /aria-hidden=\{i >= [A-Za-z_.]+(\.length)? \|\| undefined\}/, `${rel}: duplicate copy must be aria-hidden: ${el.slice(0, 90)}`);
+  }
+});
+
+test("testimonial portraits use the name and role printed beside them, and are aria-hidden", () => {
+  const portraits = IMAGE_ELEMENTS.filter(({ el }) => /src=\{(t|testimonial)\.image\}|golara\.jpeg/.test(el));
+  assert.equal(portraits.length, 7, "2 on the homepage cards, 4 service pages, 1 on coaching");
+  for (const { rel, el } of portraits) {
+    assert.match(el, /alt=\{personAlt\(/, `${rel}: portrait alt must come from personAlt: ${el.slice(0, 80)}`);
+    assert.match(el, /aria-hidden/, `${rel}: the name sits beside the portrait, so hide the duplicate`);
+  }
+  assert.equal(personAlt({ author: "Martin Chapman", role: "President and CEO, InBio" }), "Martin Chapman, President and CEO, InBio");
+  assert.equal(personAlt({ author: "Golara Haghtalab", role: "Accenture" }), "Golara Haghtalab, Accenture");
+  assert.equal(personAlt({ author: "No Role" }), "No Role");
+  assert.equal(personAlt({ author: "Blank Role", role: "  " }), "Blank Role");
+});
+
+test("every About timeline image has alt text from the dictionary", () => {
+  const about = readFileSync(join(ROOT, "app/about/page.tsx"), "utf8");
+  const images = [...about.matchAll(/image:\s*"(\/history\d+\.png)"/g)].map((m) => m[1]);
+  assert.equal(images.length, 5);
+  for (const img of images) assert.ok(img in IMAGE_ALT, `${img} has no alt text`);
+  assert.match(about, /alt=\{altFor\(hoveredEntry\.image\)\}/);
+  assert.match(about, /image: AltKey/, "timeline entries are typed so a new image cannot ship without alt text");
 });
 
 test("an image that has a dictionary entry never ships with an empty alt", () => {

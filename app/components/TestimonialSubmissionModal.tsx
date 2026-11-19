@@ -237,7 +237,7 @@ export function TestimonialSubmissionModal({ open, onClose }: TestimonialSubmiss
                     {/* eslint-disable-next-line @next/next/no-img-element -- local blob: object URL, next/image can't load it */}
                     <img
                       src={photoPreview}
-                      alt=""
+                      alt="Preview of the photo you selected"
                       className="h-14 w-14 rounded-full object-cover"
                     />
                     <button

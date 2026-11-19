@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { ArrowUpRight } from "@/app/components/ArrowIcon";
 import { Calendar, FileText, GraduationCap, Linkedin, Rss } from "lucide-react";
+import { altFor } from "@/lib/seo/image-alt";
 
 export const metadata: Metadata = {
   title: "BBTx | Links",
@@ -56,7 +57,7 @@ export default function LinksPage() {
         <div className="relative h-56 w-full overflow-hidden rounded-2xl shadow-xl shadow-black/10 sm:h-64">
           <Image
             src="/service.png"
-            alt="" aria-hidden
+            alt={altFor("/service.png")} aria-hidden
             fill
             sizes="(min-width: 640px) 576px, 100vw"
             className="object-cover"
@@ -104,7 +105,7 @@ export default function LinksPage() {
         >
           <Image
             src="/oglogo.webp"
-            alt="" aria-hidden
+            alt={altFor("/oglogo.webp")} aria-hidden
             width={16}
             height={16}
             className="h-4 w-4 object-contain"

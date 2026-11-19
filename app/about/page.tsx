@@ -27,7 +27,7 @@ function stripSizes({ width, height }: { width: number; height: number }) {
   return `(min-width: 1024px) calc(54vh * ${r}), (min-width: 640px) calc(58vh * ${r}), calc(62vh * ${r})`;
 }
 
-const TIMELINE_ENTRIES = [
+const TIMELINE_ENTRIES: { year: string; image: AltKey; title: string; description: string }[] = [
   {
     year: "1981",
     image: "/history1.png",
@@ -180,7 +180,7 @@ export default function AboutPage() {
               <Image
                 key={`${photo.src}-${i}`}
                 src={photo.src}
-                alt={i < PHOTO_STRIP.length ? altFor(photo.src) : ""}
+                alt={altFor(photo.src)}
                 aria-hidden={i >= PHOTO_STRIP.length || undefined}
                 width={photo.width}
                 height={photo.height}
@@ -260,7 +260,7 @@ export default function AboutPage() {
                   >
                     <Image
                       src={hoveredEntry.image}
-                      alt="" aria-hidden
+                      alt={altFor(hoveredEntry.image)} aria-hidden
                       fill
                       sizes="320px"
                       className="object-cover"

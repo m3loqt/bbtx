@@ -7,6 +7,7 @@ import { ArrowUpRight, ChevronDown } from "./ArrowIcon";
 import { ContactModal } from "./ContactModal";
 import { SiSubstack, SiLinkedin, SiGumroad } from "react-icons/si";
 import { FaMediumM } from "react-icons/fa";
+import { altFor } from "@/lib/seo/image-alt";
 
 const NAV_TRANSITION = { duration: 0.6, ease: [0.22, 1, 0.36, 1] as const };
 
@@ -441,7 +442,7 @@ function NavInner({ heroTheme = "dark", instantFloat = false }: NavProps) {
             <a href="/" className="flex shrink-0 items-center gap-1.5 sm:gap-2">
               <Image
                 src="/oglogo.webp"
-                alt="" aria-hidden
+                alt={altFor("/oglogo.webp")} aria-hidden
                 width={48}
                 height={48}
                 className="h-9 w-9 object-contain sm:h-11 sm:w-11"

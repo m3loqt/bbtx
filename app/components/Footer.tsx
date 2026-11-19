@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { SubscribeModal } from "@/app/components/SubscribeModal";
+import { altFor } from "@/lib/seo/image-alt";
 
 const USEFUL_LINKS = [
   { label: "About Us", href: "/about" },
@@ -172,7 +173,7 @@ export function Footer() {
             <a href="/" className="flex items-center gap-2">
               <Image
                 src="/oglogo.webp"
-                alt="" aria-hidden
+                alt={altFor("/oglogo.webp")} aria-hidden
                 width={32}
                 height={32}
                 className="h-8 w-8 object-contain"
