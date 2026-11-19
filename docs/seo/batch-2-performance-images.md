@@ -1,7 +1,7 @@
 # SEO/AEO Batch 2: layout shift, images, 404
 
 **Branch:** `seo/batch-2-performance-images` (from `main` at `51a3bf3`) · **Date:** 2026-11-19
-**Status:** Committed on the branch. **Not pushed, not merged, not deployed.**
+**Status:** Merged to `main` and **deployed to production 2026-11-19** (the first production build failed on a Google Fonts download and was retried with `63cff09`).
 
 Source of the work: eight audit issues pasted by Mel (CLS, render-blocking resources, modern image formats, missing alt text, custom 404, image aspect ratio, oversized images, request count). The `seo-audit` skill's image and Core Web Vitals checklist guided what to inspect; `CLAUDE_SEO_AEO_ADDENDUM.md` took priority over any skill advice.
 

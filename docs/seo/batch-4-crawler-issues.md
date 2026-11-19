@@ -1,7 +1,7 @@
 # SEO/AEO Batch 4: Screaming Frog issues
 
 **Branch:** `seo/batch-4-crawler-issues` (from `main` at `55f81dd`, which is live) · **Date:** 2026-11-19
-**Status:** Committed on the branch. **Not pushed, not merged, not deployed.**
+**Status:** Merged to `main` as `636135b` and **deployed to production 2026-11-19** (fast-forward; Vercel build succeeded first time).
 **Source:** Screaming Frog "issues overview report" (34 URLs, no per-URL lists). Each issue was reproduced on the live site with a Screaming Frog user agent to find the real URLs and decide whether it is a defect.
 
 ## 0. Where the site stands now (live Lighthouse, after Batches 2 and 3 shipped)

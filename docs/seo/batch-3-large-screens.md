@@ -1,7 +1,7 @@
 # SEO/AEO Batch 3: large-screen cap and chat widget removal
 
 **Branch:** `seo/batch-3-widget-and-large-screens` (from `main` at `63cff09`) · **Date:** 2026-11-19
-**Status:** Committed on the branch. **Not pushed, not merged, not deployed.** The widget removal is its own commit (`edb93f6`) so it can ship ahead of the layout change.
+**Status:** Merged to `main` (`55f81dd`) and **deployed to production 2026-11-19**. The widget removal is its own commit (`edb93f6`) so it can ship ahead of the layout change.
 
 ## 1. Chat widget removed
 
