@@ -167,7 +167,7 @@ export default function AboutPage() {
           Height complements the hero's min-h above it so the two sections
           together fill exactly one viewport on load. */}
       <section className="relative z-[1] h-[62vh] w-full overflow-hidden bg-white sm:h-[58vh] lg:h-[54vh]">
-        <div className="relative left-1/2 h-full w-screen max-w-[100vw] -translate-x-1/2">
+        <div className="relative left-1/2 h-full w-screen max-w-[min(100vw,1920px)] -translate-x-1/2">
           <div
             className="flex h-full w-max gap-3 sm:gap-4"
             style={{

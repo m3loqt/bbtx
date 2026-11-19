@@ -8,7 +8,7 @@ export function CTA() {
   return (
     <section className="relative z-[1] flex min-h-[640px] w-full items-center overflow-hidden sm:min-h-[720px] lg:min-h-[820px]">
       {/* Full-bleed background */}
-      <Image src="/newcta.png" alt={altFor("/newcta.png")} fill sizes="100vw" className="object-cover" aria-hidden />
+      <Image src="/newcta.png" alt={altFor("/newcta.png")} fill sizes="(min-width: 1920px) 1920px, 100vw" className="object-cover" aria-hidden />
 
       <div className="relative z-[1] w-full px-4 py-20 sm:w-4/5 sm:px-10 sm:py-24 lg:w-1/2 lg:px-16 lg:py-28">
         <h2 className="text-5xl font-medium leading-tight tracking-tight text-white sm:text-[3.75rem] md:text-7xl lg:text-7xl xl:text-8xl 2xl:text-[5.5rem]">

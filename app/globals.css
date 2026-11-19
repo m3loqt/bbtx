@@ -109,6 +109,18 @@ body {
   min-height: 100vh;
 }
 
+/* Ultra-wide screens: cap the public site at 1920px and centre it. Full-bleed
+   sections (hero photos, banners) otherwise stretch to the whole monitor, which
+   enlarges the photos past what their files hold (the hero file is 2048px wide)
+   and crops them to extreme panoramas (a 2560px screen made the hero 1.97:1 from
+   a 1.47:1 photo). Nothing changes at or below 1920px; beyond it the page colour
+   continues on both sides. The admin shell is excluded: its sidebar is
+   position: fixed to the viewport edge and would no longer line up. */
+body:not(:has([data-slot="sidebar-wrapper"])) {
+  max-width: 1920px;
+  margin-inline: auto;
+}
+
 /* Fine-grained noise texture - light grey base with subtle darker specks */
 body::before {
   content: "";

@@ -4,6 +4,9 @@ import { imageRemotePatterns } from "./lib/image-hosts.ts";
 const nextConfig: NextConfig = {
   images: {
     formats: ["image/avif", "image/webp"],
+    // Default list plus 160 and 320, so a 160px logo gets exactly a 160px file at 1x
+    // and a 320px file at 2x instead of the next size up (256 and 384).
+    imageSizes: [16, 32, 48, 64, 96, 128, 160, 256, 320, 384],
     // Blog covers live on Substack/S3/Vercel Blob. Listing the hosts lets them
     // be resized and served as AVIF/WebP; see lib/image-hosts.ts.
     remotePatterns: imageRemotePatterns,

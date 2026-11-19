@@ -133,7 +133,7 @@ export default function CoachingPage() {
               alt={altFor("/about/two.png")}
               fill
               priority
-              sizes="100vw"
+              sizes="(min-width: 1920px) 1920px, 100vw"
               className="object-cover"
               style={{ objectPosition: "55% 25%" }}
             />

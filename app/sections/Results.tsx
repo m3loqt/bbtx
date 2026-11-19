@@ -67,7 +67,7 @@ export function Results() {
 
       {/* Logo carousel — full viewport width so left/right aren't clipped by section padding */}
       <div
-        className="relative left-1/2 z-0 mt-8 w-screen max-w-[100vw] -translate-x-1/2 space-y-2 overflow-hidden sm:mt-10 sm:space-y-3"
+        className="relative left-1/2 z-0 mt-8 w-screen max-w-[min(100vw,1920px)] -translate-x-1/2 space-y-2 overflow-hidden sm:mt-10 sm:space-y-3"
         style={{
           maskImage: "linear-gradient(to right, transparent, black 8%, black 92%, transparent)",
           WebkitMaskImage: "linear-gradient(to right, transparent, black 8%, black 92%, transparent)",
