@@ -15,6 +15,9 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "https://www.bbtx.ai/links",
   },
+  // A link-in-bio page (33 words of its own). It exists for people who arrive from a profile,
+  // not to rank, so it stays out of the index and the sitemap; links on it are still followed.
+  robots: { index: false, follow: true },
 };
 
 const PLATFORMS = [

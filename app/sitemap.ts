@@ -131,10 +131,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "yearly",
       priority: 0.3,
     },
-    {
-      url: `${BASE_URL}/links`,
-      changeFrequency: "monthly",
-      priority: 0.3,
-    },
+    // /links is noindex (a link-in-bio page), so it is deliberately not listed here.
   ];
 }

@@ -24,3 +24,15 @@ test("footer headings are h2, so a page with only an h1 above the footer never s
   assert.equal((footer.match(/<h2\b/g) ?? []).length, 2, "the link-group heading and the subscribe heading");
   assert.equal((footer.match(/<\/h2>/g) ?? []).length, 2);
 });
+
+// --- "Thin content: /links" --------------------------------------------------------------------
+test("the link-in-bio page is noindex (links still followed) and not in the sitemap", () => {
+  const page = read("app/links/page.tsx");
+  assert.match(page, /robots:\s*\{\s*index:\s*false,\s*follow:\s*true\s*\}/);
+  const sitemap = read("app/sitemap.ts");
+  assert.doesNotMatch(sitemap, /\$\{BASE_URL\}\/links`/, "a noindex page must not be in the sitemap");
+  // Everything else we rely on stays listed.
+  for (const path of ["/newsletter", "/privacy", "/cookies"]) {
+    assert.ok(sitemap.includes("${BASE_URL}" + path + "`"), `${path} must stay in the sitemap`);
+  }
+});
