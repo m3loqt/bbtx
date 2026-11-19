@@ -10,6 +10,7 @@ import { JsonLd } from "@/app/components/JsonLd";
 import { RemoteCoverImage } from "@/app/components/RemoteCoverImage";
 import { articleSchema, breadcrumbList } from "@/lib/seo/schema";
 import { formatDisplayDate, toDateOnly, toIsoTimestamp } from "@/lib/seo/dates";
+import { composeMetaDescription, ensureImageAlt } from "@/lib/seo/post-content";
 import { BlogEngagement } from "./BlogEngagement";
 
 export const dynamic = "force-dynamic";
@@ -24,7 +25,9 @@ export async function generateMetadata({
   if (!post) return {};
 
   const url = `https://www.bbtx.ai/chaotic-confluence/${slug}`;
-  const description = post.excerpt ?? undefined;
+  // Some posts only have a one-line subtitle as their excerpt; build a real description from it
+  // plus the opening of the post (see lib/seo/post-content.ts) so every post has 70 to 155 characters.
+  const description = composeMetaDescription(post.excerpt, post.content);
   // published_date is a Postgres `date` and arrives as a JS Date at runtime;
   // normalise it so the meta tag is "2026-02-26", not "[object Object]".
   const publishedTime = toDateOnly(post.published_date);
@@ -132,7 +135,7 @@ export default async function BlogPostPage({
             <div className="mx-auto max-w-3xl">
               <div
                 className="article-prose"
-                dangerouslySetInnerHTML={{ __html: post.content ?? "" }}
+                dangerouslySetInnerHTML={{ __html: ensureImageAlt(post.content, post.title) }}
               />
             </div>
           </div>

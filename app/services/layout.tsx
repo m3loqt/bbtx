@@ -4,7 +4,7 @@ export const metadata: Metadata = {
   // `absolute` stops the root "%s | BBTx" template from adding a second suffix.
   title: { absolute: "Services | BBTx Consulting" },
   description:
-    "BBTx works at the intersection of organizational development, leadership, strategy, and AI — helping leadership teams understand why performance problems persist and change the conditions that cause them.",
+    "BBTx works at the intersection of organizational development, leadership, strategy, and AI to help teams understand why performance problems persist.",
   openGraph: {
     title: "Services | BBTx Consulting",
     description:

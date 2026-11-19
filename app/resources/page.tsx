@@ -70,9 +70,9 @@ export default function ResourcesPage() {
               className="group flex min-h-[200px] flex-col justify-between rounded-lg border border-black/[0.06] bg-white p-6 transition-shadow hover:shadow-[0_6px_18px_rgba(0,0,0,0.06)]"
             >
               <div>
-                <p className="text-lg font-semibold tracking-normal text-[#222222]">
+                <h2 className="text-lg font-semibold tracking-normal text-[#222222]">
                   {item.title}
-                </p>
+                </h2>
                 <p className="mt-2.5 text-sm leading-relaxed text-[#555555]">
                   {item.description}
                 </p>

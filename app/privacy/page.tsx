@@ -3,10 +3,10 @@ import { LegalPageLayout } from "@/app/components/LegalPageLayout";
 
 export const metadata: Metadata = {
   title: "BBTx | Privacy Policy",
-  description: "How BBTx collects, uses, and protects your information.",
+  description: "How BBTx Consulting collects, uses, and protects your information, and the choices and rights you have over it.",
   openGraph: {
     title: "Privacy Policy | BBTx",
-    description: "How BBTx collects, uses, and protects your information.",
+    description: "How BBTx Consulting collects, uses, and protects your information, and the choices and rights you have over it.",
     url: "https://www.bbtx.ai/privacy",
   },
   alternates: {

@@ -6,10 +6,10 @@ import { altFor } from "@/lib/seo/image-alt";
 
 export const metadata: Metadata = {
   title: "BBTx | Links",
-  description: "Every BBTx and Grant Tate platform in one place.",
+  description: "Every BBTx and Grant Tate platform in one place: Substack, Medium, LinkedIn, courses, and scheduling.",
   openGraph: {
     title: "Links | BBTx",
-    description: "Every BBTx and Grant Tate platform in one place.",
+    description: "Every BBTx and Grant Tate platform in one place: Substack, Medium, LinkedIn, courses, and scheduling.",
     url: "https://www.bbtx.ai/links",
   },
   alternates: {

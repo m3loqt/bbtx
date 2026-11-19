@@ -1,5 +1,6 @@
 import type { NextConfig } from "next";
 import { imageRemotePatterns } from "./lib/image-hosts.ts";
+import { securityHeaders } from "./lib/security-headers.ts";
 
 const nextConfig: NextConfig = {
   images: {
@@ -16,6 +17,14 @@ const nextConfig: NextConfig = {
   // once in <style> and once in Next's payload), taking the homepage from 20.7 KB
   // to 76.6 KB gzipped on every load, to save one cached request. Numbers in
   // docs/seo/batch-2-performance-images.md. Revisit only with measured field data.
+  // Next streams <title>, the description, the canonical and the robots tag into the <body> for
+  // any crawler that is not on its short built-in list (which leaves out Screaming Frog and the
+  // AI crawlers), so a live crawl found them "outside <head>" on a blog post. A pattern that
+  // matches every user agent switches streaming off and puts them in <head> for everyone.
+  htmlLimitedBots: /.*/,
+  async headers() {
+    return [{ source: "/:path*", headers: securityHeaders({ production: process.env.NODE_ENV === "production" }) }];
+  },
   async redirects() {
     return [
       {

@@ -215,7 +215,7 @@ export default function CoursesPage() {
                     </span>
                   ) : null}
 
-                  <h3 className="text-lg font-semibold tracking-normal text-[#111827] sm:text-xl">{plan.title}</h3>
+                  <h2 className="text-lg font-semibold tracking-normal text-[#111827] sm:text-xl">{plan.title}</h2>
                   <p className="mt-2 text-4xl font-semibold tracking-normal text-[#111827] sm:text-5xl">
                     {plan.price}{" "}
                     <span className="text-base font-normal text-[#555555] sm:text-lg">{plan.priceNote}</span>

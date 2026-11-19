@@ -5,7 +5,7 @@ import { breadcrumbList } from "@/lib/seo/schema";
 export const metadata: Metadata = {
   title: "Strategy & Advisory Services | BBTx Consulting",
   description:
-    "Most organizations don't have a strategy problem. They have a decision-making problem. BBTx helps leadership teams create the clarity, alignment, and discipline required to turn priorities into action.",
+    "Most organizations don't have a strategy problem. They have a decision-making problem. BBTx helps leadership teams turn priorities into action.",
   openGraph: {
     title: "Strategy & Advisory Services | BBTx Consulting",
     description:

@@ -15,7 +15,7 @@ import { FAQ_ITEMS } from "@/app/sections/faq-data";
 export const metadata: Metadata = {
   title: "BBTx | AI Business Consulting for Leaders and Organizations",
   description:
-    "BBTx helps leaders and organizations integrate AI with strategy, clarity, and confidence. 100+ organizations served across 40+ years of consulting experience.",
+    "BBTx helps leaders and organizations integrate AI with strategy, clarity, and confidence. 100+ organizations served across 40+ years of consulting.",
   alternates: {
     canonical: "https://www.bbtx.ai",
   },

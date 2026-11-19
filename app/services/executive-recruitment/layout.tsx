@@ -5,7 +5,7 @@ import { breadcrumbList } from "@/lib/seo/schema";
 export const metadata: Metadata = {
   title: "Executive Recruitment Assessment Services | BBTx Consulting",
   description:
-    "A disciplined, independent way for search committees to evaluate executive finalists — validated assessments, structured interviews, and an expert debriefing.",
+    "A disciplined, independent way for search committees to evaluate executive finalists: validated assessments, structured interviews, and an expert debrief.",
   openGraph: {
     title: "Executive Recruitment Assessment Services | BBTx Consulting",
     description:

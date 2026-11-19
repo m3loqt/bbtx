@@ -4,9 +4,9 @@ import { breadcrumbList } from "@/lib/seo/schema";
 import { COURSES_FAQ_ITEMS } from "@/app/courses/courses-faq-data";
 
 export const metadata: Metadata = {
-  title: "Courses — Making Modern Managers & AI Courses with Grant Tate",
+  title: "Making Modern Managers & AI Courses with Grant Tate",
   description:
-    "Eight courses built from Grant Tate's consulting frameworks: the Making Modern Managers management-development program in three tiers, plus five focused AI courses for leaders, consultants, and coaches.",
+    "Eight courses from Grant Tate's consulting frameworks: Making Modern Managers in three tiers, plus five AI courses for leaders, consultants, and coaches.",
   openGraph: {
     title: "Courses | BBTx",
     description:

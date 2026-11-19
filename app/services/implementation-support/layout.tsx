@@ -5,7 +5,7 @@ import { breadcrumbList } from "@/lib/seo/schema";
 export const metadata: Metadata = {
   title: "Implementation & Change Support | BBTx Consulting",
   description:
-    "Change doesn't fail in the boardroom. It fails in the realities of daily work. BBTx helps leaders move from planning to implementation through accountability, communication, reinforcement, and practical execution support.",
+    "Change doesn't fail in the boardroom. It fails in daily work. BBTx helps leaders go from planning to implementation with accountability and reinforcement.",
   openGraph: {
     title: "Implementation & Change Support | BBTx Consulting",
     description:

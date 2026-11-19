@@ -3,10 +3,10 @@ import { LegalPageLayout } from "@/app/components/LegalPageLayout";
 
 export const metadata: Metadata = {
   title: "BBTx | Cookie Policy",
-  description: "How bbtx.ai uses cookies.",
+  description: "How bbtx.ai uses cookies and similar technologies, including Google Analytics, and the choices available to you.",
   openGraph: {
     title: "Cookie Policy | BBTx",
-    description: "How bbtx.ai uses cookies.",
+    description: "How bbtx.ai uses cookies and similar technologies, including Google Analytics, and the choices available to you.",
     url: "https://www.bbtx.ai/cookies",
   },
   alternates: {

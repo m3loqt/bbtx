@@ -119,9 +119,9 @@ export function ChaoticConfluenceExperience({ posts }: { posts: PublicBlogPost[]
                       {post.category && <span>{post.category}</span>}
                       {date && <span className="text-[#9ca3af]">{date}</span>}
                     </div>
-                    <h3 className="mt-2.5 text-xl font-semibold leading-tight tracking-tight text-[#111111] transition-colors sm:text-2xl group-hover:text-[#ca3726]">
+                    <h2 className="mt-2.5 text-xl font-semibold leading-tight tracking-tight text-[#111111] transition-colors sm:text-2xl group-hover:text-[#ca3726]">
                       {post.title}
-                    </h3>
+                    </h2>
                     {post.excerpt && (
                       <p className="mt-1.5 truncate text-[15px] text-[#6b7280]">{post.excerpt}</p>
                     )}
