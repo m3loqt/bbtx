@@ -340,6 +340,83 @@ body::before {
   margin: 0 !important;
 }
 
+/* Homepage engagements popup (app/components/engagements-popup). Every rule is scoped to a
+   .promo-* class, so nothing here touches another part of the site. */
+@keyframes promo-backdrop-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes promo-sheet-in {
+  from { opacity: 0; transform: translateY(28px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes promo-panel-in {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes promo-slide-next {
+  from { opacity: 0; transform: translateX(14px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes promo-slide-prev {
+  from { opacity: 0; transform: translateX(-14px); }
+  to { opacity: 1; transform: none; }
+}
+
+.promo-backdrop {
+  animation: promo-backdrop-in 200ms ease-out both;
+}
+.promo-panel {
+  animation: promo-sheet-in 320ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.promo-slide-next {
+  animation: promo-slide-next 260ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.promo-slide-prev {
+  animation: promo-slide-prev 260ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* One engagement slide. Phones read top to bottom: picture, name and price, the argument,
+   then the action; tablets keep that order in a centred 680px modal. From 1024px the argument
+   takes the left column and the offer (picture, name and price, action) stacks in a fixed
+   right column. */
+.promo-single {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas: "visual" "product" "text" "cta";
+}
+.promo-area-visual { grid-area: visual; }
+.promo-area-product { grid-area: product; }
+.promo-area-text { grid-area: text; }
+.promo-area-cta { grid-area: cta; }
+
+@media (min-width: 768px) {
+  .promo-panel {
+    animation-name: promo-panel-in;
+    animation-duration: 280ms;
+  }
+}
+
+@media (min-width: 1024px) {
+  .promo-single {
+    grid-template-columns: minmax(0, 1fr) 380px;
+    grid-template-rows: minmax(0, 1fr) auto auto;
+    grid-template-areas:
+      "text visual"
+      "text product"
+      "text cta";
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .promo-backdrop,
+  .promo-panel,
+  .promo-slide-next,
+  .promo-slide-prev {
+    animation: none;
+  }
+}
+
 /* Blog article body — shared between the TipTap admin editor and the public
    /chaotic-confluence/[slug] page, so drafts render exactly as published. */
 .article-prose {

@@ -16,6 +16,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { trackEvent } from "@/lib/analytics";
+import { ENGAGEMENT_INQUIRY_OPTIONS } from "@/lib/promo/inquiry-labels";
 
 const CONTACT_EMAIL = "grant@bbtx.ai";
 const CONTACT_PHONE = "+1 (434) 466-4655";
@@ -41,6 +42,8 @@ const INQUIRY_OPTIONS = [
   "Leadership, Management & Team Development",
   "AI Integration & Innovation",
   "Implementation & Change Support",
+  // The homepage engagements popup opens this form with one of these pre-selected.
+  ...ENGAGEMENT_INQUIRY_OPTIONS,
   "General Inquiry",
 ] as const;
 
