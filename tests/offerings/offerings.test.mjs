@@ -7,6 +7,7 @@ import { ENGAGEMENT_INQUIRY_OPTIONS } from "../../lib/promo/inquiry-labels.ts";
 import { SLIDES } from "../../lib/promo/engagements.ts";
 import { EXCLUDED_PATHS, isExcludedPath } from "../../lib/promo/popup-logic.ts";
 import { IMAGE_ALT } from "../../lib/seo/image-alt.ts";
+import { MENU_ENGAGEMENT_LINKS, MENU_FEATURE } from "../../lib/offerings/menu-links.ts";
 
 const ROOT = new URL("../../", import.meta.url).pathname;
 const read = (p) => readFileSync(join(ROOT, p), "utf8");
@@ -238,4 +239,32 @@ test("the homepage FAQ component is reused and is the last section, directly abo
   const faqSrc = read("app/sections/FAQ.tsx");
   assert.match(faqSrc, /accent = "#ca3726"/);
   assert.match(faqSrc, /compact = false/);
+});
+
+test("the Services menu features the Staying Relevant workshop, using that page's own name, image and wording", () => {
+  const o = getOffering("staying-relevant");
+  assert.equal(MENU_FEATURE.title, o.name);
+  assert.equal(MENU_FEATURE.href, new URL(offeringUrl(o.slug)).pathname);
+  assert.equal(MENU_FEATURE.image, o.hero.image, "the card shows the page's own text-free hero");
+  assert.ok(IMAGE_ALT[MENU_FEATURE.image], "the image has alt text in the site's list");
+  // The excerpt is a part of the page's description, and names no price (prices live on the page).
+  assert.ok(o.metaDescription.includes("A 90-minute workshop"), "page still describes a 90-minute workshop");
+  assert.ok(o.metaDescription.includes("for experienced professionals weighing how AI affects their work"));
+  assert.ok(!/\$\d/.test(MENU_FEATURE.excerpt), "no price in the menu card");
+  assert.ok(existsSync(join(ROOT, "public", MENU_FEATURE.image)));
+});
+
+test("the Services menu links all four engagements, in order, each to its real page", () => {
+  assert.equal(MENU_ENGAGEMENT_LINKS.length, OFFERINGS.length);
+  OFFERINGS.forEach((o, i) => {
+    const link = MENU_ENGAGEMENT_LINKS[i];
+    assert.equal(link.href, `/offerings/${o.slug}`);
+    assert.ok(o.name.startsWith(link.label), `${link.label} is how "${o.name}" is named`);
+  });
+});
+
+test("the nav takes the menu's engagement text from the small module, not from the offering pages' copy", () => {
+  const nav = read("app/components/Nav.tsx");
+  assert.match(nav, /@\/lib\/offerings\/menu-links/);
+  assert.doesNotMatch(nav, /lib\/offerings\/offerings/, "the nav loads on every page and must not pull in the page copy");
 });

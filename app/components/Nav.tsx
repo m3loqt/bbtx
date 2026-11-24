@@ -21,6 +21,7 @@ import {
 import { ArrowUpRight, ChevronDown } from "./ArrowIcon";
 import { ContactModal } from "./ContactModal";
 import { RemoteCoverImage } from "./RemoteCoverImage";
+import { MENU_ENGAGEMENTS_LABEL, MENU_ENGAGEMENT_LINKS, MENU_FEATURE } from "@/lib/offerings/menu-links";
 import { SiSubstack, SiLinkedin, SiGumroad } from "react-icons/si";
 import { FaMediumM } from "react-icons/fa";
 import { altFor } from "@/lib/seo/image-alt";
@@ -137,11 +138,33 @@ const DROPDOWNS: Record<string, DropdownItem[]> = {
   ],
 };
 
-// The "Explore" card at the right of each mega menu. Real articles arrive from
-// /api/nav-explore the first time a menu is opened; until then (or if that fails)
-// the menu shows this built-in card, so it is never empty.
-type ExploreCard = { title: string; excerpt: string; category: string | null; image: string | null; href: string };
-type ExploreData = { services: ExploreCard | null; resources: ExploreCard | null };
+// The "Explore" card at the right of each mega menu. Services features the Staying
+// Relevant workshop (fixed, see lib/offerings/menu-links.ts). Resources shows a real
+// article, which arrives from /api/nav-explore the first time a menu is opened; until
+// then (or if that fails) it shows the built-in card below, so it is never empty.
+type ExploreCard = {
+  title: string;
+  excerpt: string;
+  category: string | null;
+  /** A site path ("/offerings/x.webp") or an https URL of a blog cover. */
+  image: string | null;
+  /** CSS object-position for the crop, when the default centre is wrong. */
+  position?: string;
+  /** Alt text for a site image (blog covers use the article title). */
+  alt?: string;
+  href: string;
+};
+type ExploreData = { resources: ExploreCard | null };
+
+const SERVICES_FEATURE: ExploreCard = {
+  title: MENU_FEATURE.title,
+  excerpt: MENU_FEATURE.excerpt,
+  category: MENU_FEATURE.label,
+  image: MENU_FEATURE.image,
+  position: MENU_FEATURE.position,
+  alt: altFor(MENU_FEATURE.image),
+  href: MENU_FEATURE.href,
+};
 
 const EXPLORE_FALLBACK: ExploreCard = {
   title: "Chaotic Confluence",
@@ -153,20 +176,29 @@ const EXPLORE_FALLBACK: ExploreCard = {
 
 const MENU_META: Record<
   string,
-  { panelId: string; allLabel: string; allHref: string; exploreKey: keyof ExploreData; exploreCta: string }
+  {
+    panelId: string;
+    allLabel: string;
+    allHref: string;
+    exploreCta: string;
+    /** A fixed card. Without one, the menu shows the latest article from /api/nav-explore. */
+    feature?: ExploreCard;
+    /** Links beside "All ..." in the panel's bottom row. */
+    links?: { label: string; items: readonly { label: string; href: string }[] };
+  }
 > = {
   Services: {
     panelId: "nav-panel-services",
     allLabel: "All services",
     allHref: "/services",
-    exploreKey: "services",
-    exploreCta: "Read the article",
+    exploreCta: MENU_FEATURE.cta,
+    feature: SERVICES_FEATURE,
+    links: { label: MENU_ENGAGEMENTS_LABEL, items: MENU_ENGAGEMENT_LINKS },
   },
   Resources: {
     panelId: "nav-panel-resources",
     allLabel: "All resources",
     allHref: "/resources",
-    exploreKey: "resources",
     exploreCta: "Read the article",
   },
 };
@@ -181,7 +213,7 @@ function MenuItem({ item, onNavigate }: { item: DropdownItem; onNavigate: () => 
       // row-span-2 + subgrid: each item takes a title row and a description row of the
       // menu's shared grid, so titles line up across the two columns, and so do the
       // descriptions, even when one title wraps or one description runs a line longer.
-      className="group -mx-4 row-span-2 grid grid-rows-subgrid rounded-xl px-4 py-4 transition-colors hover:bg-[#f6f6f6] focus-visible:bg-[#f6f6f6] focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-[#ca3726]"
+      className="group -mx-4 row-span-2 grid grid-rows-subgrid rounded-xl px-4 py-3.5 transition-colors hover:bg-[#f6f6f6] focus-visible:bg-[#f6f6f6] focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-[#ca3726]"
     >
       <span className="flex items-start gap-3">
         <Icon className="mt-px h-5 w-5 shrink-0 text-[#ca3726]" strokeWidth={1.5} aria-hidden />
@@ -202,13 +234,22 @@ function ExploreLink({ card, cta, onNavigate }: { card: ExploreCard; cta: string
     >
       {/* The image only repeats the link's own text, so it is hidden from screen readers
           (it still carries alt text, like every image on the site). */}
-      <div aria-hidden="true" className="relative aspect-video overflow-hidden rounded-lg bg-[#f3f3f3]">
-        {card.image ? (
+      <div aria-hidden="true" className="relative aspect-[9/4] overflow-hidden rounded-lg bg-[#f3f3f3]">
+        {card.image?.startsWith("/") ? (
+          <Image
+            src={card.image}
+            alt={card.alt ?? card.title}
+            fill
+            sizes="360px"
+            className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.03] motion-reduce:transition-none"
+            style={{ objectPosition: card.position }}
+          />
+        ) : card.image ? (
           <RemoteCoverImage
             src={card.image}
             alt={card.title}
-            sizes="340px"
-            className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.03] motion-reduce:transition-none"
+            sizes="360px"
+            className="object-cover object-[50%_55%] transition-transform duration-500 ease-out group-hover:scale-[1.03] motion-reduce:transition-none"
           />
         ) : (
           <div className="absolute inset-0 flex items-center justify-center">
@@ -218,16 +259,17 @@ function ExploreLink({ card, cta, onNavigate }: { card: ExploreCard; cta: string
       </div>
       {/* Every card is the same height whatever the article, so both menus are the same
           height. The text block reserves room for its longest case (label, a two-line title,
-          a two-line excerpt: about 114px); a shorter article leaves the slack above the link
-          instead of as a hole between the title and the excerpt. */}
-      <div className="min-h-[114px]">
-        <p className="mt-4 text-[11px] font-medium uppercase tracking-[0.12em] text-[#888888]">
+          a two-line excerpt: about 114px; the card is narrower below 1280px, so the excerpt gets
+          a third line and 136px). A shorter article leaves the slack above the link instead of
+          as a hole between the title and the excerpt, and nothing is cut off with an ellipsis. */}
+      <div className="min-h-[114px] max-xl:min-h-[136px]">
+        <p className="mt-3 text-[11px] font-medium uppercase tracking-[0.12em] text-[#888888]">
           {card.category ?? "Chaotic Confluence"}
         </p>
         <p className="mt-1.5 line-clamp-2 text-balance text-[15px] font-semibold leading-snug text-[#111111]">{card.title}</p>
-        <p className="mt-1.5 line-clamp-2 text-pretty text-[13.5px] leading-relaxed text-[#666666]">{card.excerpt}</p>
+        <p className="mt-1.5 line-clamp-2 text-pretty text-[13.5px] leading-relaxed text-[#666666] max-xl:line-clamp-3">{card.excerpt}</p>
       </div>
-      <span className="mt-3 inline-flex items-center gap-1.5 text-[13.5px] font-medium text-[#ca3726]">
+      <span className="mt-2.5 inline-flex items-center gap-1.5 text-[13.5px] font-medium text-[#ca3726]">
         {cta}
         <ArrowRight
           className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5 motion-reduce:transition-none"
@@ -262,7 +304,7 @@ function MegaPanel({
   const meta = MENU_META[label];
   // Two columns of equal weight, filled top to bottom: 6 services -> 3 + 3, 5 resources -> 3 + 2.
   const perColumn = Math.ceil(items.length / 2);
-  const card = explore?.[meta.exploreKey] ?? EXPLORE_FALLBACK;
+  const card = meta.feature ?? explore?.resources ?? EXPLORE_FALLBACK;
 
   return (
     <div
@@ -280,7 +322,7 @@ function MegaPanel({
       }`}
     >
       <div className="mx-5 border-t border-black/[0.07]" aria-hidden="true" />
-      <div className="grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,1.1fr)] gap-x-9 px-9 pb-8 pt-5">
+      <div className="grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,1.1fr)] gap-x-9 px-9 pb-6 pt-4">
         {/* Two rows per item (title, description), filled column by column. The DOM order
             is still all of column one, then column two, so Tab and screen readers read it
             the same way as before. */}
@@ -292,12 +334,12 @@ function MegaPanel({
             <MenuItem key={item.title} item={item} onNavigate={onNavigate} />
           ))}
         </div>
-        <div className="border-l border-black/[0.07] pl-9 pt-4">
-          <p className="mb-4 text-[11px] font-medium uppercase tracking-[0.12em] text-[#888888]">Explore</p>
+        <div className="border-l border-black/[0.07] pl-9 pt-3.5">
+          <p className="mb-3 text-[11px] font-medium uppercase tracking-[0.12em] text-[#888888]">Explore</p>
           <ExploreLink card={card} cta={meta.exploreCta} onNavigate={onNavigate} />
         </div>
       </div>
-      <div className="mx-5 border-t border-black/[0.07] px-4 py-3.5">
+      <div className="mx-5 flex flex-wrap items-center justify-between gap-x-8 gap-y-2 border-t border-black/[0.07] px-4 py-3">
         <a
           href={meta.allHref}
           onClick={onNavigate}
@@ -309,6 +351,21 @@ function MegaPanel({
             aria-hidden
           />
         </a>
+        {meta.links && (
+          <div role="group" aria-label={meta.links.label} className="flex flex-wrap items-center gap-x-5 gap-y-1.5">
+            <span className="text-[11px] font-medium uppercase tracking-[0.12em] text-[#888888]">{meta.links.label}</span>
+            {meta.links.items.map((link) => (
+              <a
+                key={link.href}
+                href={link.href}
+                onClick={onNavigate}
+                className="rounded-sm text-[13.5px] text-[#333333] underline-offset-4 transition-colors hover:text-[#ca3726] hover:underline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#ca3726]"
+              >
+                {link.label}
+              </a>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
