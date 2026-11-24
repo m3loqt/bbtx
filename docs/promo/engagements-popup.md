@@ -8,10 +8,11 @@ Four finished banner graphics in a carousel, beside a plain white intro panel on
 
 > bbtx.ai is a Next.js app, so this is built in the repository. Nothing was done in Webflow.
 
-## Two things still open (both flagged in `lib/promo/engagements.ts`)
+## One thing still open (flagged in `lib/promo/engagements.ts`)
 
-1. **Prices on two graphics disagree with the briefs.** The graphic for **Staying Relevant** prints **$799** (the brief lists the workshop at $99). The graphic for **Personal Assessment & Coaching** prints **$799** (the earlier brief said $599). The graphics are shown as supplied and the alt text matches what each graphic prints, so a screen reader hears the same price a sighted visitor sees. If a graphic is wrong, re-export it, then change `price` and `alt` for that slide. **Do not publish until this is settled.**
-2. **Where each slide goes.** No page exists for any of the four offers, so every slide opens the existing contact form with its offer pre-selected (an inquiry, not a booking). To link a slide to its page, change its `destination` to `{ kind: "link", href: "<approved page>" }`.
+1. **Prices on two graphics disagree with the offering pages.** The graphic for **Staying Relevant** prints **$799**, but its page says the workshop is **$99** and the private analysis **$599**. The graphic for **Personal Assessment & Coaching** prints **$799**, but its page says **$599**. The graphics are shown as supplied and the alt text matches what each graphic prints. Those two graphics need re-exporting with the right price, then update `price` and `alt` for the slide. **Do not publish until this is settled.**
+
+Each slide now links to its offering page (`/offerings/<slug>`, see `docs/offerings/offering-pages.md`). The popup never appears on those pages.
 
 The left-panel words are the copy supplied for it, set in `PANEL` in the same file. There is no "Compare all four" link any more (the copy needs no extra link, and its target page did not exist); the carousel and the counter are the only other things in the popup.
 
@@ -27,9 +28,9 @@ On any running copy of this branch, open any page with `?promo=open` (add `&slid
 | **Carousel** | Auto-advances every 6 s, paused while the mouse is over it, while keyboard focus is inside it, while the tab is hidden, and never with reduced motion. 400 ms crossfade. White round Previous/Next arrows side by side in the graphic's bottom-right corner (where the graphics print nothing), small white X top right on the image, swipe on touch, Left/Right arrow keys. Graphics use `object-fit: cover` anchored left, so the text (which sits at the left) is never cropped; on phones the box has the files' own shape, so nothing is cropped at all. |
 | **Phones (under 768 px)** | White bottom sheet, full width: the small line and the headline (the paragraph is left out on phones), then the carousel, then the counter. Tablets (768 to 1023 px) get the same stack with the paragraph, in a centred 640 px modal. |
 | **When it appears** | **5 s after the page loads.** Also: on desktop when the cursor leaves through the top of the window (once the visitor has been on the page 3 s), or at 50% scroll (never sooner than 3 s after load, so a restored scroll position cannot trigger it). Waits and retries while another dialog or the mobile menu is open, a field has focus, or the tab is hidden. |
-| **Where** | Every page **except** offer and booking pages and pages not meant for browsing: `/services` and below, `/coaching`, `/courses`, `/digital-twin-snapshot`, `/assessment`, `/resources/ai-readiness-assessment`, `/book`, `/booking`, `/schedule`, `/admin`, `/api`, `/links`, `/privacy`, `/terms`, `/cookies`. The list is `EXCLUDED_PATHS` in `lib/promo/popup-logic.ts`. To restrict it to the homepage instead, change that one function. |
+| **Where** | Every page **except** offer and booking pages and pages not meant for browsing: `/offerings` and below (the four offering pages), `/services` and below, `/coaching`, `/courses`, `/digital-twin-snapshot`, `/assessment`, `/resources/ai-readiness-assessment`, `/book`, `/booking`, `/schedule`, `/admin`, `/api`, `/links`, `/privacy`, `/terms`, `/cookies`. The list is `EXCLUDED_PATHS` in `lib/promo/popup-logic.ts`. To restrict it to the homepage instead, change that one function. |
 | **Frequency cap** | **Currently off (testing).** When on: once per visit and once per 30 minutes, recorded in `localStorage` **when it appears**, not only when it is closed, plus a per-visit memory so it never returns on the next page, even with storage blocked. While off, nothing is remembered and it shows on every load. |
-| **Closing** | X, Escape, or a click on the backdrop. A click inside never closes it. Focus returns to where it was (except after a click on a slide, when the contact form takes over). |
+| **Closing** | X, Escape, or a click on the backdrop. A click inside never closes it. Focus returns to where it was (except after a click on a slide, which goes to that offering's page). |
 | **Accessibility** | `role="dialog"` with `aria-modal`, focus moved in and trapped, carousel and slide roles, slide changes by the visitor announced (automatic ones are not), every image has alt text naming the offer and price, 44 px touch targets, visible focus rings, page scroll locked without a layout jump. |
 | **Brand** | `#C8102E` for the active dash. Everything else is black, white or gray. This is local to the popup; the rest of the site keeps its own red. A check in the test suite fails if any other colour appears. |
 
@@ -52,11 +53,11 @@ They are served as they are (a small custom loader names the right file). Next's
 |---|---|
 | `lib/promo/engagements.ts` | **The one place for the intro text, the four slides, alt text and destinations.** |
 | `lib/promo/popup-logic.ts` | Timings, page list, the frequency cap and its on/off switch, interruption rules. Pure and unit-tested. |
-| `lib/promo/inquiry-labels.ts` | The four inquiry types handed to the contact form. |
+| `lib/promo/inquiry-labels.ts` | The five inquiry types the offering pages hand to the contact form (shared with the contact form's dropdown). |
 | `app/components/engagements-popup/EngagementsPopupTrigger.tsx` | Decides **when**. Renders nothing; loads the popup code only at that moment. |
 | `app/components/engagements-popup/EngagementsPopup.tsx` | The dialog and carousel. |
 | `app/layout.tsx` | One line mounts the trigger for every page. |
-| `app/components/ContactModal.tsx` | Lists the four offer names in "What can we help you with?" (the original six options are untouched). |
+| `app/components/ContactModal.tsx` | Lists the five offering inquiry types in "What can we help you with?" (the original six options are untouched). |
 | `app/globals.css` | One block of `.promo-*` rules (entrance motion only). |
 | `public/promo/` | The four graphics at 1x and 2x. |
 | `tests/promo/engagements-popup.test.mjs` | 25 tests for rules, copy guards, page list, brand colours, image files and the one analytics path. |
@@ -76,6 +77,6 @@ Custom parameters appear in GA4 reports only after they are registered as custom
 
 ## QA
 
-Rendered in headless Chrome with a throwaway profile against a local dev server, with Google Analytics requests blocked: desktop 1440 x 900 at 1x and 2x pixel density (frame exactly 1000 x 566), phone 390 x 844. Scripted checks cover the 5 s timer, exit-intent and 50% scroll triggers, nothing before the arm time, no exit intent on touch, no popup on the offer pages, popup on a non-offer page, waiting while the contact form is open or a field has focus, the frequency cap (off: it shows again after a reload; the 30-minute logic is unit-tested), 6 s auto-advance, hover and focus pause, 400 ms crossfade, wrap in both directions, keys, swipe, focus trap, scroll lock, X, Escape and backdrop, focus return, slide click opening the contact form with the offer pre-selected, one of each analytics event, brand-colour audit of the rendered popup, white left panel, blurred backdrop, no logo or portrait, the right image file per screen density, no cropping on a phone, blocked storage, and reduced motion. `npm test`, `tsc`, ESLint (on every file added or changed) and `next build` pass.
+Rendered in headless Chrome with a throwaway profile against a local dev server, with Google Analytics requests blocked: desktop 1440 x 900 at 1x and 2x pixel density (frame exactly 1000 x 566), phone 390 x 844. Scripted checks cover the 5 s timer, exit-intent and 50% scroll triggers, nothing before the arm time, no exit intent on touch, no popup on the offer pages, popup on a non-offer page, waiting while the contact form is open or a field has focus, the frequency cap (off: it shows again after a reload; the 30-minute logic is unit-tested), 6 s auto-advance, hover and focus pause, 400 ms crossfade, wrap in both directions, keys, swipe, focus trap, scroll lock, X, Escape and backdrop, focus return, slide click going to its offering page, and the popup staying off that page, one of each analytics event, brand-colour audit of the rendered popup, white left panel, blurred backdrop, no logo or portrait, the right image file per screen density, no cropping on a phone, blocked storage, and reduced motion. `npm test`, `tsc`, ESLint (on every file added or changed) and `next build` pass.
 
 **Not checked:** a real phone, Safari or Firefox, a screen reader. The round "N" bottom-left in dev screenshots is Next's development-only badge and does not ship.

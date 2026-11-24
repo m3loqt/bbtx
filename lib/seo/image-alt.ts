@@ -20,6 +20,12 @@ export const IMAGE_ALT = {
   "/grant.jpg": "Dr. Grant Tate presenting to a workshop group in front of a projected slide",
   "/grantt.jpg": "Dr. Grant Tate, founder of BBTx Consulting, in profile holding a small colorful object",
 
+  // Offering page hero images (/offerings/<slug>)
+  "/offerings/digital-twin-assessment.webp": "A glass office tower seen from below against a cloudy sky, with red-tinted panes",
+  "/offerings/personal-assessment-coaching.webp": "A quiet armchair corner with a small table, a notebook, a pen and a coffee mug",
+  "/offerings/ai-workflow-design-coaching.webp": "A hand drawing a flowchart on paper beside a laptop, with one step marked in red",
+  "/offerings/staying-relevant.webp": "A hiker standing on a rocky ridge above misty mountain valleys",
+
   // Service page hero photos
   "/serv1.png": "Two men in conversation across a table, one taking notes with a coffee cup beside him",
   "/serv2.png": "A leadership team around a table working through a plan with documents and sticky notes",

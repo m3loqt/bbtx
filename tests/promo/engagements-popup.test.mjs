@@ -70,6 +70,8 @@ test("scrollFraction is the share of the scrollable height, clamped, and 0 when 
 
 test("never on offer or booking pages, nor on pages that are not for browsing", () => {
   for (const path of [
+    "/offerings/digital-twin-assessment",
+    "/offerings/staying-relevant",
     "/services",
     "/services/strategy-advisory",
     "/services/ai-integration/",
@@ -101,7 +103,7 @@ test("never on offer or booking pages, nor on pages that are not for browsing", 
 
 test("every excluded offer page really is an offer page, and the pages it shows on exist", () => {
   // The exclusion list must point at real routes (or deliberate future ones), never typos of them.
-  for (const dir of ["services", "coaching", "courses", "digital-twin-snapshot", "links", "privacy", "terms", "cookies"]) {
+  for (const dir of ["offerings", "services", "coaching", "courses", "digital-twin-snapshot", "links", "privacy", "terms", "cookies"]) {
     assert.ok(existsSync(join(ROOT, "app", dir)), `app/${dir} should exist`);
   }
 });
@@ -247,10 +249,15 @@ test("nothing is promised that the briefs do not approve", () => {
   assert.ok(!/https?:\/\//.test(everything), "no URL is hard-coded");
 });
 
-test("each slide hands the contact form its own inquiry type, and the form lists them", () => {
-  const inquiries = SLIDES.map((s) => (s.destination.kind === "contact" ? s.destination.inquiry : null));
-  assert.equal(new Set(inquiries).size, 4);
-  assert.deepEqual([...inquiries].sort(), [...ENGAGEMENT_INQUIRY_OPTIONS].sort());
+test("each slide links to its own offering page, and the contact form still lists the offers", () => {
+  const hrefs = SLIDES.map((s) => (s.destination.kind === "link" ? s.destination.href : null));
+  assert.deepEqual(hrefs, [
+    "/offerings/staying-relevant",
+    "/offerings/digital-twin-assessment",
+    "/offerings/personal-assessment-coaching",
+    "/offerings/ai-workflow-design-coaching",
+  ]);
+  for (const href of hrefs) assert.ok(existsSync(join(ROOT, "app", "offerings", "[slug]", "page.tsx")), href);
   assert.deepEqual(Object.values(ENGAGEMENT_INQUIRY).sort(), [...ENGAGEMENT_INQUIRY_OPTIONS].sort());
   const form = read("app/components/ContactModal.tsx");
   assert.match(form, /\.\.\.ENGAGEMENT_INQUIRY_OPTIONS/);

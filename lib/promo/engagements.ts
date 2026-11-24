@@ -2,15 +2,13 @@
 // text, price and "View details" button; this file adds the words around them, the alt text, and
 // where each slide goes. Edit here, nowhere else.
 //
-// STATUS: staged for review, not published. Two things below are still open (see PENDING).
+// STATUS: staged for review, not published. One thing below is still open (see PENDING).
 
-import { ENGAGEMENT_INQUIRY, type EngagementInquiry } from "./inquiry-labels.ts";
+import type { EngagementInquiry } from "./inquiry-labels.ts";
 
 /**
- * Where a slide goes.
- * - "contact": opens the site's existing contact form with this inquiry type pre-selected.
- *   An inquiry, not a booking or payment.
- * - "link": a plain link to an approved page.
+ * Where a slide goes. Each of the four goes to its offering page (see lib/offerings/offerings.ts).
+ * A "contact" destination (the contact form with an offer pre-selected) remains available.
  */
 export type Destination =
   | { kind: "contact"; inquiry: EngagementInquiry }
@@ -31,14 +29,12 @@ export type PromoSlide = {
   destination: Destination;
 };
 
-// PENDING, none of these is decided by the code:
-// 1. Offer pages. No page exists for any of the four offers, so every slide opens the contact form
-//    with its offer pre-selected. To link a slide to its page, replace its destination with
-//    { kind: "link", href: "<approved page>" }.
-// 2. Prices. The graphics for "Staying Relevant" and "Personal Assessment & Coaching" both print
-//    $799. The brief lists the Staying Relevant workshop at $99 and the earlier brief listed
-//    Personal Assessment at $599. The graphics are shown as supplied; if a graphic is wrong it
-//    needs re-exporting, then update `price` and `alt` to match.
+// PENDING:
+// Prices. The graphics for "Staying Relevant" and "Personal Assessment & Coaching" both print $799. The
+// offering pages (the latest copy) say the Staying Relevant workshop is $99 and the private analysis
+// $599, and Personal Assessment & Coaching is $599. The graphics are shown as supplied and the alt text
+// matches what each graphic prints; if a graphic is wrong it needs re-exporting, then update `price` and
+// `alt` to match.
 
 export const SLIDES: readonly [PromoSlide, PromoSlide, PromoSlide, PromoSlide] = [
   {
@@ -47,7 +43,7 @@ export const SLIDES: readonly [PromoSlide, PromoSlide, PromoSlide, PromoSlide] =
     price: "$799",
     image: "/promo/engagement-01-staying-relevant.webp",
     alt: "Staying Relevant, $799: Stay relevant in a changing business landscape. Strategy, AI, and leadership guidance. A hiker stands on a rocky peak above mountain clouds. View details.",
-    destination: { kind: "contact", inquiry: ENGAGEMENT_INQUIRY.stayingRelevant },
+    destination: { kind: "link", href: "/offerings/staying-relevant" },
   },
   {
     id: "digital-twin-assessment",
@@ -55,7 +51,7 @@ export const SLIDES: readonly [PromoSlide, PromoSlide, PromoSlide, PromoSlide] =
     price: "$599",
     image: "/promo/engagement-02-digital-twin-assessment.webp",
     alt: "Digital Twin Assessment, $599: See your organization more clearly. A glass office tower seen from below against a cloudy sky. View details.",
-    destination: { kind: "contact", inquiry: ENGAGEMENT_INQUIRY.digitalTwin },
+    destination: { kind: "link", href: "/offerings/digital-twin-assessment" },
   },
   {
     id: "personal-assessment-coaching",
@@ -63,7 +59,7 @@ export const SLIDES: readonly [PromoSlide, PromoSlide, PromoSlide, PromoSlide] =
     price: "$799",
     image: "/promo/engagement-03-personal-assessment-coaching.webp",
     alt: "Personal Assessment & Coaching, $799: A clearer sense of your strengths, focus, and next steps. A notebook and pen on a small table beside an armchair. View details.",
-    destination: { kind: "contact", inquiry: ENGAGEMENT_INQUIRY.personal },
+    destination: { kind: "link", href: "/offerings/personal-assessment-coaching" },
   },
   {
     id: "ai-workflow-design-coaching",
@@ -71,7 +67,7 @@ export const SLIDES: readonly [PromoSlide, PromoSlide, PromoSlide, PromoSlide] =
     price: "$799",
     image: "/promo/engagement-04-ai-workflow-design-coaching.webp",
     alt: "AI Workflow Design & Coaching, $799: Put AI to work without losing your judgment. A hand draws a flowchart on paper next to a laptop. View details.",
-    destination: { kind: "contact", inquiry: ENGAGEMENT_INQUIRY.aiWorkflow },
+    destination: { kind: "link", href: "/offerings/ai-workflow-design-coaching" },
   },
 ] as const;
 

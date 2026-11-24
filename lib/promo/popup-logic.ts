@@ -40,6 +40,7 @@ export const CROSSFADE_MS = 400;
  * second pitch. Plus pages that are not for browsing. A prefix matches the page and everything below.
  */
 export const EXCLUDED_PATHS = [
+  "/offerings",
   "/services",
   "/coaching",
   "/courses",
