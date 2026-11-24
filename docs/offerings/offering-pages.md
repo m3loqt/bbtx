@@ -28,6 +28,7 @@ Also: the popup graphics for Staying Relevant and Personal Assessment still prin
 - **Full-bleed hero** (51% of the window height, 384 to 560 px; 54% and 432 to 576 px on phones, so the headline has room). The site nav sits over it, transparent with white text, and turns solid once you scroll past (the same behaviour as the homepage; the hero carries `id="hero"` for that).
 - **The headline sits on the hero**, bottom left, in white: a red rule and small line ("BBTx CONSULTING / FOCUSED ENGAGEMENT"), the name in a large serif, and the one-line promise. It has the same left edge and 720 px width as the text column below, so the two line up. A dark gradient rises from the bottom of the image behind it. I measured the real pixels behind each line on all four images at four screen sizes: the smallest text (the red-rule line) never drops below 5.3:1 contrast (4.5:1 is the standard), the headline never below 8.8:1, the promise never below 12:1.
 - **A single left-aligned column**, 720 px wide, below: the opening paragraphs, **What's Included** (hairline rows with a red dot), **How It Works**, then the price large beside its button under a solid rule.
+- **Five FAQs** (the supplied copy, per offering) near the bottom, using the **homepage FAQ component** (grey rounded cards, +/- tiles, first question open). The eyebrow is the offering's name and the heading is the homepage's "Frequently Asked *Questions*" at a smaller size, since the page already has a large headline. They are the **last section, directly above the footer**, after the price and button, so they never interrupt the text above them. On the Staying Relevant page they follow the private option, so the last question (workshop versus private analysis) has its context.
 - **Staying Relevant** has two parts: the workshop (what it is, what we'll cover, **$99 per person**, "Ask About the Next Workshop") and, on a light band below, **Prefer to Work Through It Privately?**, the Personal Relevance Analysis (what's included, **$599**, "Ask About a Personal Relevance Analysis"). Nothing promises a date, seats or registration.
 - **Buttons** open the existing contact form with the offering pre-selected (so Grant sees which one was asked about). An inquiry, not a booking or a payment. The workshop button is solid red; the private-analysis button is outlined, as the second choice.
 - Existing site **footer** at the bottom.
@@ -44,9 +45,17 @@ The four source PNGs (1774 x 887 px, about 2 MB each, 8.1 MB together) are saved
 
 The sources are 1774 px wide, so on a screen wider than that the hero is enlarged a little; on Retina screens it is about 1:1 at 887 CSS px. For a crisper hero on very large screens, export the artwork at 2560 px wide.
 
+## FAQs
+
+All 20 questions and answers live in `lib/offerings/offerings.ts` (`faqs`) and are as supplied; the note that came with them (conversational tone, based on proposed scopes) is not published. **Grant still needs to approve the scopes the answers describe.** Prices named in an answer are checked by a test against the prices on the same page.
+
+The shared component `app/sections/FAQ.tsx` gained two optional settings, `accent` (the colour of the + tile, here `#C8102E`) and `compact` (smaller heading and spacing). Their defaults are the old look, so the homepage, courses and coaching pages are unchanged (a test checks this).
+
+**Structured data:** each page also emits `FAQPage` markup built from the very same questions and answers that are shown, so the two cannot disagree. The SEO project rules say not to add FAQ markup solely for rich results; these are useful visible FAQs, and the homepage already does the same. Delete the `<JsonLd data={faqJsonLd(...)} />` line in the page template if you would rather not.
+
 ## Search and sharing
 
-Each page has its own title ("<name> | BBTx"), a 126 to 142 character description written from the page's own copy, a canonical address, share-image tags, and an entry in the sitemap (priority 0.85, like the service pages). No structured data was added: the three facts above should be settled first.
+Each page has its own title ("<name> | BBTx"), a 126 to 142 character description written from the page's own copy, a canonical address, share-image tags, and an entry in the sitemap (priority 0.85, like the service pages). Apart from the FAQ markup described above, no structured data was added; Service or Offer markup should wait until the three facts above are settled.
 
 ## Analytics
 
@@ -56,18 +65,19 @@ One event through the site's existing wrapper, with fixed values only (never any
 
 | File | Job |
 |---|---|
-| `lib/offerings/offerings.ts` | All page copy, prices, image and meta choices. |
-| `app/offerings/[slug]/page.tsx` | The page template (server component): hero with the headline on it, metadata, static params. |
+| `lib/offerings/offerings.ts` | All page copy (including the FAQs), prices, image and meta choices. |
+| `app/sections/FAQ.tsx` | The homepage FAQ, reused; two optional settings added. |
+| `app/offerings/[slug]/page.tsx` | The page template (server component): hero with the headline on it, body, FAQ, closing price and button, metadata, static params. |
 | `app/offerings/[slug]/OfferingCta.tsx` | The button: opens the contact form with the offering selected and reports the click. |
 | `app/offerings/fonts.ts` | The serif used for headings (loads on these pages only). |
 | `lib/promo/inquiry-labels.ts` | The five inquiry types (also listed in the contact form's dropdown). |
 | `lib/seo/image-alt.ts` | Alt text for the four hero images. |
 | `app/sitemap.ts` | The four new entries. |
 | `public/offerings/` | The four compressed heroes and the share images. |
-| `tests/offerings/offerings.test.mjs` | 11 tests: addresses, prices, copy fixes and no leaked notes, buttons, image sizes, meta, nav and footer, brand colours, sitemap, popup wiring. |
+| `tests/offerings/offerings.test.mjs` | 15 tests: addresses, prices, copy fixes and no leaked notes, buttons, image sizes, meta, nav and footer, brand colours, sitemap, popup wiring. |
 
 ## QA
 
-Rendered in headless Chrome against a local dev server with Google Analytics blocked, at 1440 x 900 and 390 x 844. Scripted checks on all four pages: loads with 200, title, description, canonical and share image, one h1 matching the name, full-width hero that is loaded and has alt text, nav and footer present, prices shown, no skipped heading level, no horizontal overflow, no popup on the page, the headline inside the hero, each button opening the contact form with its offering selected and sending one analytics event, phone layout (headline inside the margins, buttons at least 56 px tall, 19 px body text), no console errors, an unknown address returning 404, and all four pages in the sitemap. `npm test`, `tsc`, ESLint on every file added or changed, and `next build` pass.
+Rendered in headless Chrome against a local dev server with Google Analytics blocked, at 1440 x 900 and 390 x 844. Scripted checks on all four pages: loads with 200, title, description, canonical and share image, one h1 matching the name, full-width hero that is loaded and has alt text, nav and footer present, prices shown, no skipped heading level, no horizontal overflow, no popup on the page, the headline inside the hero, five FAQs with the first open and toggling, FAQ structured data matching the visible text exactly, the FAQ as the last section directly above the footer, each button opening the contact form with its offering selected and sending one analytics event, phone layout (headline inside the margins, buttons at least 56 px tall, 19 px body text), no console errors, an unknown address returning 404, and all four pages in the sitemap. `npm test`, `tsc`, ESLint on every file added or changed, and `next build` pass.
 
 **Not checked:** a real phone, Safari or Firefox, a screen reader, and how the pages look next to the live site's nav once the footer or nav gain links to them.

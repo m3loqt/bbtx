@@ -21,6 +21,8 @@ export type OfferingCta = {
 
 export type Fee = { label?: string; amount: string; note?: string };
 
+export type Faq = { question: string; answer: string };
+
 type Common = {
   slug: string;
   /** Stable id used in analytics. Never shown. */
@@ -32,6 +34,8 @@ type Common = {
   metaDescription: string;
   hero: { image: HeroImage; position: string; og: string };
   intro: readonly string[];
+  /** Five questions shown near the bottom of the page, before the final button. Copy still needs Grant's approval. */
+  faqs: readonly Faq[];
 };
 
 export type StandardOffering = Common & {
@@ -84,6 +88,18 @@ export const OFFERINGS: readonly [StandardOffering, StandardOffering, StandardOf
       "We help you look at those connections. Using our Digital Twin approach, we’ll examine how the important parts of your organization fit together, where things may be getting in the way, and what deserves a closer look.",
       "We can focus on your own organization or one of your key customers, depending on the questions you’re trying to answer.",
     ],
+    faqs: [
+      { question: "What is an Organizational Digital Twin?", answer:
+        "An Organizational Digital Twin is a way of examining how the different parts of a business work together. Rather than looking at departments, processes, and decisions in isolation, we use available information to understand how they\u2019re connected and where those connections may be affecting performance." },
+      { question: "What can a Digital Twin Assessment help us understand?", answer:
+        "It can help us investigate recurring problems, operational bottlenecks, unclear responsibilities, and decisions that seem to produce unexpected results. We\u2019ll look at the evidence available, identify patterns worth examining, and help you determine where further attention could make the most difference." },
+      { question: "Can we assess a key customer instead of our own organization?", answer:
+        "Yes. We can focus on your organization or a key customer relationship, depending on what you\u2019re trying to understand. For a customer assessment, we\u2019ll work with information you have permission to share and identify where additional knowledge would help complete the picture." },
+      { question: "What information do we need to provide?", answer:
+        "We\u2019ll start with a conversation about the questions you\u2019re trying to answer. Depending on the situation, we may ask for relevant business documents, process information, or other background materials. You don\u2019t need to have everything perfectly organized before we begin." },
+      { question: "What do we receive from the $599 assessment?", answer:
+        "The engagement includes two private, 60-minute sessions and a written summary of our findings and recommended priorities. This is an initial assessment designed to help you understand where to focus, rather than the development of a complete, continuously maintained Digital Twin system." },
+    ],
     included: [
       "Two private, 60-minute working sessions",
       "A preliminary assessment using relevant business information and documents",
@@ -111,6 +127,18 @@ export const OFFERINGS: readonly [StandardOffering, StandardOffering, StandardOf
       "Most of us have a reasonable idea of what we’re good at. What’s harder to see is how our habits, preferences, and ways of thinking affect the decisions we make and the people we work with.",
       "Sometimes it helps to have an outside perspective.",
       "We use selected personal assessments to help you understand your strengths, recognize patterns you may not have noticed, and consider where you might want to grow. The assessments give us a starting point, but the real value comes from talking through what they mean in the context of your own experience.",
+    ],
+    faqs: [
+      { question: "Who is Personal Assessment & Coaching for?", answer:
+        "We work with professionals, managers, consultants, and leaders who want to better understand how they approach their work, make decisions, and interact with others. You don\u2019t need to be facing a particular problem. Sometimes there\u2019s value in understanding what\u2019s already working well and where you could be more effective." },
+      { question: "How is this different from taking a personality test?", answer:
+        "A personal assessment can provide useful information, but the results are only a starting point. We work through what they mean in the context of your experience, responsibilities, and goals, so you\u2019re not left trying to interpret a set of scores on your own." },
+      { question: "What assessments will I take?", answer:
+        "We\u2019ll select the assessments based on what you want to learn about yourself and what would be most useful for your development. We\u2019ll explain which assessments we\u2019re using and what they measure before you begin." },
+      { question: "What happens during the coaching sessions?", answer:
+        "Across two private, 60-minute sessions, we\u2019ll discuss your goals, review the assessment findings, and explore how they relate to situations you encounter in your professional life. We\u2019ll also talk about what you might want to change, develop, or approach differently." },
+      { question: "What will I take away from the engagement?", answer:
+        "You\u2019ll receive your assessment profile along with written development priorities and recommendations. Our intention is for you to leave with a better understanding of yourself and a few practical things you can begin working on. The engagement is $599." },
     ],
     included: [
       "Selected BBTx personal assessments and an individual profile",
@@ -142,6 +170,18 @@ export const OFFERINGS: readonly [StandardOffering, StandardOffering, StandardOf
       "Rather than introducing more tools or asking you to change everything at once, we’ll look at work you’re already doing and find a sensible place to start. That might mean improving how you prepare reports, organize information, develop ideas, or handle a process that’s taking more time than it should.",
       "The aim is to make your work easier while keeping the knowledge, experience, and judgment that make it valuable.",
     ],
+    faqs: [
+      { question: "How can AI help improve the way I work?", answer:
+        "AI can be useful for organizing information, preparing drafts, reviewing material, and supporting parts of work that take more time than they should. The important question is where it actually makes sense in your workflow. We\u2019ll examine the work you\u2019re already doing and find a practical place to begin." },
+      { question: "Do I need experience using AI tools?", answer:
+        "No. We can start with the tools you\u2019ve already tried, or help you understand which ones may be appropriate for your work. You don\u2019t need technical experience or a collection of AI subscriptions to benefit from the engagement." },
+      { question: "What kinds of workflows can we work on?", answer:
+        "We might look at how you prepare reports, conduct research, organize client information, develop proposals, or handle another recurring responsibility. We\u2019ll focus on one workflow where there\u2019s a reasonable opportunity to save time or improve how the work gets done." },
+      { question: "Will AI replace the way I currently work?", answer:
+        "That\u2019s not our intention. We want to help you use AI where it\u2019s genuinely useful while keeping you involved in decisions that require your experience and judgment. We\u2019ll also identify where AI-generated work needs to be checked rather than accepted at face value." },
+      { question: "What is included in the $799 engagement?", answer:
+        "You\u2019ll receive two private, 60-minute working sessions, a review of one existing workflow, and a proposed AI-supported approach. We\u2019ll also provide a written action plan explaining how to put it into practice, what to review, and where to make adjustments. This is a workflow design and coaching engagement, not a custom software development project." },
+    ],
     included: [
       "Two private, 60-minute working sessions",
       "A review of one existing workflow or recurring task",
@@ -170,6 +210,18 @@ export const OFFERINGS: readonly [StandardOffering, StandardOffering, StandardOf
       "If you’ve spent years developing your skills and becoming good at what you do, it’s reasonable to wonder what happens when AI starts doing work that once depended on your expertise.",
       "Some tasks will change. Others may disappear. But experience involves more than knowing how to complete a task, and understanding that distinction matters.",
       "We created this workshop to help you take a closer look at your own work, understand what is changing, and think through how you can continue contributing in ways that matter.",
+    ],
+    faqs: [
+      { question: "Who is the Staying Relevant workshop designed for?", answer:
+        "The workshop is for experienced professionals, consultants, managers, and business leaders who are thinking about how AI may change their work. It\u2019s particularly relevant if you\u2019ve spent years developing your expertise and want to understand how to keep that experience valuable as technology evolves." },
+      { question: "Will the workshop help me understand whether AI could replace my job?", answer:
+        "We\u2019ll help you examine which parts of your work may be affected by AI and which rely more heavily on human experience, relationships, context, and judgment. We won\u2019t pretend to predict the future of your profession, but we can help you make more informed decisions about how to prepare." },
+      { question: "What will we cover during the 90-minute workshop?", answer:
+        "We\u2019ll look at how AI is changing professional work, examine where your experience continues to matter, and help you identify areas that deserve your attention. You\u2019ll also begin developing a practical plan for adapting your work and strengthening the value you bring." },
+      { question: "Do I need to understand AI before attending?", answer:
+        "Not at all. The workshop isn\u2019t a technical course, and you won\u2019t need to know how to program or build AI systems. We\u2019ll focus on what the technology means for the work you do and how you can respond to those changes." },
+      { question: "What\u2019s the difference between the $99 workshop and the $599 Personal Relevance Analysis?", answer:
+        "The $99 workshop is a 90-minute group experience that introduces the approach and helps you begin examining your own work. The $599 Personal Relevance Analysis goes further, with two private, 90-minute sessions focused on your individual circumstances and a written professional positioning plan with recommended next steps." },
     ],
     workshop: {
       heading: "The Workshop",

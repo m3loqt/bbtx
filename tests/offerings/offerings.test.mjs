@@ -169,3 +169,73 @@ test("the engagements popup links to these pages and stays off them", () => {
   assert.ok(EXCLUDED_PATHS.includes("/offerings"));
   for (const o of OFFERINGS) assert.equal(isExcludedPath(`/offerings/${o.slug}`), true);
 });
+
+// --- FAQs -------------------------------------------------------------------------------------------
+test("each offering has five FAQs, as supplied, with no notes about the copy in them", () => {
+  for (const o of OFFERINGS) {
+    assert.equal(o.faqs.length, 5, o.slug);
+    assert.equal(new Set(o.faqs.map((f) => f.question)).size, 5, `${o.slug}: duplicate question`);
+    for (const f of o.faqs) {
+      assert.match(f.question, /\?$/, `${o.slug}: "${f.question}" should be a question`);
+      assert.ok(f.answer.length >= 120 && f.answer.length <= 520, `${o.slug}: answer length ${f.answer.length}`);
+      assert.ok(!f.question.includes("'") && !f.answer.includes("'"), "typographic apostrophes only");
+    }
+  }
+  const all = OFFERINGS.flatMap((o) => o.faqs.map((f) => f.question + "\n" + f.answer)).join("\n");
+  for (const note of ["I’d add", "I’ve kept", "conversational", "Grant still needs", "keyword", "AI assistant"]) {
+    assert.ok(!all.includes(note), `must not publish the note "${note}"`);
+  }
+  assert.deepEqual(
+    OFFERINGS.map((o) => o.faqs[0].question),
+    [
+      "What is an Organizational Digital Twin?",
+      "Who is Personal Assessment & Coaching for?",
+      "How can AI help improve the way I work?",
+      "Who is the Staying Relevant workshop designed for?",
+    ],
+  );
+});
+
+test("a price named in an FAQ is one of the prices on that page", () => {
+  for (const o of OFFERINGS) {
+    const pagePrices = new Set(o.layout === "standard" ? [o.fee.amount] : [o.workshop.fee.amount, o.private.fee.amount]);
+    const faqPrices = new Set(o.faqs.flatMap((f) => f.answer.match(/\$\d+/g) ?? []).concat(o.faqs.flatMap((f) => f.question.match(/\$\d+/g) ?? [])));
+    for (const price of faqPrices) assert.ok(pagePrices.has(price), `${o.slug}: FAQ says ${price}, the page says ${[...pagePrices].join(" / ")}`);
+  }
+  // The scope the FAQs describe matches the page: two sessions, and the lengths on the copy.
+  const [dt, personal, ai, relevant] = OFFERINGS;
+  assert.match(dt.faqs[4].answer, /two private, 60-minute sessions/);
+  assert.match(personal.faqs[3].answer, /two private, 60-minute sessions/);
+  assert.match(ai.faqs[4].answer, /two private, 60-minute working sessions/);
+  assert.match(relevant.faqs[4].answer, /two private, 90-minute sessions/);
+});
+
+test("the homepage FAQ component is reused and is the last section, directly above the footer, with matching structured data", () => {
+  const page = read(PAGE);
+  assert.match(page, /import \{ FAQ \} from "@\/app\/sections\/FAQ"/);
+  assert.match(page, /<FAQ items=\{offering\.faqs\}/);
+  const article = page.indexOf("</article>");
+  const priv = page.indexOf("<PrivateSection");
+  const faq = page.indexOf("<FAQ ");
+  const mainEnd = page.indexOf("</main>");
+  const footer = page.indexOf("<Footer />");
+  assert.ok(article > 0 && faq > article, "the FAQ follows the body of the page");
+  assert.ok(priv > 0 && faq > priv, "the FAQ follows the private option on the workshop page");
+  // Nothing sits between the FAQ and the footer: it is the last thing inside <main>, and <Footer /> comes right after.
+  assert.match(page.slice(faq, footer + "<Footer />".length), /^<FAQ [^>]*\/>\s*<\/main>\s*<Footer \/>$/, "the FAQ is the last element before the footer");
+  assert.ok(faq < mainEnd && mainEnd < footer);
+  // The prices and buttons stay with their text, above the FAQ.
+  assert.doesNotMatch(page, /FinalCta/);
+  // (The body components are defined below the page in the file; the browser checks confirm the rendered order.)
+  const standardBody = page.slice(page.indexOf("function StandardBody"), page.indexOf("function WorkshopBody"));
+  const privateSection = page.slice(page.indexOf("function PrivateSection"), page.indexOf("function faqJsonLd"));
+  assert.match(standardBody, /<PriceBar fee=\{offering\.fee\}>/, "the standard price and button end the body, above the FAQ");
+  assert.match(privateSection, /<PriceBar fee=\{p\.fee\}>/, "the private price and button end the private option, above the FAQ");
+  // Structured data is built from the same array that is shown, so the two cannot disagree.
+  assert.match(page, /faqJsonLd\(offering\.faqs\)/);
+  assert.match(page, /"@type": "FAQPage"/);
+  // The shared component's defaults are unchanged, so the homepage, courses and coaching look as they did.
+  const faqSrc = read("app/sections/FAQ.tsx");
+  assert.match(faqSrc, /accent = "#ca3726"/);
+  assert.match(faqSrc, /compact = false/);
+});

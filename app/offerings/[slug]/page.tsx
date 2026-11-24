@@ -3,6 +3,8 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import { Nav } from "@/app/components/Nav";
 import { Footer } from "@/app/components/Footer";
+import { JsonLd } from "@/app/components/JsonLd";
+import { FAQ } from "@/app/sections/FAQ";
 import { altFor } from "@/lib/seo/image-alt";
 import {
   OFFERINGS,
@@ -94,6 +96,10 @@ export default async function OfferingPage({ params }: { params: Promise<Params>
           )}
         </article>
         {offering.layout === "workshop" && <PrivateSection offering={offering} />}
+
+        {/* The homepage FAQ with this offering's five questions: the last section, directly above the footer. */}
+        <JsonLd data={faqJsonLd(offering.faqs)} />
+        <FAQ items={offering.faqs} eyebrow={offering.name} accent="#C8102E" compact />
       </main>
 
       <Footer />
@@ -241,4 +247,17 @@ function PrivateSection({ offering }: { offering: WorkshopOffering }) {
       </div>
     </section>
   );
+}
+
+/** FAQPage data for exactly the questions and answers shown on the page. */
+function faqJsonLd(faqs: readonly { question: string; answer: string }[]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map((f) => ({
+      "@type": "Question",
+      name: f.question,
+      acceptedAnswer: { "@type": "Answer", text: f.answer },
+    })),
+  };
 }

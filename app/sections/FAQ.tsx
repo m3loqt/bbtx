@@ -14,10 +14,11 @@ function FaqMinusIcon({ className }: { className?: string }) {
   );
 }
 
-function FaqPlusIcon({ className }: { className?: string }) {
+function FaqPlusIcon({ className, accent }: { className?: string; accent: string }) {
   return (
     <span
-      className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-[#ca3726] text-white sm:h-9 sm:w-9 ${className ?? ""}`}
+      className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-md text-white sm:h-9 sm:w-9 ${className ?? ""}`}
+      style={{ backgroundColor: accent }}
       aria-hidden
     >
       <span className="relative block h-[2px] w-2.5 rounded-full bg-white before:absolute before:left-1/2 before:top-1/2 before:h-2.5 before:w-[2px] before:-translate-x-1/2 before:-translate-y-1/2 before:rounded-full before:bg-white" />
@@ -36,21 +37,38 @@ export function FAQ({
     </>
   ),
   closingNote,
+  accent = "#ca3726",
+  compact = false,
 }: {
-  items?: FaqItem[];
+  items?: readonly FaqItem[];
   eyebrow?: string;
   heading?: ReactNode;
   closingNote?: ReactNode;
+  /** The colour of the "+" tile. Defaults to the site red. */
+  accent?: string;
+  /** A smaller heading and tighter spacing, for a page that already has a large headline of its own. */
+  compact?: boolean;
 } = {}) {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
-    <section id="faq" className="relative z-[1] w-full border-t border-black/[0.06] bg-white px-4 py-16 sm:px-6 sm:py-24 lg:px-8 lg:py-32">
+    <section
+      id="faq"
+      className={`relative z-[1] w-full border-t border-black/[0.06] bg-white px-4 sm:px-6 lg:px-8 ${
+        compact ? "py-14 sm:py-20 lg:py-24" : "py-16 sm:py-24 lg:py-32"
+      }`}
+    >
       <div className="mx-auto w-full max-w-4xl text-center">
         <p className="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#555555]/60">
           {eyebrow}
         </p>
-        <h2 className="mt-5 text-4xl font-medium leading-tight tracking-tight text-[#222222] sm:text-[2.75rem] md:text-5xl lg:text-5xl xl:text-6xl 2xl:text-[4rem]">
+        <h2
+          className={`mt-5 font-medium leading-tight tracking-tight text-[#222222] ${
+            compact
+              ? "text-3xl sm:text-4xl md:text-[2.75rem]"
+              : "text-4xl sm:text-[2.75rem] md:text-5xl lg:text-5xl xl:text-6xl 2xl:text-[4rem]"
+          }`}
+        >
           {heading}
         </h2>
         <ul className="mt-10 flex flex-col gap-3 text-left sm:mt-12 sm:gap-4">
@@ -68,7 +86,7 @@ export function FAQ({
                     <h3 className="flex-1 text-lg font-semibold tracking-normal text-[#222222] sm:text-xl">
                       {item.question}
                     </h3>
-                    {isOpen ? <FaqMinusIcon /> : <FaqPlusIcon />}
+                    {isOpen ? <FaqMinusIcon /> : <FaqPlusIcon accent={accent} />}
                   </button>
                   <div
                     className={`grid transition-[grid-template-rows] duration-300 ease-out ${
