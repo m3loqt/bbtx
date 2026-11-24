@@ -263,7 +263,7 @@ function ExploreLink({ card, cta, onNavigate }: { card: ExploreCard; cta: string
           a third line and 136px). A shorter article leaves the slack above the link instead of
           as a hole between the title and the excerpt, and nothing is cut off with an ellipsis. */}
       <div className="min-h-[114px] max-xl:min-h-[136px]">
-        <p className="mt-3 text-[11px] font-medium uppercase tracking-[0.12em] text-[#888888]">
+        <p className="mt-3 text-[11px] font-medium uppercase tracking-[0.12em] text-[#6b6b6b]">
           {card.category ?? "Chaotic Confluence"}
         </p>
         <p className="mt-1.5 line-clamp-2 text-balance text-[15px] font-semibold leading-snug text-[#111111]">{card.title}</p>
@@ -335,7 +335,7 @@ function MegaPanel({
           ))}
         </div>
         <div className="border-l border-black/[0.07] pl-9 pt-3.5">
-          <p className="mb-3 text-[11px] font-medium uppercase tracking-[0.12em] text-[#888888]">Explore</p>
+          <p className="mb-3 text-[11px] font-medium uppercase tracking-[0.12em] text-[#6b6b6b]">Explore</p>
           <ExploreLink card={card} cta={meta.exploreCta} onNavigate={onNavigate} />
         </div>
       </div>
@@ -353,7 +353,7 @@ function MegaPanel({
         </a>
         {meta.links && (
           <div role="group" aria-label={meta.links.label} className="flex flex-wrap items-center gap-x-5 gap-y-1.5">
-            <span className="text-[11px] font-medium uppercase tracking-[0.12em] text-[#888888]">{meta.links.label}</span>
+            <span className="text-[11px] font-medium uppercase tracking-[0.12em] text-[#6b6b6b]">{meta.links.label}</span>
             {meta.links.items.map((link) => (
               <a
                 key={link.href}
@@ -410,9 +410,11 @@ function NavInner({ heroTheme = "dark", instantFloat = false }: NavProps) {
   // An open desktop menu always wants the white bar: the bar and the panel are
   // one white surface, so over a hero the bar turns white (and its text dark)
   // for as long as a menu is open.
+  // The contact form hangs from the bar the same way, so it counts as an open panel too.
   const menuOpen = openMenu !== null;
-  const navTransparent = mobileOpen || (overHero && !menuOpen);
-  const dark = mobileOpen || (overHero && heroTheme === "dark" && !menuOpen);
+  const panelOpen = menuOpen || contactOpen;
+  const navTransparent = mobileOpen || (overHero && !panelOpen);
+  const dark = mobileOpen || (overHero && heroTheme === "dark" && !panelOpen);
 
   useIsomorphicLayoutEffect(() => {
     // Short-hero pages (e.g. blog posts) don't have enough room for the
@@ -441,6 +443,7 @@ function NavInner({ heroTheme = "dark", instantFloat = false }: NavProps) {
   }, [instantFloat]);
 
   const closeMenu = () => setOpenMenu(null);
+  const closeContact = () => setContactOpen(false);
 
   // The Explore cards are real articles, fetched once, the first time anyone
   // reaches for a menu (pointer over a trigger, keyboard focus, or a click).
@@ -458,6 +461,8 @@ function NavInner({ heroTheme = "dark", instantFloat = false }: NavProps) {
 
   const toggleMenu = (label: string, e: React.MouseEvent<HTMLButtonElement>) => {
     loadExplore();
+    // One panel at a time: reaching for a menu puts the contact form away.
+    setContactOpen(false);
     const willOpen = openMenu !== label;
     // click `detail` is 0 when a button is activated from the keyboard
     // (Enter/Space) rather than a pointer.
@@ -556,6 +561,7 @@ function NavInner({ heroTheme = "dark", instantFloat = false }: NavProps) {
   useEffect(() => {
     const openContact = (e: Event) => {
       setMobileOpen(false);
+      setOpenMenu(null);
       setContactInquiry((e as CustomEvent<{ inquiry?: string }>).detail?.inquiry);
       setContactOpen(true);
     };
@@ -573,14 +579,17 @@ function NavInner({ heroTheme = "dark", instantFloat = false }: NavProps) {
 
   return (
     <div className="fixed left-0 right-0 top-0 z-50 w-full px-3 pt-2.5 sm:px-6 sm:pt-[18px] lg:px-8">
-      {/* A faint veil over the page while a desktop menu is open, so a white panel
-          still separates from a white page. It ignores the pointer: a click anywhere
-          outside the menu closes it through the pointerdown listener below. */}
+      {/* A veil over the page while a panel is open, so a white panel still separates from
+          a white page. For a desktop menu it is faint and ignores the pointer (a click
+          outside closes the menu through the pointerdown listener above). For the contact
+          form, on every screen size, it is stronger and catches the click: clicking
+          outside the form closes it, and nothing behind it is clickable meanwhile. */}
       <div
         aria-hidden="true"
-        className={`pointer-events-none fixed inset-0 -z-10 hidden bg-black/[0.12] transition-opacity duration-200 motion-reduce:transition-none lg:block ${
-          menuOpen ? "opacity-100" : "opacity-0"
-        }`}
+        onClick={contactOpen ? closeContact : undefined}
+        className={`fixed inset-0 -z-10 transition-opacity duration-200 motion-reduce:transition-none ${
+          contactOpen ? "pointer-events-auto block bg-black/25" : "pointer-events-none hidden bg-black/[0.12] lg:block"
+        } ${panelOpen ? "opacity-100" : "opacity-0"}`}
       />
       <motion.div
         ref={navRef}
@@ -598,11 +607,11 @@ function NavInner({ heroTheme = "dark", instantFloat = false }: NavProps) {
             animate={{
               backgroundColor: navTransparent ? "rgba(255,255,255,0)" : "rgba(255,255,255,1)",
               borderColor: navTransparent ? "rgba(255,255,255,0)" : "rgba(0,0,0,0.06)",
-              // The panel carries the shadow while a menu is open.
-              boxShadow: navTransparent || menuOpen ? "0 2px 16px rgba(0,0,0,0)" : "0 2px 16px rgba(0,0,0,0.04)",
-              // Square off the bottom while a menu is open so the panel continues the bar.
-              borderBottomLeftRadius: menuOpen ? 0 : 8,
-              borderBottomRightRadius: menuOpen ? 0 : 8,
+              // The panel carries the shadow while a menu or the form is open.
+              boxShadow: navTransparent || panelOpen ? "0 2px 16px rgba(0,0,0,0)" : "0 2px 16px rgba(0,0,0,0.04)",
+              // Square off the bottom while a menu or the form is open so the panel continues the bar.
+              borderBottomLeftRadius: panelOpen ? 0 : 8,
+              borderBottomRightRadius: panelOpen ? 0 : 8,
             }}
             transition={{
               ...NAV_TRANSITION,
@@ -612,7 +621,7 @@ function NavInner({ heroTheme = "dark", instantFloat = false }: NavProps) {
               borderBottomLeftRadius: PAINT,
               borderBottomRightRadius: PAINT,
             }}
-            className={`flex items-center justify-between gap-3 rounded-lg border px-2.5 py-2 sm:gap-6 sm:px-4 sm:py-3.5 lg:gap-8 lg:px-5 ${contactOpen ? "relative z-[250]" : ""}`}
+            className={`flex items-center justify-between gap-3 rounded-lg border px-2.5 py-2 sm:gap-6 sm:px-4 sm:py-3.5 lg:gap-8 lg:px-5`}
           >
             <a href="/" className="flex shrink-0 items-center gap-1.5 sm:gap-2">
               <Image
@@ -721,7 +730,7 @@ function NavInner({ heroTheme = "dark", instantFloat = false }: NavProps) {
               {/* Hamburger / close toggle — mobile only, farthest right */}
               <motion.button
                 type="button"
-                onClick={() => setMobileOpen((o) => !o)}
+                onClick={() => { setContactOpen(false); setMobileOpen((o) => !o); }}
                 initial={false}
                 animate={{
                   backgroundColor: navTransparent ? "rgba(255,255,255,0)" : "rgba(255,255,255,1)",
@@ -762,6 +771,8 @@ function NavInner({ heroTheme = "dark", instantFloat = false }: NavProps) {
             ))}
           </div>
 
+          {/* The contact form: a panel under the bar, like the menus. */}
+          <ContactModal open={contactOpen} onClose={closeContact} defaultInquiry={contactInquiry} />
         </div>
       </motion.div>
 
@@ -893,7 +904,7 @@ function NavInner({ heroTheme = "dark", instantFloat = false }: NavProps) {
                 </a>
                 <button
                   type="button"
-                  onClick={() => { closeMobileMenu(); setContactOpen(true); }}
+                  onClick={() => { closeMobileMenu(); setContactInquiry(undefined); setContactOpen(true); }}
                   className="flex flex-1 items-center justify-center gap-1.5 rounded-md border border-black/10 px-2 py-2.5 text-[13px] font-medium text-[#222222] transition-colors hover:bg-black/5"
                 >
                   Send us a Message
@@ -903,12 +914,6 @@ function NavInner({ heroTheme = "dark", instantFloat = false }: NavProps) {
           </div>
         </div>
       )}
-
-      <ContactModal
-        open={contactOpen}
-        onClose={() => setContactOpen(false)}
-        defaultInquiry={contactInquiry}
-      />
     </div>
   );
 }
