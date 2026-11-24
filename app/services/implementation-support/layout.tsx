@@ -3,11 +3,11 @@ import { JsonLd } from "@/app/components/JsonLd";
 import { breadcrumbList } from "@/lib/seo/schema";
 
 export const metadata: Metadata = {
-  title: "Implementation & Change Support | BBTx Consulting",
+  title: "Change Management & Implementation Support | BBTx",
   description:
-    "Change doesn't fail in the boardroom. It fails in daily work. BBTx helps leaders go from planning to implementation with accountability and reinforcement.",
+    "Change management and implementation support from BBTx: helping leaders move from planning to sustained execution, with accountability and reinforcement.",
   openGraph: {
-    title: "Implementation & Change Support | BBTx Consulting",
+    title: "Change Management & Implementation Support | BBTx",
     description:
       "Turn strategic intentions into action, accountability, and lasting results.",
     url: "https://www.bbtx.ai/services/implementation-support",

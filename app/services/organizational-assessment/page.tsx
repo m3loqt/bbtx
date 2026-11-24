@@ -118,7 +118,7 @@ const FAQ_ITEMS = [
   {
     question: "What happens after the assessment?",
     answer:
-      "Some organizations implement the recommendations internally. Others continue with support through strategy, leadership development, AI integration, or change initiatives. The assessment is designed to produce clarity either way.",
+      "Some organizations implement the recommendations internally. Others continue with organizational development support through strategy, leadership development, AI integration, or change initiatives. The assessment is designed to produce clarity either way.",
   },
   {
     question: "Can assessments focus on a specific issue?",
@@ -173,13 +173,13 @@ export default function OrganizationalAssessmentPage() {
         <div className="pointer-events-none absolute inset-0 z-0 opacity-60" style={gridBg} aria-hidden />
         <div className="relative z-[1] px-4 pb-10 pt-28 sm:px-6 sm:pt-32 lg:px-8 lg:pb-10">
           <p className="mb-6 text-xs font-semibold uppercase tracking-[0.22em] text-[#555555]/60 sm:text-sm">
-            Organizational Assessment & Analysis
+            Services
           </p>
-
-          <h1 className="text-[2.5rem] font-medium leading-[1.06] tracking-tight text-[#222222] sm:text-[3.2rem] md:text-[3.8rem] lg:text-[4.8rem] xl:text-[5.6rem]">
+          <h1 className="text-[2.25rem] font-medium leading-[1.06] tracking-tight text-[#222222] sm:text-[2.75rem] md:text-[3.25rem] lg:text-[4rem] xl:text-[4.5rem]">Organizational Assessment & Analysis</h1>
+          <p className="mt-4 max-w-[96%] text-[1.5rem] font-medium leading-[1.14] tracking-tight text-[#222222] sm:mt-5 sm:text-[1.875rem] md:text-[2.25rem] lg:text-[2.75rem]">
             Most organizations are operating on assumptions{" "}
             <span className="italic">that haven't been tested in years</span>
-          </h1>
+          </p>
 
           <p className="mt-5 max-w-4xl text-base leading-relaxed tracking-normal text-[#555555] sm:mt-6 sm:text-xl">
             We help leaders see what is actually happening beneath performance metrics,

@@ -75,9 +75,10 @@ export default function ServicesPage() {
         <div className="pointer-events-none absolute inset-0 z-0 opacity-[0.22]" style={fractalTexture} aria-hidden />
         <div className="relative z-[1] flex flex-1 flex-col justify-end pb-16 sm:pb-20 lg:pb-24">
           <p className="mb-6 text-sm font-semibold text-[#ca3726] sm:text-base">
-            Services
+            BBTx Consulting
           </p>
-          <h1 className="text-[2.5rem] font-medium leading-[1.06] tracking-tighter text-white sm:text-[3.2rem] md:text-[3.8rem] lg:text-[4.8rem] xl:text-[5.6rem]">
+          <h1 className="text-[2.25rem] font-medium leading-[1.06] tracking-tighter text-white sm:text-[2.75rem] md:text-[3.25rem] lg:text-[4rem] xl:text-[4.5rem]">Organizational Consulting Services</h1>
+          <p className="mt-4 max-w-[96%] text-[1.5rem] font-medium leading-[1.14] tracking-tighter text-white sm:mt-5 sm:text-[1.875rem] md:text-[2.25rem] lg:text-[2.75rem]">
             The problems on most leadership team agendas this year were{" "}
             <span
               className="font-normal italic text-white/70"
@@ -85,10 +86,12 @@ export default function ServicesPage() {
             >
               on their agendas three years ago
             </span>
-          </h1>
+          </p>
           <p className="mt-5 max-w-4xl text-lg leading-relaxed tracking-tight text-white/55 sm:mt-6 sm:text-2xl">
             BBTx works with leadership teams to understand why that happens, and to change the
-            organizational conditions that make it keep happening.
+            organizational conditions that make it keep happening. Our organizational
+            development practice spans assessment, strategy, leadership development, AI
+            adoption, and change.
           </p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
             <button

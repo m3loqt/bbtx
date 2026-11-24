@@ -76,7 +76,7 @@ const STEPS = [
 const ENGAGEMENTS = [
   {
     name: "Strategy Analysis & Development",
-    description: "Clarifying direction, priorities, tradeoffs, capabilities, and measures of progress",
+    description: "Strategic planning that clarifies direction, priorities, tradeoffs, capabilities, and measures of progress",
   },
   {
     name: "Executive Strategic Advisory",
@@ -95,7 +95,7 @@ const ENGAGEMENTS = [
 const FAQ_ITEMS = [
   {
     question: "How is this different from traditional strategic planning",
-    answer: "Traditional planning often produces a document. This work focuses on the decisions, alignment, and discipline required to make strategy actionable",
+    answer: "Strategic planning is part of this work, but a written plan is not the goal of every engagement. Traditional planning often produces a document. This work focuses on the decisions, alignment, and discipline required to make strategy actionable",
   },
   {
     question: "Do you use AI in the strategy process",
@@ -163,15 +163,20 @@ export default function StrategyAdvisoryPage() {
         <div className="pointer-events-none absolute inset-0 z-0 opacity-60" style={gridBg} aria-hidden />
         <div className="relative z-[1] px-4 pb-10 pt-28 sm:px-6 sm:pt-32 lg:px-8 lg:pb-10">
           <p className="mb-6 text-xs font-semibold uppercase tracking-[0.22em] text-[#555555]/60 sm:text-sm">
-            Strategy & Advisory Services
+            Services
           </p>
-          <h1 className="max-w-[96%] text-[2.5rem] font-medium leading-[1.06] tracking-tight text-[#222222] sm:text-[3.2rem] md:text-[3.8rem] lg:text-[4.8rem] xl:text-[5.6rem]">
+          <h1 className="text-[2.25rem] font-medium leading-[1.06] tracking-tight text-[#222222] sm:text-[2.75rem] md:text-[3.25rem] lg:text-[4rem] xl:text-[4.5rem]">Strategy & Advisory Services</h1>
+          <p className="mt-4 max-w-[96%] text-[1.5rem] font-medium leading-[1.14] tracking-tight text-[#222222] sm:mt-5 sm:text-[1.875rem] md:text-[2.25rem] lg:text-[2.75rem]">
             Most organizations don't have a strategy problem.{" "}
-            <span className="italic">They have a decision-making problem</span>
-          </h1>
+            <span className="italic">
+              They have a <span className="whitespace-nowrap">decision-making</span> problem
+            </span>
+          </p>
           <p className="mt-5 max-w-5xl text-base leading-relaxed tracking-normal text-[#555555] sm:mt-6 sm:text-xl">
             Strategy only matters when it changes decisions. We help leaders create the clarity,
-            alignment, and discipline required to turn priorities into action
+            alignment, and discipline required to turn priorities into action. That includes
+            strategic planning, shaped around the decisions leaders actually face rather than a
+            document for its own sake
           </p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
             <button

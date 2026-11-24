@@ -3,11 +3,11 @@ import { JsonLd } from "@/app/components/JsonLd";
 import { breadcrumbList } from "@/lib/seo/schema";
 
 export const metadata: Metadata = {
-  title: "Leadership Development & AI Leadership Consulting | BBTx",
+  title: "Leadership Development Consulting | BBTx Consulting",
   description:
-    "BBTx builds leadership capability across leaders, teams, and the conditions around them, including how managers guide teams through AI adoption and change.",
+    "Leadership development consulting that builds capability across leaders, teams, and the conditions around them, including leadership for the AI era.",
   openGraph: {
-    title: "Leadership Development & AI Leadership Consulting | BBTx",
+    title: "Leadership Development Consulting | BBTx Consulting",
     description:
       "Develop stronger leaders, healthier teams, and more effective organizations, including leadership through AI adoption.",
     url: "https://www.bbtx.ai/services/leadership-development",
