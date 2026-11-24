@@ -3,13 +3,31 @@
 import Image from "next/image";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { motion, MotionConfig } from "framer-motion";
+import {
+  ArrowRight,
+  BrainCircuit,
+  Compass,
+  FileText,
+  GraduationCap,
+  PenLine,
+  Radar,
+  Route,
+  ScanSearch,
+  UserSearch,
+  UsersRound,
+  type LucideIcon,
+} from "lucide-react";
 import { ArrowUpRight, ChevronDown } from "./ArrowIcon";
 import { ContactModal } from "./ContactModal";
+import { RemoteCoverImage } from "./RemoteCoverImage";
 import { SiSubstack, SiLinkedin, SiGumroad } from "react-icons/si";
 import { FaMediumM } from "react-icons/fa";
 import { altFor } from "@/lib/seo/image-alt";
 
 const NAV_TRANSITION = { duration: 0.6, ease: [0.22, 1, 0.36, 1] as const };
+// Colour changes that come from opening or closing a menu are quick; the bar's
+// slower scroll morph (width, position) keeps NAV_TRANSITION.
+const PAINT = { duration: 0.22, ease: NAV_TRANSITION.ease };
 
 // Layout effects run synchronously before paint, so the "over hero" state is
 // corrected before the browser ever shows the floating-card default — avoids
@@ -42,7 +60,7 @@ const MOBILE_SOCIAL_LINKS = [
   { label: "Gumroad", href: "https://chaoticconfluence.gumroad.com/", Icon: SiGumroad },
 ];
 
-type DropdownItem = { title: string; description: string; href: string };
+type DropdownItem = { title: string; description: string; href: string; Icon: LucideIcon };
 
 const DROPDOWNS: Record<string, DropdownItem[]> = {
   Resources: [
@@ -50,21 +68,25 @@ const DROPDOWNS: Record<string, DropdownItem[]> = {
       title: "Courses",
       description: "Making Modern Managers and five AI courses, built from the same frameworks we use with clients.",
       href: "/courses",
+      Icon: GraduationCap,
     },
     {
       title: "Digital Twin Snapshot",
       description: "See your organization the way the market already does: a strategic analysis from your public footprint.",
       href: "/digital-twin-snapshot",
+      Icon: Radar,
     },
     {
       title: "Whitepapers",
       description: "What we're learning across 100+ engagements, written down as it's ready.",
       href: "/whitepapers",
+      Icon: FileText,
     },
     {
       title: "Chaotic Confluence",
       description: "Notes on AI strategy, leadership, and organizations, from the field.",
       href: "/chaotic-confluence",
+      Icon: PenLine,
     },
   ],
   Services: [
@@ -72,91 +94,132 @@ const DROPDOWNS: Record<string, DropdownItem[]> = {
       title: "Organizational Assessment & Analysis",
       description: "Reveal organizational realities, identify risks, and uncover opportunities for improvement.",
       href: "/services/organizational-assessment",
+      Icon: ScanSearch,
     },
     {
       title: "Strategy & Advisory Services",
       description: "Create strategic clarity, strengthen alignment, and improve decision-making discipline.",
       href: "/services/strategy-advisory",
+      Icon: Compass,
     },
     {
       title: "Leadership & Team Development",
       description: "Develop stronger leaders, healthier teams, and more effective organizations.",
       href: "/services/leadership-development",
+      Icon: UsersRound,
     },
     {
       title: "AI Integration & Innovation",
       description: "Apply AI responsibly, improve performance, and build organizational capability.",
       href: "/services/ai-integration",
+      Icon: BrainCircuit,
     },
     {
       title: "Implementation & Change Support",
       description: "Turn strategic intentions into action, accountability, and lasting results.",
       href: "/services/implementation-support",
+      Icon: Route,
     },
     {
       title: "Executive Recruitment Assessment",
       description: "A disciplined, independent way to evaluate finalists for your next executive search.",
       href: "/services/executive-recruitment",
+      Icon: UserSearch,
     },
   ],
 };
 
-const MENU_META: Record<string, { panelId: string; allLabel: string; allHref: string }> = {
-  Services: { panelId: "nav-panel-services", allLabel: "All services", allHref: "/services" },
-  Resources: { panelId: "nav-panel-resources", allLabel: "All resources", allHref: "/resources" },
+// The "Explore" card at the right of each mega menu. Real articles arrive from
+// /api/nav-explore the first time a menu is opened; until then (or if that fails)
+// the menu shows this built-in card, so it is never empty.
+type ExploreCard = { title: string; excerpt: string; category: string | null; image: string | null; href: string };
+type ExploreData = { services: ExploreCard | null; resources: ExploreCard | null };
+
+const EXPLORE_FALLBACK: ExploreCard = {
+  title: "Chaotic Confluence",
+  excerpt: "Notes on AI strategy, leadership, and organizations, from the field.",
+  category: null,
+  image: null,
+  href: "/chaotic-confluence",
 };
 
-// Up to 4 items sit in a single row; 5-6 split into two rows of 3.
-function firstRowCountFor(itemCount: number) {
-  return itemCount <= 4 ? itemCount : Math.min(3, itemCount);
-}
+const MENU_META: Record<
+  string,
+  { panelId: string; allLabel: string; allHref: string; exploreKey: keyof ExploreData; exploreCta: string }
+> = {
+  Services: {
+    panelId: "nav-panel-services",
+    allLabel: "All services",
+    allHref: "/services",
+    exploreKey: "services",
+    exploreCta: "Read the article",
+  },
+  Resources: {
+    panelId: "nav-panel-resources",
+    allLabel: "All resources",
+    allHref: "/resources",
+    exploreKey: "resources",
+    exploreCta: "Read the article",
+  },
+};
 
-function colsClassFor(firstRowCount: number) {
-  return firstRowCount >= 4
-    ? "grid-cols-4"
-    : firstRowCount === 3
-      ? "grid-cols-3"
-      : firstRowCount === 2
-        ? "grid-cols-2"
-        : "grid-cols-1";
-}
-
-function MegaCard({
-  item,
-  dark,
-  compact,
-  onNavigate,
-}: {
-  item: DropdownItem;
-  dark: boolean;
-  compact: boolean;
-  onNavigate: () => void;
-}) {
+/** One service or resource: its icon beside the name, the description under it. */
+function MenuItem({ item, onNavigate }: { item: DropdownItem; onNavigate: () => void }) {
+  const { Icon } = item;
   return (
     <a
       href={item.href}
       onClick={onNavigate}
-      className={`group flex flex-col justify-between rounded-lg border px-4 py-4 text-left transition-colors focus-visible:outline-2 focus-visible:-outline-offset-2 sm:px-5 sm:py-5 ${
-        compact ? "min-h-[130px] sm:min-h-[150px]" : "min-h-[150px] sm:min-h-[170px]"
-      } ${
-        dark
-          ? "border-white/10 bg-white/5 hover:bg-white/10 focus-visible:outline-white"
-          : "border-black/[0.06] bg-white transition-shadow hover:shadow-[0_6px_18px_rgba(0,0,0,0.06)] focus-visible:outline-[#ca3726]"
-      }`}
+      className="group -mx-4 block rounded-xl px-4 py-4 transition-colors hover:bg-[#f6f6f6] focus-visible:bg-[#f6f6f6] focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-[#ca3726]"
     >
-      <div>
-        <p className={`text-sm font-semibold tracking-normal sm:text-[15px] ${dark ? "text-white" : "text-[#222222]"}`}>
-          {item.title}
-        </p>
-        <p className={`mt-2 text-xs leading-relaxed sm:text-[13px] ${dark ? "text-white/60" : "text-[#555555]"}`}>
-          {item.description}
-        </p>
+      <span className="flex items-start gap-3">
+        <Icon className="mt-px h-5 w-5 shrink-0 text-[#ca3726]" strokeWidth={1.5} aria-hidden />
+        <span className="text-[15px] font-medium leading-snug text-[#111111]">{item.title}</span>
+      </span>
+      <span className="mt-2 block text-[13.5px] leading-relaxed text-[#666666]">{item.description}</span>
+    </a>
+  );
+}
+
+function ExploreLink({ card, cta, onNavigate }: { card: ExploreCard; cta: string; onNavigate: () => void }) {
+  return (
+    <a
+      href={card.href}
+      onClick={onNavigate}
+      className="group block rounded-lg focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#ca3726]"
+    >
+      {/* The image only repeats the link's own text, so it is hidden from screen readers
+          (it still carries alt text, like every image on the site). */}
+      <div aria-hidden="true" className="relative aspect-video overflow-hidden rounded-lg bg-[#f3f3f3]">
+        {card.image ? (
+          <RemoteCoverImage
+            src={card.image}
+            alt={card.title}
+            sizes="340px"
+            className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.03] motion-reduce:transition-none"
+          />
+        ) : (
+          <div className="absolute inset-0 flex items-center justify-center">
+            <Image src="/oglogo.webp" alt={altFor("/oglogo.webp")} aria-hidden width={56} height={56} className="h-14 w-14 object-contain opacity-25" />
+          </div>
+        )}
       </div>
-      <div className="mt-4 flex justify-end">
-        <span className="flex h-7 w-7 items-center justify-center rounded-md bg-[#ca3726] text-white transition-colors group-hover:bg-[#b02f21]">
-          <ArrowUpRight className="h-3.5 w-3.5" />
-        </span>
-      </div>
+      {card.category && (
+        <p className="mt-4 text-[11px] font-medium uppercase tracking-[0.12em] text-[#888888]">{card.category}</p>
+      )}
+      <p className={`${card.category ? "mt-1.5" : "mt-4"} text-[15px] font-semibold leading-snug text-[#111111]`}>
+        {card.title}
+      </p>
+      {card.excerpt && (
+        <p className="mt-1.5 line-clamp-2 text-[13.5px] leading-relaxed text-[#666666]">{card.excerpt}</p>
+      )}
+      <span className="mt-3 inline-flex items-center gap-1.5 text-[13.5px] font-medium text-[#ca3726]">
+        {cta}
+        <ArrowRight
+          className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5 motion-reduce:transition-none"
+          aria-hidden
+        />
+      </span>
     </a>
   );
 }
@@ -164,23 +227,29 @@ function MegaCard({
 // Every panel is always in the DOM so its links exist in the server-rendered
 // HTML (crawlers don't click). When closed it is `invisible` + `inert`, which
 // removes it from hit-testing, the tab order and the accessibility tree.
+//
+// The panel is the bar's lower half: same width, same white, same border, laid
+// 1px over the bar's bottom edge so there is no seam and no gap. (The bar squares
+// its bottom corners while a menu is open; see NavInner.)
 function MegaPanel({
   label,
   open,
-  dark,
+  explore,
   onNavigate,
   onKeyDown,
 }: {
   label: string;
   open: boolean;
-  dark: boolean;
+  explore: ExploreData | null;
   onNavigate: () => void;
   onKeyDown: (e: React.KeyboardEvent<HTMLDivElement>) => void;
 }) {
   const items = DROPDOWNS[label];
   const meta = MENU_META[label];
-  const firstRowCount = firstRowCountFor(items.length);
-  const colsClass = colsClassFor(firstRowCount);
+  // Two columns of equal weight: 6 services -> 3 + 3, 4 resources -> 2 + 2.
+  const split = Math.ceil(items.length / 2);
+  const columns = [items.slice(0, split), items.slice(split)];
+  const card = explore?.[meta.exploreKey] ?? EXPLORE_FALLBACK;
 
   return (
     <div
@@ -191,48 +260,38 @@ function MegaPanel({
       // visibility reads as `hidden` on the transition's first frame, which makes
       // a programmatic focus() right after opening silently fail — so opening
       // flips it to `visible` instantly, and closing delays `hidden` until the
-      // fade-out finishes.
-      className={`absolute left-0 right-0 top-[calc(100%+0.5rem)] overflow-hidden rounded-lg border duration-200 ease-out motion-reduce:transition-none ${
-        dark
-          ? "border-white/10 bg-black/70 shadow-[0_12px_30px_rgba(0,0,0,0.3)] backdrop-blur-xl"
-          : "border-black/[0.06] bg-[#f7f7f7] shadow-[0_12px_30px_rgba(0,0,0,0.08)]"
-      } ${
-        open
-          ? "visible translate-y-0 opacity-100 transition-[opacity,translate]"
-          : "invisible -translate-y-2 opacity-0 transition-[opacity,translate,visibility]"
+      // fade-out finishes. Opacity only, no movement: sliding would open a gap
+      // between the bar and the panel for a few frames.
+      className={`absolute inset-x-0 top-[calc(100%-1px)] overflow-hidden rounded-b-lg border border-t-0 border-black/[0.06] bg-white shadow-[0_22px_44px_rgba(0,0,0,0.10)] duration-200 ease-out motion-reduce:transition-none ${
+        open ? "visible opacity-100 transition-opacity" : "invisible opacity-0 transition-[opacity,visibility]"
       }`}
     >
-      <div className="space-y-2 p-3 sm:space-y-3 sm:p-4">
-        <div className="flex items-center justify-between px-1">
-          <p className={`text-xs font-semibold uppercase tracking-widest ${dark ? "text-white/70" : "text-[#555555]"}`}>
-            {label}
-          </p>
-          <a
-            href={meta.allHref}
-            onClick={onNavigate}
-            className={`inline-flex items-center gap-1.5 rounded-sm text-[13px] font-medium underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-4 ${
-              dark ? "text-white focus-visible:outline-white" : "text-[#222222] focus-visible:outline-[#ca3726]"
-            }`}
-          >
-            {meta.allLabel}
-            <ArrowUpRight className="h-3.5 w-3.5" />
-          </a>
-        </div>
-        {/* Row 1: one column per item up to 4, else 3 (with a second row) */}
-        <div className={`grid gap-2 sm:gap-3 ${colsClass}`}>
-          {items.slice(0, firstRowCount).map((item) => (
-            <MegaCard key={item.title} item={item} dark={dark} compact={false} onNavigate={onNavigate} />
-          ))}
-        </div>
-        {/* Row 2: mirrors row 1's column count so 6 items form a clean 3x2 grid
-            instead of wrapping the last item onto a lonely third row. */}
-        {items.length > firstRowCount && (
-          <div className={`grid gap-2 sm:gap-3 ${colsClass}`}>
-            {items.slice(firstRowCount).map((item) => (
-              <MegaCard key={item.title} item={item} dark={dark} compact onNavigate={onNavigate} />
+      <div className="mx-5 border-t border-black/[0.07]" aria-hidden="true" />
+      <div className="grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,1.1fr)] gap-x-9 px-9 pb-8 pt-5">
+        {columns.map((col, i) => (
+          <div key={i}>
+            {col.map((item) => (
+              <MenuItem key={item.title} item={item} onNavigate={onNavigate} />
             ))}
           </div>
-        )}
+        ))}
+        <div className="border-l border-black/[0.07] pl-9 pt-4">
+          <p className="mb-4 text-[11px] font-medium uppercase tracking-[0.12em] text-[#888888]">Explore</p>
+          <ExploreLink card={card} cta={meta.exploreCta} onNavigate={onNavigate} />
+        </div>
+      </div>
+      <div className="mx-5 border-t border-black/[0.07] px-4 py-3.5">
+        <a
+          href={meta.allHref}
+          onClick={onNavigate}
+          className="group inline-flex items-center gap-1.5 rounded-sm text-[13.5px] font-medium text-[#111111] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#ca3726]"
+        >
+          {meta.allLabel}
+          <ArrowRight
+            className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5 motion-reduce:transition-none"
+            aria-hidden
+          />
+        </a>
       </div>
     </div>
   );
@@ -263,6 +322,8 @@ function NavInner({ heroTheme = "dark", instantFloat = false }: NavProps) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);
   const [overHero, setOverHero] = useState(false);
+  const [explore, setExplore] = useState<ExploreData | null>(null);
+  const exploreRequested = useRef(false);
 
   // "dark" = render the transparent-over-hero state with light text (photo/dark hero behind it).
   // When heroTheme is "light" (e.g. a white hero), the transparent state keeps dark text instead —
@@ -271,8 +332,13 @@ function NavInner({ heroTheme = "dark", instantFloat = false }: NavProps) {
   // scroll position/heroTheme — otherwise the header's colors depend on
   // wherever the page happened to be scrolled to when the menu opened, which
   // could land on a solid-white background with white text (invisible).
-  const navTransparent = mobileOpen || overHero;
-  const dark = mobileOpen || (overHero && heroTheme === "dark");
+  //
+  // An open desktop menu always wants the white bar: the bar and the panel are
+  // one white surface, so over a hero the bar turns white (and its text dark)
+  // for as long as a menu is open.
+  const menuOpen = openMenu !== null;
+  const navTransparent = mobileOpen || (overHero && !menuOpen);
+  const dark = mobileOpen || (overHero && heroTheme === "dark" && !menuOpen);
 
   useIsomorphicLayoutEffect(() => {
     // Short-hero pages (e.g. blog posts) don't have enough room for the
@@ -302,7 +368,22 @@ function NavInner({ heroTheme = "dark", instantFloat = false }: NavProps) {
 
   const closeMenu = () => setOpenMenu(null);
 
+  // The Explore cards are real articles, fetched once, the first time anyone
+  // reaches for a menu (pointer over a trigger, keyboard focus, or a click).
+  const loadExplore = () => {
+    if (exploreRequested.current) return;
+    exploreRequested.current = true;
+    fetch("/api/nav-explore")
+      .then((r) => (r.ok ? r.json() : Promise.reject(new Error(String(r.status)))))
+      .then((data: ExploreData) => setExplore(data))
+      .catch(() => {
+        // Keep the built-in card; a later reach for a menu tries again.
+        exploreRequested.current = false;
+      });
+  };
+
   const toggleMenu = (label: string, e: React.MouseEvent<HTMLButtonElement>) => {
+    loadExplore();
     const willOpen = openMenu !== label;
     // click `detail` is 0 when a button is activated from the keyboard
     // (Enter/Space) rather than a pointer.
@@ -418,6 +499,15 @@ function NavInner({ heroTheme = "dark", instantFloat = false }: NavProps) {
 
   return (
     <div className="fixed left-0 right-0 top-0 z-50 w-full px-3 pt-2.5 sm:px-6 sm:pt-[18px] lg:px-8">
+      {/* A faint veil over the page while a desktop menu is open, so a white panel
+          still separates from a white page. It ignores the pointer: a click anywhere
+          outside the menu closes it through the pointerdown listener below. */}
+      <div
+        aria-hidden="true"
+        className={`pointer-events-none fixed inset-0 -z-10 hidden bg-black/[0.12] transition-opacity duration-200 motion-reduce:transition-none lg:block ${
+          menuOpen ? "opacity-100" : "opacity-0"
+        }`}
+      />
       <motion.div
         ref={navRef}
         initial={false}
@@ -434,9 +524,20 @@ function NavInner({ heroTheme = "dark", instantFloat = false }: NavProps) {
             animate={{
               backgroundColor: navTransparent ? "rgba(255,255,255,0)" : "rgba(255,255,255,1)",
               borderColor: navTransparent ? "rgba(255,255,255,0)" : "rgba(0,0,0,0.06)",
-              boxShadow: navTransparent ? "0 2px 16px rgba(0,0,0,0)" : "0 2px 16px rgba(0,0,0,0.04)",
+              // The panel carries the shadow while a menu is open.
+              boxShadow: navTransparent || menuOpen ? "0 2px 16px rgba(0,0,0,0)" : "0 2px 16px rgba(0,0,0,0.04)",
+              // Square off the bottom while a menu is open so the panel continues the bar.
+              borderBottomLeftRadius: menuOpen ? 0 : 8,
+              borderBottomRightRadius: menuOpen ? 0 : 8,
             }}
-            transition={NAV_TRANSITION}
+            transition={{
+              ...NAV_TRANSITION,
+              backgroundColor: PAINT,
+              borderColor: PAINT,
+              boxShadow: PAINT,
+              borderBottomLeftRadius: PAINT,
+              borderBottomRightRadius: PAINT,
+            }}
             className={`flex items-center justify-between gap-3 rounded-lg border px-2.5 py-2 sm:gap-6 sm:px-4 sm:py-3.5 lg:gap-8 lg:px-5 ${contactOpen ? "relative z-[250]" : ""}`}
           >
             <a href="/" className="flex shrink-0 items-center gap-1.5 sm:gap-2">
@@ -451,7 +552,7 @@ function NavInner({ heroTheme = "dark", instantFloat = false }: NavProps) {
                 layout
                 initial={false}
                 animate={{ color: dark ? "#ffffff" : "#222222" }}
-                transition={NAV_TRANSITION}
+                transition={{ ...NAV_TRANSITION, color: PAINT }}
                 className="text-sm font-bold tracking-normal sm:text-base lg:text-lg"
               >
                 BBTx Consulting
@@ -473,8 +574,8 @@ function NavInner({ heroTheme = "dark", instantFloat = false }: NavProps) {
                   <motion.span
                     layout
                     initial={false}
-                    animate={{ color: dark ? "rgba(255,255,255,0.8)" : "#222222" }}
-                    transition={NAV_TRANSITION}
+                    animate={{ color: openMenu === label ? "#ca3726" : dark ? "rgba(255,255,255,0.8)" : "#222222" }}
+                    transition={{ ...NAV_TRANSITION, color: PAINT }}
                     className="transition-colors hover:!text-[#555]"
                   >
                     {label}
@@ -498,6 +599,8 @@ function NavInner({ heroTheme = "dark", instantFloat = false }: NavProps) {
                       triggerRefs.current[label] = el;
                     }}
                     onClick={(e) => toggleMenu(label, e)}
+                    onPointerEnter={loadExplore}
+                    onFocus={loadExplore}
                     aria-expanded={open}
                     aria-controls={MENU_META[label].panelId}
                     className={`${triggerClass} cursor-pointer`}
@@ -505,8 +608,8 @@ function NavInner({ heroTheme = "dark", instantFloat = false }: NavProps) {
                     {labelEl}
                     <motion.span
                       initial={false}
-                      animate={{ color: dark ? "rgba(255,255,255,0.8)" : "#222222" }}
-                      transition={{ duration: 0.2 }}
+                      animate={{ color: open ? "#ca3726" : dark ? "rgba(255,255,255,0.8)" : "#222222" }}
+                      transition={PAINT}
                     >
                       <ChevronDown
                         className={`transition-transform duration-200 motion-reduce:transition-none ${open ? "rotate-180" : ""}`}
@@ -534,7 +637,7 @@ function NavInner({ heroTheme = "dark", instantFloat = false }: NavProps) {
                   color: dark ? "#222222" : "#ffffff",
                   borderRadius: 8,
                 }}
-                transition={NAV_TRANSITION}
+                transition={{ ...NAV_TRANSITION, backgroundColor: PAINT, color: PAINT }}
                 className="hidden shrink-0 items-center gap-2 whitespace-nowrap px-4 py-2.5 text-[15px] font-medium hover:opacity-95 lg:flex"
               >
                 Schedule a Consultation
@@ -578,7 +681,7 @@ function NavInner({ heroTheme = "dark", instantFloat = false }: NavProps) {
                 key={label}
                 label={label}
                 open={openMenu === label}
-                dark={dark}
+                explore={explore}
                 onNavigate={closeMenu}
                 onKeyDown={(e) => handlePanelKeyDown(label, e)}
               />
