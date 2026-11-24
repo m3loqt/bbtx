@@ -89,20 +89,47 @@ test("decision 3A: 'organizational development' appears naturally on the hub, Or
   }
 });
 
-test("terms that would draw the wrong visitors are not in any title, H1 or description", () => {
-  const text = [
-    ...Object.keys(PAGES).flatMap((s) => [titleOf(layout(s)), descOf(layout(s)), page(s).match(/<h1[^>]*>([^<]*)<\/h1>/)[1]]),
-    titleOf(read("app/services/layout.tsx")),
-    descOf(read("app/services/layout.tsx")),
-  ].join("\n").toLowerCase();
-  for (const drift of [
-    "management consulting",
-    "executive search",
-    "executive coaching",
+// Two different questions, kept apart on purpose:
+//  - Terms for work BBTx does NOT do (a search firm, software or technical implementation) must not
+//    appear where a page advertises itself: its title, H1 or description.
+//  - Terms for work BBTx DOES do, or for a field it works in, are accurate and may be used freely in
+//    the copy. They are only kept out of a service page's title and H1 when another page owns them
+//    (executive coaching -> /coaching) or they are too broad to describe one service. That is about
+//    which page targets a term, not about which words the site may use.
+const surfaces = (withDescriptions) => [
+  ...Object.keys(PAGES).flatMap((s) => [
+    titleOf(layout(s)),
+    page(s).match(/<h1[^>]*>([^<]*)<\/h1>/)[1],
+    ...(withDescriptions ? [descOf(layout(s))] : []),
+  ]),
+  titleOf(read("app/services/layout.tsx")),
+  ...(withDescriptions ? [descOf(read("app/services/layout.tsx"))] : []),
+].join("\n").toLowerCase();
+
+test("no title, H1 or description advertises work BBTx does not do", () => {
+  const text = surfaces(true);
+  for (const notOffered of [
+    "executive search",         // BBTx assesses finalists; it is not a search firm
     "digital transformation",
-    "implementation consulting",
-    "leadership development programs",
-    "ai implementation",
+    "implementation consulting", // reads as software/ERP implementation
+    "ai implementation",         // reads as technical deployment
     "ai integration consulting",
-  ]) assert.ok(!text.includes(drift), `"${drift}" must not be targeted`);
+  ]) assert.ok(!text.includes(notOffered), `"${notOffered}" must not be advertised`);
+});
+
+test("accurate terms owned by another page, or too broad for one service, are not a service page's title or H1 target", () => {
+  const text = surfaces(false);
+  for (const elsewhere of [
+    "executive coaching",           // a real service, owned by /coaching: a service page should not compete for it
+    "leadership development programs", // course-catalog intent
+    "management consulting",        // too broad to name one service
+  ]) assert.ok(!text.includes(elsewhere), `"${elsewhere}" is not a title/H1 target on a service page`);
+});
+
+test("executive coaching stays a first-class, accurately described service: still named on the Leadership page, with its own page", () => {
+  const lead = page("leadership-development");
+  assert.match(lead, /name: "Executive Coaching"/, "listed as an engagement");
+  assert.match(lead, /question: "Is this executive coaching"/, "answered in the FAQ");
+  assert.match(read("app/coaching/layout.tsx"), /title:\s*"1:1 Executive Coaching with Grant Tate/, "/coaching owns the term in its title");
+  // using the words in descriptions or body copy is not restricted by any test here
 });
