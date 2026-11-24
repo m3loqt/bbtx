@@ -6,6 +6,7 @@ import { motion, MotionConfig } from "framer-motion";
 import {
   ArrowRight,
   BrainCircuit,
+  ClipboardCheck,
   Compass,
   FileText,
   GraduationCap,
@@ -81,6 +82,13 @@ const DROPDOWNS: Record<string, DropdownItem[]> = {
       description: "What we're learning across 100+ engagements, written down as it's ready.",
       href: "/whitepapers",
       Icon: FileText,
+    },
+    {
+      title: "AI Readiness Assessment Guide",
+      description:
+        "Twelve questions for leadership teams to answer before investing in AI, across leadership, governance, workflows, capability, and performance.",
+      href: "/resources/ai-readiness-assessment",
+      Icon: ClipboardCheck,
     },
     {
       title: "Chaotic Confluence",
