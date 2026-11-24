@@ -67,12 +67,11 @@ const TEXT_LINK =
   "rounded-sm underline decoration-black/25 underline-offset-4 transition-colors hover:text-[#ca3726] hover:decoration-[#ca3726] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#ca3726]";
 
 /**
- * The contact form, as a panel that hangs from the navigation bar: the same white surface, border
- * and shadow as the mega menus, no gap. It is rendered by <Nav> directly under the bar (it is
- * positioned against the bar's wrapper), which turns white while the form is open. From tablet
- * up the panel is narrower than the bar and hangs from its right end (under the consultation
- * button); on a phone it is as wide as the bar. Two columns on a desktop (who and how to reach
- * us, then the form), one column below. Opened with the "openContact" window event.
+ * The contact form, as a panel that hangs from the navigation bar: the same white surface, width,
+ * border and shadow as the mega menus, no gap. It is rendered by <Nav> directly under the bar (it
+ * is positioned against the bar's wrapper), which turns white and squares its bottom corners while
+ * the form is open. Two columns on a desktop (who and how to reach us, then the form), one column
+ * below. Opened with the "openContact" window event.
  */
 export function ContactModal({ open, onClose, defaultInquiry }: ContactModalProps) {
   const [isLoading, setIsLoading] = useState(false);
@@ -239,14 +238,14 @@ export function ContactModal({ open, onClose, defaultInquiry }: ContactModalProp
       onKeyDown={onPanelKeyDown}
       // Laid 1px over the bar's bottom edge, like the mega menus, so there is no seam.
       // Scrolls inside itself when the window is too short for the whole form.
-      className={`absolute right-0 top-[calc(100%-1px)] max-h-[calc(100dvh-5rem)] w-full overflow-y-auto overscroll-contain rounded-b-lg border border-t-0 border-black/[0.06] bg-white shadow-[0_22px_44px_rgba(0,0,0,0.10)] transition-opacity ease-out motion-reduce:transition-none sm:max-h-[calc(100dvh-7rem)] md:max-w-[640px] lg:max-w-[920px] ${
+      className={`absolute inset-x-0 top-[calc(100%-1px)] max-h-[calc(100dvh-5rem)] overflow-y-auto overscroll-contain rounded-b-lg border border-t-0 border-black/[0.06] bg-white shadow-[0_22px_44px_rgba(0,0,0,0.10)] transition-opacity ease-out motion-reduce:transition-none sm:max-h-[calc(100dvh-7rem)] ${
         closing ? "opacity-0" : "animate-in fade-in motion-reduce:animate-none"
       }`}
       style={{ transitionDuration: `${FADE_MS}ms`, animationDuration: `${FADE_MS}ms` }}
     >
       <div className="mx-3 border-t border-black/[0.07] sm:mx-5" aria-hidden="true" />
 
-      <div className="px-5 pb-6 pt-6 sm:px-8 sm:pb-8 sm:pt-8 lg:grid lg:grid-cols-[240px_minmax(0,1fr)] lg:gap-x-10">
+      <div className="px-5 pb-6 pt-6 sm:px-9 sm:pb-8 sm:pt-8 lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] lg:gap-x-10">
         {/* Who and how: a short introduction, with the two ways to reach us directly right under it. */}
         <div>
           <div className="pr-12 lg:pr-0">
@@ -256,7 +255,7 @@ export function ContactModal({ open, onClose, defaultInquiry }: ContactModalProp
             >
               Send us a message
             </h2>
-            <p id="contact-modal-intro" className="mt-3 text-[15px] leading-relaxed text-[#555555]">
+            <p id="contact-modal-intro" className="mt-3 max-w-[34ch] text-[15px] leading-relaxed text-[#555555]">
               Tell us a little about what you&apos;re working on, and Grant will be in touch shortly.
             </p>
           </div>

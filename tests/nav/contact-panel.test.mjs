@@ -27,14 +27,12 @@ test("the form hangs from the bar: the nav hosts it under the bar, and it is no 
   assert.ok(nav.indexOf("<ContactModal") < nav.indexOf("</motion.div>"), "rendered inside the nav's wrapper");
   assert.ok(nav.indexOf("<ContactModal") > nav.indexOf("<MegaPanel"), "after the menus, in the same wrapper");
   const form = read(FORM);
-  assert.match(form, /absolute right-0 top-\[calc\(100%-1px\)\]/, "laid 1px over the bar's edge, like the menus, from its right end");
+  assert.match(form, /absolute inset-x-0 top-\[calc\(100%-1px\)\]/, "laid 1px over the bar's edge, the bar's full width, like the menus");
   assert.doesNotMatch(form, /fixed inset-0/, "no separate full-screen overlay inside the form itself");
   // the bar treats the open form like an open menu
   assert.match(nav, /const panelOpen = menuOpen \|\| contactOpen/);
+  assert.match(nav, /borderBottomLeftRadius: panelOpen \? 0 : 8/);
   assert.match(nav, /borderBottomRightRadius: panelOpen \? 0 : 8/);
-  // a menu spans the bar; the form (tablet up) only its right end, so the bar keeps its left corner there
-  assert.match(nav, /const squareBottomLeft = menuOpen \|\| \(contactOpen && !wide\)/);
-  assert.match(nav, /borderBottomLeftRadius: squareBottomLeft \? 0 : 8/);
 });
 
 test("only one panel is open at a time", () => {
@@ -78,10 +76,10 @@ test("small text in the bar's panels is dark enough to read (no #888 labels)", (
   assert.doesNotMatch(read(FORM), /text-\[#888888?\]/);
 });
 
-test("layout: narrower than the bar, two columns on a desktop (introduction and contact left, form right), one column below", () => {
+test("layout: as wide as the bar, two columns on a desktop (introduction and contact left, form right), one column below", () => {
   const form = read(FORM);
-  assert.match(form, /md:max-w-\[640px\] lg:max-w-\[920px\]/, "reduced width");
-  assert.match(form, /lg:grid lg:grid-cols-\[240px_minmax\(0,1fr\)\]/, "two columns from desktop width");
+  assert.doesNotMatch(form, /max-w-\[(640|920)px\]/, "not narrowed: the panel is the bar's width");
+  assert.match(form, /lg:grid lg:grid-cols-\[minmax\(0,1fr\)_minmax\(0,2fr\)\]/, "two columns from desktop width");
   // left column: heading, a short introduction, then email and phone; right column: the form
   const order = ["Send us a message", 'id="contact-modal-intro"', "CONTACT_EMAIL}", "CONTACT_PHONE}", "<form"].map((s) => form.indexOf(s));
   assert.ok(order.every((n) => n > 0) && order.every((n, i) => i === 0 || n > order[i - 1]), `in order: ${order}`);
