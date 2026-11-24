@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState, useSyncExternalStore } from "react";
 import { motion, MotionConfig } from "framer-motion";
 import {
   ArrowRight,
@@ -36,6 +36,18 @@ const PAINT = { duration: 0.22, ease: NAV_TRANSITION.ease };
 // a flash of the wrong nav state on pages that open with a hero in view.
 // (useLayoutEffect is a no-op during SSR, so we fall back to useEffect there.)
 const useIsomorphicLayoutEffect = typeof window !== "undefined" ? useLayoutEffect : useEffect;
+
+// From tablet up the contact form is narrower than the bar and hangs from its right end (see
+// ContactModal), so the bar keeps its rounded bottom-left corner there. On a phone the form is as
+// wide as the bar. Read with useSyncExternalStore so the server render and hydration agree.
+const WIDE_QUERY = "(min-width: 768px)";
+const subscribeWide = (onChange: () => void) => {
+  const mq = window.matchMedia(WIDE_QUERY);
+  mq.addEventListener("change", onChange);
+  return () => mq.removeEventListener("change", onChange);
+};
+const getWide = () => window.matchMedia(WIDE_QUERY).matches;
+const getWideOnServer = () => false;
 
 // Services and Resources are disclosure buttons (click / Enter / Space), not
 // links — their parent pages are reachable from the "All …" link inside each
@@ -413,6 +425,9 @@ function NavInner({ heroTheme = "dark", instantFloat = false }: NavProps) {
   // The contact form hangs from the bar the same way, so it counts as an open panel too.
   const menuOpen = openMenu !== null;
   const panelOpen = menuOpen || contactOpen;
+  const wide = useSyncExternalStore(subscribeWide, getWide, getWideOnServer);
+  // A menu spans the whole bar; the form (from tablet up) only its right end.
+  const squareBottomLeft = menuOpen || (contactOpen && !wide);
   const navTransparent = mobileOpen || (overHero && !panelOpen);
   const dark = mobileOpen || (overHero && heroTheme === "dark" && !panelOpen);
 
@@ -608,9 +623,9 @@ function NavInner({ heroTheme = "dark", instantFloat = false }: NavProps) {
               backgroundColor: navTransparent ? "rgba(255,255,255,0)" : "rgba(255,255,255,1)",
               borderColor: navTransparent ? "rgba(255,255,255,0)" : "rgba(0,0,0,0.06)",
               // The panel carries the shadow while a menu or the form is open.
-              boxShadow: navTransparent || panelOpen ? "0 2px 16px rgba(0,0,0,0)" : "0 2px 16px rgba(0,0,0,0.04)",
+              boxShadow: navTransparent || squareBottomLeft ? "0 2px 16px rgba(0,0,0,0)" : "0 2px 16px rgba(0,0,0,0.04)",
               // Square off the bottom while a menu or the form is open so the panel continues the bar.
-              borderBottomLeftRadius: panelOpen ? 0 : 8,
+              borderBottomLeftRadius: squareBottomLeft ? 0 : 8,
               borderBottomRightRadius: panelOpen ? 0 : 8,
             }}
             transition={{
