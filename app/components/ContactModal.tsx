@@ -43,10 +43,17 @@ const INQUIRY_OPTIONS = [
   "Leadership, Management & Team Development",
   "AI Integration & Innovation",
   "Implementation & Change Support",
+  // The Executive Recruitment Assessment page opens this form with this value.
+  "Executive Recruitment Assessment Services",
   // The homepage engagements popup opens this form with one of these pre-selected.
   ...ENGAGEMENT_INQUIRY_OPTIONS,
   "General Inquiry",
 ] as const;
+
+// What the form starts on when whoever opened it did not name a service (the footer, the phone menu,
+// a general page). It used to fall back to the first service in the list, which was wrong on every
+// page that is not about that service; the contact API already treats "no inquiry" as this.
+const DEFAULT_INQUIRY = "General Inquiry";
 
 const FADE_MS = 200;
 
@@ -77,7 +84,7 @@ export function ContactModal({ open, onClose, defaultInquiry }: ContactModalProp
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [inquiryType, setInquiryType] = useState<string>(defaultInquiry ?? INQUIRY_OPTIONS[0]);
+  const [inquiryType, setInquiryType] = useState<string>(defaultInquiry ?? DEFAULT_INQUIRY);
   const [prevOpen, setPrevOpen] = useState(open);
   const [closing, setClosing] = useState(false);
   const panelRef = useRef<HTMLDivElement>(null);
@@ -97,7 +104,7 @@ export function ContactModal({ open, onClose, defaultInquiry }: ContactModalProp
       setInquiryType(
         defaultInquiry && (INQUIRY_OPTIONS as readonly string[]).includes(defaultInquiry)
           ? defaultInquiry
-          : INQUIRY_OPTIONS[0]
+          : DEFAULT_INQUIRY
       );
     }
   }
@@ -333,7 +340,7 @@ export function ContactModal({ open, onClose, defaultInquiry }: ContactModalProp
                 </Label>
                 <Select
                   value={inquiryType}
-                  onValueChange={(val) => setInquiryType(val ?? INQUIRY_OPTIONS[0])}
+                  onValueChange={(val) => setInquiryType(val ?? DEFAULT_INQUIRY)}
                   disabled={isLoading}
                 >
                   <SelectTrigger id="contact-inquiry" className={SELECT}>
