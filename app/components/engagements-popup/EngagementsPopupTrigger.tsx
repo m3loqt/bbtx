@@ -12,7 +12,8 @@
 // - Never on offer or booking pages, nor on the other pages listed in EXCLUDED_PATHS.
 // - Never over another dialog, the open mobile menu, a field being typed in, or a hidden tab: it
 //   waits and tries again.
-// - Once per 7 days (recorded when it appears, not only when it is closed), and once per visit.
+// - Frequency cap (FREQUENCY_CAP_ENABLED, currently OFF for testing): once per visit and once per 30
+//   minutes, recorded when it appears, not only when it is closed. With the cap off it shows on every load.
 // - `?promo=open` (optionally `&slide=3`) shows it at once for review, with no analytics.
 
 import { useEffect, useState } from "react";
@@ -20,16 +21,18 @@ import dynamic from "next/dynamic";
 import { usePathname } from "next/navigation";
 import {
   EXIT_INTENT_ARM_MS,
+  FREQUENCY_CAP_ENABLED,
   MIN_DWELL_MS,
   RETRY_MS,
   SEEN_KEY,
+  SHOWN_KEY,
   TRIGGER_DELAY_MS,
   TRIGGER_SCROLL_FRACTION,
+  frequencyCapBlocks,
   interruptionReason,
   isExcludedPath,
   isExitIntent,
   parsePreview,
-  readShownRecently,
   safeStorage,
   scrollFraction,
   visit,
@@ -57,12 +60,14 @@ export function EngagementsPopupTrigger() {
     const session = safeStorage("sessionStorage");
     const local = safeStorage("localStorage");
     let seenThisSession = false;
+    let lastShown: string | null = null;
     try {
       seenThisSession = session?.getItem(SEEN_KEY) === "1";
+      lastShown = local?.getItem(SHOWN_KEY) ?? null;
     } catch {
       // Storage refused: the in-memory flag below still covers client-side navigation.
     }
-    if (visit.shown || seenThisSession || readShownRecently(local, Date.now())) return;
+    if (frequencyCapBlocks({ visitShown: visit.shown, seenThisSession, lastShown, now: Date.now() })) return;
 
     const loaded = Date.now();
     let scrollTimer: number | undefined;
@@ -84,12 +89,14 @@ export function EngagementsPopupTrigger() {
         retryTimer = window.setTimeout(() => tryShow(source), RETRY_MS);
         return;
       }
-      visit.shown = true;
-      writeShown(local, Date.now());
-      try {
-        session?.setItem(SEEN_KEY, "1");
-      } catch {
-        // Ignored; see above.
+      if (FREQUENCY_CAP_ENABLED) {
+        visit.shown = true;
+        writeShown(local, Date.now());
+        try {
+          session?.setItem(SEEN_KEY, "1");
+        } catch {
+          // Ignored; see above.
+        }
       }
       setShown({ path: pathname, source, slide: 0 });
     };

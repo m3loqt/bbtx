@@ -4,14 +4,17 @@ import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
 import { join } from "node:path";
 import {
   AUTOPLAY_MS,
-  COOLDOWN_DAYS,
+  COOLDOWN_MINUTES,
+  COOLDOWN_MS,
   CROSSFADE_MS,
   EXCLUDED_PATHS,
   EXIT_INTENT_ARM_MS,
+  FREQUENCY_CAP_ENABLED,
   MIN_DWELL_MS,
   SHOWN_KEY,
   TRIGGER_DELAY_MS,
   TRIGGER_SCROLL_FRACTION,
+  frequencyCapBlocks,
   interruptionReason,
   isExcludedPath,
   isExitIntent,
@@ -27,7 +30,7 @@ import { ENGAGEMENT_INQUIRY, ENGAGEMENT_INQUIRY_OPTIONS } from "../../lib/promo/
 
 const ROOT = new URL("../../", import.meta.url).pathname;
 const read = (p) => readFileSync(join(ROOT, p), "utf8");
-const DAY = 24 * 60 * 60 * 1000;
+const MIN = 60 * 1000;
 /** Source without its comments, so a comment that mentions a word is not mistaken for code that uses it. */
 const code = (p) => read(p).replace(/\/\*[\s\S]*?\*\//g, "").replace(/(^|[^:])\/\/.*$/gm, "$1");
 const POPUP = "app/components/engagements-popup/EngagementsPopup.tsx";
@@ -120,19 +123,39 @@ test("it never interrupts another dialog, the open menu, typing, or a hidden tab
   assert.equal(interruptionReason(doc({ activeElement: { tagName: "DIV", isContentEditable: true } })), "typing");
 });
 
-// --- Once per 7 days --------------------------------------------------------------------------------
-test("once shown, it stays away for seven days and not a moment longer", () => {
-  assert.equal(COOLDOWN_DAYS, 7);
+// --- Frequency cap (30 minutes; currently switched off for testing) -------------------------------------
+test("the cap is 30 minutes, not a moment longer", () => {
+  assert.equal(COOLDOWN_MINUTES, 30);
+  assert.equal(COOLDOWN_MS, 30 * MIN);
   const now = 1_800_000_000_000;
-  assert.equal(shownRecently(String(now - 1 * DAY), now), true);
-  assert.equal(shownRecently(String(now - (7 * DAY - 1000)), now), true);
-  assert.equal(shownRecently(String(now - 7 * DAY), now), false);
-  assert.equal(shownRecently(String(now - 30 * DAY), now), false);
+  assert.equal(shownRecently(String(now - 1 * MIN), now), true);
+  assert.equal(shownRecently(String(now - (30 * MIN - 1000)), now), true);
+  assert.equal(shownRecently(String(now - 30 * MIN), now), false);
+  assert.equal(shownRecently(String(now - 3 * 60 * MIN), now), false);
+});
+
+test("with the cap on it blocks a repeat in this visit or inside 30 minutes; with it off it never blocks", () => {
+  const now = 1_800_000_000_000;
+  const base = { visitShown: false, seenThisSession: false, lastShown: null, now };
+  assert.equal(frequencyCapBlocks({ ...base, enabled: true }), false, "first time: allowed");
+  assert.equal(frequencyCapBlocks({ ...base, enabled: true, visitShown: true }), true);
+  assert.equal(frequencyCapBlocks({ ...base, enabled: true, seenThisSession: true }), true);
+  assert.equal(frequencyCapBlocks({ ...base, enabled: true, lastShown: String(now - 10 * MIN) }), true);
+  assert.equal(frequencyCapBlocks({ ...base, enabled: true, lastShown: String(now - 31 * MIN) }), false);
+  // Off: nothing blocks, whatever the memory says.
+  assert.equal(frequencyCapBlocks({ visitShown: true, seenThisSession: true, lastShown: String(now - 1 * MIN), now, enabled: false }), false);
+});
+
+test("the cap is switched OFF for now; this test marks the place to flip it back on", () => {
+  // Testing needs the popup on every load. Before publishing, set FREQUENCY_CAP_ENABLED to true in
+  // lib/promo/popup-logic.ts and change this expectation to true.
+  assert.equal(FREQUENCY_CAP_ENABLED, false);
+  assert.equal(frequencyCapBlocks({ visitShown: true, seenThisSession: true, lastShown: String(Date.now()), now: Date.now() }), false);
 });
 
 test("a missing, garbled or future timestamp is ignored rather than trusted", () => {
   const now = 1_800_000_000_000;
-  for (const raw of [null, undefined, "", "abc", "0", "-5", "NaN", String(now + DAY)]) assert.equal(shownRecently(raw, now), false, `raw=${raw}`);
+  for (const raw of [null, undefined, "", "abc", "0", "-5", "NaN", String(now + 60 * MIN)]) assert.equal(shownRecently(raw, now), false, `raw=${raw}`);
 });
 
 test("storage that is blocked, missing or throwing never breaks reading or writing", () => {
@@ -144,15 +167,15 @@ test("storage that is blocked, missing or throwing never breaks reading or writi
   assert.doesNotThrow(() => writeShown(null, now));
 });
 
-test("a recorded show time is read back, then expires", () => {
+test("a recorded show time is read back, then expires after 30 minutes", () => {
   const bag = new Map();
   const storage = { getItem: (k) => bag.get(k) ?? null, setItem: (k, v) => bag.set(k, v) };
   const now = 1_800_000_000_000;
   assert.equal(readShownRecently(storage, now), false);
   writeShown(storage, now);
   assert.equal(bag.has(SHOWN_KEY), true);
-  assert.equal(readShownRecently(storage, now + 3 * DAY), true);
-  assert.equal(readShownRecently(storage, now + 8 * DAY), false);
+  assert.equal(readShownRecently(storage, now + 10 * MIN), true);
+  assert.equal(readShownRecently(storage, now + 31 * MIN), false);
 });
 
 test("?promo=open is the review switch; anything else is ignored", () => {
@@ -267,7 +290,8 @@ test("the trigger applies the path rule, loads the popup lazily, and watches exi
   assert.match(src, /hover: hover\) and \(pointer: fine/);
   assert.match(src, /"mouseleave"/);
   assert.match(src, /interruptionReason\(document\)/);
-  assert.match(src, /writeShown\(/, "the 7 days start when it appears");
+  assert.match(src, /frequencyCapBlocks\(/);
+  assert.match(src, /if \(FREQUENCY_CAP_ENABLED\)[\s\S]*writeShown\(/, "the cap clock starts when it appears, and only while the cap is on");
 });
 
 test("the dialog has modal semantics, keyboard and touch support, and the right pauses", () => {

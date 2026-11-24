@@ -6,8 +6,16 @@ export const SHOWN_KEY = "bbtx.engagements-popup.shown-at";
 /** sessionStorage: it has already appeared during this visit. */
 export const SEEN_KEY = "bbtx.engagements-popup.seen";
 
-/** Once it has appeared, it stays away for this long. */
-export const COOLDOWN_DAYS = 7;
+/**
+ * FREQUENCY CAP. TEMPORARILY OFF while the popup is being tested: with `false` it appears on every
+ * page load (and again after navigating to another page where it is allowed), with no memory at all.
+ * Set this to `true` before publishing. The rule then is: once it has appeared it stays away for
+ * COOLDOWN_MINUTES, and it appears at most once per visit.
+ */
+export const FREQUENCY_CAP_ENABLED = false;
+/** Once it has appeared, it stays away for this long (when the cap is on). */
+export const COOLDOWN_MINUTES = 30;
+export const COOLDOWN_MS = COOLDOWN_MINUTES * 60 * 1000;
 /** It appears after this long on a page... */
 export const TRIGGER_DELAY_MS = 5_000;
 /** ...or once the visitor has scrolled this far, whichever comes first. */
@@ -83,13 +91,28 @@ type ReadableStorage = Pick<Storage, "getItem"> | null | undefined;
 type WritableStorage = Pick<Storage, "setItem"> | null | undefined;
 
 /** True when the stored timestamp is still inside the cooldown. */
-export function shownRecently(raw: string | null | undefined, now: number, days = COOLDOWN_DAYS): boolean {
+export function shownRecently(raw: string | null | undefined, now: number, ms = COOLDOWN_MS): boolean {
   if (!raw) return false;
   const at = Number(raw);
   if (!Number.isFinite(at) || at <= 0) return false;
   // A timestamp from the future (clock change) is not trusted.
   if (at > now) return false;
-  return now - at < days * 24 * 60 * 60 * 1000;
+  return now - at < ms;
+}
+
+/**
+ * Whether the frequency cap says to stay away: it has appeared during this visit, or within the cooldown.
+ * With the cap off (see FREQUENCY_CAP_ENABLED) it never blocks.
+ */
+export function frequencyCapBlocks(o: {
+  visitShown: boolean;
+  seenThisSession: boolean;
+  lastShown: string | null | undefined;
+  now: number;
+  enabled?: boolean;
+}): boolean {
+  if (!(o.enabled ?? FREQUENCY_CAP_ENABLED)) return false;
+  return o.visitShown || o.seenThisSession || shownRecently(o.lastShown, o.now);
 }
 
 /** Reads the last-shown time; storage that is missing or throws counts as "not shown". */
@@ -119,7 +142,7 @@ export function safeStorage(kind: "localStorage" | "sessionStorage"): Storage | 
 }
 
 /**
- * `?promo=open` shows the popup at once, on any page, ignoring the rules above, and sends no
+ * `?promo=open` shows the popup at once, on any page, ignoring the rules above (frequency cap included), and sends no
  * analytics, so it can be reviewed. `&slide=3` starts on the third slide.
  */
 export function parsePreview(search: string, count = 4): { slide: number } | null {
