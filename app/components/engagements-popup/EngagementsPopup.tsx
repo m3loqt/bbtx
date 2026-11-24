@@ -308,63 +308,68 @@ export default function EngagementsPopup({ startSlide = 0, source, onClose }: Pr
           <p className="mt-4 hidden text-[16.5px] leading-[1.55] text-[#333333] md:block">{PANEL.body}</p>
         </div>
 
-        {/* The carousel. A swipe or the arrow keys move it; the graphics are shown whole on phones. */}
-        <div
-          role="group"
-          aria-roledescription="carousel"
-          aria-label="Focused engagements"
-          className="relative aspect-[678/567] w-full overflow-hidden bg-black lg:aspect-auto lg:h-full"
-          onMouseEnter={() => setHovered(true)}
-          onMouseLeave={() => setHovered(false)}
-          onTouchStart={onTouchStart}
-          onTouchEnd={onTouchEnd}
-          {...keepFocusVisibleState}
-        >
-          {SLIDES.map((slide, i) => {
-            const on = i === index;
-            return (
-              <div
-                key={slide.id}
-                role="group"
-                aria-roledescription="slide"
-                aria-label={`${i + 1} of ${COUNT}`}
-                aria-hidden={!on}
-                inert={!on}
-                className={`absolute inset-0 transition-opacity ease-in-out motion-reduce:transition-none ${
-                  on ? "opacity-100" : "pointer-events-none opacity-0"
-                }`}
-                style={{ transitionDuration: `${CROSSFADE_MS}ms` }}
-              >
-                <SlideTarget slide={slide} onActivate={() => follow(slide.destination, slideParams(i))}>
-                  <Image
-                    src={slide.image}
-                    alt={slide.alt}
-                    fill
-                    loader={bySize}
-                    sizes="(min-width: 1024px) 615px, (min-width: 768px) 640px, 100vw"
-                    loading="eager"
-                    fetchPriority={i === startSlide ? "high" : "auto"}
-                    className="object-cover object-left"
-                  />
-                </SlideTarget>
-              </div>
-            );
-          })}
-
-          {/* White arrows sit above the graphics' own text, which starts lower down. */}
-          <ArrowButton side="prev" onClick={() => step(-1)} />
-          <ArrowButton side="next" onClick={() => step(1)} />
-
-          <button
-            type="button"
-            onClick={() => close("close_button")}
-            aria-label="Close"
-            className="absolute right-2 top-2 z-30 flex h-11 w-11 items-center justify-center focus-visible:outline-2 focus-visible:outline-offset-[-4px] focus-visible:outline-white"
+        {/* The carousel, inset in white with rounded corners. A swipe or the arrow keys move it; the
+            graphics are shown whole on phones. */}
+        <div className="bg-white px-5 md:px-8 lg:p-3.5">
+          <div
+            role="group"
+            aria-roledescription="carousel"
+            aria-label="Focused engagements"
+            className="relative aspect-[678/567] w-full overflow-hidden rounded-[10px] bg-black lg:aspect-auto lg:h-full"
+            onMouseEnter={() => setHovered(true)}
+            onMouseLeave={() => setHovered(false)}
+            onTouchStart={onTouchStart}
+            onTouchEnd={onTouchEnd}
+            {...keepFocusVisibleState}
           >
-            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-black/55">
-              <X className="h-[18px] w-[18px] text-white" strokeWidth={2} aria-hidden="true" />
-            </span>
-          </button>
+            {SLIDES.map((slide, i) => {
+              const on = i === index;
+              return (
+                <div
+                  key={slide.id}
+                  role="group"
+                  aria-roledescription="slide"
+                  aria-label={`${i + 1} of ${COUNT}`}
+                  aria-hidden={!on}
+                  inert={!on}
+                  className={`absolute inset-0 transition-opacity ease-in-out motion-reduce:transition-none ${
+                    on ? "opacity-100" : "pointer-events-none opacity-0"
+                  }`}
+                  style={{ transitionDuration: `${CROSSFADE_MS}ms` }}
+                >
+                  <SlideTarget slide={slide} onActivate={() => follow(slide.destination, slideParams(i))}>
+                    <Image
+                      src={slide.image}
+                      alt={slide.alt}
+                      fill
+                      loader={bySize}
+                      sizes="(min-width: 1024px) 587px, (min-width: 768px) 576px, calc(100vw - 40px)"
+                      loading="eager"
+                      fetchPriority={i === startSlide ? "high" : "auto"}
+                      className="object-cover object-left"
+                    />
+                  </SlideTarget>
+                </div>
+              );
+            })}
+
+            {/* Previous and Next, side by side in the bottom-right corner, where the graphics have no text. */}
+            <div className="absolute bottom-2 right-2 z-20 flex">
+              <ArrowButton side="prev" onClick={() => step(-1)} />
+              <ArrowButton side="next" onClick={() => step(1)} />
+            </div>
+
+            <button
+              type="button"
+              onClick={() => close("close_button")}
+              aria-label="Close"
+              className="absolute right-2 top-2 z-30 flex h-11 w-11 items-center justify-center focus-visible:outline-2 focus-visible:outline-offset-[-4px] focus-visible:outline-white"
+            >
+              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-black/55">
+                <X className="h-[18px] w-[18px] text-white" strokeWidth={2} aria-hidden="true" />
+              </span>
+            </button>
+          </div>
         </div>
 
         {/* Phones and tablets: the counter sits under the carousel. */}
@@ -422,9 +427,7 @@ function ArrowButton({ side, onClick }: { side: "prev" | "next"; onClick: () => 
       type="button"
       onClick={onClick}
       aria-label={side === "prev" ? "Previous slide" : "Next slide"}
-      className={`absolute top-[28%] z-20 flex h-11 w-11 items-center justify-center focus-visible:outline-2 focus-visible:outline-offset-[-4px] focus-visible:outline-white ${
-        side === "prev" ? "left-1" : "right-1"
-      }`}
+      className="flex h-11 w-11 items-center justify-center focus-visible:outline-2 focus-visible:outline-offset-[-4px] focus-visible:outline-white"
     >
       <span className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-black transition-transform hover:scale-105 motion-reduce:transition-none">
         <Icon className="h-5 w-5" strokeWidth={2} aria-hidden="true" />

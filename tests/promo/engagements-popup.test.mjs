@@ -210,7 +210,7 @@ test("each graphic also ships at 2x for high-density screens, and the loader pic
   }
   const src = code(POPUP);
   assert.match(src, /width > 750 \? src\.replace\(\/\\\.webp\$\/, "@2x\.webp"\) : src/);
-  assert.match(read(POPUP), /sizes="\(min-width: 1024px\) 615px/, "the size hint matches the real slot, so a normal screen is not sent the 2x file");
+  assert.match(read(POPUP), /sizes="\(min-width: 1024px\) 587px/, "the size hint matches the real slot, so a normal screen is not sent the 2x file");
 });
 
 test("each slide's alt text names the offer and the price printed on its graphic, and is a description", () => {
@@ -322,6 +322,8 @@ test("the graphics are shown as they are: cover, left-anchored, nothing laid ove
   // Arrows and the X sit on the image edges; there is no text element positioned over a slide.
   assert.doesNotMatch(code(POPUP), /<(p|h1|h2|h3|span)[^>]*\babsolute\b[^>]*>\s*\{(slide|s)\./, "no caption laid over a graphic");
   assert.match(src, /aspect-\[678\/567\]/, "on phones the box has the files' own shape, so nothing is cropped");
+  assert.match(src, /rounded-\[10px\]/, "the graphic is inset with rounded corners");
+  assert.match(src, /absolute bottom-2 right-2[^"]*flex/, "Previous and Next sit side by side at the bottom right of the graphic");
 });
 
 test("brand: the popup uses #C8102E and no other colour, and not the site's brick red", () => {
