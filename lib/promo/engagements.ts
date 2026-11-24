@@ -1,159 +1,92 @@
-// Single source of truth for the homepage engagements popup: copy, prices, inclusions and where
-// each call to action goes. Edit this file to change what the popup says; nothing else holds copy.
+// Everything the engagements popup shows, in one place. The four banner graphics carry their own
+// text, price and "View details" button; this file adds the words around them, the alt text, and
+// where each slide goes. Edit here, nowhere else.
 //
-// STATUS: baseline copy from the promotional brief. Every service detail here is still subject
-// to Grant's final approval. Do not add commitments, dates, discounts or links that are not in
-// the approved brief.
+// STATUS: staged for review, not published. Three things below are still open (see PENDING).
 
-import type { AltKey } from "../seo/image-alt.ts";
 import { ENGAGEMENT_INQUIRY, type EngagementInquiry } from "./inquiry-labels.ts";
 
 /**
- * Where a call to action goes.
- * - "contact": opens the site's existing contact form with this inquiry type pre-selected, so
- *   Grant sees which engagement the visitor asked about. An inquiry, not a booking or payment.
- * - "link": a plain link, for a destination Grant approves later (a booking page, a
- *   registration page). None are used yet.
+ * Where a slide (or the "Compare all four" link) goes.
+ * - "contact": opens the site's existing contact form with this inquiry type pre-selected.
+ *   An inquiry, not a booking or payment.
+ * - "link": a plain link to an approved page.
  */
-export type PopupCta =
-  | { kind: "contact"; label: string; inquiry: EngagementInquiry }
-  | { kind: "link"; label: string; href: string; external?: boolean };
+export type Destination =
+  | { kind: "contact"; inquiry: EngagementInquiry }
+  | { kind: "link"; href: string; external?: boolean };
 
-export type PopupVisual =
-  | { kind: "map" }
-  | { kind: "photo"; src: Extract<AltKey, "/serv1.png" | "/serv5.png">; position: string };
-
-type Common = {
+export type PromoSlide = {
   /** Stable id used in analytics. Never shown. */
   id: string;
+  /** The offer's name. */
   name: string;
-  headline: string;
-  /** A phrase inside `headline` set in italics, as the homepage hero does. */
-  emphasis: string;
-  description: string;
-};
-
-export type SingleEngagement = Common & {
-  layout: "single";
+  /** The price printed on the graphic. Used in alt text; keep it equal to the graphic. */
   price: string;
-  included: readonly string[];
-  cta: PopupCta;
-  visual: PopupVisual;
+  /** Pre-compressed WebP in /public/promo (originals are 678 to 679 px wide). */
+  image: string;
+  /** What the graphic shows, including the offer name and price, for people who cannot see it. */
+  alt: string;
+  /** Where clicking the slide goes. */
+  destination: Destination;
 };
 
-export type EngagementOption = {
-  /** Stable id used in analytics: which of the two formats was chosen. */
-  id: "public_workshop" | "individual_analysis";
-  name: string;
-  price: string;
-  included: readonly string[];
-  /** A short factual line under the inclusions. Optional. */
-  note?: string;
-  cta: PopupCta;
-};
+// PENDING, none of these is decided by the code:
+// 1. Offer pages. No page exists for any of the four offers, so every slide opens the contact form
+//    with its offer pre-selected. To link a slide to its page, replace its destination with
+//    { kind: "link", href: "<approved page>" }.
+// 2. "Compare all four". The offerings page is not named yet. It points to /services, which exists,
+//    as a stand-in. Replace PANEL.compare.href when the real page exists.
+// 3. Prices. The graphics for "Staying Relevant" and "Personal Assessment & Coaching" both print
+//    $799. The brief lists the Staying Relevant workshop at $99 and the earlier brief listed
+//    Personal Assessment at $599. The graphics are shown as supplied; if a graphic is wrong it
+//    needs re-exporting, then update `price` and `alt` to match.
 
-export type DualEngagement = Common & {
-  layout: "dual";
-  options: readonly [EngagementOption, EngagementOption];
-};
-
-export type Engagement = SingleEngagement | DualEngagement;
-
-export const ENGAGEMENTS: readonly [SingleEngagement, SingleEngagement, SingleEngagement, DualEngagement] = [
+export const SLIDES: readonly [PromoSlide, PromoSlide, PromoSlide, PromoSlide] = [
   {
-    layout: "single",
+    id: "staying-relevant",
+    name: "Staying Relevant",
+    price: "$799",
+    image: "/promo/engagement-01-staying-relevant.webp",
+    alt: "Staying Relevant, $799: Stay relevant in a changing business landscape. Strategy, AI, and leadership guidance. A hiker stands on a rocky peak above mountain clouds. View details.",
+    destination: { kind: "contact", inquiry: ENGAGEMENT_INQUIRY.stayingRelevant },
+  },
+  {
     id: "digital-twin-assessment",
     name: "Digital Twin Assessment",
     price: "$599",
-    headline: "See your business from a different perspective.",
-    emphasis: "different perspective",
-    description:
-      "Even experienced leaders can miss important connections within their organization or their most valuable customer relationships. A focused Digital Twin assessment helps uncover potential blind spots, understand how different parts of the business interact, and identify where attention could make the greatest difference.",
-    included: [
-      "Initial Digital Twin analysis of your organization or a key customer",
-      "Two private 60-minute sessions with Dr. Grant Tate",
-      "Review of important relationships, challenges, and opportunities",
-      "Written summary of findings and recommended priorities",
-    ],
-    cta: { kind: "contact", label: "Get a Clearer View of Your Business", inquiry: ENGAGEMENT_INQUIRY.digitalTwin },
-    visual: { kind: "map" },
+    image: "/promo/engagement-02-digital-twin-assessment.webp",
+    alt: "Digital Twin Assessment, $599: See your organization more clearly. A glass office tower seen from below against a cloudy sky. View details.",
+    destination: { kind: "contact", inquiry: ENGAGEMENT_INQUIRY.digitalTwin },
   },
   {
-    layout: "single",
     id: "personal-assessment-coaching",
     name: "Personal Assessment & Coaching",
-    price: "$599",
-    headline: "Understand your strengths. Make your next move with confidence.",
-    emphasis: "next move",
-    description:
-      "Your experience has shaped how you lead, work, and make decisions, but understanding your own patterns can open new opportunities for growth. Through BBTx's personal assessments and coaching with Dr. Grant Tate, you'll gain a clearer picture of your strengths and identify practical ways to build on them.",
-    included: [
-      "Selected BBTx personal assessments and individual profile",
-      "Two private 60-minute coaching sessions with Dr. Grant Tate",
-      "Personalized interpretation of strengths and development opportunities",
-      "Written summary with practical development priorities",
-    ],
-    cta: { kind: "contact", label: "Discover Your Strengths", inquiry: ENGAGEMENT_INQUIRY.personal },
-    visual: { kind: "photo", src: "/serv1.png", position: "50% 20%" },
+    price: "$799",
+    image: "/promo/engagement-03-personal-assessment-coaching.webp",
+    alt: "Personal Assessment & Coaching, $799: A clearer sense of your strengths, focus, and next steps. A notebook and pen on a small table beside an armchair. View details.",
+    destination: { kind: "contact", inquiry: ENGAGEMENT_INQUIRY.personal },
   },
   {
-    layout: "single",
     id: "ai-workflow-design-coaching",
     name: "AI Workflow Design & Coaching",
     price: "$799",
-    headline: "Make AI work for you, without losing what makes your work valuable.",
-    emphasis: "what makes your work valuable",
-    description:
-      "Your experience and judgment are valuable assets that AI can help you put to greater use. Work with Dr. Grant Tate to discover where AI can extend your capabilities, streamline your work, and support a more effective way of working that fits your expertise.",
-    included: [
-      "Review of current work activities and opportunities for AI support",
-      "Two private 60-minute working sessions with Dr. Grant Tate",
-      "Design of one personalized AI-supported workflow",
-      "Practical guidance and a written implementation plan",
-    ],
-    cta: { kind: "contact", label: "Expand Your Capabilities with AI", inquiry: ENGAGEMENT_INQUIRY.aiWorkflow },
-    visual: { kind: "photo", src: "/serv5.png", position: "50% 40%" },
-  },
-  {
-    layout: "dual",
-    id: "staying-relevant",
-    name: "Staying Relevant in an AI-Driven World",
-    headline: "Your experience matters. Make sure its value is recognized.",
-    emphasis: "value is recognized",
-    description:
-      "AI is changing how expertise is used, recognized, and valued across professions and industries. Explore where your experience and judgment continue to make a difference, how your professional role can evolve, and what you can do to remain visible and relevant as work changes.",
-    options: [
-      {
-        id: "public_workshop",
-        name: "Public Workshop",
-        price: "$99",
-        included: [
-          "90-minute interactive workshop with Dr. Grant Tate",
-          "Explore how AI is changing professional expertise and identity",
-          "Guided job-analysis exercise",
-          "Personal relevance action plan",
-        ],
-        // The workshop date is not final. This says so plainly and promises nothing: no
-        // registration, no seats. Remove the line if Grant prefers not to mention it.
-        note: "Date to be announced.",
-        cta: { kind: "contact", label: "Explore the Workshop", inquiry: ENGAGEMENT_INQUIRY.relevanceWorkshop },
-      },
-      {
-        id: "individual_analysis",
-        name: "Individual Relevance Analysis",
-        price: "$599",
-        included: [
-          "Two private 90-minute sessions with Dr. Grant Tate",
-          "Personalized analysis of professional expertise and evolving opportunities",
-          "Identification of where experience and judgment create distinctive value",
-          "Written professional relevance and action plan",
-        ],
-        cta: {
-          kind: "contact",
-          label: "Explore Individual Relevance Analysis",
-          inquiry: ENGAGEMENT_INQUIRY.relevanceIndividual,
-        },
-      },
-    ],
+    image: "/promo/engagement-04-ai-workflow-design-coaching.webp",
+    alt: "AI Workflow Design & Coaching, $799: Put AI to work without losing your judgment. A hand draws a flowchart on paper next to a laptop. View details.",
+    destination: { kind: "contact", inquiry: ENGAGEMENT_INQUIRY.aiWorkflow },
   },
 ] as const;
+
+/** The fixed left panel (desktop) and the headline above the carousel (phones). */
+export const PANEL = {
+  eyebrow: "Focused engagements",
+  headline: "Big questions. Focused engagements.",
+  subline: "Four practical ways to work directly with Dr. Grant Tate.",
+  trust: {
+    name: "Dr. Grant Tate",
+    // Taken from the site's own team page (app/team/team-data.ts). No degree or credential is
+    // stated anywhere on the site, so none is shown here until Grant supplies the wording.
+    role: "CEO & Founder, BBTx Consulting",
+  },
+  compare: { label: "Compare all four", destination: { kind: "link", href: "/services" } satisfies Destination },
+} as const;

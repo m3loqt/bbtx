@@ -5,6 +5,7 @@ import {
   Fraunces,
 } from "next/font/google";
 import "./globals.css";
+import { EngagementsPopupTrigger } from "@/app/components/engagements-popup/EngagementsPopupTrigger";
 import { GoogleAnalytics } from "@/app/components/GoogleAnalytics";
 import { JsonLd } from "@/app/components/JsonLd";
 import { siteGraph } from "@/lib/seo/schema";
@@ -114,6 +115,8 @@ export default function RootLayout({
         <JsonLd data={siteGraph()} />
         <GoogleAnalytics />
         {children}
+        {/* The engagements popup. Renders nothing until its rules say so; never on offer or booking pages. */}
+        <EngagementsPopupTrigger />
       </body>
     </html>
   );

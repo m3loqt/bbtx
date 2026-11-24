@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { AnimateSection } from "@/app/components/AnimateSection";
-import { EngagementsPopupTrigger } from "@/app/components/engagements-popup/EngagementsPopupTrigger";
 import { Footer } from "@/app/components/Footer";
 import { JsonLd } from "@/app/components/JsonLd";
 import { Nav } from "@/app/components/Nav";
@@ -66,8 +65,6 @@ export default function Home() {
       <AnimateSection>
         <Footer />
       </AnimateSection>
-      {/* The engagements popup: the only promotional element on the page. Renders nothing until it triggers. */}
-      <EngagementsPopupTrigger />
     </div>
   );
 }

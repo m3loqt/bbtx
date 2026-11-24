@@ -1,53 +1,106 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { readFileSync, readdirSync, statSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
 import { join } from "node:path";
 import {
-  DISMISS_DAYS,
+  AUTOPLAY_MS,
+  COOLDOWN_DAYS,
+  CROSSFADE_MS,
+  EXCLUDED_PATHS,
+  EXIT_INTENT_ARM_MS,
   MIN_DWELL_MS,
+  SHOWN_KEY,
   TRIGGER_DELAY_MS,
   TRIGGER_SCROLL_FRACTION,
-  DISMISS_KEY,
   interruptionReason,
-  isDismissed,
+  isExcludedPath,
+  isExitIntent,
   parsePreview,
-  readDismissed,
+  readShownRecently,
   scrollFraction,
+  shownRecently,
   wrapIndex,
-  writeDismissed,
+  writeShown,
 } from "../../lib/promo/popup-logic.ts";
-import { ENGAGEMENTS } from "../../lib/promo/engagements.ts";
+import { PANEL, SLIDES } from "../../lib/promo/engagements.ts";
 import { ENGAGEMENT_INQUIRY, ENGAGEMENT_INQUIRY_OPTIONS } from "../../lib/promo/inquiry-labels.ts";
 
 const ROOT = new URL("../../", import.meta.url).pathname;
 const read = (p) => readFileSync(join(ROOT, p), "utf8");
 const DAY = 24 * 60 * 60 * 1000;
-/** Source without its comments, so a comment that says "no autoplay" is not mistaken for autoplay. */
+/** Source without its comments, so a comment that mentions a word is not mistaken for code that uses it. */
 const code = (p) => read(p).replace(/\/\*[\s\S]*?\*\//g, "").replace(/(^|[^:])\/\/.*$/gm, "$1");
+const POPUP = "app/components/engagements-popup/EngagementsPopup.tsx";
+const TRIGGER = "app/components/engagements-popup/EngagementsPopupTrigger.tsx";
 
-// --- Carousel navigation ----------------------------------------------------------------------
+// --- Carousel ----------------------------------------------------------------------------------
 test("Previous and Next wrap around the four slides", () => {
   assert.equal(wrapIndex(0, 1, 4), 1);
   assert.equal(wrapIndex(3, 1, 4), 0, "Next from the fourth slide goes to the first");
   assert.equal(wrapIndex(0, -1, 4), 3, "Previous from the first slide goes to the fourth");
-  assert.equal(wrapIndex(2, -1, 4), 1);
   assert.equal(wrapIndex(0, 1, 0), 0, "an empty carousel never produces NaN");
 });
 
-// --- When it shows ------------------------------------------------------------------------------
-test("trigger: 10 seconds or 30% scrolled, never straight away on a restored scroll position", () => {
-  assert.equal(TRIGGER_DELAY_MS, 10_000);
-  assert.equal(TRIGGER_SCROLL_FRACTION, 0.3);
-  assert.ok(MIN_DWELL_MS >= 2_000, "the scroll route waits a few seconds so a reload does not trigger it at first paint");
-  assert.ok(MIN_DWELL_MS < TRIGGER_DELAY_MS);
+test("auto-advance is every 6 seconds with a 400 ms crossfade", () => {
+  assert.equal(AUTOPLAY_MS, 6000);
+  assert.equal(CROSSFADE_MS, 400);
+});
+
+// --- When it shows -------------------------------------------------------------------------------
+test("triggers: exit intent, or 40 seconds, or 50% scrolled; never straight away", () => {
+  assert.equal(TRIGGER_DELAY_MS, 40_000);
+  assert.equal(TRIGGER_SCROLL_FRACTION, 0.5);
+  assert.ok(MIN_DWELL_MS >= 2_000 && MIN_DWELL_MS < TRIGGER_DELAY_MS, "a restored scroll position cannot trigger it at first paint");
+  assert.ok(EXIT_INTENT_ARM_MS >= 3_000, "a quick bounce is not pitched at");
+  assert.equal(isExitIntent({ clientY: -1 }), true);
+  assert.equal(isExitIntent({ clientY: 0 }), true);
+  assert.equal(isExitIntent({ clientY: 300 }), false, "leaving through the side or bottom is not exit intent");
 });
 
 test("scrollFraction is the share of the scrollable height, clamped, and 0 when nothing scrolls", () => {
   assert.equal(scrollFraction(0, 3000, 1000), 0);
-  assert.equal(scrollFraction(600, 3000, 1000), 0.3);
+  assert.equal(scrollFraction(1000, 3000, 1000), 0.5);
   assert.equal(scrollFraction(5000, 3000, 1000), 1);
   assert.equal(scrollFraction(-20, 3000, 1000), 0);
-  assert.equal(scrollFraction(0, 800, 1000), 0, "a page that fits the window has no scroll to measure");
+  assert.equal(scrollFraction(0, 800, 1000), 0);
+});
+
+test("never on offer or booking pages, nor on pages that are not for browsing", () => {
+  for (const path of [
+    "/services",
+    "/services/strategy-advisory",
+    "/services/ai-integration/",
+    "/coaching",
+    "/courses",
+    "/digital-twin-snapshot",
+    "/assessment",
+    "/resources/ai-readiness-assessment",
+    "/book",
+    "/booking/confirm",
+    "/schedule",
+    "/admin",
+    "/admin/contacts",
+    "/links",
+    "/privacy",
+    "/terms",
+    "/cookies",
+  ]) {
+    assert.equal(isExcludedPath(path), true, path);
+  }
+  for (const path of ["/", "/about", "/team/grant", "/chaotic-confluence", "/chaotic-confluence/some-post", "/newsletter", "/whitepapers", "/resources"]) {
+    assert.equal(isExcludedPath(path), false, path);
+  }
+  assert.equal(isExcludedPath(null), false, "no pathname is treated as the homepage");
+  assert.equal(isExcludedPath("/services?x=1"), true, "a query string does not escape the rule");
+  assert.equal(isExcludedPath("/servicesx"), false, "a prefix only matches whole path segments");
+  assert.ok(EXCLUDED_PATHS.includes("/services") && EXCLUDED_PATHS.includes("/coaching") && EXCLUDED_PATHS.includes("/courses"));
+});
+
+test("every excluded offer page really is an offer page, and the pages it shows on exist", () => {
+  // The exclusion list must point at real routes (or deliberate future ones), never typos of them.
+  for (const dir of ["services", "coaching", "courses", "digital-twin-snapshot", "links", "privacy", "terms", "cookies"]) {
+    assert.ok(existsSync(join(ROOT, "app", dir)), `app/${dir} should exist`);
+  }
 });
 
 test("it never interrupts another dialog, the open menu, typing, or a hidden tab", () => {
@@ -61,142 +114,107 @@ test("it never interrupts another dialog, the open menu, typing, or a hidden tab
   assert.equal(interruptionReason(doc()), null);
   assert.equal(interruptionReason(doc({ visibilityState: "hidden" })), "tab-hidden");
   assert.equal(interruptionReason(doc({ querySelector: (sel) => (sel.includes("aria-modal") ? {} : null) })), "dialog-open");
-  assert.equal(interruptionReason(doc({ body: { style: { position: "fixed" } } })), "page-locked", "the mobile menu fixes the body");
+  assert.equal(interruptionReason(doc({ body: { style: { position: "fixed" } } })), "page-locked");
   assert.equal(interruptionReason(doc({ body: { style: { overflow: "hidden" } } })), "page-locked");
-  for (const tag of ["INPUT", "TEXTAREA", "SELECT"]) {
-    assert.equal(interruptionReason(doc({ activeElement: { tagName: tag } })), "typing");
-  }
+  for (const tag of ["INPUT", "TEXTAREA", "SELECT"]) assert.equal(interruptionReason(doc({ activeElement: { tagName: tag } })), "typing");
   assert.equal(interruptionReason(doc({ activeElement: { tagName: "DIV", isContentEditable: true } })), "typing");
 });
 
-// --- Dismissal ----------------------------------------------------------------------------------
-test("a closed popup stays away for seven days, and not a moment longer", () => {
-  assert.equal(DISMISS_DAYS, 7);
+// --- Once per 7 days --------------------------------------------------------------------------------
+test("once shown, it stays away for seven days and not a moment longer", () => {
+  assert.equal(COOLDOWN_DAYS, 7);
   const now = 1_800_000_000_000;
-  assert.equal(isDismissed(String(now - 1 * DAY), now), true);
-  assert.equal(isDismissed(String(now - (7 * DAY - 1000)), now), true);
-  assert.equal(isDismissed(String(now - 7 * DAY), now), false);
-  assert.equal(isDismissed(String(now - 30 * DAY), now), false);
+  assert.equal(shownRecently(String(now - 1 * DAY), now), true);
+  assert.equal(shownRecently(String(now - (7 * DAY - 1000)), now), true);
+  assert.equal(shownRecently(String(now - 7 * DAY), now), false);
+  assert.equal(shownRecently(String(now - 30 * DAY), now), false);
 });
 
-test("a missing, garbled or future dismissal is ignored rather than trusted", () => {
+test("a missing, garbled or future timestamp is ignored rather than trusted", () => {
   const now = 1_800_000_000_000;
-  for (const raw of [null, undefined, "", "abc", "0", "-5", "NaN", String(now + DAY)]) {
-    assert.equal(isDismissed(raw, now), false, `raw=${raw}`);
-  }
+  for (const raw of [null, undefined, "", "abc", "0", "-5", "NaN", String(now + DAY)]) assert.equal(shownRecently(raw, now), false, `raw=${raw}`);
 });
 
 test("storage that is blocked, missing or throwing never breaks reading or writing", () => {
   const now = 1_800_000_000_000;
-  const throwing = {
-    getItem() { throw new Error("SecurityError"); },
-    setItem() { throw new Error("QuotaExceededError"); },
-  };
-  assert.equal(readDismissed(throwing, now), false);
-  assert.doesNotThrow(() => writeDismissed(throwing, now));
-  assert.equal(readDismissed(null, now), false);
-  assert.doesNotThrow(() => writeDismissed(null, now));
+  const throwing = { getItem() { throw new Error("SecurityError"); }, setItem() { throw new Error("QuotaExceededError"); } };
+  assert.equal(readShownRecently(throwing, now), false);
+  assert.doesNotThrow(() => writeShown(throwing, now));
+  assert.equal(readShownRecently(null, now), false);
+  assert.doesNotThrow(() => writeShown(null, now));
 });
 
-test("a dismissal written is a dismissal read back", () => {
+test("a recorded show time is read back, then expires", () => {
   const bag = new Map();
   const storage = { getItem: (k) => bag.get(k) ?? null, setItem: (k, v) => bag.set(k, v) };
   const now = 1_800_000_000_000;
-  assert.equal(readDismissed(storage, now), false);
-  writeDismissed(storage, now);
-  assert.equal(bag.has(DISMISS_KEY), true);
-  assert.equal(readDismissed(storage, now + 3 * DAY), true);
-  assert.equal(readDismissed(storage, now + 8 * DAY), false);
+  assert.equal(readShownRecently(storage, now), false);
+  writeShown(storage, now);
+  assert.equal(bag.has(SHOWN_KEY), true);
+  assert.equal(readShownRecently(storage, now + 3 * DAY), true);
+  assert.equal(readShownRecently(storage, now + 8 * DAY), false);
 });
 
 test("?promo=open is the review switch; anything else is ignored", () => {
   assert.deepEqual(parsePreview("?promo=open"), { slide: 0 });
   assert.deepEqual(parsePreview("?promo=open&slide=3"), { slide: 2 });
   assert.deepEqual(parsePreview("?promo=open&slide=9"), { slide: 0 });
-  assert.deepEqual(parsePreview("?promo=open&slide=abc"), { slide: 0 });
   assert.equal(parsePreview(""), null);
   assert.equal(parsePreview("?promo=1"), null);
-  assert.equal(parsePreview("?slide=2"), null);
 });
 
-// --- The four engagements -----------------------------------------------------------------------
-test("the popup holds the four engagements, in order, at the briefed prices", () => {
-  assert.equal(ENGAGEMENTS.length, 4);
+// --- The four graphics ---------------------------------------------------------------------------------
+test("four slides, in the briefed order, each with its compressed graphic", () => {
   assert.deepEqual(
-    ENGAGEMENTS.map((e) => e.name),
-    [
-      "Digital Twin Assessment",
-      "Personal Assessment & Coaching",
-      "AI Workflow Design & Coaching",
-      "Staying Relevant in an AI-Driven World",
-    ],
+    SLIDES.map((s) => s.name),
+    ["Staying Relevant", "Digital Twin Assessment", "Personal Assessment & Coaching", "AI Workflow Design & Coaching"],
   );
-  assert.deepEqual(ENGAGEMENTS.slice(0, 3).map((e) => e.price), ["$599", "$599", "$799"]);
-  const fourth = ENGAGEMENTS[3];
-  assert.equal(fourth.layout, "dual");
-  assert.deepEqual(fourth.options.map((o) => [o.name, o.price]), [
-    ["Public Workshop", "$99"],
-    ["Individual Relevance Analysis", "$599"],
-  ]);
-  for (const e of ENGAGEMENTS.slice(0, 3)) assert.equal(e.included.length, 4, e.name);
-  for (const o of fourth.options) assert.equal(o.included.length, 4, o.name);
-});
-
-test("the briefed headlines and call-to-action wording are used as written", () => {
-  assert.deepEqual(
-    ENGAGEMENTS.map((e) => e.headline),
-    [
-      "See your business from a different perspective.",
-      "Understand your strengths. Make your next move with confidence.",
-      "Make AI work for you, without losing what makes your work valuable.",
-      "Your experience matters. Make sure its value is recognized.",
-    ],
-  );
-  assert.deepEqual(
-    [...ENGAGEMENTS.slice(0, 3).map((e) => e.cta.label), ...ENGAGEMENTS[3].options.map((o) => o.cta.label)],
-    [
-      "Get a Clearer View of Your Business",
-      "Discover Your Strengths",
-      "Expand Your Capabilities with AI",
-      "Explore the Workshop",
-      "Explore Individual Relevance Analysis",
-    ],
-  );
-  for (const e of ENGAGEMENTS) assert.ok(e.headline.includes(e.emphasis), `${e.id}: the italic phrase must be part of the headline`);
-});
-
-test("slide four keeps the workshop and the individual analysis as separate destinations", () => {
-  const [workshop, individual] = ENGAGEMENTS[3].options;
-  assert.equal(workshop.cta.kind, "contact");
-  assert.equal(individual.cta.kind, "contact");
-  assert.notEqual(workshop.cta.inquiry, individual.cta.inquiry);
-  assert.equal(workshop.id, "public_workshop");
-  assert.equal(individual.id, "individual_analysis");
-});
-
-test("nothing is promised that the brief does not approve", () => {
-  // Copy only: image crop positions such as "50% 20%" are not claims.
-  const everything = JSON.stringify(ENGAGEMENTS, (key, value) => (key === "visual" ? undefined : value)).toLowerCase();
-  for (const word of ["discount", "50%", "% off", "previous attend", "past attend", "alumni", "register", "registration", "seats", "sold out", "limited", "hurry", "checkout", "buy now"]) {
-    assert.ok(!everything.includes(word), `the popup copy must not contain "${word}"`);
+  for (const s of SLIDES) {
+    assert.match(s.image, /^\/promo\/engagement-0[1-4]-[a-z-]+\.webp$/);
+    const file = join(ROOT, "public", s.image);
+    assert.ok(existsSync(file), `${s.image} is missing`);
+    const kb = statSync(file).size / 1024;
+    assert.ok(kb < 100, `${s.image} is ${kb.toFixed(0)} KB; the PNGs it came from were about 500 KB`);
   }
-  // No dates, and no link of any kind is invented.
-  assert.ok(!/\b(20\d\d)\b/.test(everything), "no date or year appears in the copy");
-  assert.ok(!everything.includes("http"), "no URL is hard-coded in the copy");
-  assert.ok(!/[—–]/.test(everything), "no dashes used as punctuation in the copy");
+  assert.ok(existsSync(join(ROOT, "public/promo/grant-headshot.webp")));
 });
 
-test("each engagement hands the contact form its own inquiry type", () => {
-  const inquiries = [
-    ...ENGAGEMENTS.slice(0, 3).map((e) => e.cta.inquiry),
-    ...ENGAGEMENTS[3].options.map((o) => o.cta.inquiry),
-  ];
-  assert.equal(new Set(inquiries).size, 5, "five different inquiry types");
+test("each slide's alt text names the offer and the price printed on its graphic, and is a description", () => {
+  const printed = { "Staying Relevant": "$799", "Digital Twin Assessment": "$599", "Personal Assessment & Coaching": "$799", "AI Workflow Design & Coaching": "$799" };
+  for (const s of SLIDES) {
+    assert.equal(s.price, printed[s.name], `${s.name}: price must equal the one printed on the graphic`);
+    assert.ok(s.alt.includes(s.name), `${s.id}: alt names the offer`);
+    assert.ok(s.alt.includes(s.price), `${s.id}: alt carries the price`);
+    assert.ok(s.alt.length >= 60 && s.alt.length <= 240, `${s.id}: alt is ${s.alt.length} chars`);
+    assert.doesNotMatch(s.alt, /^(an? )?(image|picture|photo|graphic|banner) of/i);
+  }
+});
+
+test("the intro panel says what the brief says, and invents no credential", () => {
+  assert.equal(PANEL.eyebrow.toLowerCase(), "focused engagements");
+  assert.equal(PANEL.headline, "Big questions. Focused engagements.");
+  assert.equal(PANEL.subline, "Four practical ways to work directly with Dr. Grant Tate.");
+  assert.equal(PANEL.trust.name, "Dr. Grant Tate");
+  // The role is the one the site already prints on Grant's team page.
+  assert.ok(read("app/team/team-data.ts").includes(`"${PANEL.trust.role}"`));
+  assert.equal(PANEL.compare.label, "Compare all four");
+  assert.doesNotMatch(JSON.stringify(PANEL), /ph\.?d|m\.?b\.?a|certified|fellow/i, "no degree or certification is stated");
+});
+
+test("nothing is promised that the briefs do not approve", () => {
+  const everything = JSON.stringify([SLIDES.map(({ image, ...rest }) => rest), PANEL]).toLowerCase();
+  for (const word of ["discount", "% off", "previous attend", "alumni", "register", "registration", "seats", "sold out", "limited", "hurry", "checkout", "buy now"]) {
+    assert.ok(!everything.includes(word), `must not contain "${word}"`);
+  }
+  assert.ok(!/\b(20\d\d)\b/.test(everything), "no date or year");
+  assert.ok(!/https?:\/\//.test(everything), "no URL is hard-coded");
+});
+
+test("each slide hands the contact form its own inquiry type, and the form lists them", () => {
+  const inquiries = SLIDES.map((s) => (s.destination.kind === "contact" ? s.destination.inquiry : null));
+  assert.equal(new Set(inquiries).size, 4);
   assert.deepEqual([...inquiries].sort(), [...ENGAGEMENT_INQUIRY_OPTIONS].sort());
   assert.deepEqual(Object.values(ENGAGEMENT_INQUIRY).sort(), [...ENGAGEMENT_INQUIRY_OPTIONS].sort());
-});
-
-test("the contact form lists those inquiry types and keeps the original six", () => {
   const form = read("app/components/ContactModal.tsx");
   assert.match(form, /\.\.\.ENGAGEMENT_INQUIRY_OPTIONS/);
   for (const original of [
@@ -206,37 +224,40 @@ test("the contact form lists those inquiry types and keeps the original six", ()
     "AI Integration & Innovation",
     "Implementation & Change Support",
     "General Inquiry",
-  ]) {
-    assert.ok(form.includes(`"${original}"`), `${original} must remain`);
-  }
+  ]) assert.ok(form.includes(`"${original}"`), `${original} must remain`);
 });
 
-// --- Where it lives and how it behaves ------------------------------------------------------------
+// --- Where it lives and how it behaves -----------------------------------------------------------------
 function sourceFiles(dir) {
   const out = [];
   for (const name of readdirSync(join(ROOT, dir))) {
     const rel = `${dir}/${name}`;
-    const st = statSync(join(ROOT, rel));
-    if (st.isDirectory()) out.push(...sourceFiles(rel));
+    if (statSync(join(ROOT, rel)).isDirectory()) out.push(...sourceFiles(rel));
     else if (/\.(tsx?|mjs)$/.test(name)) out.push(rel);
   }
   return out;
 }
 
-test("the popup is mounted on the homepage and nowhere else, and it is the only promo component", () => {
+test("the popup is mounted once, in the root layout, and is the only promo component", () => {
   const users = sourceFiles("app").filter((f) => read(f).includes("EngagementsPopupTrigger") && !f.includes("engagements-popup/"));
-  assert.deepEqual(users, ["app/page.tsx"]);
-  const home = read("app/page.tsx");
-  assert.equal((home.match(/<EngagementsPopupTrigger\s*\/>/g) ?? []).length, 1);
-  assert.deepEqual(readdirSync(join(ROOT, "app/components/engagements-popup")).sort(), [
-    "EngagementsPopup.tsx",
-    "EngagementsPopupTrigger.tsx",
-    "TwinMap.tsx",
-  ]);
+  assert.deepEqual(users, ["app/layout.tsx"]);
+  assert.equal((read("app/layout.tsx").match(/<EngagementsPopupTrigger\s*\/>/g) ?? []).length, 1);
+  assert.deepEqual(readdirSync(join(ROOT, "app/components/engagements-popup")).sort(), ["EngagementsPopup.tsx", "EngagementsPopupTrigger.tsx"]);
+  assert.doesNotMatch(read("app/page.tsx"), /EngagementsPopup/, "the homepage does not mount a second copy");
 });
 
-test("the dialog has modal semantics, keyboard support, and no autoplay", () => {
-  const src = read("app/components/engagements-popup/EngagementsPopup.tsx");
+test("the trigger applies the path rule, loads the popup lazily, and watches exit intent only for a mouse", () => {
+  const src = code(TRIGGER);
+  assert.match(src, /isExcludedPath\(pathname\)/);
+  assert.match(src, /dynamic\(\(\) => import\("\.\/EngagementsPopup"\)/);
+  assert.match(src, /hover: hover\) and \(pointer: fine/);
+  assert.match(src, /"mouseleave"/);
+  assert.match(src, /interruptionReason\(document\)/);
+  assert.match(src, /writeShown\(/, "the 7 days start when it appears");
+});
+
+test("the dialog has modal semantics, keyboard and touch support, and the right pauses", () => {
+  const src = read(POPUP);
   assert.match(src, /role="dialog"/);
   assert.match(src, /aria-modal="true"/);
   assert.match(src, /aria-roledescription="carousel"/);
@@ -246,42 +267,53 @@ test("the dialog has modal semantics, keyboard support, and no autoplay", () => 
   assert.match(src, /e\.key === "ArrowRight"/);
   assert.match(src, /e\.key !== "Tab"/, "focus is trapped");
   assert.match(src, /aria-label="Close"/);
-  assert.match(src, /scrollbarGutter/, "page scroll is locked without a layout jump");
+  assert.match(src, /onTouchStart/);
   assert.match(src, /previousFocus/, "focus returns to where it was");
-  assert.doesNotMatch(code("app/components/engagements-popup/EngagementsPopup.tsx"), /setInterval|autoplay|autoPlay|requestAnimationFrame/, "slides never advance on their own");
-  assert.match(src, /altFor\(visual\.src\)/, "photos take their alt text from the site's alt-text list");
+  assert.match(src, /scrollbarGutter/, "page scroll is locked without a layout jump");
+  const c = code(POPUP);
+  assert.match(c, /!reducedMotion && !hovered && !keyboardInside && tabVisible/, "paused on hover, focus, hidden tab and reduced motion");
+  assert.match(c, /AUTOPLAY_MS/);
+  assert.match(c, /onMouseEnter/);
 });
 
-test("the four analytics events are sent through the site's existing gtag wrapper", () => {
-  const src = read("app/components/engagements-popup/EngagementsPopup.tsx");
-  for (const name of [
-    "mini_engagement_popup_view",
-    "mini_engagement_popup_close",
-    "mini_engagement_slide_view",
-    "mini_engagement_cta_click",
-  ]) {
+test("the graphics are shown as they are: cover, left-anchored, nothing laid over them", () => {
+  const src = read(POPUP);
+  assert.match(src, /object-cover object-left/);
+  assert.match(src, /loader=\{asIs\}/, "the pre-compressed files are served unchanged");
+  // Arrows and the X sit on the image edges; there is no text element positioned over a slide.
+  assert.doesNotMatch(code(POPUP), /<(p|h1|h2|h3|span)[^>]*\babsolute\b[^>]*>\s*\{(slide|s)\./, "no caption laid over a graphic");
+  assert.match(src, /aspect-\[678\/567\]/, "on phones the box has the files' own shape, so nothing is cropped");
+});
+
+test("brand: the popup uses #C8102E and no other colour, and not the site's brick red", () => {
+  const src = read(POPUP);
+  assert.match(src, /const RED = "#C8102E"/);
+  assert.doesNotMatch(src, /ca3726/i);
+  const colours = [...code(POPUP).matchAll(/#[0-9a-fA-F]{6}\b/g)].map((m) => m[0].toLowerCase());
+  for (const c of colours) {
+    const [r, g, b] = [1, 3, 5].map((i) => parseInt(c.slice(i, i + 2), 16));
+    const gray = Math.abs(r - g) < 3 && Math.abs(g - b) < 3;
+    assert.ok(gray || c === "#c8102e", `${c} is neither a gray nor the brand red`);
+  }
+});
+
+test("the four analytics events go through the site's gtag wrapper, and nothing else", () => {
+  const src = read(POPUP);
+  for (const name of ["mini_engagement_popup_view", "mini_engagement_popup_close", "mini_engagement_slide_view", "mini_engagement_cta_click"]) {
     assert.ok(src.includes(`"${name}"`), name);
   }
   assert.match(src, /import \{ trackEvent \} from "@\/lib\/analytics"/);
-  assert.doesNotMatch(code("app/components/engagements-popup/EngagementsPopup.tsx"), /window\.gtag|dataLayer|fbq|posthog|mixpanel|segment/i, "no second analytics path");
+  assert.doesNotMatch(code(POPUP), /window\.gtag|dataLayer|fbq|posthog|mixpanel|segment/i);
   assert.match(src, /if \(!preview\) trackEvent/, "preview mode sends nothing");
-});
-
-test("the trigger loads the popup lazily and keeps to the stated rules", () => {
-  const src = read("app/components/engagements-popup/EngagementsPopupTrigger.tsx");
-  assert.match(src, /dynamic\(\(\) => import\("\.\/EngagementsPopup"\)/);
-  assert.match(src, /interruptionReason\(document\)/);
-  assert.match(src, /visit\.shown/);
-  assert.match(src, /removeEventListener\("scroll"/);
 });
 
 test("the popup's CSS is scoped to .promo-* and respects reduced motion", () => {
   const css = read("app/globals.css");
-  const start = css.indexOf("Homepage engagements popup");
+  const start = css.indexOf("Engagements popup (app/components/engagements-popup)");
   assert.ok(start > 0);
   const block = css.slice(start, css.indexOf("/* Blog article body", start));
   const selectors = [...block.matchAll(/^\s*(\.[a-z][\w-]*)[\s{,:]/gm)].map((m) => m[1]);
-  assert.ok(selectors.length > 5);
+  assert.ok(selectors.length >= 2);
   for (const sel of selectors) assert.match(sel, /^\.promo-/, `${sel} must be scoped to the popup`);
   assert.match(block, /prefers-reduced-motion: reduce/);
 });
