@@ -176,7 +176,18 @@ test("four slides, in the briefed order, each with its compressed graphic", () =
     const kb = statSync(file).size / 1024;
     assert.ok(kb < 100, `${s.image} is ${kb.toFixed(0)} KB; the PNGs it came from were about 500 KB`);
   }
-  assert.ok(existsSync(join(ROOT, "public/promo/grant-headshot.webp")));
+});
+
+test("each graphic also ships at 2x for high-density screens, and the loader picks by width", () => {
+  for (const s of SLIDES) {
+    const file = join(ROOT, "public", s.image.replace(/\.webp$/, "@2x.webp"));
+    assert.ok(existsSync(file), `${s.image}: the @2x file is missing`);
+    const kb = statSync(file).size / 1024;
+    assert.ok(kb < 200, `${s.image} @2x is ${kb.toFixed(0)} KB`);
+  }
+  const src = code(POPUP);
+  assert.match(src, /width > 750 \? src\.replace\(\/\\\.webp\$\/, "@2x\.webp"\) : src/);
+  assert.match(read(POPUP), /sizes="\(min-width: 1024px\) 615px/, "the size hint matches the real slot, so a normal screen is not sent the 2x file");
 });
 
 test("each slide's alt text names the offer and the price printed on its graphic, and is a description", () => {
@@ -190,15 +201,18 @@ test("each slide's alt text names the offer and the price printed on its graphic
   }
 });
 
-test("the intro panel says what the brief says, and invents no credential", () => {
-  assert.equal(PANEL.eyebrow.toLowerCase(), "focused engagements");
-  assert.equal(PANEL.headline, "Big questions. Focused engagements.");
-  assert.equal(PANEL.subline, "Four practical ways to work directly with Dr. Grant Tate.");
-  assert.equal(PANEL.trust.name, "Dr. Grant Tate");
-  // The role is the one the site already prints on Grant's team page.
-  assert.ok(read("app/team/team-data.ts").includes(`"${PANEL.trust.role}"`));
-  assert.equal(PANEL.compare.label, "Compare all four");
-  assert.doesNotMatch(JSON.stringify(PANEL), /ph\.?d|m\.?b\.?a|certified|fellow/i, "no degree or certification is stated");
+test("the intro panel is exactly the supplied copy and nothing else", () => {
+  assert.deepEqual(Object.keys(PANEL).sort(), ["body", "eyebrow", "headline"]);
+  assert.equal(PANEL.eyebrow, "NEW FROM BBTx CONSULTING");
+  assert.equal(PANEL.headline, "Is there something you\u2019ve been meaning to figure out?");
+  assert.equal(
+    PANEL.body,
+    "Maybe it\u2019s a question about your business, where you\u2019re headed professionally, or how to make AI useful in your work. We\u2019ve put together four focused ways to work with Dr. Grant Tate, without committing to a larger consulting project.",
+  );
+  // No logo, no portrait or name row, no extra links: the popup has the copy, the carousel and the counter.
+  const c = code(POPUP);
+  assert.doesNotMatch(c, /oglogo|grant-avatar|grant-headshot|Compare all four|CompareLink|next\/link/);
+  assert.ok(!existsSync(join(ROOT, "public/promo/grant-headshot.webp")), "the unused portrait crop is gone");
 });
 
 test("nothing is promised that the briefs do not approve", () => {
@@ -267,6 +281,7 @@ test("the dialog has modal semantics, keyboard and touch support, and the right 
   assert.match(src, /e\.key === "ArrowRight"/);
   assert.match(src, /e\.key !== "Tab"/, "focus is trapped");
   assert.match(src, /aria-label="Close"/);
+  assert.match(src, /backdrop-blur/, "the page behind is blurred");
   assert.match(src, /onTouchStart/);
   assert.match(src, /previousFocus/, "focus returns to where it was");
   assert.match(src, /scrollbarGutter/, "page scroll is locked without a layout jump");
@@ -279,7 +294,7 @@ test("the dialog has modal semantics, keyboard and touch support, and the right 
 test("the graphics are shown as they are: cover, left-anchored, nothing laid over them", () => {
   const src = read(POPUP);
   assert.match(src, /object-cover object-left/);
-  assert.match(src, /loader=\{asIs\}/, "the pre-compressed files are served unchanged");
+  assert.match(src, /loader=\{bySize\}/, "the pre-compressed files are served unchanged");
   // Arrows and the X sit on the image edges; there is no text element positioned over a slide.
   assert.doesNotMatch(code(POPUP), /<(p|h1|h2|h3|span)[^>]*\babsolute\b[^>]*>\s*\{(slide|s)\./, "no caption laid over a graphic");
   assert.match(src, /aspect-\[678\/567\]/, "on phones the box has the files' own shape, so nothing is cropped");

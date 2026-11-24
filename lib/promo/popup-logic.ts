@@ -18,7 +18,7 @@ export const TRIGGER_SCROLL_FRACTION = 0.5;
  */
 export const MIN_DWELL_MS = 3_000;
 /** Exit intent (desktop only) is armed only after this long, so a quick bounce is not pitched at. */
-export const EXIT_INTENT_ARM_MS = 5_000;
+export const EXIT_INTENT_ARM_MS = 3_000;
 /** How often a blocked popup checks whether it may show now. */
 export const RETRY_MS = 1_500;
 

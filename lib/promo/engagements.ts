@@ -2,12 +2,12 @@
 // text, price and "View details" button; this file adds the words around them, the alt text, and
 // where each slide goes. Edit here, nowhere else.
 //
-// STATUS: staged for review, not published. Three things below are still open (see PENDING).
+// STATUS: staged for review, not published. Two things below are still open (see PENDING).
 
 import { ENGAGEMENT_INQUIRY, type EngagementInquiry } from "./inquiry-labels.ts";
 
 /**
- * Where a slide (or the "Compare all four" link) goes.
+ * Where a slide goes.
  * - "contact": opens the site's existing contact form with this inquiry type pre-selected.
  *   An inquiry, not a booking or payment.
  * - "link": a plain link to an approved page.
@@ -35,9 +35,7 @@ export type PromoSlide = {
 // 1. Offer pages. No page exists for any of the four offers, so every slide opens the contact form
 //    with its offer pre-selected. To link a slide to its page, replace its destination with
 //    { kind: "link", href: "<approved page>" }.
-// 2. "Compare all four". The offerings page is not named yet. It points to /services, which exists,
-//    as a stand-in. Replace PANEL.compare.href when the real page exists.
-// 3. Prices. The graphics for "Staying Relevant" and "Personal Assessment & Coaching" both print
+// 2. Prices. The graphics for "Staying Relevant" and "Personal Assessment & Coaching" both print
 //    $799. The brief lists the Staying Relevant workshop at $99 and the earlier brief listed
 //    Personal Assessment at $599. The graphics are shown as supplied; if a graphic is wrong it
 //    needs re-exporting, then update `price` and `alt` to match.
@@ -77,16 +75,9 @@ export const SLIDES: readonly [PromoSlide, PromoSlide, PromoSlide, PromoSlide] =
   },
 ] as const;
 
-/** The fixed left panel (desktop) and the headline above the carousel (phones). */
+/** The words beside the carousel on desktop, and above it (eyebrow and headline only) on phones. */
 export const PANEL = {
-  eyebrow: "Focused engagements",
-  headline: "Big questions. Focused engagements.",
-  subline: "Four practical ways to work directly with Dr. Grant Tate.",
-  trust: {
-    name: "Dr. Grant Tate",
-    // Taken from the site's own team page (app/team/team-data.ts). No degree or credential is
-    // stated anywhere on the site, so none is shown here until Grant supplies the wording.
-    role: "CEO & Founder, BBTx Consulting",
-  },
-  compare: { label: "Compare all four", destination: { kind: "link", href: "/services" } satisfies Destination },
+  eyebrow: "NEW FROM BBTx CONSULTING",
+  headline: "Is there something you\u2019ve been meaning to figure out?",
+  body: "Maybe it\u2019s a question about your business, where you\u2019re headed professionally, or how to make AI useful in your work. We\u2019ve put together four focused ways to work with Dr. Grant Tate, without committing to a larger consulting project.",
 } as const;

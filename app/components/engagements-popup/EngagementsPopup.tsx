@@ -11,11 +11,9 @@
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { createPortal } from "react-dom";
 import Image from "next/image";
-import Link from "next/link";
 import { Fraunces } from "next/font/google";
-import { ArrowRight, ChevronLeft, ChevronRight, X } from "lucide-react";
+import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import { trackEvent } from "@/lib/analytics";
-import { altFor } from "@/lib/seo/image-alt";
 import { PANEL, SLIDES, type Destination, type PromoSlide } from "@/lib/promo/engagements";
 import { AUTOPLAY_MS, CROSSFADE_MS, wrapIndex } from "@/lib/promo/popup-logic";
 
@@ -23,12 +21,14 @@ import { AUTOPLAY_MS, CROSSFADE_MS, wrapIndex } from "@/lib/promo/popup-logic";
 const serif = Fraunces({ subsets: ["latin"], weight: ["400", "500"], display: "swap" });
 
 /**
- * The four banner files in /public/promo are already compressed (WebP, quality 92: about 90% smaller
- * than the PNGs they came from, visually identical). They go to the browser as they are. Running them
- * through the image optimizer again would recompress them at its default quality and soften the
- * small text on the graphics, so this loader hands the file back unchanged.
+ * Each banner graphic ships as two files in /public/promo, both pre-compressed WebP: the original size
+ * (about 679 px wide) for normal screens, and a 2x version (about 1358 px, resampled with Lanczos and
+ * lightly sharpened) for high-density screens, where the original would be stretched and look soft.
+ * The browser picks by pixel density; the loader just names the right file. They are served as they
+ * are, because the image optimizer would recompress them at a lower quality and soften the small text.
  */
-const asIs = ({ src }: { src: string }) => src;
+const bySize = ({ src, width }: { src: string; width: number }) =>
+  width > 750 ? src.replace(/\.webp$/, "@2x.webp") : src;
 
 /** The popup's brand red. Only black, white and grays are used besides it. */
 const RED = "#C8102E";
@@ -242,11 +242,10 @@ export default function EngagementsPopup({ startSlide = 0, source, onClose }: Pr
     if (Math.abs(dx) > 48 && Math.abs(dx) > Math.abs(dy) * 1.4) step(dx < 0 ? 1 : -1);
   };
 
-  const follow = (destination: Destination, what: { offering_id: string; offering_name?: string; slide_number?: number }) => {
+  const follow = (destination: Destination, what: { offering_id: string; offering_name: string; slide_number: number }) => {
     track("mini_engagement_cta_click", {
       ...what,
-      cta_type:
-        what.offering_id === "compare_all" ? "compare_link" : destination.kind === "contact" ? "contact_form" : "offer_page",
+      cta_type: destination.kind === "contact" ? "contact_form" : "offer_page",
       inquiry_type: destination.kind === "contact" ? destination.inquiry : undefined,
     });
     // Close first so the contact form opens over the page, not over this popup.
@@ -268,7 +267,11 @@ export default function EngagementsPopup({ startSlide = 0, source, onClose }: Pr
 
   return createPortal(
     <div className="fixed inset-0 z-[200] flex items-end justify-center md:items-center md:p-6">
-      <div className="promo-backdrop absolute inset-0 bg-black/70" aria-hidden="true" onClick={() => close("backdrop")} />
+      <div
+        className="promo-backdrop absolute inset-0 bg-black/40 backdrop-blur-[10px]"
+        aria-hidden="true"
+        onClick={() => close("backdrop")}
+      />
 
       <div
         ref={panelRef}
@@ -277,54 +280,32 @@ export default function EngagementsPopup({ startSlide = 0, source, onClose }: Pr
         aria-label="Focused engagements with Dr. Grant Tate"
         tabIndex={-1}
         onKeyDown={onPanelKeyDown}
-        className="promo-panel @container relative max-h-[94dvh] w-full overflow-y-auto overscroll-contain rounded-t-xl bg-[#111111] text-white outline-none md:max-w-[640px] md:rounded-xl lg:grid lg:aspect-[1200/680] lg:max-h-none lg:max-w-none lg:grid-cols-[1fr_2fr] lg:overflow-hidden lg:w-[min(1200px,calc(100vw-3rem),calc((100dvh-3rem)*1.7647))]"
+        className="promo-panel @container relative max-h-[94dvh] w-full overflow-y-auto overscroll-contain rounded-t-xl bg-white text-[#111111] outline-none md:max-w-[640px] md:rounded-xl lg:grid lg:aspect-[1000/566] lg:max-h-none lg:max-w-none lg:grid-cols-[1fr_1.6fr] lg:overflow-hidden lg:w-[min(1000px,calc(100vw-3rem),calc((100dvh-3rem)*1.7647))]"
       >
-        {/* Desktop: the fixed intro panel. */}
-        <div className="hidden min-h-0 flex-col p-[clamp(24px,3.33cqw,40px)] lg:flex">
-          <Brand />
+        {/* Desktop: the fixed intro panel. Just the words. */}
+        <div className="hidden min-h-0 flex-col bg-white p-[clamp(24px,4cqw,40px)] lg:flex">
+          <p className="text-[clamp(10.5px,1.2cqw,12px)] font-medium tracking-[0.12em] text-[#666666]">{PANEL.eyebrow}</p>
+          <h2
+            className={`${serif.className} mt-[clamp(12px,2cqw,20px)] text-balance text-[clamp(23px,3.6cqw,36px)] font-medium leading-[1.08] tracking-[-0.015em] text-[#111111]`}
+          >
+            {PANEL.headline}
+          </h2>
+          <p className="mt-[clamp(12px,2cqw,20px)] text-[clamp(13.5px,1.65cqw,16.5px)] leading-[1.55] text-[#333333]">{PANEL.body}</p>
 
-          <div className="mt-[clamp(20px,4.5cqw,48px)]">
-            <div className="flex items-center gap-3">
-              <span className="h-[2px] w-6 shrink-0" style={{ backgroundColor: RED }} aria-hidden="true" />
-              <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-[#b3b3b3]">{PANEL.eyebrow}</p>
-            </div>
-            <h2
-              className={`${serif.className} mt-4 text-balance text-[clamp(26px,3.33cqw,40px)] font-medium leading-[1.1] tracking-[-0.01em] text-white`}
-            >
-              {PANEL.headline}
-            </h2>
-            <p className="mt-4 text-[clamp(13px,1.25cqw,15px)] leading-relaxed text-[#b3b3b3]">{PANEL.subline}</p>
-          </div>
-
-          <div className="mt-[clamp(16px,2.5cqw,28px)] flex items-center gap-3">
-            <Image
-              src="/promo/grant-headshot.webp"
-              alt="Dr. Grant Tate"
-              aria-hidden="true"
-              width={40}
-              height={40}
-              className="h-10 w-10 shrink-0 rounded-full object-cover"
-            />
-            <div className="min-w-0">
-              <p className="text-sm font-medium leading-tight text-white">{PANEL.trust.name}</p>
-              <p className="mt-0.5 text-xs leading-snug text-[#9e9e9e]">{PANEL.trust.role}</p>
-            </div>
-          </div>
-
-          <div className="mt-auto flex flex-col gap-[clamp(12px,1.9cqw,20px)] pt-4">
-            <CompareLink onClick={() => follow(PANEL.compare.destination, { offering_id: "compare_all" })} />
+          <div className="mt-auto pt-4">
             <Pager index={index} onGo={(i) => go(i, "manual")} />
           </div>
         </div>
 
-        {/* Phones and tablets: logo and headline above the carousel. */}
-        <div className="px-5 pb-4 pt-5 md:px-8 md:pt-7 lg:hidden">
-          <Brand />
+        {/* Phones and tablets: the words above the carousel (phones keep only the headline). */}
+        <div className="px-5 pb-4 pt-6 md:px-8 md:pt-8 lg:hidden">
+          <p className="text-[11px] font-medium tracking-[0.12em] text-[#666666]">{PANEL.eyebrow}</p>
           <h2
-            className={`${serif.className} mt-4 text-balance text-[26px] font-medium leading-[1.12] tracking-[-0.01em] text-white md:text-[30px]`}
+            className={`${serif.className} mt-2 text-balance text-[27px] font-medium leading-[1.1] tracking-[-0.015em] text-[#111111] md:text-[32px]`}
           >
             {PANEL.headline}
           </h2>
+          <p className="mt-4 hidden text-[16.5px] leading-[1.55] text-[#333333] md:block">{PANEL.body}</p>
         </div>
 
         {/* The carousel. A swipe or the arrow keys move it; the graphics are shown whole on phones. */}
@@ -359,8 +340,8 @@ export default function EngagementsPopup({ startSlide = 0, source, onClose }: Pr
                     src={slide.image}
                     alt={slide.alt}
                     fill
-                    loader={asIs}
-                    sizes="(min-width: 1024px) 800px, (min-width: 768px) 640px, 100vw"
+                    loader={bySize}
+                    sizes="(min-width: 1024px) 615px, (min-width: 768px) 640px, 100vw"
                     loading="eager"
                     fetchPriority={i === startSlide ? "high" : "auto"}
                     className="object-cover object-left"
@@ -404,45 +385,12 @@ function slideParams(i: number) {
   return { offering_id: SLIDES[i].id, offering_name: SLIDES[i].name, slide_number: i + 1 };
 }
 
-function Brand() {
-  return (
-    <div className="flex items-center gap-2.5">
-      <Image
-        src="/oglogo.webp"
-        alt={altFor("/oglogo.webp")}
-        aria-hidden="true"
-        width={36}
-        height={36}
-        className="h-9 w-9 shrink-0 rounded-full object-cover"
-      />
-      <span className="text-[15px] font-semibold tracking-normal text-white">BBTx Consulting</span>
-    </div>
-  );
-}
-
-function CompareLink({ onClick }: { onClick: () => void }) {
-  return (
-    <Link
-      href={PANEL.compare.destination.href}
-      onClick={onClick}
-      className="group inline-flex w-fit items-center gap-2 text-sm font-medium text-white underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
-    >
-      {PANEL.compare.label}
-      <ArrowRight
-        className="h-4 w-4 transition-transform group-hover:translate-x-0.5 motion-reduce:transition-none"
-        strokeWidth={1.75}
-        aria-hidden="true"
-      />
-    </Link>
-  );
-}
-
 /** "01 / 04" with one dash per slide; the active dash is red. */
 function Pager({ index, onGo }: { index: number; onGo: (i: number) => void }) {
   return (
     <div className="flex items-center gap-4">
-      <p className="text-[13px] tabular-nums text-[#9e9e9e]" aria-hidden="true">
-        <span className="font-medium text-white">{pad(index + 1)}</span> / {pad(COUNT)}
+      <p className="text-[13px] tabular-nums text-[#666666]" aria-hidden="true">
+        <span className="font-medium text-[#111111]">{pad(index + 1)}</span> / {pad(COUNT)}
       </p>
       <div role="group" aria-label="Choose a slide" className="flex items-center">
         {SLIDES.map((slide, i) => (
@@ -452,11 +400,11 @@ function Pager({ index, onGo }: { index: number; onGo: (i: number) => void }) {
             onClick={() => i !== index && onGo(i)}
             aria-label={`Show slide ${i + 1}: ${slide.name}`}
             aria-current={i === index ? "true" : undefined}
-            className="group flex h-11 w-8 items-center justify-center focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-white"
+            className="group flex h-11 w-8 items-center justify-center focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-[#111111]"
           >
             <span
               className={`block h-[2px] w-6 transition-colors motion-reduce:transition-none ${
-                i === index ? "" : "bg-[#6e6e6e] group-hover:bg-[#a3a3a3]"
+                i === index ? "" : "bg-[#8c8c8c] group-hover:bg-[#555555]"
               }`}
               style={i === index ? { backgroundColor: RED } : undefined}
             />
