@@ -39,9 +39,13 @@ Nothing below states a fact that is not already on the site, but these are new w
 7. **Services hub lead:** "Our organizational development practice spans assessment, strategy, leadership development, AI adoption, and change."
 8. **Implementation lead:** "Our change management support helps keep decisions moving into daily practice."
 
-## Deliberately not targeted
+## Terms we do not target, and why
 
-These have real search volume but would draw visitors Grant does not serve: "management consulting", "executive search firms", "executive assessment" (likely the MBA-admissions exam), "executive coaching" (belongs to `/coaching`), "leadership development programs" (course shoppers), "digital transformation consulting", "implementation consulting" (software), "AI implementation consulting", "AI integration consulting". A test keeps them out of every title, H1 and description. Executive Recruitment has almost no honest search demand, so its wording is not chased.
+This is about which page *targets* a term, not about which words the site may use. Accurate terminology stays in the copy.
+
+- **Work BBTx does not do** (must not appear in a title, H1 or description): "executive search" (BBTx assesses finalists; it is not a search firm), "digital transformation consulting", "implementation consulting" (reads as software), "AI implementation consulting", "AI integration consulting" (read as technical deployment). A test enforces this.
+- **Accurate, but another page owns it or it is too broad for one service** (not a service page's title or H1 target): "executive coaching" is a real BBTx service and `/coaching` owns that term, so the Leadership page does not compete with it; "leadership development programs" (course-catalog intent); "management consulting" (too broad to name one service). A test enforces *only* the title and H1, and a second test confirms executive coaching is still named on the Leadership page as an engagement and answered in its FAQ. Nothing restricts using these words in descriptions or body copy where they are accurate.
+- **Executive Recruitment** has almost no honest search demand ("executive assessment" is probably mostly the MBA-admissions exam), so its wording is not chased.
 
 ## Not changed
 
@@ -49,7 +53,7 @@ Navigation names, footer, contact-form options, URLs, structured data, images, b
 
 ## Checked
 
-`tsc` clean, ESLint adds no new errors (the existing apostrophe warnings in a few slogans are unchanged), 164 tests pass (6 new in `tests/seo/service-pages.test.mjs`), production build passes. Rendered in headless Chrome at 1440 and 390 px on all seven pages: one H1 each, slogan intact, served title and description as intended, no horizontal scroll. Not checked: Safari, Firefox, a real phone.
+`tsc` clean, ESLint adds no new errors (the existing apostrophe warnings in a few slogans are unchanged), 166 tests pass (8 new in `tests/seo/service-pages.test.mjs`), production build passes. Rendered in headless Chrome at 1440 and 390 px on all seven pages: one H1 each, slogan intact, served title and description as intended, no horizontal scroll. Not checked: Safari, Firefox, a real phone.
 
 ## After it ships (manual)
 
