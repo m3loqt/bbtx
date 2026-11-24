@@ -25,8 +25,9 @@ Also: the popup graphics for Staying Relevant and Personal Assessment still prin
 
 ## What a page contains
 
-- **Full-bleed hero** (about 58% of the window height, 380 to 640 px). The site nav sits over it, transparent with white text, and turns solid once you scroll past (the same behaviour as the homepage; the hero carries `id="hero"` for that).
-- **A single left-aligned column**, 720 px wide: a red rule and small line ("BBTx CONSULTING / FOCUSED ENGAGEMENT"), the name in a large serif, the one-line promise, the opening paragraphs, **What's Included** (hairline rows with a red dot), **How It Works**, then the price large beside its button under a solid rule.
+- **Full-bleed hero** (51% of the window height, 384 to 560 px; 54% and 432 to 576 px on phones, so the headline has room). The site nav sits over it, transparent with white text, and turns solid once you scroll past (the same behaviour as the homepage; the hero carries `id="hero"` for that).
+- **The headline sits on the hero**, bottom left, in white: a red rule and small line ("BBTx CONSULTING / FOCUSED ENGAGEMENT"), the name in a large serif, and the one-line promise. It has the same left edge and 720 px width as the text column below, so the two line up. A dark gradient rises from the bottom of the image behind it. I measured the real pixels behind each line on all four images at four screen sizes: the smallest text (the red-rule line) never drops below 5.3:1 contrast (4.5:1 is the standard), the headline never below 8.8:1, the promise never below 12:1.
+- **A single left-aligned column**, 720 px wide, below: the opening paragraphs, **What's Included** (hairline rows with a red dot), **How It Works**, then the price large beside its button under a solid rule.
 - **Staying Relevant** has two parts: the workshop (what it is, what we'll cover, **$99 per person**, "Ask About the Next Workshop") and, on a light band below, **Prefer to Work Through It Privately?**, the Personal Relevance Analysis (what's included, **$599**, "Ask About a Personal Relevance Analysis"). Nothing promises a date, seats or registration.
 - **Buttons** open the existing contact form with the offering pre-selected (so Grant sees which one was asked about). An inquiry, not a booking or a payment. The workshop button is solid red; the private-analysis button is outlined, as the second choice.
 - Existing site **footer** at the bottom.
@@ -56,7 +57,7 @@ One event through the site's existing wrapper, with fixed values only (never any
 | File | Job |
 |---|---|
 | `lib/offerings/offerings.ts` | All page copy, prices, image and meta choices. |
-| `app/offerings/[slug]/page.tsx` | The page template (server component), metadata, static params. |
+| `app/offerings/[slug]/page.tsx` | The page template (server component): hero with the headline on it, metadata, static params. |
 | `app/offerings/[slug]/OfferingCta.tsx` | The button: opens the contact form with the offering selected and reports the click. |
 | `app/offerings/fonts.ts` | The serif used for headings (loads on these pages only). |
 | `lib/promo/inquiry-labels.ts` | The five inquiry types (also listed in the contact form's dropdown). |
@@ -67,6 +68,6 @@ One event through the site's existing wrapper, with fixed values only (never any
 
 ## QA
 
-Rendered in headless Chrome against a local dev server with Google Analytics blocked, at 1440 x 900 and 390 x 844. Scripted checks on all four pages: loads with 200, title, description, canonical and share image, one h1 matching the name, full-width hero that is loaded and has alt text, nav and footer present, prices shown, no skipped heading level, no horizontal overflow, no popup on the page, each button opening the contact form with its offering selected and sending one analytics event, phone layout (headline inside the margins, buttons at least 56 px tall, 19 px body text), no console errors, an unknown address returning 404, and all four pages in the sitemap. `npm test`, `tsc`, ESLint on every file added or changed, and `next build` pass.
+Rendered in headless Chrome against a local dev server with Google Analytics blocked, at 1440 x 900 and 390 x 844. Scripted checks on all four pages: loads with 200, title, description, canonical and share image, one h1 matching the name, full-width hero that is loaded and has alt text, nav and footer present, prices shown, no skipped heading level, no horizontal overflow, no popup on the page, the headline inside the hero, each button opening the contact form with its offering selected and sending one analytics event, phone layout (headline inside the margins, buttons at least 56 px tall, 19 px body text), no console errors, an unknown address returning 404, and all four pages in the sitemap. `npm test`, `tsc`, ESLint on every file added or changed, and `next build` pass.
 
 **Not checked:** a real phone, Safari or Firefox, a screen reader, and how the pages look next to the live site's nav once the footer or nav gain links to them.

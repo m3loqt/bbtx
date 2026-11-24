@@ -116,10 +116,30 @@ test("the page uses the existing nav and footer, one h1, and a hero the nav can 
   assert.match(page, /import \{ Footer \} from "@\/app\/components\/Footer"/);
   assert.match(page, /<Nav \/>/);
   assert.match(page, /<Footer \/>/);
-  assert.match(page, /<section id="hero"/);
+  assert.match(page, /<section[^>]*\bid="hero"/);
   assert.equal((page.match(/<h1\b/g) ?? []).length, 1);
   assert.doesNotMatch(page, /<h4\b/);
   assert.match(page, /priority/, "the hero image is loaded first");
+});
+
+test("the headline block sits on the hero, in white, on the same 720 px column as the text below", () => {
+  const page = read(PAGE);
+  const heroStart = page.search(/<section[^>]*\bid="hero"/);
+  const heroEnd = page.indexOf("</section>", heroStart);
+  assert.ok(heroStart > 0 && heroEnd > heroStart);
+  // The hero is 20% shorter than the first version (64svh / 68svh), at every size.
+  assert.match(page, /h-\[54\.4svh\] max-h-\[576px\] min-h-\[432px\]/);
+  assert.match(page, /md:h-\[51\.2svh\] md:min-h-\[384px\] md:max-h-\[560px\]/);
+  const hero = page.slice(heroStart, heroEnd);
+  assert.match(hero, /<Header /, "the name, eyebrow and tagline are inside the hero");
+  assert.match(hero, /mx-auto w-full max-w-\[720px\] px-6/, "same column width and gutter as the article");
+  assert.match(page.slice(page.indexOf("<article")), /max-w-\[720px\] px-6/);
+  assert.doesNotMatch(page.slice(heroEnd), /<Header /, "the header is not repeated below");
+  // White type, and a gradient behind it so it stays readable on every image.
+  const header = page.slice(page.indexOf("function Header"), page.indexOf("function NoBreakHyphens"));
+  assert.match(header, /text-white/);
+  assert.doesNotMatch(header, /text-\[#(111111|555555|666666)\]/, "no dark type on the dark hero");
+  assert.match(hero, /linear-gradient\(to top, rgba\(0,0,0,\.9/);
 });
 
 test("brand: the pages use #C8102E and not the site's brick red, and every colour is red or neutral", () => {

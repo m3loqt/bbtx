@@ -54,7 +54,10 @@ export default async function OfferingPage({ params }: { params: Promise<Params>
       <Nav />
 
       {/* Full-bleed hero. id="hero" lets the site nav stay transparent over it until you scroll past. */}
-      <section id="hero" className="relative h-[58svh] max-h-[640px] min-h-[380px] w-full overflow-hidden bg-black">
+      <section
+        id="hero"
+        className="relative h-[54.4svh] max-h-[576px] min-h-[432px] w-full overflow-hidden bg-black md:h-[51.2svh] md:min-h-[384px] md:max-h-[560px]"
+      >
         <Image
           src={offering.hero.image}
           alt={altFor(offering.hero.image)}
@@ -65,13 +68,25 @@ export default async function OfferingPage({ params }: { params: Promise<Params>
           className="object-cover"
           style={{ objectPosition: offering.hero.position }}
         />
+        {/* Two soft shades: the top keeps the nav readable, the bottom keeps the headline readable on every image. */}
         <div className="absolute inset-x-0 top-0 h-44 bg-gradient-to-b from-black/60 to-transparent" aria-hidden="true" />
+        <div
+          className="absolute inset-x-0 bottom-0 h-[94%]"
+          style={{ background: "linear-gradient(to top, rgba(0,0,0,.92) 0%, rgba(0,0,0,.78) 42%, rgba(0,0,0,.44) 74%, rgba(0,0,0,0) 100%)" }}
+          aria-hidden="true"
+        />
+
+        {/* The headline sits at the bottom left, on the same left edge and width as the text column below. */}
+        <div className="absolute inset-x-0 bottom-0">
+          <div className="mx-auto w-full max-w-[720px] px-6 pb-10">
+            <Header name={offering.name} eyebrow={offering.eyebrow} tagline={offering.tagline} />
+          </div>
+        </div>
       </section>
 
       <main>
-        <article className="mx-auto w-full max-w-[720px] px-6 pb-20 pt-14 md:pt-20">
-          <Header name={offering.name} eyebrow={offering.eyebrow} tagline={offering.tagline} />
-          <Paragraphs items={offering.intro} className="mt-10" />
+        <article className="mx-auto w-full max-w-[720px] px-6 pb-20 pt-12 md:pt-16">
+          <Paragraphs items={offering.intro} />
           {offering.layout === "standard" ? (
             <StandardBody offering={offering} />
           ) : (
@@ -91,14 +106,14 @@ function Header({ name, eyebrow, tagline }: { name: string; eyebrow: string; tag
     <header>
       <div className="flex items-center gap-4">
         <span className="h-[2px] w-10 shrink-0 bg-[#C8102E]" aria-hidden="true" />
-        <p className="text-xs font-medium tracking-[0.14em] text-[#555555]">{eyebrow}</p>
+        <p className="text-xs font-medium tracking-[0.14em] text-white">{eyebrow}</p>
       </div>
       <h1
-        className={`${serif.className} mt-6 text-balance text-[clamp(2.5rem,6.4vw,4.25rem)] font-medium leading-[1.02] tracking-[-0.02em] text-[#111111]`}
+        className={`${serif.className} mt-5 text-balance text-[clamp(2.375rem,6.4vw,4.25rem)] font-medium leading-[1.02] tracking-[-0.02em] text-white`}
       >
         <NoBreakHyphens text={name} />
       </h1>
-      <p className="mt-5 text-balance text-[clamp(1.25rem,2.4vw,1.625rem)] leading-snug text-[#666666]">{tagline}</p>
+      <p className="mt-4 text-balance text-[clamp(1.125rem,2.4vw,1.625rem)] leading-snug text-white/85">{tagline}</p>
     </header>
   );
 }
