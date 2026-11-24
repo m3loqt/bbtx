@@ -6,7 +6,7 @@
 //
 // Rules:
 // - Desktop: when the cursor leaves through the top of the window (exit intent), once the visitor
-//   has been on the page a few seconds. Everyone: after 40 seconds, or once 50% of the page is
+//   has been on the page a few seconds. Everyone: after 5 seconds, or once 50% of the page is
 //   scrolled, whichever is first. The scroll route waits at least 3 seconds, so a restored scroll
 //   position on reload does not count.
 // - Never on offer or booking pages, nor on the other pages listed in EXCLUDED_PATHS.

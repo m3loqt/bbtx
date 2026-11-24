@@ -9,7 +9,7 @@ export const SEEN_KEY = "bbtx.engagements-popup.seen";
 /** Once it has appeared, it stays away for this long. */
 export const COOLDOWN_DAYS = 7;
 /** It appears after this long on a page... */
-export const TRIGGER_DELAY_MS = 40_000;
+export const TRIGGER_DELAY_MS = 5_000;
 /** ...or once the visitor has scrolled this far, whichever comes first. */
 export const TRIGGER_SCROLL_FRACTION = 0.5;
 /**

@@ -47,8 +47,8 @@ test("auto-advance is every 6 seconds with a 400 ms crossfade", () => {
 });
 
 // --- When it shows -------------------------------------------------------------------------------
-test("triggers: exit intent, or 40 seconds, or 50% scrolled; never straight away", () => {
-  assert.equal(TRIGGER_DELAY_MS, 40_000);
+test("triggers: exit intent, or 5 seconds, or 50% scrolled; never straight away", () => {
+  assert.equal(TRIGGER_DELAY_MS, 5_000);
   assert.equal(TRIGGER_SCROLL_FRACTION, 0.5);
   assert.ok(MIN_DWELL_MS >= 2_000 && MIN_DWELL_MS < TRIGGER_DELAY_MS, "a restored scroll position cannot trigger it at first paint");
   assert.ok(EXIT_INTENT_ARM_MS >= 3_000, "a quick bounce is not pitched at");
