@@ -227,10 +227,10 @@ test("each slide's alt text names the offer and the price printed on its graphic
 test("the intro panel is exactly the supplied copy and nothing else", () => {
   assert.deepEqual(Object.keys(PANEL).sort(), ["body", "eyebrow", "headline"]);
   assert.equal(PANEL.eyebrow, "NEW FROM BBTx CONSULTING");
-  assert.equal(PANEL.headline, "Is there something you\u2019ve been meaning to figure out?");
+  assert.equal(PANEL.headline, "You don\u2019t need a big project to get started");
   assert.equal(
     PANEL.body,
-    "Maybe it\u2019s a question about your business, where you\u2019re headed professionally, or how to make AI useful in your work. We\u2019ve put together four focused ways to work with Dr. Grant Tate, without committing to a larger consulting project.",
+    "Some questions are worth exploring before committing to a larger consulting engagement. We\u2019ve put together four focused ways to work with you on your business, professional growth, and making AI useful in your work.",
   );
   // No logo, no portrait or name row, no extra links: the popup has the copy, the carousel and the counter.
   const c = code(POPUP);

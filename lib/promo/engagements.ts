@@ -78,6 +78,6 @@ export const SLIDES: readonly [PromoSlide, PromoSlide, PromoSlide, PromoSlide] =
 /** The words beside the carousel on desktop, and above it (eyebrow and headline only) on phones. */
 export const PANEL = {
   eyebrow: "NEW FROM BBTx CONSULTING",
-  headline: "Is there something you\u2019ve been meaning to figure out?",
-  body: "Maybe it\u2019s a question about your business, where you\u2019re headed professionally, or how to make AI useful in your work. We\u2019ve put together four focused ways to work with Dr. Grant Tate, without committing to a larger consulting project.",
+  headline: "You don\u2019t need a big project to get started",
+  body: "Some questions are worth exploring before committing to a larger consulting engagement. We\u2019ve put together four focused ways to work with you on your business, professional growth, and making AI useful in your work.",
 } as const;
