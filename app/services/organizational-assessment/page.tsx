@@ -118,7 +118,7 @@ const FAQ_ITEMS = [
   {
     question: "What happens after the assessment?",
     answer:
-      "Some organizations implement the recommendations internally. Others continue with organizational development support through strategy, leadership development, AI integration, or change initiatives. The assessment is designed to produce clarity either way.",
+      "Some organizations implement the recommendations internally. Others continue with support through strategy, leadership development, AI integration, or change initiatives. The assessment is designed to produce clarity either way, and it gives any organizational development work that follows a clear starting point.",
   },
   {
     question: "Can assessments focus on a specific issue?",

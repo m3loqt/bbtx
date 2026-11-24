@@ -89,14 +89,13 @@ export default function ServicesPage() {
           </p>
           <p className="mt-5 max-w-4xl text-lg leading-relaxed tracking-tight text-white/55 sm:mt-6 sm:text-2xl">
             BBTx works with leadership teams to understand why that happens, and to change the
-            organizational conditions that make it keep happening. Our organizational
-            development practice spans assessment, strategy, leadership development, AI
-            adoption, and change.
+            organizational conditions that make it keep happening. That is organizational
+            development work, and today it includes AI.
           </p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
             <button
               type="button"
-              onClick={() => window.dispatchEvent(new Event("openContact"))}
+              onClick={() => window.dispatchEvent(new CustomEvent("openContact", { detail: { inquiry: "General Inquiry" } }))}
               className="inline-flex w-fit items-center gap-2 rounded-lg bg-white px-5 py-3 text-[15px] font-medium text-[#222222] transition-opacity hover:opacity-90"
             >
               Start a Conversation
@@ -286,7 +285,7 @@ export default function ServicesPage() {
                 </p>
                 <button
                   type="button"
-                  onClick={() => window.dispatchEvent(new Event("openContact"))}
+                  onClick={() => window.dispatchEvent(new CustomEvent("openContact", { detail: { inquiry: "General Inquiry" } }))}
                   className="inline-flex w-fit items-center gap-2 rounded-lg bg-white px-5 py-3 text-[15px] font-medium text-[#222222] transition-opacity hover:opacity-90"
                 >
                   Talk to Us About Your Situation

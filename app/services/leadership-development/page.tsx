@@ -124,7 +124,7 @@ const FAQ_ITEMS = [
   },
   {
     question: "How is this different from traditional leadership training",
-    answer: "Traditional training often focuses on individuals in isolation. As part of our organizational development work, we focus on individuals, teams, and the organizational conditions affecting leadership performance",
+    answer: "Traditional training often focuses on individuals in isolation. We focus on individuals, teams, and the organizational conditions affecting leadership performance, because leadership development and organizational development are closely connected",
   },
   {
     question: "Do you address AI leadership challenges",

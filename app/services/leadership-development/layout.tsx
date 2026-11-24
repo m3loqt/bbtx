@@ -5,7 +5,7 @@ import { breadcrumbList } from "@/lib/seo/schema";
 export const metadata: Metadata = {
   title: "Leadership Development Consulting | BBTx Consulting",
   description:
-    "Leadership development consulting that builds capability across leaders, teams, and the conditions around them, including leadership for the AI era.",
+    "Leadership development consulting that combines executive coaching and team development to build capability, including leadership for the AI era.",
   openGraph: {
     title: "Leadership Development Consulting | BBTx Consulting",
     description:

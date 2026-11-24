@@ -62,31 +62,85 @@ test("decision 1A: strategic planning is an explicit part of the Strategy servic
   assert.ok(descOf(layout("strategy-advisory")).includes("decisions, alignment, and discipline"));
 });
 
-test("decision 2A: the AI service keeps its name everywhere, and the page is clear it is not software integration", () => {
+test("decision 2A: the AI service keeps its name everywhere, and the page says what it is, in positive terms", () => {
   for (const f of ["app/components/Nav.tsx", "app/components/Footer.tsx", "app/components/ContactModal.tsx", "app/services/page.tsx", "app/services/ai-integration/layout.tsx"]) {
     assert.ok(read(f).includes("AI Integration & Innovation"), `${f} still uses the existing name`);
   }
   assert.equal(titleOf(layout("ai-integration")), "AI Strategy & Adoption Consulting | BBTx Consulting");
   const src = page("ai-integration");
-  assert.match(src, /organizational readiness, governance, adoption, and performance, rather\s+than technical software integration/);
+  assert.match(src, /starts with the organization, not the software\.\s+We help leadership teams decide where AI can create value/);
+  assert.match(src, /The\s+focus is organizational readiness, governance, adoption, and performance\. Technical\s+integration follows from that clarity\./);
   assert.match(src, /No\. The primary focus is organizational capability, adoption, governance, and performance/, "FAQ unchanged");
-  assert.match(descOf(layout("ai-integration")), /not technical software integration/);
+  // the description says what organizations achieve, not what BBTx does not do
+  const d = descOf(layout("ai-integration"));
+  assert.match(d, /AI strategy and adoption consulting that helps leadership teams decide where AI creates value, build readiness and governance, and improve performance/);
+  assert.doesNotMatch(d, /\b(not|don't|doesn't|rather than|without|no)\b/i, "no negatives in the description");
 });
 
 test("decision 3A: 'organizational development' appears naturally on the hub, Organizational Assessment and Leadership pages, and never in a title or H1", () => {
-  assert.match(read("app/services/page.tsx"), /Our organizational\s+development practice spans assessment, strategy, leadership development, AI\s+adoption, and change/);
-  assert.match(page("organizational-assessment"), /Others continue with organizational development support through/);
-  assert.match(page("leadership-development"), /As part of our organizational development work, we focus on individuals/);
+  assert.match(read("app/services/page.tsx"), /keep happening\. That is organizational\s+development work, and today it includes AI\./);
+  assert.match(page("organizational-assessment"), /produce clarity either way, and it gives any organizational development work that follows a clear starting point/);
+  assert.match(page("leadership-development"), /because leadership development and organizational development are closely connected/);
+  // each of Grant's original sentences is intact; the phrase is added to them, not swapped in
+  assert.match(page("organizational-assessment"), /Others continue with support through strategy, leadership development, AI integration, or change initiatives\./);
+  assert.match(page("leadership-development"), /We focus on individuals, teams, and the organizational conditions affecting leadership performance/);
   const titlesAndH1s = [
     ...Object.keys(PAGES).flatMap((s) => [titleOf(layout(s)), page(s).match(/<h1[^>]*>([^<]*)<\/h1>/)[1]]),
     titleOf(read("app/services/layout.tsx")),
   ];
   for (const t of titlesAndH1s) assert.doesNotMatch(t, /organizational development/i, `not in "${t}"`);
-  // used once on each of those pages, not repeated
   for (const f of ["app/services/page.tsx", "app/services/organizational-assessment/page.tsx", "app/services/leadership-development/page.tsx"]) {
     const n = (read(f).replace(/\s+/g, " ").match(/organizational development/gi) ?? []).length;
     assert.ok(n >= 1 && n <= 2, `${f}: ${n} uses`);
   }
+});
+
+test("the Leadership description names executive coaching, because it is a real part of the service", () => {
+  const d = descOf(layout("leadership-development"));
+  assert.match(d, /executive coaching and team development/);
+  assert.ok(d.length >= 70 && d.length <= 155, String(d.length));
+});
+
+// ---- the contact form opens with the right inquiry type from every service page ----
+const formOptions = () => {
+  const block = read("app/components/ContactModal.tsx").match(/const INQUIRY_OPTIONS = \[([\s\S]*?)\] as const/)[1];
+  return [...block.matchAll(/^\s*"([^"]+)",/gm)].map((m) => m[1]);
+};
+
+test("every service page asks the contact form for a type it actually lists, from both of its buttons", () => {
+  const options = formOptions();
+  assert.ok(options.includes("General Inquiry"));
+  for (const slug of Object.keys(PAGES)) {
+    const src = page(slug);
+    const inquiry = src.match(/const INQUIRY = "([^"]+)"/)[1];
+    assert.ok(options.includes(inquiry), `${slug}: "${inquiry}" must be one of the form's options`);
+    assert.equal((src.match(/onClick=\{\(\) => openContact\(INQUIRY\)\}/g) ?? []).length, 2, `${slug}: the top and bottom buttons both send it`);
+  }
+  // each service has its own, distinct type
+  const sent = Object.keys(PAGES).map((s) => page(s).match(/const INQUIRY = "([^"]+)"/)[1]);
+  assert.equal(new Set(sent).size, sent.length);
+});
+
+test("Executive Recruitment's inquiry type is a real option in the form (it used to fall back to the first service)", () => {
+  assert.match(page("executive-recruitment"), /const INQUIRY = "Executive Recruitment Assessment Services"/);
+  assert.ok(formOptions().includes("Executive Recruitment Assessment Services"));
+  // the original options are all still there, in order, with the new one after the services
+  const o = formOptions();
+  assert.deepEqual(o.slice(0, 6), ["Organizational Assessment & Analysis", "Strategy & Advisory Services", "Leadership, Management & Team Development", "AI Integration & Innovation", "Implementation & Change Support", "Executive Recruitment Assessment Services"]);
+  assert.equal(o.at(-1), "General Inquiry");
+});
+
+test("the Services hub is a general page: both its buttons send 'General Inquiry', not nothing", () => {
+  const hub = read("app/services/page.tsx");
+  assert.equal((hub.match(/new CustomEvent\("openContact", \{ detail: \{ inquiry: "General Inquiry" \} \}\)/g) ?? []).length, 2);
+  assert.doesNotMatch(hub, /new Event\("openContact"\)/);
+});
+
+test("Organizational Assessment keeps its single hero button, unchanged", () => {
+  const src = page("organizational-assessment");
+  const hero = src.slice(src.indexOf("<h1"), src.indexOf("</section>", src.indexOf("<h1")));
+  assert.equal((hero.match(/Start a Conversation/g) ?? []).length, 1);
+  assert.doesNotMatch(hero, /See How/);
 });
 
 // Two different questions, kept apart on purpose:
@@ -132,4 +186,12 @@ test("executive coaching stays a first-class, accurately described service: stil
   assert.match(lead, /question: "Is this executive coaching"/, "answered in the FAQ");
   assert.match(read("app/coaching/layout.tsx"), /title:\s*"1:1 Executive Coaching with Grant Tate/, "/coaching owns the term in its title");
   // using the words in descriptions or body copy is not restricted by any test here
+});
+
+test("a button that names no service (footer, phone menu) opens the form on 'General Inquiry', not on the first service in the list", () => {
+  const form = read("app/components/ContactModal.tsx");
+  assert.match(form, /const DEFAULT_INQUIRY = "General Inquiry";/);
+  assert.doesNotMatch(form, /INQUIRY_OPTIONS\[0\]/, "no fallback to the first service");
+  assert.ok(formOptions().includes("General Inquiry"));
+  assert.match(read("app/api/contact/route.ts"), /inquiryValue \?\? 'General Inquiry'/, "the API treats 'no inquiry' the same way");
 });

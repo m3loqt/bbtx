@@ -5,7 +5,7 @@ import { breadcrumbList } from "@/lib/seo/schema";
 export const metadata: Metadata = {
   title: "AI Strategy & Adoption Consulting | BBTx Consulting",
   description:
-    "BBTx helps leadership teams with AI strategy and adoption: organizational readiness, governance, and performance, not technical software integration.",
+    "AI strategy and adoption consulting that helps leadership teams decide where AI creates value, build readiness and governance, and improve performance.",
   openGraph: {
     title: "AI Strategy & Adoption Consulting | BBTx Consulting",
     description:

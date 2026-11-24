@@ -41,14 +41,21 @@ const INQUIRY_OPTIONS = [
   "Leadership, Management & Team Development",
   "AI Integration & Innovation",
   "Implementation & Change Support",
+  // The Executive Recruitment Assessment page opens this form with this value.
+  "Executive Recruitment Assessment Services",
   "General Inquiry",
 ] as const;
+
+// What the form starts on when whoever opened it did not name a service (the footer, the phone menu,
+// a general page). It used to fall back to the first service in the list, which was wrong on every
+// page that is not about that service; the contact API already treats "no inquiry" as this.
+const DEFAULT_INQUIRY = "General Inquiry";
 
 export function ContactModal({ open, onClose, defaultInquiry }: ContactModalProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [inquiryType, setInquiryType] = useState<string>(defaultInquiry ?? INQUIRY_OPTIONS[0]);
+  const [inquiryType, setInquiryType] = useState<string>(defaultInquiry ?? DEFAULT_INQUIRY);
 
   useEffect(() => {
     if (open) {
@@ -57,7 +64,7 @@ export function ContactModal({ open, onClose, defaultInquiry }: ContactModalProp
       setInquiryType(
         defaultInquiry && (INQUIRY_OPTIONS as readonly string[]).includes(defaultInquiry)
           ? defaultInquiry
-          : INQUIRY_OPTIONS[0]
+          : DEFAULT_INQUIRY
       );
       return () => {
         document.body.style.overflow = "";
@@ -231,7 +238,7 @@ export function ContactModal({ open, onClose, defaultInquiry }: ContactModalProp
                     </Label>
                     <Select
                       value={inquiryType}
-                      onValueChange={(val) => setInquiryType(val ?? INQUIRY_OPTIONS[0])}
+                      onValueChange={(val) => setInquiryType(val ?? DEFAULT_INQUIRY)}
                       disabled={isLoading}
                     >
                       <SelectTrigger className="h-11 w-full min-w-0 rounded-md border-black/10 bg-[#f2f2f2] text-[15px]">

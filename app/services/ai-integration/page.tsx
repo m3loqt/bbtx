@@ -141,10 +141,10 @@ export default function AiIntegrationPage() {
           </p>
           <p className="mt-4 max-w-3xl text-base leading-relaxed tracking-normal text-[#555555] sm:text-lg">
             Our AI strategy and adoption consulting starts with the organization, not the software.
-            We focus on organizational readiness, governance, adoption, and performance, rather
-            than technical software integration. We help leadership teams decide where AI can
-            create value, what must change to use it responsibly, and how to move from isolated
-            experiments to purposeful adoption.
+            We help leadership teams decide where AI can create value, what must change to use it
+            responsibly, and how to move from isolated experiments to purposeful adoption. The
+            focus is organizational readiness, governance, adoption, and performance. Technical
+            integration follows from that clarity.
           </p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
             <button
