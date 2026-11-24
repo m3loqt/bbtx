@@ -85,8 +85,8 @@ const DROPDOWNS: Record<string, DropdownItem[]> = {
     },
     {
       title: "AI Readiness Assessment Guide",
-      description:
-        "Twelve questions for leadership teams to answer before investing in AI, across leadership, governance, workflows, capability, and performance.",
+      // The first half of the /resources blurb: a menu line has room for two lines, not three.
+      description: "Twelve questions for leadership teams to answer before investing in AI.",
       href: "/resources/ai-readiness-assessment",
       Icon: ClipboardCheck,
     },
@@ -178,13 +178,17 @@ function MenuItem({ item, onNavigate }: { item: DropdownItem; onNavigate: () => 
     <a
       href={item.href}
       onClick={onNavigate}
-      className="group -mx-4 block rounded-xl px-4 py-4 transition-colors hover:bg-[#f6f6f6] focus-visible:bg-[#f6f6f6] focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-[#ca3726]"
+      // row-span-2 + subgrid: each item takes a title row and a description row of the
+      // menu's shared grid, so titles line up across the two columns, and so do the
+      // descriptions, even when one title wraps or one description runs a line longer.
+      className="group -mx-4 row-span-2 grid grid-rows-subgrid rounded-xl px-4 py-4 transition-colors hover:bg-[#f6f6f6] focus-visible:bg-[#f6f6f6] focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-[#ca3726]"
     >
       <span className="flex items-start gap-3">
         <Icon className="mt-px h-5 w-5 shrink-0 text-[#ca3726]" strokeWidth={1.5} aria-hidden />
         <span className="text-[15px] font-medium leading-snug text-[#111111]">{item.title}</span>
       </span>
-      <span className="mt-2 block text-[13.5px] leading-relaxed text-[#666666]">{item.description}</span>
+      {/* text-balance evens the lines out, so a description never ends on a lone word. */}
+      <span className="mt-2 block text-balance text-[13.5px] leading-relaxed text-[#666666]">{item.description}</span>
     </a>
   );
 }
@@ -212,15 +216,17 @@ function ExploreLink({ card, cta, onNavigate }: { card: ExploreCard; cta: string
           </div>
         )}
       </div>
-      {card.category && (
-        <p className="mt-4 text-[11px] font-medium uppercase tracking-[0.12em] text-[#888888]">{card.category}</p>
-      )}
-      <p className={`${card.category ? "mt-1.5" : "mt-4"} text-[15px] font-semibold leading-snug text-[#111111]`}>
-        {card.title}
-      </p>
-      {card.excerpt && (
-        <p className="mt-1.5 line-clamp-2 text-[13.5px] leading-relaxed text-[#666666]">{card.excerpt}</p>
-      )}
+      {/* Every card is the same height whatever the article, so both menus are the same
+          height. The text block reserves room for its longest case (label, a two-line title,
+          a two-line excerpt: about 114px); a shorter article leaves the slack above the link
+          instead of as a hole between the title and the excerpt. */}
+      <div className="min-h-[114px]">
+        <p className="mt-4 text-[11px] font-medium uppercase tracking-[0.12em] text-[#888888]">
+          {card.category ?? "Chaotic Confluence"}
+        </p>
+        <p className="mt-1.5 line-clamp-2 text-balance text-[15px] font-semibold leading-snug text-[#111111]">{card.title}</p>
+        <p className="mt-1.5 line-clamp-2 text-pretty text-[13.5px] leading-relaxed text-[#666666]">{card.excerpt}</p>
+      </div>
       <span className="mt-3 inline-flex items-center gap-1.5 text-[13.5px] font-medium text-[#ca3726]">
         {cta}
         <ArrowRight
@@ -254,9 +260,8 @@ function MegaPanel({
 }) {
   const items = DROPDOWNS[label];
   const meta = MENU_META[label];
-  // Two columns of equal weight: 6 services -> 3 + 3, 4 resources -> 2 + 2.
-  const split = Math.ceil(items.length / 2);
-  const columns = [items.slice(0, split), items.slice(split)];
+  // Two columns of equal weight, filled top to bottom: 6 services -> 3 + 3, 5 resources -> 3 + 2.
+  const perColumn = Math.ceil(items.length / 2);
   const card = explore?.[meta.exploreKey] ?? EXPLORE_FALLBACK;
 
   return (
@@ -276,13 +281,17 @@ function MegaPanel({
     >
       <div className="mx-5 border-t border-black/[0.07]" aria-hidden="true" />
       <div className="grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,1.1fr)] gap-x-9 px-9 pb-8 pt-5">
-        {columns.map((col, i) => (
-          <div key={i}>
-            {col.map((item) => (
-              <MenuItem key={item.title} item={item} onNavigate={onNavigate} />
-            ))}
-          </div>
-        ))}
+        {/* Two rows per item (title, description), filled column by column. The DOM order
+            is still all of column one, then column two, so Tab and screen readers read it
+            the same way as before. */}
+        <div
+          className="col-span-2 grid grid-flow-col grid-cols-2 content-start gap-x-9"
+          style={{ gridTemplateRows: `repeat(${perColumn * 2}, auto)` }}
+        >
+          {items.map((item) => (
+            <MenuItem key={item.title} item={item} onNavigate={onNavigate} />
+          ))}
+        </div>
         <div className="border-l border-black/[0.07] pl-9 pt-4">
           <p className="mb-4 text-[11px] font-medium uppercase tracking-[0.12em] text-[#888888]">Explore</p>
           <ExploreLink card={card} cta={meta.exploreCta} onNavigate={onNavigate} />
