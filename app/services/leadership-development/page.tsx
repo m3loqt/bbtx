@@ -124,7 +124,7 @@ const FAQ_ITEMS = [
   },
   {
     question: "How is this different from traditional leadership training",
-    answer: "Traditional training often focuses on individuals in isolation. We focus on individuals, teams, and the organizational conditions affecting leadership performance",
+    answer: "Traditional training often focuses on individuals in isolation. As part of our organizational development work, we focus on individuals, teams, and the organizational conditions affecting leadership performance",
   },
   {
     question: "Do you address AI leadership challenges",
@@ -171,12 +171,13 @@ export default function LeadershipDevelopmentPage() {
         <div className="pointer-events-none absolute inset-0 z-0 opacity-60" style={gridBg} aria-hidden />
         <div className="relative z-[1] px-4 pb-10 pt-28 sm:px-6 sm:pt-32 lg:px-8 lg:pb-10">
           <p className="mb-6 text-xs font-semibold uppercase tracking-[0.22em] text-[#555555]/60 sm:text-sm">
-            Leadership & Team Development
+            Services
           </p>
-          <h1 className="max-w-[96%] text-[2.5rem] font-medium leading-[1.06] tracking-tight text-[#222222] sm:text-[3.2rem] md:text-[3.8rem] lg:text-[4.8rem] xl:text-[5.6rem]">
+          <h1 className="text-[2.25rem] font-medium leading-[1.06] tracking-tight text-[#222222] sm:text-[2.75rem] md:text-[3.25rem] lg:text-[4rem] xl:text-[4.5rem]">Leadership & Team Development</h1>
+          <p className="mt-4 max-w-[96%] text-[1.5rem] font-medium leading-[1.14] tracking-tight text-[#222222] sm:mt-5 sm:text-[1.875rem] md:text-[2.25rem] lg:text-[2.75rem]">
             Leadership development fails when individuals improve{" "}
             <span className="italic">but the system around them does not</span>
-          </h1>
+          </p>
           <p className="mt-5 max-w-5xl text-base leading-relaxed tracking-normal text-[#555555] sm:mt-6 sm:text-xl">
             Most organizations develop leaders one person at a time. But leadership performance is
             shaped by teams, expectations, trust, culture, and the conditions leaders operate inside

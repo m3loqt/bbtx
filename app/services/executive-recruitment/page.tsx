@@ -140,12 +140,12 @@ export default function ExecutiveRecruitmentPage() {
       <section className="relative z-[1] w-full bg-[#f7f7f7]">
         <div className="relative z-[1] px-4 pb-10 pt-28 sm:px-6 sm:pt-32 lg:px-8 lg:pb-10">
           <p className="mb-6 text-xs font-semibold uppercase tracking-[0.22em] text-[#555555]/60 sm:text-sm">
-            Executive Recruitment Assessment Services
+            Services
           </p>
-
-          <h1 className="text-[2.5rem] font-medium leading-[1.06] tracking-tight text-[#222222] sm:text-[3.2rem] md:text-[3.8rem] lg:text-[4.8rem] xl:text-[5.6rem]">
+          <h1 className="text-[2.25rem] font-medium leading-[1.06] tracking-tight text-[#222222] sm:text-[2.75rem] md:text-[3.25rem] lg:text-[4rem] xl:text-[4.5rem]">Executive Recruitment Assessment Services</h1>
+          <p className="mt-4 max-w-[96%] text-[1.5rem] font-medium leading-[1.14] tracking-tight text-[#222222] sm:mt-5 sm:text-[1.875rem] md:text-[2.25rem] lg:text-[2.75rem]">
             Make better <span className="italic">executive hiring decisions</span>
-          </h1>
+          </p>
 
           <p className="mt-5 max-w-5xl text-base leading-relaxed tracking-normal text-[#555555] sm:mt-6 sm:text-xl">
             Résumés, references, and conventional interviews rarely reveal how a candidate will lead,

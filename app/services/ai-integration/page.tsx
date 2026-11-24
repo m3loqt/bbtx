@@ -127,21 +127,24 @@ export default function AiIntegrationPage() {
         <div className="pointer-events-none absolute inset-0 z-0 opacity-60" style={gridBg} aria-hidden />
         <div className="relative z-[1] px-4 pb-10 pt-28 sm:px-6 sm:pt-32 lg:px-8 lg:pb-10">
           <p className="mb-6 text-xs font-semibold uppercase tracking-[0.22em] text-[#555555]/60 sm:text-sm">
-            AI Integration & Innovation
+            Services
           </p>
-          <h1 className="max-w-[96%] text-[2.5rem] font-medium leading-[1.06] tracking-tight text-[#222222] sm:text-[3.2rem] md:text-[3.8rem] lg:text-[4.8rem] xl:text-[5.6rem]">
+          <h1 className="text-[2.25rem] font-medium leading-[1.06] tracking-tight text-[#222222] sm:text-[2.75rem] md:text-[3.25rem] lg:text-[4rem] xl:text-[4.5rem]">AI Integration & Innovation</h1>
+          <p className="mt-4 max-w-[96%] text-[1.5rem] font-medium leading-[1.14] tracking-tight text-[#222222] sm:mt-5 sm:text-[1.875rem] md:text-[2.25rem] lg:text-[2.75rem]">
             Most organizations don&apos;t have an AI problem.{" "}
             <span className="italic">They have an organizational capability problem AI happens to expose</span>
-          </h1>
+          </p>
           <p className="mt-5 max-w-5xl text-base leading-relaxed tracking-normal text-[#555555] sm:mt-6 sm:text-xl">
             AI adoption succeeds when leadership, governance, workflows, and workforce capability
             evolve together. We help organizations move beyond experimentation and build the
             conditions required for sustainable AI-enabled performance
           </p>
           <p className="mt-4 max-w-3xl text-base leading-relaxed tracking-normal text-[#555555] sm:text-lg">
-            Our AI strategy consulting starts with the organization, not the software. We help
-            leadership teams decide where AI can create value, what must change to use it
-            responsibly, and how to move from isolated experiments to purposeful adoption.
+            Our AI strategy and adoption consulting starts with the organization, not the software.
+            We focus on organizational readiness, governance, adoption, and performance, rather
+            than technical software integration. We help leadership teams decide where AI can
+            create value, what must change to use it responsibly, and how to move from isolated
+            experiments to purposeful adoption.
           </p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
             <button

@@ -3,11 +3,11 @@ import { JsonLd } from "@/app/components/JsonLd";
 import { breadcrumbList } from "@/lib/seo/schema";
 
 export const metadata: Metadata = {
-  title: "Strategy & Advisory Services | BBTx Consulting",
+  title: "Strategic Planning & Advisory Consulting | BBTx Consulting",
   description:
-    "Most organizations don't have a strategy problem. They have a decision-making problem. BBTx helps leadership teams turn priorities into action.",
+    "Strategic planning and advisory for leadership teams. We help leaders turn priorities into action through better decisions, alignment, and discipline.",
   openGraph: {
-    title: "Strategy & Advisory Services | BBTx Consulting",
+    title: "Strategic Planning & Advisory Consulting | BBTx Consulting",
     description:
       "Create strategic clarity, strengthen alignment, and improve decision-making discipline.",
     url: "https://www.bbtx.ai/services/strategy-advisory",

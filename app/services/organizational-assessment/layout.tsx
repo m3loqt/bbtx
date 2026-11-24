@@ -3,11 +3,11 @@ import { JsonLd } from "@/app/components/JsonLd";
 import { breadcrumbList } from "@/lib/seo/schema";
 
 export const metadata: Metadata = {
-  title: "Organizational & AI Readiness Assessment | BBTx",
+  title: "Organizational Assessment & Analysis | BBTx Consulting",
   description:
-    "BBTx helps leaders examine organizational health and AI readiness, including leadership, governance, culture, and the conditions affecting performance.",
+    "BBTx helps leaders see what is actually happening: organizational assessment covering health, leadership alignment, culture, trust, and AI readiness.",
   openGraph: {
-    title: "Organizational & AI Readiness Assessment | BBTx",
+    title: "Organizational Assessment & Analysis | BBTx Consulting",
     description:
       "Reveal organizational realities, identify risks, and uncover opportunities for improvement.",
     url: "https://www.bbtx.ai/services/organizational-assessment",

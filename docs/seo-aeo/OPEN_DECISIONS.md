@@ -14,6 +14,18 @@ This resolves the report's central strategic question (report pp. 2, 20, 33). It
 
 **POS-002 (homepage rewrite) — DECLINED, 2026-07-28.** Three drafts were tried (report-style rewrite, light-touch word swaps, an "AI amplifies Grant" middle version); Mel rejected all three and confirmed the current homepage copy ("AI Business Consulting for Leaders and Organizations," the AI-powered-initiatives hero subhead, the AI-focused FAQ answer) stays as-is. This is a deliberate scope narrowing of DEC-001, not an oversight: the approved position statement now governs *new* surfaces (Grant's authority page, service pages, future profile copy) rather than requiring a rewrite of the existing homepage. Do not re-propose a homepage rewrite without Mel raising it first. If asked why the homepage still reads AI-first despite DEC-001, this is why.
 
+## DEC-002 — Service-page naming and keyword mapping
+
+**Status: APPROVED by Mel, 2026-11-25.** Grant's review of the new sentences is still recommended before publishing (`docs/seo/batch-6-service-names.md`, "New sentences").
+
+- **Service pages are named for what they are.** The H1 of each service page is the service name (the same name used in the nav, breadcrumb and schema); the previous slogan stays directly under it. The Services hub is "Organizational Consulting Services".
+- **Strategy & Advisory:** SEO title "Strategic Planning & Advisory Consulting". Strategic planning is an explicit part of the service; copy must not imply every engagement produces a written plan.
+- **AI Integration & Innovation:** the service name is kept everywhere (nav, footer, hub, contact-form option stored with each inquiry, schema). SEO title "AI Strategy & Adoption Consulting". Copy states the focus is organizational readiness, governance, adoption and performance, not technical software integration.
+- **Organizational development:** the phrase is used naturally, once, on the Services hub, Organizational Assessment and Leadership pages; never in titles or H1s.
+- **Not targeted** (high volume, wrong audience): management consulting, executive search, executive coaching (owned by `/coaching`), leadership development programs, digital transformation, implementation consulting, AI implementation / integration consulting.
+- **Evidence:** OpenSEO US keyword metrics pulled 2026-11-25 (estimates; a low difficulty score does not mean easy) and the 2026-11-20 keyword map in the project notes.
+- **Tasks affected:** SER-001 (below). Does not change DEC-001; the approved position statement still governs.
+
 ## OPEN-001 — Exact "100+ organizations" claim wording and evidence (H-005)
 
 **Scope corrected 2026-07-31** — this claim is live in far more places than originally logged here. Full current count, confirmed by repo-wide search:
