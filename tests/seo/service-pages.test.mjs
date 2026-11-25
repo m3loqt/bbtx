@@ -69,7 +69,7 @@ test("decision 2A: the AI service keeps its name everywhere, and the page says w
   assert.equal(titleOf(layout("ai-integration")), "AI Strategy & Adoption Consulting | BBTx Consulting");
   const src = page("ai-integration");
   assert.match(src, /starts with the organization, not the software\.\s+We help leadership teams decide where AI can create value/);
-  assert.match(src, /The\s+focus is organizational readiness, governance, adoption, and performance\. Technical\s+integration follows from that clarity\./);
+  assert.match(src, /The\s+focus is organizational readiness, governance, adoption, and performance\.\s+Technology decisions follow from that organizational clarity\./);
   assert.match(src, /No\. The primary focus is organizational capability, adoption, governance, and performance/, "FAQ unchanged");
   // the description says what organizations achieve, not what BBTx does not do
   const d = descOf(layout("ai-integration"));
@@ -78,7 +78,7 @@ test("decision 2A: the AI service keeps its name everywhere, and the page says w
 });
 
 test("decision 3A: 'organizational development' appears naturally on the hub, Organizational Assessment and Leadership pages, and never in a title or H1", () => {
-  assert.match(read("app/services/page.tsx"), /keep happening\. That is organizational\s+development work, and today it includes AI\./);
+  assert.match(read("app/services/page.tsx"), /keep happening\.\s+This is often where organizational\s+development begins\./);
   assert.match(page("organizational-assessment"), /produce clarity either way, and it gives any organizational development work that follows a clear starting point/);
   assert.match(page("leadership-development"), /because leadership development and organizational development are closely connected/);
   // each of Grant's original sentences is intact; the phrase is added to them, not swapped in
