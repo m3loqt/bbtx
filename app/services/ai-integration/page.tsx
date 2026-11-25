@@ -143,8 +143,7 @@ export default function AiIntegrationPage() {
             Our AI strategy and adoption consulting starts with the organization, not the software.
             We help leadership teams decide where AI can create value, what must change to use it
             responsibly, and how to move from isolated experiments to purposeful adoption. The
-            focus is organizational readiness, governance, adoption, and performance. Technical
-            integration follows from that clarity.
+            focus is organizational readiness, governance, adoption, and performance. Technology decisions follow from that organizational clarity.
           </p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
             <button

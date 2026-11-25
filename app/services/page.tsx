@@ -89,8 +89,7 @@ export default function ServicesPage() {
           </p>
           <p className="mt-5 max-w-4xl text-lg leading-relaxed tracking-tight text-white/55 sm:mt-6 sm:text-2xl">
             BBTx works with leadership teams to understand why that happens, and to change the
-            organizational conditions that make it keep happening. That is organizational
-            development work, and today it includes AI.
+            organizational conditions that make it keep happening. This is often where organizational development begins.
           </p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
             <button
