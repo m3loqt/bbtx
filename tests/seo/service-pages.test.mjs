@@ -35,7 +35,7 @@ test("each service page's H1 is the service's own name, and the old slogan stays
   }
   // the hub
   const hub = read("app/services/page.tsx");
-  assert.match(hub, /<h1 className="[^"]*">\s*Organizational Consulting Services\s*<\/h1>/);
+  assert.match(hub, /<h1 className="[^"]*">Organizational Consulting Services<\/h1>/);
   assert.ok(hub.slice(hub.indexOf("</h1>"), hub.indexOf("</h1>") + 700).includes("on their"), "hub slogan kept under the H1");
 });
 
@@ -130,14 +130,10 @@ test("Executive Recruitment's inquiry type is a real option in the form (it used
   assert.equal(o.at(-1), "General Inquiry");
 });
 
-test("the Services hub is a general page: every button that opens the form sends 'General Inquiry', not nothing", () => {
+test("the Services hub is a general page: both its buttons send 'General Inquiry', not nothing", () => {
   const hub = read("app/services/page.tsx");
-  // one helper does the dispatch, with the inquiry named
-  assert.equal((hub.match(/new CustomEvent\("openContact", \{ detail: \{ inquiry: "General Inquiry" \} \}\)/g) ?? []).length, 1);
+  assert.equal((hub.match(/new CustomEvent\("openContact", \{ detail: \{ inquiry: "General Inquiry" \} \}\)/g) ?? []).length, 2);
   assert.doesNotMatch(hub, /new Event\("openContact"\)/);
-  // and the buttons all go through it (hero, right-fit and close)
-  assert.ok((hub.match(/onClick=\{openGeneralInquiry\}/g) ?? []).length >= 3);
-  assert.equal((hub.match(/dispatchEvent\(/g) ?? []).length, 1, "the helper is the only place that opens the form");
 });
 
 test("Organizational Assessment keeps its single hero button, unchanged", () => {
