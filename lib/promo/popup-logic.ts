@@ -7,12 +7,12 @@ export const SHOWN_KEY = "bbtx.engagements-popup.shown-at";
 export const SEEN_KEY = "bbtx.engagements-popup.seen";
 
 /**
- * FREQUENCY CAP. TEMPORARILY OFF while the popup is being tested: with `false` it appears on every
- * page load (and again after navigating to another page where it is allowed), with no memory at all.
- * Set this to `true` before publishing. The rule then is: once it has appeared it stays away for
- * COOLDOWN_MINUTES, and it appears at most once per visit.
+ * FREQUENCY CAP. ON for publishing (switched on 2026-11-27): once it has appeared it stays away for
+ * COOLDOWN_MINUTES, and it appears at most once per visit. Set this to `false` only for testing: the
+ * popup then appears on every page load (and again after navigating to another page where it is
+ * allowed), with no memory at all.
  */
-export const FREQUENCY_CAP_ENABLED = false;
+export const FREQUENCY_CAP_ENABLED = true;
 /** Once it has appeared, it stays away for this long (when the cap is on). */
 export const COOLDOWN_MINUTES = 30;
 export const COOLDOWN_MS = COOLDOWN_MINUTES * 60 * 1000;

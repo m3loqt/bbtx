@@ -148,11 +148,11 @@ test("with the cap on it blocks a repeat in this visit or inside 30 minutes; wit
   assert.equal(frequencyCapBlocks({ visitShown: true, seenThisSession: true, lastShown: String(now - 1 * MIN), now, enabled: false }), false);
 });
 
-test("the cap is switched OFF for now; this test marks the place to flip it back on", () => {
-  // Testing needs the popup on every load. Before publishing, set FREQUENCY_CAP_ENABLED to true in
-  // lib/promo/popup-logic.ts and change this expectation to true.
-  assert.equal(FREQUENCY_CAP_ENABLED, false);
-  assert.equal(frequencyCapBlocks({ visitShown: true, seenThisSession: true, lastShown: String(Date.now()), now: Date.now() }), false);
+test("the cap is switched ON for publishing (flip to false in lib/popup-logic only to test the popup on every load)", () => {
+  assert.equal(FREQUENCY_CAP_ENABLED, true);
+  // Once shown in this visit, the popup stays away; a visit that has not seen it yet is allowed.
+  assert.equal(frequencyCapBlocks({ visitShown: true, seenThisSession: true, lastShown: String(Date.now()), now: Date.now() }), true);
+  assert.equal(frequencyCapBlocks({ visitShown: false, seenThisSession: false, lastShown: null, now: Date.now() }), false);
 });
 
 test("a missing, garbled or future timestamp is ignored rather than trusted", () => {
